@@ -160,6 +160,7 @@
     <ClInclude Include="BoundingSphere.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Field.h" />
+    <ClInclude Include="IScene.h" />
     <ClInclude Include="IWorld.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="Player.h" />
