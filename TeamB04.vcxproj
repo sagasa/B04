@@ -146,6 +146,7 @@
     <ClCompile Include="ActorManager.cpp" />
     <ClCompile Include="BoundingSphere.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CSVReader.cpp" />
     <ClCompile Include="Field.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="main.cpp" />
@@ -159,6 +160,7 @@
     <ClInclude Include="Assets.h" />
     <ClInclude Include="BoundingSphere.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CSVReader.h" />
     <ClInclude Include="Field.h" />
     <ClInclude Include="IScene.h" />
     <ClInclude Include="IWorld.h" />
