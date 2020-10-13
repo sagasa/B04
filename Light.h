@@ -1,0 +1,11 @@
+#pragma once
+#include "Actor.h"
+
+// ライトクラス
+class Light : public Actor {
+public:
+    // コンストラクタ
+    Light(IWorld* world);
+    // 描画
+    virtual void draw() const override;
+};
