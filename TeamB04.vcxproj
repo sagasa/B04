@@ -147,6 +147,8 @@
     <ClCompile Include="BoundingSphere.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CSVReader.cpp" />
+    <ClCompile Include="RushEnemyF.cpp" />
+    <ClCompile Include="RushEnemyG.cpp" />
     <ClCompile Include="Field.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="main.cpp" />
@@ -161,6 +163,8 @@
     <ClInclude Include="BoundingSphere.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CSVReader.h" />
+    <ClInclude Include="RushEnemyF.h" />
+    <ClInclude Include="RushEnemyG.h" />
     <ClInclude Include="Field.h" />
     <ClInclude Include="IScene.h" />
     <ClInclude Include="IWorld.h" />
