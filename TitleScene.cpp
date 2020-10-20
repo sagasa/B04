@@ -1,14 +1,7 @@
 #include"TitleScene.h"
-#include"TextureID.h"
 
 //ŠJn
 void TitleScene::start() {
-	//‰æ‘œ“Ç‚İ‚İ
-	gsLoadTexture(TextureTitleLogo,"Assets/TITLE1.png");
-	gsLoadTexture(TextureTitleStart,"Assets/TITLE2.png");
-	gsLoadTexture(TextureBG1,"Assets/BG1.png");
-	gsLoadTexture(TextureBG2, "Assets/BG2.png");
-	gsLoadTexture(TextureBG3, "Assets/BG3.png");
 	//I—¹ƒtƒ‰ƒO‚Ì‰Šú‰»
 	is_end_ = false;
 }
@@ -24,16 +17,6 @@ void TitleScene::update(float delta_time) {
 
 //•`‰æ
 void TitleScene::draw() const {
-	//”wŒi‚Ì•`‰æ
-	draw_background(TextureBG3, scroll_ * 0.5f);
-	draw_background(TextureBG2, scroll_ * 2.0f);
-	draw_background(TextureBG1, scroll_ * 3.0f);
-	//ƒ^ƒCƒgƒ‹ƒƒS‚Ì•`‰æ
-	const static GSvector2 position_logo{ 64.0f,100.0f };
-	gsDrawSprite2D(TextureTitleLogo, &position_logo, NULL, NULL, NULL, NULL, 0.0f);
-	//‘€ì•û–@‚Ì•`‰æ
-	const static GSvector2 position_start{ 170.0f,260.0f };
-	gsDrawSprite2D(TextureTitleStart, &position_start, NULL, NULL, NULL, NULL, 0.0f);
 }
 
 //I—¹‚µ‚Ä‚¢‚é‚©H
@@ -48,12 +31,7 @@ std::string TitleScene::next() const {
 
 //I—¹
 void TitleScene::end() {
-	//‰æ‘œ‚Ìíœ
-	gsDeleteTexture(TextureTitleLogo);
-	gsDeleteTexture(TextureTitleStart);
-	gsDeleteTexture(TextureBG1);
-	gsDeleteTexture(TextureBG2);
-	gsDeleteTexture(TextureBG3);
+	
 }
 
 //”wŒi‚Ì•`‰æ
