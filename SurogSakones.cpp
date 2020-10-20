@@ -1,6 +1,7 @@
 #include "SurogSakones.h"
 #include"IWorld.h";
 #include"Field.h";
+#include"Player.h"
 
 SurogSakones::SurogSakones(IWorld* world,const GSvector3& position){
 	world_ = world;
@@ -41,4 +42,27 @@ void SurogSakones::draw()const{
 	glMultMatrixf(transform_.localToWorldMatrix());
     collider().draw();
 	glPopMatrix();
+}
+
+/**
+* PurPose UŒ‚‚ðH‚ç‚¤ˆ—
+* ‰ü—Ç—\’è
+*/
+void SurogSakones::Damage() {
+    hp_ -= 10;
+}
+
+void SurogSakones::pshychokinesis(const GSvector3& position) {
+    Actor* player = world_->find_actor("Player");
+    if (player != nullptr) {
+        GSvector3 to_player = (player->transform().position() - transform().position()).normalized();
+        
+    }
+}
+void SurogSakones::move() {
+
+}
+
+void SurogSakones::move_attack() {
+
 }

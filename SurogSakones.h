@@ -3,29 +3,30 @@
 
 class IWorld;
 
-enum State {
-    Unkown,
-    Apper,
-    Normal,
-    Angry
-};
-
 #include "Actor.h"
 class SurogSakones :
     public Actor
 {
 public:
+    enum class State {
+        Unkown,
+        Apper,
+        Normal,
+        Angry
+    };
+public:
     SurogSakones(IWorld* world, const GSvector3& position);
     virtual void update(float delta_time)override;
     virtual void draw()const override;
+    void Damage();
 
 private:    
     //”O“®UŒ‚
-    void PsychokinesisAttack(const GSvector3& position,const GSvector3& velocity);
+    void pshychokinesis(const GSvector3& position);
     //•’Ê‚ÌˆÚ“®(”½‘Î‘¤‚ÉˆÚ“®‚·‚é)
-    void Move(bool flag);
+    void move();
     //ˆÚ“®‚µ‚Â‚ÂUŒ‚
-    void MoveAttack();
+    void move_attack();
 
 private:
     State state_;
