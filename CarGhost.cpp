@@ -1,9 +1,9 @@
-#include"RushEnemyG.h"
+#include"CarGhost.h"
 #include"IWorld.h"
 
 
 //コンストラクタ
-RushEnemyG::RushEnemyG(IWorld* world, const GSvector3& position) {
+CarGhost::CarGhost(IWorld* world, const GSvector3& position) {
 	world_ = world;
 	name_ = "RushEnemyG";
 	tag_ = "EnemyTag";
@@ -12,25 +12,25 @@ RushEnemyG::RushEnemyG(IWorld* world, const GSvector3& position) {
 }
 
 //更新
-void RushEnemyG::update(float delta_time) {
+void CarGhost::update(float delta_time) {
 	//プレイヤーを探す
 	Actor* player = world_->find_actor("Player");
 	if (player != nullptr) {
 		GSvector3 to_player = (player->transform().position() - transform_.position()).normalized();
 		velocity_ = GSvector3{ to_player.x,to_player.y,0.0f };
-		speed_ = 2.0f;
+		speed_ = 1.5f;
 	}
 	//移動
 	transform_.translate(velocity_ * delta_time * speed_, GStransform::Space::World);
 }
 
 //描画
-void RushEnemyG::draw() const {
+void CarGhost::draw() const {
 
 }
 
 //衝突リアクション
-void RushEnemyG::react(Actor& other) {
+void CarGhost::react(Actor& other) {
 	if (other.tag() == "PlayerTag") {
 		die();
 	}

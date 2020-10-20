@@ -1,12 +1,12 @@
-#ifndef RUSH_ENEMY_F_H_
-#define RUSH_ENEMY_F_H
+#ifndef RUSH_GHOST_H_
+#define RUSH_GHOST_H_
 
 #include"Actor.h"
 
-class RushEnemyF : public Actor {
+class RushGhost : public Actor {
 public:
 	//コンストラクタ
-	RushEnemyF(IWorld* world, const GSvector3& position);
+	RushGhost(IWorld* world, const GSvector3& position);
 	//更新
 	void update(float delta_time) override;
 	//描画
