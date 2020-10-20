@@ -9,6 +9,7 @@ RushGhost::RushGhost(IWorld* world, const GSvector3& position) {
 	name_ = "RushEnemyF";
 	tag_ = "EnemyTag";
 	transform_.position(position);
+	gsLoadMesh(10, "Ghost.msh");
 }
 
 //更新
@@ -26,7 +27,10 @@ void RushGhost::update(float delta_time) {
 
 //描画
 void RushGhost::draw() const {
-
+	glPushMatrix();
+	glRotatef(45.0f, 0.0f, 1.0f, 0.0f);
+	gsDrawMesh(10);
+	glPopMatrix();
 }
 
 //衝突リアクション
