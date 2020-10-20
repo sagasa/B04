@@ -6,16 +6,18 @@
 //コンストラクタ
 RushGhost::RushGhost(IWorld* world, const GSvector3& position) {
 	world_ = world;
-	name_ = "RushEnemyF";
+	name_ = "RushGhost";
 	tag_ = "EnemyTag";
 	transform_.position(position);
-	gsLoadMesh(10, "Ghost.msh");
+	
 }
 
 //更新
 void RushGhost::update(float delta_time) {
+	//プレイヤー情報
 	Actor* player = world_->find_actor("Player");
-	if (player != nullptr) {
+	if (player != nullptr) {//プレイヤーがワールド内にいたら
+
 		GSvector3 to_player = (player->transform().position() - transform_.position()).normalized();
 		if (to_player.y < 2) {
 			velocity_ = GSvector3{ to_player.x,to_player.y,0.0f };
@@ -28,6 +30,7 @@ void RushGhost::update(float delta_time) {
 //描画
 void RushGhost::draw() const {
 	glPushMatrix();
+	glMultMatrixf(transform_.localToWorldMatrix());
 	glRotatef(45.0f, 0.0f, 1.0f, 0.0f);
 	gsDrawMesh(10);
 	glPopMatrix();
