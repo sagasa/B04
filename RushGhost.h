@@ -10,7 +10,7 @@ public:
 		Move,
 		Attack,
 		Damage,
-		Die
+		Died
 	};
 	//コンストラクタ
 	RushGhost(IWorld* world, const GSvector3& position);

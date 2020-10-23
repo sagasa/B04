@@ -1,11 +1,12 @@
 #include"CarGhost.h"
 #include"IWorld.h"
+#include"Assets.h"
 
 
 //コンストラクタ
 CarGhost::CarGhost(IWorld* world, const GSvector3& position) {
 	world_ = world;
-	name_ = "RushEnemyG";
+	name_ = "CarGhost";
 	tag_ = "EnemyTag";
 	transform_.position(position);
 	velocity_ = { 0.0f,0.0f,0.0f };
@@ -18,7 +19,11 @@ void CarGhost::update(float delta_time) {
 
 //描画
 void CarGhost::draw() const {
-
+	glPushMatrix();
+	glMultMatrixf(transform_.localToWorldMatrix());
+	glScaled(50.0f, 50.0f, 50.0f);
+	gsDrawMesh(Mesh_CarGhost);
+	glPopMatrix();
 }
 
 //衝突リアクション
@@ -33,7 +38,7 @@ void CarGhost::update_state(float delta_time) {
 	case State::Move: move(delta_time); break;
 	case State::Attack: attack(delta_time); break;
 	case State::Damage: damage(delta_time); break;
-	case State::Die: died(delta_time); break;
+	case State::Died: died(delta_time); break;
 	}
 	//状態タイマー更新
 	state_timer_ += delta_time;
@@ -56,7 +61,7 @@ void CarGhost::move(float delta_time) {
 		speed_ = 1.5f;
 	}
 	//移動
-	transform_.translate(velocity_ * delta_time * speed_, GStransform::Space::World);
+	//transform_.translate(velocity_ * delta_time * speed_, GStransform::Space::World);
 }
 
 //攻撃
