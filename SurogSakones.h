@@ -14,7 +14,9 @@ public:
 		Unkown,
 		Apper,
 		Normal,
-		Angry
+		Angry,
+		Stun,
+		Die,
 	};
 public:
 	SurogSakones(IWorld* world, const GSvector3& position);
@@ -23,12 +25,20 @@ public:
 	void Damage();
 
 private:
+	void appear_update(float delta_time);
+	void normal_update(float delta_time);
+	void angry_update(float delta_time);
+	void stun_update(float delta_time);
+	void die_update(float delta_time);
 	//”O“®UŒ‚
 	void pshychokinesis(const GSvector3& position);
 	//•’Ê‚ÌˆÚ“®(”½‘Î‘¤‚ÉˆÚ“®‚·‚é)
 	void move(float delta_time);
 	//ˆÚ“®‚µ‚Â‚ÂUŒ‚
 	void move_attack(float delta_time);
+	//ˆÚ“®‚µ‚½Œã‚Ìƒ^[ƒ“
+	void turn(float delta_time,const GSvector3& toRotate,float slow_value);
+	void debug_draw()const;	
 
 private:
 	State state_ = State::Unkown;
