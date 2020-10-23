@@ -71,16 +71,16 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>.\lib\gslib_2020\inc;$(IncludePath)</IncludePath>
-    <LibraryPath>.\lib\gslib_2020\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>.\lib\gslib_2020\inc;C:\Team4Production\lib\gslib_2020\inc;$(IncludePath)</IncludePath>
+    <LibraryPath>.\lib\gslib_2020\lib;C:\Team4Production\lib\gslib_2020\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>.\lib\gslib_2020\inc;$(IncludePath)</IncludePath>
-    <LibraryPath>.\lib\gslib_2020\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>.\lib\gslib_2020\inc;.\lib\gslib_2020\inc;$(IncludePath)</IncludePath>
+    <LibraryPath>.\lib\gslib_2020\lib;.\lib\gslib_2020\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -148,12 +148,18 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="CSVReader.cpp" />
+    <ClCompile Include="EnemyGenerator.cpp" />
+    <ClCompile Include="GamePlayScene.cpp" />
+    <ClCompile Include="RushGhost.cpp" />
+    <ClCompile Include="CarGhost.cpp" />
     <ClCompile Include="Field.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="TestObj.cpp" />
+    <ClCompile Include="TitleScene.cpp" />
+    <ClCompile Include="SurogSakones.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -164,6 +170,10 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="CSVReader.h" />
+    <ClInclude Include="EnemyGenerator.h" />
+    <ClInclude Include="GamePlayScene.h" />
+    <ClInclude Include="RushGhost.h" />
+    <ClInclude Include="CarGhost.h" />
     <ClInclude Include="Field.h" />
     <ClInclude Include="IScene.h" />
     <ClInclude Include="IWorld.h" />
@@ -173,6 +183,8 @@
     <ClInclude Include="SceneNull.h" />
     <ClInclude Include="CollisionType.h" />
     <ClInclude Include="TestObj.h" />
+    <ClInclude Include="TitleScene.h" />
+    <ClInclude Include="SurogSakones.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
