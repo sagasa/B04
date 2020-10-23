@@ -30,7 +30,7 @@ void SurogSakones::update(float delta_time) {
 	if (gsGetKeyState(GKEY_LCONTROL)) {
 		destination_ = move_pos_[1];
 	}
-	turn(delta_time, GSvector3{ 0.0f,180.0f,0.0f });
+	//turn(delta_time, GSvector3{ 0.0f,180.0f,0.0f });
 }
 
 void SurogSakones::appear_update(float delta_time) {
