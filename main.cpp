@@ -33,10 +33,18 @@ class MyGame : public gslib::Game {
         gsLoadTexture(Texture_EffectLazerCyan, "Assets/Effect/fx_lazer_cyan_dff.png");
         // プレーヤメッシュの読み込み
         gsLoadMesh(Mesh_Player, "Assets/Model/vehicle_playerShip.msh");
-        // 敵メッシュの読み込み
-        gsLoadMesh(Mesh_Enemy, "Assets/Model/vehicle_enemyShip.msh");
-        // 隕石メッシュの読み込み
-        gsLoadMesh(Mesh_Asteroid01, "Assets/Model/prop_asteroid_01.msh");
+        // CarGhostのメッシュの読み込み
+        gsLoadMesh(Mesh_CarGhost, "Assets/Model/Ghost.msh");
+        // RushGhostのメッシュの読み込み
+        gsLoadMesh(Mesh_RushGhost, "Assets/Model/Ghost.msh");
+        //Poltergeistのメッシュの読み込み
+        gsLoadMesh(Mesh_Poltergeist, "Assets/Model/Ghost.msh");
+        //SurogSakonesのメッシュの読み込み
+        gsLoadMesh(Mesh_SurogSakones, "Assets/model/Enemy/Ghost_T-pose.msh");
+        //SurogSakonesのスケルトンの読み込み
+        gsLoadSkeleton(Skeleton_SurogSakones,"Assets/model/Enemy/Ghost_T-pose.skl");
+        //SurogSakonesのアニメーションの読み込み
+        gsLoadAnimation(Animation_SurogSakones, "Assets/model/Enemy/Ghost_T-pose.anm");
 
         // フィールドの追加
         world_.add_field(new Field{ Texture_BgTileNebulaGreen });

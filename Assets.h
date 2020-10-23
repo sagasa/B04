@@ -3,10 +3,29 @@
 // メッシュデータ
 enum {
     Mesh_Player,                    // 自機
-    Mesh_Enemy,                     // 敵
-    Mesh_Asteroid01,                // 隕石１
-    Mesh_Asteroid02,                // 隕石２
-    Mesh_Asteroid03                 // 隕石３
+    Mesh_CarGhost,                  //CarGhost
+    Mesh_RushGhost,                 //RushGhost
+    Mesh_Poltergeist,               //Poltergeist
+    Mesh_SurogSakones               //SurogSakones
+};
+
+//スケルトンデータ
+enum {
+    Skeleton_Player,       //プレイヤー
+    Skeleton_CarGhost,     //CarGhost
+    Skeleton_RushGhost,    //RushGhost
+    Skeleton_Poltergeist,  //Poltergeist
+    Skeleton_SurogSakones, //SurogSakones
+
+};
+
+//アニメーションデータ
+enum {
+    Animation_Player,      //プレイヤー
+    Animation_CarGhost,    //CarGhost
+    Animation_RushGhost,   //RushGhost
+    Animation_Poltergeist, //Poltergeist
+    Animation_SurogSakones //SurogSakones
 };
 
 // テクスチャデータ
