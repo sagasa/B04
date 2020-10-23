@@ -1,6 +1,6 @@
 #include "SurogSakones.h"
-#include"IWorld.h";
-#include"Field.h";
+#include"IWorld.h"
+#include"Field.h"
 #include"Player.h"
 
 SurogSakones::SurogSakones(IWorld* world, const GSvector3& position) {
