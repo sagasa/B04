@@ -6,6 +6,13 @@
 
 class CarGhost : public Actor {
 public:
+	//状態
+	enum class State {
+		Move,
+		Attack,
+		Damage,
+		Die
+	};
 	//コンストラクタ
 	CarGhost(IWorld* world,const GSvector3& position);
 	//更新
@@ -16,10 +23,30 @@ public:
 	void react(Actor& other) override;
 
 private:
+	//状態の更新
+	void update_state(float delta_time);
+	//状態の変更
+	void change_state(State state, GSuint motion);
+	//移動
+	void move(float delta_time);
+	//攻撃
+	void attack(float delta_time);
+	//ダメージ
+	void damage(float delta_time);
+	//死ぬ
+	void died(float delta_time);
+
+private:
+	//体力
+	float hp_{ 1.0f };
 	//タイマー
 	float moving_timer_{ 0.0f };
 	//動くスピード
 	float speed_{ 1.0f };
+	//状態
+	State state_;
+	//状態タイマー
+	float state_timer_;
 };
 
 #endif
