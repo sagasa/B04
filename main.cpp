@@ -2,6 +2,9 @@
 #include "Assets.h"
 #include "ActorManager.h"
 #include "Player.h"
+#include"CarGhost.h"
+#include"RushGhost.h"
+#include"SurogSakones.h"
 #include "Light.h"
 #include "Camera.h"
 #include "Field.h"
@@ -43,6 +46,13 @@ class MyGame : public gslib::Game {
         world_.add_light(new Light{ &world_ });
         // プレーヤの追加
         world_.add_actor(new Player{ &world_, GSvector3{ 0.0f, 0.0f, 0.0f } });
+        //エネミー1
+        world_.add_actor(new CarGhost{ &world_,GSvector3{0.0f,1.0f,0.0f} });
+        //エネミー2
+        world_.add_actor(new RushGhost{ &world_,GSvector3{1.0f,0.0f,0.0f} });
+        //ボス
+        world_.add_actor(new SurogSakones{ &world_,GSvector3{1.0f,1.0f,0.0f} });
+
     }
     // 更新
     void update(float delta_time) override {
