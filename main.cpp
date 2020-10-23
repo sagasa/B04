@@ -6,6 +6,7 @@
 #include "Camera.h"
 #include "Field.h"
 #include "World.h"
+#include"SurogSakones.h"
 #include <iostream>
 
 // ゲームクラス
@@ -34,6 +35,10 @@ class MyGame : public gslib::Game {
         gsLoadMesh(Mesh_Enemy, "Assets/Model/vehicle_enemyShip.msh");
         // 隕石メッシュの読み込み
         gsLoadMesh(Mesh_Asteroid01, "Assets/Model/prop_asteroid_01.msh");
+        gsLoadMesh(12, "Assets/Model/Enemy/Ghost_T-Pose.msh");
+        gsLoadSkeleton(12, "Assets/Model/Enemy/Ghost_T-Pose.skl");
+        gsLoadAnimation(12, "Assets/Model/Enemy/Ghost_T-Pose.anm");
+
 
         // フィールドの追加
         world_.add_field(new Field{ Texture_BgTileNebulaGreen });
@@ -43,6 +48,7 @@ class MyGame : public gslib::Game {
         world_.add_light(new Light{ &world_ });
         // プレーヤの追加
         world_.add_actor(new Player{ &world_, GSvector3{ 0.0f, 0.0f, 0.0f } });
+        world_.add_actor(new SurogSakones{ &world_,GSvector3{0.0f,0.0f,0.0f} });
     }
     // 更新
     void update(float delta_time) override {

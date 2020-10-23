@@ -19,7 +19,7 @@ bool BossTestScene::is_end() const {
 }
 //Ÿ‚Ìs0ƒ“–¼‚ğ•Ô‚·
 std::string BossTestScene::next() const {
-	return "";
+	return "NullScene";
 }
 //I—¹
 void BossTestScene::end() {

@@ -3,7 +3,19 @@
 #include"Field.h"
 #include"Player.h"
 
-SurogSakones::SurogSakones(IWorld* world, const GSvector3& position) {
+enum {
+	MotionIdol1,
+	MotionIdol2,
+	MotionMove,
+	MotionAttack1,
+	MotionAttack2,
+	MotionDamage,
+	MotionDie
+};
+
+SurogSakones::SurogSakones(IWorld* world, const GSvector3& position) :
+	mesh_{ 12, 12, 12, MotionIdol1 }
+{
 	world_ = world;
 	tag_ = "EnemyTag";
 	name_ = "SurogSakones";
@@ -12,12 +24,21 @@ SurogSakones::SurogSakones(IWorld* world, const GSvector3& position) {
 	state_ = State::Normal;
 	hp_ = 100.0f;
 
+	mesh_.transform(transform_.localToWorldMatrix());
+
 	move_pos_.push_back(transform().position());
 	move_pos_.push_back(transform().position() - GSvector3{ 50.0f,0.0f,0.0f });
 
 	destination_ = move_pos_[0];
 }
 void SurogSakones::update(float delta_time) {
+	if (gsGetKeyState(GKEY_UPARROW))motion_++;
+	if (gsGetKeyState(GKEY_DOWNARROW))motion_--;
+	mesh_.change_motion(motion_);
+	mesh_.update(delta_time);
+	mesh_.transform(transform_.localToWorldMatrix());
+
+
 	if (hp_ <= 0)die();
 
 	switch (state_) {
@@ -51,11 +72,10 @@ void SurogSakones::die_update(float delta_time) {
 }
 void SurogSakones::draw()const {
 	glPushMatrix();
-	glMultMatrixf(transform_.localToWorldMatrix());
-	glutWireCube(5);
+	glScalef(10.0f, 10.0f, 10.0f);
+	mesh_.draw();
 	glPopMatrix();
 	//collider().draw();
-
 	debug_draw();
 }
 

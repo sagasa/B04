@@ -5,6 +5,7 @@ class IWorld;
 
 #include "Actor.h"
 #include<vector>
+#include"AnimatedMesh.h"
 
 class SurogSakones :
 	public Actor
@@ -45,7 +46,10 @@ private:
 	float hp_{ 0.0f };
 	std::vector<GSvector3> move_pos_;
 	GSvector3 destination_;
-
+	//アニメーション制御
+	AnimatedMesh mesh_;
+	//アニメーション
+	GSuint motion_;
 };
 
 #endif
