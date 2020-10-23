@@ -71,16 +71,16 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Team4Production\lib\gslib_2020\inc;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Team4Production\lib\gslib_2020\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>.\lib\gslib_2020\inc;C:\Team4Production\lib\gslib_2020\inc;$(IncludePath)</IncludePath>
+    <LibraryPath>.\lib\gslib_2020\lib;C:\Team4Production\lib\gslib_2020\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>.\lib\gslib_2020\inc;$(IncludePath)</IncludePath>
-    <LibraryPath>.\lib\gslib_2020\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>.\lib\gslib_2020\inc;.\lib\gslib_2020\inc;$(IncludePath)</IncludePath>
+    <LibraryPath>.\lib\gslib_2020\lib;.\lib\gslib_2020\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -146,6 +146,7 @@
     <ClCompile Include="ActorManager.cpp" />
     <ClCompile Include="BoundingSphere.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Collision.cpp" />
     <ClCompile Include="CSVReader.cpp" />
     <ClCompile Include="EnemyGenerator.cpp" />
     <ClCompile Include="GamePlayScene.cpp" />
@@ -156,6 +157,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="TestObj.cpp" />
     <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="SurogSakones.cpp" />
     <ClCompile Include="World.cpp" />
@@ -166,6 +168,7 @@
     <ClInclude Include="Assets.h" />
     <ClInclude Include="BoundingSphere.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Collision.h" />
     <ClInclude Include="CSVReader.h" />
     <ClInclude Include="EnemyGenerator.h" />
     <ClInclude Include="GamePlayScene.h" />
@@ -178,6 +181,8 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SceneNull.h" />
+    <ClInclude Include="CollisionType.h" />
+    <ClInclude Include="TestObj.h" />
     <ClInclude Include="TitleScene.h" />
     <ClInclude Include="SurogSakones.h" />
     <ClInclude Include="World.h" />
