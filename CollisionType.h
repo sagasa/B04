@@ -2,9 +2,13 @@
 #include <GSgame.h>
 
 namespace collisions {
+    struct DebugView {
+        virtual void drawDebug() = 0;
+    };
+
     typedef GSvector2 Vec2;
 
-    struct Line2D {
+    struct Line2D : public DebugView {
         Vec2 p;
         Vec2 v;		// •ûŒüƒxƒNƒgƒ‹
         Line2D() : p(0.0f, 0.0f), v(1.0f, 0.0f) {}
@@ -16,9 +20,13 @@ namespace collisions {
         Vec2 getPoint(float t) const {
             return p + t * v;
         }
+ 
+        void drawDebug() {
+            glBegin(GL_LINE);
+        }
     };
 
-    struct Segment2D :Line2D
+    struct Segment2D :public Line2D
     {
         Segment2D() {}
         Segment2D(const Vec2& p, const Vec2& v) : Line2D(p, v) {}
@@ -44,5 +52,12 @@ namespace collisions {
         Capsule2D(const Segment2D& s, float r) : s(s), r(r) {}
         Capsule2D(const Vec2& p1, const Vec2& p2, float r) : s(p1, p2), r(r) {}
         ~Capsule2D() {}
+    };
+    struct Box2D {
+        Vec2 size;
+        float r;	// ‰ñ“]
+        Box2D() : r(0.5f) {}
+        Box2D(const Vec2& s, float r) : size(s), r(r) {}
+        ~Box2D() {}
     };
 }
