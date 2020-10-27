@@ -23,6 +23,7 @@ SurogSakones::SurogSakones(IWorld* world, const GSvector3& position) :
 	collider_ = BoundingSphere(5);
 	state_ = State::Normal;
 	hp_ = 100.0f;
+	transform_.rotation(GSquaternion::euler(GSvector3{ 0.0f,-90.0f,0.0f }));
 
 	mesh_.transform(transform_.localToWorldMatrix());
 
@@ -32,18 +33,24 @@ SurogSakones::SurogSakones(IWorld* world, const GSvector3& position) :
 	destination_ = move_pos_[0];
 }
 void SurogSakones::update(float delta_time) {
-	if (gsGetKeyState(GKEY_UPARROW))motion_++;
-	if (gsGetKeyState(GKEY_DOWNARROW))motion_--;
+	if (gsGetKeyTrigger(GKEY_UPARROW)) {
+		//motion_++;
+		flip = true;
+	}
+	if (gsGetKeyTrigger(GKEY_DOWNARROW)) {
+		//motion_--;
+		flip = false;
+	}
 	mesh_.change_motion(motion_);
 	mesh_.update(delta_time);
 	mesh_.transform(transform_.localToWorldMatrix());
-
 
 	if (hp_ <= 0)die();
 
 	switch (state_) {
 	case State::Apper:appear_update(delta_time); break;
 	case State::Normal:normal_update(delta_time); break;
+	case State::Turn:turn_update(delta_time); break;
 	}
 	if (gsGetKeyState(GKEY_RCONTROL)) {
 		destination_ = move_pos_[0];
@@ -53,12 +60,18 @@ void SurogSakones::update(float delta_time) {
 	}
 	//turn(delta_time, GSvector3{ 0.0f,180.0f,0.0f });
 }
+void SurogSakones::late_update(float delta_time) {
+	current_flip_ = flip;
+}
 
 void SurogSakones::appear_update(float delta_time) {
 
 }
 void SurogSakones::normal_update(float delta_time) {
 	move(delta_time);
+	if (current_flip_ != flip) {
+		state_ = State::Turn;
+	}
 }
 void SurogSakones::angry_update(float delta_time) {
 
@@ -70,11 +83,19 @@ void SurogSakones::die_update(float delta_time) {
 
 
 }
+void SurogSakones::turn_update(float delta_time) {
+	turn(delta_time, 0.0f, flip);
+	if (mesh_.motion_end_time() <= 0.0f) {
+		state_ = State::Normal;
+	}
+}
+void SurogSakones::change_state(State state, GSuint motion) {
+	motion_ = motion;
+	state_ = state;
+	state_timer_ = 0.0f;
+}
 void SurogSakones::draw()const {
-	glPushMatrix();
-	glScalef(10.0f, 10.0f, 10.0f);
 	mesh_.draw();
-	glPopMatrix();
 	//collider().draw();
 	debug_draw();
 }
@@ -86,6 +107,12 @@ void SurogSakones::debug_draw()const {
 	gsDrawText("SurogSakones:座標(%f,%f,%f)", transform_.position().x, transform_.position().y, transform_.position().z);
 	gsTextPos(0.0f, 20.0f);
 	gsDrawText("SurogSakones:ローテーション(%f,%f,%f)", transform_.rotation().x, transform_.rotation().y, transform_.rotation().z);
+	gsTextPos(0.0f, 40.0f);
+	gsDrawText("SurogSakones:スケール(%f,%f,%f)", transform_.lossyScale().x, transform_.lossyScale().y, transform_.lossyScale().z);
+	gsTextPos(0.0f, 60.0f);
+	gsDrawText("SurogSakones:モーション番号(%d)", motion_);
+	gsTextPos(0.0f, 80.0f);
+	gsDrawText("状態：(%d)", state_);
 }
 
 /**
@@ -124,6 +151,15 @@ void SurogSakones::move_attack(float delta_time) {
 
 }
 
-void SurogSakones::turn(float delta_time, const GSvector3& toRotate, float slow_value) {
-	transform_.localRotation(GSquaternion::lerp(transform_.rotation(), GSquaternion::euler(toRotate), (delta_time / slow_value)));
+void SurogSakones::turn(float delta_time, float slow_value, bool flip) {
+	if (flip)to_rotate_ = GSvector3{ 0.0f, 90.0f ,0.0f };
+	else to_rotate_ = { 0.0f, -90.0f ,0.0f };
+	motion_ = MotionAttack1;
+	if (GSquaternion::angle(transform_.rotation(), GSquaternion::euler(to_rotate_)) >= 5.0f) {
+		transform_.rotate(GSvector3{ 0.0f,1.0f,0.0f }, 5.0f / delta_time, GStransform::Space::World);
+	}
+	else {
+		transform_.rotation(GSquaternion::euler(to_rotate_));
+		state_ = State::Normal;		
+	}
 }
