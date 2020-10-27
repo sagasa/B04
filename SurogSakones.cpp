@@ -21,7 +21,7 @@ SurogSakones::SurogSakones(IWorld* world, const GSvector3& position) :
 	name_ = "SurogSakones";
 	transform_.position(position);
 	collider_ = BoundingSphere(5);
-	state_ = State::Normal;
+	state_ = State::Idol;
 	hp_ = 100.0f;
 	transform_.rotation(GSquaternion::euler(GSvector3{ 0.0f,-90.0f,0.0f }));
 
@@ -48,8 +48,8 @@ void SurogSakones::update(float delta_time) {
 	if (hp_ <= 0)die();
 
 	switch (state_) {
-	case State::Apper:appear_update(delta_time); break;
-	case State::Normal:normal_update(delta_time); break;
+	case State::Appear:appear_update(delta_time); break;
+	case State::Idol:normal_update(delta_time); break;
 	case State::Turn:turn_update(delta_time); break;
 	}
 	if (gsGetKeyState(GKEY_RCONTROL)) {
@@ -86,7 +86,7 @@ void SurogSakones::die_update(float delta_time) {
 void SurogSakones::turn_update(float delta_time) {
 	turn(delta_time, 0.0f, flip);
 	if (mesh_.motion_end_time() <= 0.0f) {
-		state_ = State::Normal;
+		state_ = State::Idol;
 	}
 }
 void SurogSakones::change_state(State state, GSuint motion) {
@@ -160,6 +160,6 @@ void SurogSakones::turn(float delta_time, float slow_value, bool flip) {
 	}
 	else {
 		transform_.rotation(GSquaternion::euler(to_rotate_));
-		state_ = State::Normal;		
+		state_ = State::Idol;		
 	}
 }
