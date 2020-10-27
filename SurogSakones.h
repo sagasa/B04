@@ -18,39 +18,56 @@ public:
 		ScytheAttack,
 		PsycoAttack_1,
 		PsycoAttack_2,
+		Move,
 		Turn,
 		Stun,
-		Die,
+		Dying,
 	};
 public:
-	SurogSakones(IWorld* world, const GSvector3& position);
+	SurogSakones(IWorld* world, const GSvector3& position);	
 	virtual void update(float delta_time)override;
 	virtual void late_update(float delta_time)override;
 	virtual void draw()const override;
+	virtual void react(Actor& otehr)override;
 	void Damage();
 
 private:
-	void appear_update(float delta_time);
-	void normal_update(float delta_time);
-	void angry_update(float delta_time);
-	void stun_update(float delta_time);
-	void die_update(float delta_time);
-	void turn_update(float delta_time);
+	void update_state(float delta_time);
+	void appear(float delta_time);
+	void idol(float delta_time);
+	void scythe_attack(float delta_time);
+	void psyco1_attack(float delta_time);
+	void psyco2_attack(float delta_time);
+	void stun(float delta_time);
+	void dying(float delta_time);
+	void turn(float delta_time);
+	void move(float delta_time);
 	//状態変化
 	void change_state(State state, GSuint motion);
 	//念動攻撃
 	void pshychokinesis(const GSvector3& position);
-	//普通の移動(反対側に移動する)
-	void move(float delta_time);
 	//移動しつつ攻撃
 	void move_attack(float delta_time);
 	//移動した後のターン
 	void turn(float delta_time, float slow_value, bool flip);
 	void debug_draw()const;
 
+	//計算用関数
+	float target_distance(const Actor* other);
+	float target_signed_angle(const Actor* other);
+	float target_angle(const Actor* other);
+	//判断
+	bool is_scythe_attack(const Actor* other);
+	bool is_psyco1_attack(const Actor* other);
+	bool is_psyco2_attack(const Actor* other);
+
+
 private:
 	State state_ = State::Unkown;
+	//体力
 	float hp_{ 0.0f };
+	//スタン値
+	float stun_{ 0.0f };
 	std::vector<GSvector3> move_pos_;
 	GSvector3 destination_;
 	//アニメーション制御
@@ -60,8 +77,8 @@ private:
 	//
 	GSvector3 to_rotate_;
 	//向いている方向
-	bool flip{ false };
-	bool current_flip_{ false };
+	bool flip_{ false };
+	bool prev_flip_{ false };
 	
 	float state_timer_{ 0.0f };
 };
