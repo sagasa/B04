@@ -1,5 +1,6 @@
 #include"RushGhost.h"
 #include"IWorld.h"
+#include"Assets.h"
 
 
 
@@ -21,8 +22,9 @@ void RushGhost::update(float delta_time) {
 void RushGhost::draw() const {
 	glPushMatrix();
 	glMultMatrixf(transform_.localToWorldMatrix());
-	glRotatef(45.0f, 0.0f, 1.0f, 0.0f);
-	gsDrawMesh(10);
+	glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
+	glScaled(30.0f, 30.0f, 30.0f);
+	gsDrawMesh(Mesh_CarGhost);
 	glPopMatrix();
 }
 
@@ -38,7 +40,7 @@ void RushGhost::update_state(float delta_time) {
 	case State::Move: move(delta_time); break;
 	case State::Attack: attack(delta_time); break;
 	case State::Damage: damage(delta_time); break;
-	case State::Die: died(delta_time); break;
+	case State::Died: died(delta_time); break;
 	}
 	//状態タイマーの更新
 	state_timer_ += delta_time;
@@ -63,7 +65,7 @@ void RushGhost::move(float delta_time) {
 			speed_ = 1.5f;
 		}
 	}
-	transform_.translate(velocity_ * delta_time * speed_, GStransform::Space::World);
+	//transform_.translate(velocity_ * delta_time * speed_, GStransform::Space::World);
 }
 
 //攻撃

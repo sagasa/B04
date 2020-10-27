@@ -1,12 +1,10 @@
-#ifndef CAR_GHOST_H_
-#define CAR_GHOST_H_
+#ifndef POLTER_GEIST_H_
+#define POLTER_GEIST_H_
 
 #include"Actor.h"
 
-
-class CarGhost : public Actor {
+class Poltergeist : public Actor {
 public:
-	//状態
 	enum class State {
 		Move,
 		Attack,
@@ -14,7 +12,7 @@ public:
 		Died
 	};
 	//コンストラクタ
-	CarGhost(IWorld* world,const GSvector3& position);
+	Poltergeist(IWorld* world, const GSvector3& position);
 	//更新
 	void update(float delta_time) override;
 	//描画
@@ -23,9 +21,9 @@ public:
 	void react(Actor& other) override;
 
 private:
-	//状態の更新
+	//状態更新
 	void update_state(float delta_time);
-	//状態の変更
+	//状態変更
 	void change_state(State state, GSuint motion);
 	//移動
 	void move(float delta_time);
@@ -33,20 +31,21 @@ private:
 	void attack(float delta_time);
 	//ダメージ
 	void damage(float delta_time);
-	//死ぬ
+	//死亡
 	void died(float delta_time);
 
 private:
 	//体力
 	float hp_{ 1.0f };
-	//タイマー
+	//移動タイマー
 	float moving_timer_{ 0.0f };
-	//動くスピード
+	//射撃タイマー
+	float shootiong_timer_{ 0.0f };
+	//スピード
 	float speed_{ 1.0f };
 	//状態
 	State state_;
 	//状態タイマー
 	float state_timer_;
 };
-
 #endif

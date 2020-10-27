@@ -4,6 +4,7 @@
 #include "Player.h"
 #include"CarGhost.h"
 #include"RushGhost.h"
+#include"Poltergeist.h"
 #include"SurogSakones.h"
 #include "Light.h"
 #include "Camera.h"
@@ -15,8 +16,10 @@
 class MyGame : public gslib::Game {
     // ワールドクラス
     World world_;
+
     // 開始
     void start() override {
+        //glfwSetWindowSize(,1920,1080);
         glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, 1);
         using namespace std;
         cout << "Vendor :" << glGetString(GL_VENDOR) << '\n';
@@ -34,17 +37,20 @@ class MyGame : public gslib::Game {
         // プレーヤメッシュの読み込み
         gsLoadMesh(Mesh_Player, "Assets/Model/vehicle_playerShip.msh");
         // CarGhostのメッシュの読み込み
-        gsLoadMesh(Mesh_CarGhost, "Assets/Model/Ghost.msh");
+        gsLoadMesh(Mesh_CarGhost, "Assets/Model/Enemy/Ghost.msh");
         // RushGhostのメッシュの読み込み
-        gsLoadMesh(Mesh_RushGhost, "Assets/Model/Ghost.msh");
+        //gsLoadMesh(Mesh_RushGhost, "Assets/Model/Enemy/Ghost.msh");
         //Poltergeistのメッシュの読み込み
-        gsLoadMesh(Mesh_Poltergeist, "Assets/Model/Ghost.msh");
+        //gsLoadMesh(Mesh_Poltergeist, "Assets/Model/Enemy/Ghost.msh");
+        //エネミーのスケルトンとアニメーションを追加
+        gsLoadSkeleton(Skeleton_CarGhost,"Assets/Model/Enemy/Ghost.skl");
+        gsLoadAnimation(Animation_CarGhost, "Assets/Model/Enemy/Ghost.anm");
         //SurogSakonesのメッシュの読み込み
-        gsLoadMesh(Mesh_SurogSakones, "Assets/model/Enemy/Ghost_T-pose.msh");
+        gsLoadMesh(Mesh_SurogSakones, "Assets/Model/Enemy/Ghost_T-pose.msh");
         //SurogSakonesのスケルトンの読み込み
-        gsLoadSkeleton(Skeleton_SurogSakones,"Assets/model/Enemy/Ghost_T-pose.skl");
+        gsLoadSkeleton(Skeleton_SurogSakones,"Assets/Model/Enemy/Ghost_T-pose.skl");
         //SurogSakonesのアニメーションの読み込み
-        gsLoadAnimation(Animation_SurogSakones, "Assets/model/Enemy/Ghost_T-pose.anm");
+        gsLoadAnimation(Animation_SurogSakones, "Assets/Model/Enemy/Ghost_T-pose.anm");
 
         // フィールドの追加
         world_.add_field(new Field{ Texture_BgTileNebulaGreen });
@@ -58,6 +64,8 @@ class MyGame : public gslib::Game {
         world_.add_actor(new CarGhost{ &world_,GSvector3{0.0f,1.0f,0.0f} });
         //エネミー2
         world_.add_actor(new RushGhost{ &world_,GSvector3{1.0f,0.0f,0.0f} });
+        //エネミー3
+        world_.add_actor(new Poltergeist{ &world_,GSvector3{0.0f,0.0f,10.0f} });
         //ボス
         world_.add_actor(new SurogSakones{ &world_,GSvector3{1.0f,1.0f,0.0f} });
 
@@ -89,6 +97,15 @@ class MyGame : public gslib::Game {
         world_.clear();
         // メッシュの削除
         gsDeleteMesh(0);
+        gsDeleteMesh(Mesh_Player);
+        gsDeleteMesh(Mesh_CarGhost);
+        //gsDeleteMesh(Mesh_RushGhost);
+        //gsDeleteMesh(Mesh_Poltergeist);
+        gsDeleteMesh(Mesh_SurogSakones);
+    }
+public:
+    MyGame() : Game(1920, 1080, false, 60) {
+
     }
 };
 
