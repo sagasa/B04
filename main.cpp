@@ -37,11 +37,14 @@ class MyGame : public gslib::Game {
         // プレーヤメッシュの読み込み
         gsLoadMesh(Mesh_Player, "Assets/Model/vehicle_playerShip.msh");
         // CarGhostのメッシュの読み込み
-        gsLoadMesh(Mesh_CarGhost, "Assets/Model/Ghost.msh");
+        gsLoadMesh(Mesh_CarGhost, "Assets/Model/Enemy/Ghost.msh");
         // RushGhostのメッシュの読み込み
-        gsLoadMesh(Mesh_RushGhost, "Assets/Model/Ghost.msh");
+        //gsLoadMesh(Mesh_RushGhost, "Assets/Model/Enemy/Ghost.msh");
         //Poltergeistのメッシュの読み込み
-        gsLoadMesh(Mesh_Poltergeist, "Assets/Model/Ghost.msh");
+        //gsLoadMesh(Mesh_Poltergeist, "Assets/Model/Enemy/Ghost.msh");
+        //エネミーのスケルトンとアニメーションを追加
+        gsLoadSkeleton(Skeleton_CarGhost,"Assets/Model/Enemy/Ghost.skl");
+        gsLoadAnimation(Skeleton_CarGhost, "Assets/Model/Enemy/Ghost.anm");
         //SurogSakonesのメッシュの読み込み
         gsLoadMesh(Mesh_SurogSakones, "Assets/model/Enemy/Ghost_T-pose.msh");
         //SurogSakonesのスケルトンの読み込み

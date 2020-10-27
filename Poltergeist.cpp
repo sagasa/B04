@@ -21,7 +21,7 @@ void Poltergeist::draw() const {
 	glPushMatrix();
 	glMultMatrixf(transform_.localToWorldMatrix());
 	glScalef(30.0f, 30.0f, 30.0f);
-	gsDrawMesh(Mesh_Poltergeist);
+	gsDrawMesh(Mesh_CarGhost);
 	glPopMatrix();
 }
 

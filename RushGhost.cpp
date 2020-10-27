@@ -24,7 +24,7 @@ void RushGhost::draw() const {
 	glMultMatrixf(transform_.localToWorldMatrix());
 	glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
 	glScaled(30.0f, 30.0f, 30.0f);
-	gsDrawMesh(Mesh_RushGhost);
+	gsDrawMesh(Mesh_CarGhost);
 	glPopMatrix();
 }
 
