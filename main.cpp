@@ -61,7 +61,8 @@ class MyGame : public gslib::Game {
 
     // •`‰æ
     void draw() override {
-        glPushMatrix();
+        
+        glPushMatrix();  
         world_.draw();
         //
         // Ž©‹@‚ª‚™Ž²ƒvƒ‰ƒX•ûŒü‚ðŒü‚­‚æ‚¤‚É‰ñ“]‚³‚¹‚é
