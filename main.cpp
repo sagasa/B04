@@ -44,13 +44,13 @@ class MyGame : public gslib::Game {
         //gsLoadMesh(Mesh_Poltergeist, "Assets/Model/Enemy/Ghost.msh");
         //エネミーのスケルトンとアニメーションを追加
         gsLoadSkeleton(Skeleton_CarGhost,"Assets/Model/Enemy/Ghost.skl");
-        gsLoadAnimation(Skeleton_CarGhost, "Assets/Model/Enemy/Ghost.anm");
+        gsLoadAnimation(Animation_CarGhost, "Assets/Model/Enemy/Ghost.anm");
         //SurogSakonesのメッシュの読み込み
-        gsLoadMesh(Mesh_SurogSakones, "Assets/model/Enemy/Ghost_T-pose.msh");
+        gsLoadMesh(Mesh_SurogSakones, "Assets/Model/Enemy/Ghost_T-pose.msh");
         //SurogSakonesのスケルトンの読み込み
-        gsLoadSkeleton(Skeleton_SurogSakones,"Assets/model/Enemy/Ghost_T-pose.skl");
+        gsLoadSkeleton(Skeleton_SurogSakones,"Assets/Model/Enemy/Ghost_T-pose.skl");
         //SurogSakonesのアニメーションの読み込み
-        gsLoadAnimation(Animation_SurogSakones, "Assets/model/Enemy/Ghost_T-pose.anm");
+        gsLoadAnimation(Animation_SurogSakones, "Assets/Model/Enemy/Ghost_T-pose.anm");
 
         // フィールドの追加
         world_.add_field(new Field{ Texture_BgTileNebulaGreen });
@@ -99,8 +99,8 @@ class MyGame : public gslib::Game {
         gsDeleteMesh(0);
         gsDeleteMesh(Mesh_Player);
         gsDeleteMesh(Mesh_CarGhost);
-        gsDeleteMesh(Mesh_RushGhost);
-        gsDeleteMesh(Mesh_Poltergeist);
+        //gsDeleteMesh(Mesh_RushGhost);
+        //gsDeleteMesh(Mesh_Poltergeist);
         gsDeleteMesh(Mesh_SurogSakones);
     }
 public:
