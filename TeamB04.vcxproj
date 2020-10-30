@@ -153,6 +153,7 @@
     <ClCompile Include="EnemyGenerator.cpp" />
     <ClCompile Include="GamePlayScene.cpp" />
     <ClCompile Include="Poltergeist.cpp" />
+    <ClCompile Include="PsycokinesisBullet.cpp" />
     <ClCompile Include="RushGhost.cpp" />
     <ClCompile Include="CarGhost.cpp" />
     <ClCompile Include="Field.cpp" />
@@ -178,6 +179,7 @@
     <ClInclude Include="EnemyGenerator.h" />
     <ClInclude Include="GamePlayScene.h" />
     <ClInclude Include="Poltergeist.h" />
+    <ClInclude Include="PsycokinesisBullet.h" />
     <ClInclude Include="RushGhost.h" />
     <ClInclude Include="CarGhost.h" />
     <ClInclude Include="Field.h" />

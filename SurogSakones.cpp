@@ -3,6 +3,7 @@
 #include"Field.h"
 #include"Player.h"
 #include"Assets.h"
+#include"PsycokinesisBullet.h"
 
 enum {
 	MotionIdol1 = 0,
@@ -16,7 +17,7 @@ enum {
 	MotionDying = 9
 };
 
-const float MoveSpeed{ 0.25f };
+const float MoveSpeed{ 0.35f };
 const float ScytheRange{ 0.5f };
 
 SurogSakones::SurogSakones(IWorld* world, const GSvector3& position) :
@@ -26,7 +27,7 @@ SurogSakones::SurogSakones(IWorld* world, const GSvector3& position) :
 	tag_ = "EnemyTag";
 	name_ = "SurogSakones";
 	transform_.position(position);
-	collider_ = BoundingSphere(5);
+	collider_ = BoundingSphere{ 5,GSvector3::up() * 5.0f };
 	state_ = State::Idol;
 	hp_ = 100.0f;
 	transform_.rotation(GSquaternion::euler(GSvector3{ 0.0f,-90.0f,0.0f }));
@@ -37,10 +38,16 @@ SurogSakones::SurogSakones(IWorld* world, const GSvector3& position) :
 	move_pos_.push_back(transform().position() - GSvector3{ 50.0f,0.0f,0.0f });
 
 	destination_ = move_pos_[0];
+	//gsRandamize();
+	float a[10], b[10];
+	for (int i = 0; i < 10; ++i) {
+		a[i] = gsRand(10, 100);
+		b[i] = gsRand(10, 100);
+	}
 }
 void SurogSakones::update(float delta_time) {
 	if (gsGetKeyTrigger(GKEY_1)) {
-		change_state(State::Idol, MotionIdol1);		
+		change_state(State::Idol, MotionIdol1);
 	}
 	if (gsGetKeyTrigger(GKEY_2)) {
 		change_state(State::Idol, MotionIdol2);
@@ -69,13 +76,13 @@ void SurogSakones::update(float delta_time) {
 		change_state(State::Dying, MotionDying);
 	}
 	if (gsGetKeyTrigger(GKEY_SPACE)) {
-		if (state_ != State::Stun)Damage();		
+		if (state_ != State::Stun)Damage();
 		if (hp_ <= 0)change_state(State::Dying, MotionDying);
 	}
 	update_state(delta_time);
 	mesh_.change_motion(motion_);
 	mesh_.update(delta_time);
-	mesh_.transform(transform_.localToWorldMatrix());	
+	mesh_.transform(transform_.localToWorldMatrix());
 
 	if (gsGetKeyState(GKEY_RCONTROL)) {
 		destination_ = move_pos_[0];
@@ -91,6 +98,7 @@ void SurogSakones::react(Actor& otehr) {
 
 }
 void SurogSakones::update_state(float delta_time) {
+	//状態によって切り替え
 	switch (state_) {
 	case State::Appear:appear(delta_time); break;
 	case State::Idol:idol(delta_time); break;
@@ -141,9 +149,10 @@ void SurogSakones::psyco1_attack(float delta_time) {
 		idol(delta_time);
 	}
 }
-void SurogSakones::psyco2_attack(float delta_time) {
+void SurogSakones::psyco2_attack(float delta_time) {	
 	if (state_timer_ >= mesh_.motion_end_time()) {
 		idol(delta_time);
+		pshychokinesis(transform_.position());
 	}
 }
 void SurogSakones::stun(float delta_time) {
@@ -227,6 +236,9 @@ void SurogSakones::pshychokinesis(const GSvector3& position) {
 		//プレイヤーのベクトルを求める
 		GSvector3 to_player = (player->transform().position() - transform().position()).normalized();
 		//球を出す処理
+		world_->add_actor(new PsycokinesisBullet(world_, position,GSvector3::right()+GSvector3::up()*75.0f));
+		world_->add_actor(new PsycokinesisBullet(world_, position,GSvector3::up()*75.0f));
+		world_->add_actor(new PsycokinesisBullet(world_, position,GSvector3::up()*75.0f));
 	}
 }
 

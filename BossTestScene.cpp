@@ -1,27 +1,71 @@
 #include<gslib.h>
 #include"BossTestScene.h"
+#include"Assets.h"
+#include"Field.h"
+#include"Camera.h"
+#include"Light.h"
+#include"Player.h"
+#include"SurogSakones.h"
 
 void BossTestScene::start() {
-	//gsLoadMesh(12,"Assets/Model/)
+    // 背景用画像の読み込み
+    gsLoadTexture(Texture_BgTileNebulaGreen, "Assets/BG/tile_nebula_green_dff.png");
+    // プレーヤー弾画像を読み込み
+    gsLoadTexture(Texture_EffectLazerOrange, "Assets/Effect/fx_lazer_orange_dff.png");
+    // 敵弾画像を読み込み
+    gsLoadTexture(Texture_EffectLazerCyan, "Assets/Effect/fx_lazer_cyan_dff.png");
+    // プレーヤメッシュの読み込み
+    gsLoadMesh(Mesh_Player, "Assets/Model/vehicle_playerShip.msh");
+    // CarGhostのメッシュの読み込み
+    gsLoadMesh(Mesh_CarGhost, "Assets/Model/Ghost.msh");
+    // RushGhostのメッシュの読み込み
+    gsLoadMesh(Mesh_RushGhost, "Assets/Model/Ghost.msh");
+    //Poltergeistのメッシュの読み込み
+    gsLoadMesh(Mesh_Poltergeist, "Assets/Model/Ghost.msh");
+    //SurogSakonesのメッシュの読み込み
+    gsLoadMesh(Mesh_SurogSakones, "Assets/Model/Enemy/Ghost_T-pose.msh");
+    //SurogSakonesのスケルトンの読み込み
+    gsLoadSkeleton(Skeleton_SurogSakones, "Assets/Model/Enemy/Ghost_T-pose.skl");
+    //SurogSakonesのアニメーションの読み込み
+    gsLoadAnimation(Animation_SurogSakones, "Assets/Model/Enemy/Ghost_T-pose.anm");
+
+    // フィールドの追加
+    world_.add_field(new Field{ Texture_BgTileNebulaGreen });
+    // カメラの追加
+    world_.add_camera(new Camera{ &world_ });
+    // ライトの追加
+    world_.add_light(new Light{ &world_ });
+    // プレーヤの追加
+    world_.add_actor(new Player{ &world_, GSvector3{ 0.0f, 0.0f, 0.0f } });
+    //ボス
+    world_.add_actor(new SurogSakones{ &world_,GSvector3{25.0f,-30.0f,0.0f} });
 }
 
 //更新
 void BossTestScene::update(float delta_time) {
-
+    world_.update(delta_time);
 }
 //描画
 void BossTestScene::draw() const {
-
+    world_.draw();
 }
 //終了しているか？
 bool BossTestScene::is_end() const {
 	return false;
 }
-//次の市0ン名を返す
+//次のシーン名を返す
 std::string BossTestScene::next() const {
 	return "NullScene";
 }
 //終了
 void BossTestScene::end() {
-
+    world_.clear();
+    gsDeleteMesh(Mesh_Player);
+    gsDeleteMesh(Mesh_SurogSakones);
+    gsDeleteSkeleton(Skeleton_SurogSakones);
+    gsDeleteAnimation(Animation_SurogSakones);
+    gsDeleteTexture(Texture_BgTileNebulaGreen);
+    gsDeleteTexture(Texture_EffectFlash);
+    gsDeleteTexture(Texture_EffectLazerCyan);
+    gsDeleteTexture(Texture_EffectLazerOrange);
 }
