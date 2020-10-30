@@ -21,9 +21,9 @@ const float TurnAngle{ 2.5f };
 
 //コンストラクタ
 CarGhost::CarGhost(IWorld* world, const GSvector3& position):
-	mesh_{Mesh_CarGhost,Skeleton_CarGhost,Animation_CarGhost,0},
-	motion_{ 0 },
-	state_{ State::Move } {
+	mesh_{Mesh_CarGhost,Skeleton_CarGhost,Animation_CarGhost,MotionIdle},
+	motion_{ MotionIdle },
+	state_{ State::Idle } {
 	world_ = world;
 	name_ = "CarGhost";
 	tag_ = "EnemyTag";
@@ -47,7 +47,9 @@ void CarGhost::update(float delta_time) {
 void CarGhost::draw() const {
 	glPushMatrix();
 	glMultMatrixf(transform_.localToWorldMatrix());
+	glRotatef(-90.0f, 0.0f, 1.0f, 0.0f);
 	glScaled(0.2f, 0.2f, 0.2f);
+	transform_.position();
 	mesh_.draw();
 	glPopMatrix();
 }
@@ -62,8 +64,9 @@ void CarGhost::react(Actor& other) {
 //状態の更新
 void CarGhost::update_state(float delta_time) {
 	switch (state_) {
+	case State::Idle: idle(delta_time); break;
+	case State::Patrol: patrol(delta_time); break;
 	case State::Move: move(delta_time); break;
-	case State::Turn: turn(delta_time); break;
 	case State::Attack: attack(delta_time); break;
 	case State::Damage: damage(delta_time); break;
 	case State::Died: died(delta_time); break;
@@ -82,26 +85,46 @@ void CarGhost::change_state(State state, GSuint motion) {
 	state_timer_ = 0.0f;
 }
 
+//アイドル
+void CarGhost::idle(float delta_time) {
+	//攻撃するか？
+	if (is_attack()) {
+		change_state(State::Attack, MotionAttack);
+		return;
+	}
+	//プレイヤーを見つけたか？
+	if (is_move()) {
+		change_state(State::Move, MotionIdle);
+		return;
+	}
+}
+
+//巡回
+void CarGhost::patrol(float delta_time) {
+	//攻撃するか？
+	if (is_attack()) {
+		change_state(State::Attack, MotionAttack);
+		return;
+	}
+	//プレイヤーを見つけたか？
+	if (is_move()) {
+		change_state(State::Move, MotionIdle);
+		return;
+	}
+
+}
+
 //移動
 void CarGhost::move(float delta_time) {
-	//プレイヤーを探す
-	Actor* player = world_->find_actor("Player");
-	if (player != nullptr) {
-		GSvector3 to_player = (player->transform().position() - transform_.position()).normalized();
+	
+	if (player_ != nullptr) {
+		GSvector3 to_player = (player_->transform().position() - transform_.position()).normalized();
 		velocity_ = GSvector3{ to_player.x,to_player.y,0.0f };
 		//スピードを上げる
-		speed_ = 1.5f;
+		//speed_ = 0.25f;
 	}
 	//移動
 	transform_.translate(velocity_ * delta_time * speed_, GStransform::Space::World);
-}
-
-//振り向き
-void CarGhost::turn(float delta_time) {
-	//モーションが終了したらMove状態に遷移
-	if (state_timer_ >= mesh_.motion_end_time()) {
-		move(delta_time);
-	}
 }
 
 //攻撃
@@ -129,7 +152,7 @@ void CarGhost::damage(float delta_time) {
 //死亡
 void CarGhost::died(float delta_time) {
 	//モーションが終了したら死亡
-	if (state_timer_ >= mesh_.motion_end_time()) {
+	if (state_timer_ >= mesh_.motion_end_time()-30.0f) {
 		die();
 	}
 }

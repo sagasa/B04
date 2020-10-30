@@ -8,9 +8,10 @@ class RushGhost : public Actor {
 public:
 	//状態
 	enum class State {
+		Idle,
+		Patrol,
 		Move,
 		Attack,
-		Turn,
 		Damage,
 		Died
 	};
@@ -28,10 +29,12 @@ private:
 	void update_state(float delta_time);
 	//状態の変更
 	void change_state(State state, GSuint motion);
+	//アイドル
+	void idle(float delta_time);
+	//巡回
+	void patrol(float delta_time);
 	//移動
 	void move(float delta_time);
-	//振り向き
-	void turn(float delta_time);
 	//攻撃
 	void attack(float delta_time);
 	//ダメージ
