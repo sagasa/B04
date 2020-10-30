@@ -39,9 +39,9 @@ class MyGame : public gslib::Game {
         // CarGhostのメッシュの読み込み
         gsLoadMesh(Mesh_CarGhost, "Assets/Model/Enemy/Ghost.msh");
         // RushGhostのメッシュの読み込み
-        //gsLoadMesh(Mesh_RushGhost, "Assets/Model/Enemy/Ghost.msh");
+        gsLoadMesh(Mesh_RushGhost, "Assets/Model/Enemy/Ghost2.msh");
         //Poltergeistのメッシュの読み込み
-        //gsLoadMesh(Mesh_Poltergeist, "Assets/Model/Enemy/Ghost.msh");
+        gsLoadMesh(Mesh_Poltergeist, "Assets/Model/Enemy/Ghost2.msh");
         //エネミーのスケルトンとアニメーションを追加
         gsLoadSkeleton(Skeleton_CarGhost,"Assets/Model/Enemy/Ghost.skl");
         gsLoadAnimation(Animation_CarGhost, "Assets/Model/Enemy/Ghost.anm");
@@ -61,11 +61,11 @@ class MyGame : public gslib::Game {
         // プレーヤの追加
         world_.add_actor(new Player{ &world_, GSvector3{ 0.0f, 0.0f, 0.0f } });
         //エネミー1
-        world_.add_actor(new CarGhost{ &world_,GSvector3{0.0f,1.0f,0.0f} });
+        world_.add_actor(new CarGhost{ &world_,GSvector3{70.0f,30.0f,0.0f} });
         //エネミー2
-        world_.add_actor(new RushGhost{ &world_,GSvector3{1.0f,0.0f,0.0f} });
+        world_.add_actor(new RushGhost{ &world_,GSvector3{100.0f,0.0f,0.0f} });
         //エネミー3
-        world_.add_actor(new Poltergeist{ &world_,GSvector3{0.0f,0.0f,10.0f} });
+        world_.add_actor(new Poltergeist{ &world_,GSvector3{70.0f,-50.0f,0.0f} });
         //ボス
         world_.add_actor(new SurogSakones{ &world_,GSvector3{1.0f,1.0f,0.0f} });
 

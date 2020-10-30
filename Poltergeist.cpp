@@ -21,9 +21,9 @@ const float TurnAngle{ 2.5f };
 
 //コンストラクタ
 Poltergeist::Poltergeist(IWorld* world, const GSvector3& position) :
-	mesh_{Mesh_CarGhost,Skeleton_CarGhost,Animation_CarGhost,0},
-	motion_{0} ,
-	state_{ State::Move } {
+	mesh_{Mesh_CarGhost,Skeleton_CarGhost,Animation_CarGhost,MotionIdle},
+	motion_{MotionIdle} ,
+	state_{ State::Idle } {
 	world_ = world;
 	name_ = "Poltergeist";
 	tag_ = "EnemyTag";
@@ -48,7 +48,8 @@ void Poltergeist::update(float delta_time) {
 void Poltergeist::draw() const {
 	glPushMatrix();
 	glMultMatrixf(transform_.localToWorldMatrix());
-	glScalef(0.7f, 0.7f, 0.7f);
+	glRotatef(-90.0f, 0.0f, 1.0f, 0.0f);
+	glScalef(0.2f, 0.2f, 0.2f);
 	mesh_.draw();
 	glPopMatrix();
 }
@@ -64,6 +65,8 @@ void Poltergeist::react(Actor& other) {
 //状態の更新
 void Poltergeist::update_state(float delta_time) {
 	switch (state_) {
+	case State::Idle: idle(delta_time); break;
+	case State::Patrol: patrol(delta_time); break;
 	case State::Move: move(delta_time); break;
 	case State::Attack: attack(delta_time); break;
 	case State::Damage: damage(delta_time); break;
@@ -81,6 +84,34 @@ void Poltergeist::change_state(State state, GSuint motion) {
 	state_ = state;
 	//状態タイマーの初期化
 	state_timer_ = 0.0f;
+}
+
+//アイドル
+void Poltergeist::idle(float delta_time) {
+	//攻撃するか？
+	if (is_attack()) {
+		change_state(State::Attack, MotionAttack);
+		return;
+	}
+	//プレイヤーを見つけたか？
+	if (is_move()) {
+		change_state(State::Move, MotionIdle);
+		return;
+	}
+}
+
+//巡回
+void Poltergeist::patrol(float delta_time) {
+	//攻撃するか？
+	if (is_attack()) {
+		change_state(State::Attack, MotionAttack);
+		return;
+	}
+	//プレイヤーを見つけたか？
+	if (is_move()) {
+		change_state(State::Move, MotionIdle);
+		return;
+	}
 }
 
 //移動
@@ -112,7 +143,7 @@ void Poltergeist::damage(float delta_time) {
 //死亡
 void Poltergeist::died(float delta_time) {
 	//モーション終了後に死亡する
-	if (state_timer_ >= mesh_.motion_end_time()) {
+	if (state_timer_ >= mesh_.motion_end_time()-30.0f) {
 		die();
 	}
 	
