@@ -94,8 +94,10 @@ void SurogSakones::update(float delta_time) {
 void SurogSakones::late_update(float delta_time) {
 	prev_flip_ = flip_;
 }
-void SurogSakones::react(Actor& otehr) {
-
+void SurogSakones::react(Actor& other) {
+	if (other.tag() == "PlayerTag") {
+		Damage();
+	}
 }
 void SurogSakones::update_state(float delta_time) {
 	//ó‘Ô‚É‚æ‚Á‚ÄØ‚è‘Ö‚¦
@@ -157,7 +159,7 @@ void SurogSakones::psyco2_attack(float delta_time) {
 }
 void SurogSakones::stun(float delta_time) {
 	if (state_timer_ >= mesh_.motion_end_time()) {
-		idol(delta_time);
+		change_state(prev_state_, prev_motion_);
 	}
 }
 void SurogSakones::dying(float delta_time) {
@@ -194,7 +196,9 @@ void SurogSakones::move(float delta_time) {
 	}
 }
 void SurogSakones::change_state(State state, GSuint motion) {
+	prev_motion_ = motion_;
 	motion_ = motion;
+	prev_state_ = state_;
 	state_ = state;
 	state_timer_ = 0.0f;
 }

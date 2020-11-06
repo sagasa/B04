@@ -28,7 +28,7 @@ public:
 	virtual void update(float delta_time)override;
 	virtual void late_update(float delta_time)override;
 	virtual void draw()const override;
-	virtual void react(Actor& otehr)override;
+	virtual void react(Actor& other)override;
 	void Damage();
 
 private:
@@ -64,6 +64,7 @@ private:
 
 private:
 	State state_ = State::Unkown;
+	State prev_state_;
 	//体力
 	float hp_{ 0.0f };
 	//スタン値
@@ -74,6 +75,7 @@ private:
 	AnimatedMesh mesh_;
 	//アニメーション
 	GSuint motion_;
+	GSuint prev_motion_;
 	//
 	GSvector3 to_rotate_;
 	//向いている方向
