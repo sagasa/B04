@@ -12,6 +12,7 @@
 #include "DrawUtil.h"
 #include <iostream>
 #include "ByteBuf.h"
+#include "TestObj.h"
 
 
 void glError()
@@ -103,11 +104,19 @@ class MyGame : public gslib::Game {
         // プレーヤの追加
         world_.add_actor(new Player{ &world_, GSvector3{ 0.0f, 0.0f, 0.0f } });
         //エネミー1
-        world_.add_actor(new CarGhost{ &world_,GSvector3{0.0f,1.0f,0.0f} });
+        //world_.add_actor(new CarGhost{ &world_,GSvector3{0.0f,1.0f,0.0f} });
         //エネミー2
-        world_.add_actor(new RushGhost{ &world_,GSvector3{1.0f,0.0f,0.0f} });
+        //world_.add_actor(new RushGhost{ &world_,GSvector3{1.0f,0.0f,0.0f} });
         //ボス
-        world_.add_actor(new SurogSakones{ &world_,GSvector3{1.0f,1.0f,0.0f} });
+        //world_.add_actor(new SurogSakones{ &world_,GSvector3{1.0f,1.0f,0.0f} });
+
+        for (int i = 0; i < 2; ++i)
+        {
+        	
+            world_.add_actor(new TestObj{ &world_,GSvector3{1.0f,1.0f,0.0f} });
+	        
+        }
+       
 
         glError();
 
@@ -143,41 +152,41 @@ class MyGame : public gslib::Game {
     void draw() override {
         glPushMatrix();
         //*
-        //world_.draw();
-        //
+
+        world_.draw();
+    	//
         // 自機がｙ軸プラス方向を向くように回転させる
         glRotatef(i % 360, 0.0f, 1.0f, 0.0f);   // y軸まわりに180°回転
         glRotatef(90, 1.0f, 0.0f, 0.0f);   // x軸まわりに-90°回転
         // メッシュ描画
         //*/
-        //gsDrawMesh(0);
-
+    	
+        gsDrawMesh(Mesh_Player);
+        glPopMatrix();
+        glPushMatrix();
         using namespace collisions;
         using namespace std;
 
+        Box2D box{ Vec2{0,0}, Vec2{2,2},0 };
+        box.p = Vec2{ 4,0 };
+        //cout << box.isInside(Vec2{0,0}) <<" "<< box.isInside(Vec2{ 4,0 }) <<endl;
 
-    	//*
+    	/*
         glBindBuffer(GL_ARRAY_BUFFER, vrtVBO);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, idxVBO);
 
         glEnableClientState(GL_VERTEX_ARRAY);
         glVertexPointer(3, GL_DOUBLE, 0, 0);
-
+        
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
         glDisableClientState(GL_VERTEX_ARRAY);
 
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+        //*/
+    
 
-
-        glBegin(GL_QUADS);
-        glVertex2f(0, 0);
-        glVertex2f(0, 10);
-        glVertex2f(10, 10);
-        glVertex2f(10, 0);
-        glEnd();
-    	
         //drawUtil::drawLine(Vec2(), Vec2(100,100));
         //*/
 
