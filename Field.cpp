@@ -9,15 +9,10 @@ Field::Field(GSuint bg) : bg_{ bg }, scroll_{ 0.0f } {
 
 // 更新
 void Field::update(float delta_time) {
-    // スクロール値の更新
-    scroll_ -= 0.2f * delta_time;
 }
 
 // 描画
 void Field::draw() const {
-    // 背景画像の描画
-    const GSrect src_rect{ 0.0f, scroll_, 640.0f, 480.0f + scroll_ };
-    gsDrawSprite2D(bg_, NULL, &src_rect, NULL, NULL, NULL, 0.0f);
 }
 
 // フィールド内か？

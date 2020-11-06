@@ -15,13 +15,13 @@ const float TurnDistance{ 1.5f };
 //攻撃判定の距離
 const float AttackDistance{ 1.2f };
 //移動判定の距離
-const float WalkDistance{ 10.0f };
+const float MoveDistance{ 10.0f };
 //振り向く角度
 const float TurnAngle{ 2.5f };
 
 //コンストラクタ
 Poltergeist::Poltergeist(IWorld* world, const GSvector3& position) :
-	mesh_{Mesh_CarGhost,Skeleton_CarGhost,Animation_CarGhost,MotionIdle},
+	mesh_{Mesh_Poltergeist,Skeleton_CarGhost,Animation_CarGhost,MotionIdle},
 	motion_{MotionIdle} ,
 	state_{ State::Idle } {
 	world_ = world;
@@ -66,8 +66,7 @@ void Poltergeist::react(Actor& other) {
 void Poltergeist::update_state(float delta_time) {
 	switch (state_) {
 	case State::Idle: idle(delta_time); break;
-	case State::Patrol: patrol(delta_time); break;
-	case State::Move: move(delta_time); break;
+	case State::Turn: turn(delta_time); break;
 	case State::Attack: attack(delta_time); break;
 	case State::Damage: damage(delta_time); break;
 	case State::Died: died(delta_time); break;
@@ -95,27 +94,13 @@ void Poltergeist::idle(float delta_time) {
 	}
 	//プレイヤーを見つけたか？
 	if (is_move()) {
-		change_state(State::Move, MotionIdle);
-		return;
-	}
-}
-
-//巡回
-void Poltergeist::patrol(float delta_time) {
-	//攻撃するか？
-	if (is_attack()) {
 		change_state(State::Attack, MotionAttack);
 		return;
 	}
-	//プレイヤーを見つけたか？
-	if (is_move()) {
-		change_state(State::Move, MotionIdle);
-		return;
-	}
 }
 
-//移動
-void Poltergeist::move(float delta_time) {
+//ターン
+void Poltergeist::turn(float delta_time) {
 
 }
 
@@ -123,7 +108,7 @@ void Poltergeist::move(float delta_time) {
 void Poltergeist::attack(float delta_time) {
 	//モーション終了後に移動中に遷移
 	if (state_timer_ >= mesh_.motion_end_time()) {
-		move(delta_time);
+		idle(delta_time);
 	}
 }
 
@@ -157,13 +142,13 @@ bool Poltergeist::is_turn()const {
 //攻撃判定
 bool Poltergeist::is_attack()const {
 	//攻撃距離内かつ前向き方向のベクトルとターゲット方向のベクトルの角度差が20.0度以下か？
-	return (target_distance() <= AttackDistance) && (target_angle() <= 20.0f);
+	return (target_distance() <= AttackDistance) && (target_angle() <= 180.0f);
 }
 
 //移動判定
 bool Poltergeist::is_move()const {
 	//移動距離かつ前方向のベクトルとターゲット方向のベクトルの角度差が100.0度以下か？
-	return (target_distance() <= WalkDistance) && (target_angle() <= 100.0f);
+	return (target_distance() <= MoveDistance) && (target_angle() <= 180.0f);
 }
 
 //前向き方向のベクトルとターゲット方向のベクトルの角度差を求める(符号付き)
