@@ -2,6 +2,7 @@
 #define BOSS_TEST_SCENE
 
 #include "IScene.h"
+#include"World.h"
 class BossTestScene :
 	public IScene
 {
@@ -17,6 +18,9 @@ class BossTestScene :
 	virtual std::string next() const override;
 	//èIóπ
 	virtual void end() override;
+
+private:
+	World world_;
 };
 
 #endif
