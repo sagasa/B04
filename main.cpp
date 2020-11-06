@@ -99,8 +99,8 @@ class MyGame : public gslib::Game {
         gsDeleteMesh(0);
         gsDeleteMesh(Mesh_Player);
         gsDeleteMesh(Mesh_CarGhost);
-        //gsDeleteMesh(Mesh_RushGhost);
-        //gsDeleteMesh(Mesh_Poltergeist);
+        gsDeleteMesh(Mesh_RushGhost);
+        gsDeleteMesh(Mesh_Poltergeist);
         gsDeleteMesh(Mesh_SurogSakones);
     }
 public:

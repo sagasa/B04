@@ -15,21 +15,21 @@ const float TurnDistance{ 1.5f };
 //攻撃判定の距離
 const float AttackDistance{ 1.2f };
 //移動判定の距離
-const float WalkDistance{ 10.0f };
+const float MoveDistance{ 10.0f };
 //振り向く角度
 const float TurnAngle{ 2.5f };
 
 //コンストラクタ
-RushGhost::RushGhost(IWorld* world, const GSvector3& position):
-	mesh_{ Mesh_CarGhost, Skeleton_CarGhost, Animation_CarGhost, MotionIdle },
+RushGhost::RushGhost(IWorld* world, const GSvector3& position) :
+	mesh_{ Mesh_RushGhost, Skeleton_CarGhost, Animation_CarGhost, MotionIdle },
 	motion_{ MotionIdle },
-	state_{ State::Idle} {
+	state_{ State::Idle } {
 	world_ = world;
 	name_ = "RushGhost";
 	tag_ = "EnemyTag";
 	transform_.position(position);
 	player_ = world_->find_actor("Player");
-	
+
 }
 
 //更新
@@ -67,6 +67,7 @@ void RushGhost::update_state(float delta_time) {
 	case State::Idle: idle(delta_time); break;
 	case State::Patrol: patrol(delta_time); break;
 	case State::Move: move(delta_time); break;
+	case State::Turn: turn(delta_time); break;
 	case State::Attack: attack(delta_time); break;
 	case State::Damage: damage(delta_time); break;
 	case State::Died: died(delta_time); break;
@@ -115,23 +116,26 @@ void RushGhost::patrol(float delta_time) {
 
 //移動
 void RushGhost::move(float delta_time) {
-	if (player_ != nullptr) {//プレイヤーがワールド内にいたら
-
-		GSvector3 to_player = (player_->transform().position() - transform_.position()).normalized();
-		if (to_player.y > 100) {
-			//velocity_ = GSvector3{ to_player.x,to_player.y,0.0f };
-			//スピードを上げる
-			speed_ = 1.5f;
-		}
+	//攻撃するか？
+	if (is_attack()) {
+		change_state(State::Attack, MotionAttack);
 	}
+	velocity_ = GSvector3{ to_target().x,to_target().y,0.0f };
+	//スピードを上げる
+	speed_ = 0.5f;
 	//transform_.translate(velocity_ * delta_time * speed_, GStransform::Space::World);
+}
+
+//ターン
+void RushGhost::turn(float delta_time) {
+
 }
 
 //攻撃
 void RushGhost::attack(float delta_time) {
 	//モーション終了後に移動中に遷移
 	if (state_timer_ >= mesh_.motion_end_time()) {
-		move(delta_time);
+		idle(delta_time);
 	}
 }
 
@@ -146,16 +150,16 @@ void RushGhost::damage(float delta_time) {
 			change_state(State::Died, MotionDie);
 		}
 	}
-	
+
 }
 
 //死亡
 void RushGhost::died(float delta_time) {
 	//モーション終了後に死亡
-	if (state_timer_ >= mesh_.motion_end_time()-30.0f) {
+	if (state_timer_ >= mesh_.motion_end_time() - 30.0f) {
 		die();
 	}
-	
+
 }
 
 //振り向き判定
@@ -166,13 +170,13 @@ bool RushGhost::is_turn()const {
 //攻撃判定
 bool RushGhost::is_attack()const {
 	//攻撃距離内かつ前向き方向のベクトルとターゲット方向のベクトルの角度差が20.0度以下か？
-	return (target_distance() <= AttackDistance) && (target_angle() <= 20.0f);
+	return (target_distance() <= AttackDistance) && (target_angle() <= 180.0f);
 }
 
 //移動判定
 bool RushGhost::is_move()const {
 	//移動距離かつ前方向のベクトルとターゲット方向のベクトルの角度差が100.0度以下か？
-	return (target_distance() <= WalkDistance) && (target_angle() <= 100.0f);
+	return (target_distance() <= MoveDistance) && (target_angle() <= 180.0f);
 }
 
 //前向き方向のベクトルとターゲット方向のベクトルの角度差を求める(符号付き)
@@ -193,4 +197,9 @@ float RushGhost::target_angle()const {
 //ターゲットとの距離を求める
 float RushGhost::target_distance()const {
 	return (player_->transform().position() - transform_.position()).magnitude();
+}
+
+//ターゲット方向のベクトルを求める
+GSvector3 RushGhost::to_target() const {
+	return (player_->transform().position() - transform_.position()).normalized();
 }

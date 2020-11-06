@@ -13,6 +13,7 @@ public:
 		Idle,
 		Patrol,
 		Move,
+		Turn,
 		Attack,
 		Damage,
 		Died
@@ -20,11 +21,11 @@ public:
 	//コンストラクタ
 	CarGhost(IWorld* world,const GSvector3& position);
 	//更新
-	void update(float delta_time) override;
+	virtual void update(float delta_time) override;
 	//描画
-	void draw() const override;
+	virtual void draw() const override;
 	//衝突リアクション
-	void react(Actor& other) override;
+	virtual void react(Actor& other) override;
 
 private:
 	//状態の更新
@@ -37,6 +38,8 @@ private:
 	void patrol(float delta_time);
 	//移動
 	void move(float delta_time);
+	//ターン
+	void turn(float delta_time);
 	//攻撃
 	void attack(float delta_time);
 	//ダメージ
@@ -57,6 +60,8 @@ private:
 	float target_angle()const;
 	//ターゲットの距離を求める
 	float target_distance()const;
+	//ターゲット方向のベクトルを求める
+	GSvector3 to_target()const;
 
 private:
 	//アニメーションメッシュ

@@ -8,8 +8,7 @@ class Poltergeist : public Actor {
 public:
 	enum class State {
 		Idle,
-		Patrol,
-		Move,
+		Turn,
 		Attack,
 		Damage,
 		Died
@@ -17,11 +16,11 @@ public:
 	//コンストラクタ
 	Poltergeist(IWorld* world, const GSvector3& position);
 	//更新
-	void update(float delta_time) override;
+	virtual void update(float delta_time) override;
 	//描画
-	void draw() const override;
+	virtual void draw() const override;
 	//衝突リアクション
-	void react(Actor& other) override;
+	virtual void react(Actor& other) override;
 
 private:
 	//状態更新
@@ -30,10 +29,8 @@ private:
 	void change_state(State state, GSuint motion);
 	//アイドル
 	void idle(float delta_time);
-	//巡回
-	void patrol(float delta_time);
-	//移動
-	void move(float delta_time);
+	//ターン
+	void turn(float delta_time);
 	//攻撃
 	void attack(float delta_time);
 	//ダメージ
