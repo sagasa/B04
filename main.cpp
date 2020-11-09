@@ -12,6 +12,7 @@
 #include "DrawUtil.h"
 #include <iostream>
 #include "ByteBuf.h"
+#include "MapObject.h"
 #include "TestObj.h"
 
 
@@ -110,10 +111,12 @@ class MyGame : public gslib::Game {
         //É{ÉX
         //world_.add_actor(new SurogSakones{ &world_,GSvector3{1.0f,1.0f,0.0f} });
 
-        for (int i = 0; i < 2; ++i)
+        world_.add_actor(new MapObject{ &world_,GSvector3{0.0f,-40.0f,0.0f}});
+
+        for (int i = 0; i < 20; ++i)
         {
         	
-            world_.add_actor(new TestObj{ &world_,GSvector3{1.0f,1.0f,0.0f} });
+            world_.add_actor(new TestObj{ &world_,GSvector3{-40+4.0f*i,1.0f,0.0f} ,i});
 	        
         }
        
@@ -167,8 +170,7 @@ class MyGame : public gslib::Game {
         using namespace collisions;
         using namespace std;
 
-        Box2D box{ Vec2{0,0}, Vec2{2,2},0 };
-        box.p = Vec2{ 4,0 };
+  
         //cout << box.isInside(Vec2{0,0}) <<" "<< box.isInside(Vec2{ 4,0 }) <<endl;
 
     	/*

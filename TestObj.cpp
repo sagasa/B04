@@ -5,16 +5,16 @@
 void TestObj::change()
 {
     velocity_.x = 1- rand() / 32767.0f * 2;
-    //velocity_.y = 1-rand() / 32767.0f * 2;
+    velocity_.y = 1-rand() / 32767.0f * 2;
 }
 
-TestObj::TestObj(IWorld* world, const GSvector3& position)
+TestObj::TestObj(IWorld* world, const GSvector3& position,int id)
 {
     world_ = world;
     transform_.position(position);
-    
+    tag_ = "obj " + std::to_string(id);
     change();
-  
+    color = GSvector3{ rand() / 32767.0f ,rand() / 32767.0f ,rand() / 32767.0f };
 }
 const float MovingRangeX = 20;
 const float MovingRangeY = 20;
@@ -30,9 +30,9 @@ void TestObj::draw() const
     glMultMatrixf(transform_.localToWorldMatrix());
 
     if (isHit)
-        glColor3f(1, 0, 1);
+        glColor4f(color.r, color.g,color.b,0.5f);
     else 
-        glColor3f(1, 1, 1);
+        glColor3f(color.r, color.g, color.b);
     glBegin(GL_QUADS);
     glVertex2f(1, 1);
     glVertex2f(-1, 1);
@@ -47,7 +47,7 @@ void TestObj::draw() const
 #define	INRANGE( v, l, h )	(l<=v && v<= h)
 void TestObj::update(float delta_time)
 {
-	
+    last_transform_ = transform_;
     isHit = false;
     // À•W‚ðŽæ“¾
     GSvector3 position = transform_.position();

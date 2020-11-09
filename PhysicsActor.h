@@ -7,7 +7,8 @@ class PhysicsActor:public Actor
 public:
 	PhysicsActor();
 
-	collisions::Box2D get_collision() const;
+	//0=ëOÇÃà íu 1=åªç¿ÇÃà íu
+	collisions::Box2D get_collision(const float f) const;
 	
 	bool is_collide(const Actor& other) const override;
 
@@ -17,6 +18,8 @@ public:
 	
 	collisions::Box2D box2d;
 
-	
+protected:
+	collisions::physics_mat mat;
+	GStransform last_transform_;
 };
 

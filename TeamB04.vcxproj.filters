@@ -96,6 +96,9 @@
     <ClCompile Include="ByteBuf.cpp">
       <Filter>ソース ファイル\SAGASA</Filter>
     </ClCompile>
+    <ClCompile Include="MapObject.cpp">
+      <Filter>ソース ファイル\SAGASA</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h">
@@ -177,6 +180,9 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="ByteBuf.h">
+      <Filter>ヘッダー ファイル\SAGASA</Filter>
+    </ClInclude>
+    <ClInclude Include="MapObject.h">
       <Filter>ヘッダー ファイル\SAGASA</Filter>
     </ClInclude>
   </ItemGroup>

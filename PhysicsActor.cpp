@@ -2,16 +2,18 @@
 
 #include <iostream>
 
+
 PhysicsActor::PhysicsActor()
 {
 	using namespace collisions;
+	collisions::physics_mat mat;
 	enable_collider_ = true;
-	box2d = Box2D{ Vec2{0,0},Vec2{2,2},0};
+	box2d = Box2D{ Vec2{0,0},Vec2{2,2},mat };
 }
 
-collisions::Box2D PhysicsActor::get_collision()const
+collisions::Box2D PhysicsActor::get_collision(const float f)const
 {
-	return box2d.transform(transform_.localToWorldMatrix());
+	return box2d.transform(last_transform_.localToWorldMatrix().lerp(transform_.localToWorldMatrix(), f));
 }
 
 bool PhysicsActor::is_collide(const Actor& other) const
@@ -36,11 +38,30 @@ void PhysicsActor::collide(Actor& other)
 	try
 	{
 		auto& pother = dynamic_cast<PhysicsActor&> (other);
-		if (testHit(get_collision(), pother.get_collision()))
+		if (testHit(get_collision(1), pother.get_collision(1)))
 		{
+			//ê⁄êGÇµÇΩì_ÇéZèo Ç‡Ç§ñ ì|ÇæÇ©ÇÁÉSÉäâüÇ∑
+			float f = 0.5f;
+			float change = 0.25f;
+			for (int i = 0; i < 5; ++i)
+			{
+				if (testHit(get_collision(f), pother.get_collision(f)))
+					f -= change;
+				else
+					f += change;
+				change /= 2;
+			}
+			transform_.position(last_transform_.position().lerp(transform_.position(), f)) ;
+
+			float friction = box2d.mat.friction * pother.box2d.mat.friction;
+			const float restitution = box2d.mat.restitution * pother.box2d.mat.restitution;
+
+			velocity_ *= -1;
+			pother.velocity_ *= -1;
+			
 			isHit = true;
 			pother.isHit = true;
-			//std::cout << " Hit!! " << std::endl;
+			std::cout << " Hit!! "<< tag_<<" " << last_transform_.position().x<<" "<< transform_.position().x <<std::endl;
 		}
 	}
 	catch (const std::bad_cast&)
