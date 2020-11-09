@@ -111,12 +111,12 @@ class MyGame : public gslib::Game {
         //É{ÉX
         //world_.add_actor(new SurogSakones{ &world_,GSvector3{1.0f,1.0f,0.0f} });
 
-        world_.add_actor(new MapObject{ &world_,GSvector3{0.0f,-40.0f,0.0f}});
+        world_.add_actor(new MapObject{ &world_,GSvector3{0.0f,0.0f,0.0f}});
 
         for (int i = 0; i < 20; ++i)
         {
         	
-            world_.add_actor(new TestObj{ &world_,GSvector3{-40+4.0f*i,1.0f,0.0f} ,i});
+            world_.add_actor(new TestObj{ &world_,GSvector3{-40+4.0f*i,10.0f,0.0f} ,i});
 	        
         }
        

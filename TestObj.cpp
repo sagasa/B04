@@ -16,8 +16,8 @@ TestObj::TestObj(IWorld* world, const GSvector3& position,int id)
     change();
     color = GSvector3{ rand() / 32767.0f ,rand() / 32767.0f ,rand() / 32767.0f };
 }
-const float MovingRangeX = 20;
-const float MovingRangeY = 20;
+const float MovingRangeX = 50;
+const float MovingRangeY = 50;
 
 void TestObj::draw() const
 {
@@ -44,11 +44,16 @@ void TestObj::draw() const
     glPopAttrib();
     glPopMatrix();
 }
+
+const GSvector3 gravity{ 0.0f, 0.1f, 0.0f };
 #define	INRANGE( v, l, h )	(l<=v && v<= h)
 void TestObj::update(float delta_time)
 {
     last_transform_ = transform_;
     isHit = false;
+
+    velocity_ -= gravity * delta_time;
+	
     // 座標を取得
     GSvector3 position = transform_.position();
     // 座標を更新

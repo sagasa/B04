@@ -6,5 +6,5 @@ class MapObject:public PhysicsActor
 {
 public:
 	MapObject(IWorld* world, const GSvector3& position);
-	
+	void draw() const override;
 };

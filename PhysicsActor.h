@@ -21,5 +21,7 @@ public:
 protected:
 	collisions::physics_mat mat;
 	GStransform last_transform_;
+
+	void react_physics(const PhysicsActor& pother, const collisions::Box2D& box0, const collisions::Box2D& box1);
 };
 
