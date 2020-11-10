@@ -60,9 +60,6 @@
     <ClCompile Include="CSVReader.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="TestObj.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Collision.cpp">
       <Filter>ソース ファイル\Math</Filter>
     </ClCompile>
@@ -97,6 +94,9 @@
       <Filter>ソース ファイル\SAGASA</Filter>
     </ClCompile>
     <ClCompile Include="MapObject.cpp">
+      <Filter>ソース ファイル\SAGASA</Filter>
+    </ClCompile>
+    <ClCompile Include="TestObj.cpp">
       <Filter>ソース ファイル\SAGASA</Filter>
     </ClCompile>
   </ItemGroup>
@@ -143,9 +143,6 @@
     <ClInclude Include="CSVReader.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="TestObj.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="CollisionType.h">
       <Filter>ヘッダー ファイル\Math</Filter>
     </ClInclude>
@@ -183,6 +180,9 @@
       <Filter>ヘッダー ファイル\SAGASA</Filter>
     </ClInclude>
     <ClInclude Include="MapObject.h">
+      <Filter>ヘッダー ファイル\SAGASA</Filter>
+    </ClInclude>
+    <ClInclude Include="TestObj.h">
       <Filter>ヘッダー ファイル\SAGASA</Filter>
     </ClInclude>
   </ItemGroup>

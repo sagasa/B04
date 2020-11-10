@@ -41,26 +41,60 @@ bool testHit(const collisions::Box2D& box0, const collisions::Box2D& box1)
 		ABS(box0.p.y - box1.p.y) < (box0.size.y + box1.size.y) / 2;
 }
 
+
 void PhysicsActor::react_physics(const PhysicsActor& pother, const collisions::Box2D& box0, const collisions::Box2D& box1)
 {
 	using namespace collisions;
 
-	if (mat.is_static)
+	if (mat.is_static||!pother.mat.is_static)//テスト用にMapObj以外と当たらない
 		return;
 
 	const Vec2 size = box0.size + box1.size;
 	const Vec2 pos = box0.p - box1.p;
-	const Vec2 vel = (velocity_ - pother.velocity_).xy;
-	
-	if (size.y / size.x < pos.y / pos.x)
-	{
-		transform_.position(vel * size.x / vel.x);
-	}else
-	{
-		transform_.translate(vel * size.y / vel.y);
-	}
-	
+	const Vec2 vel = (last_velocity_ - pother.last_velocity_).xy;
+	const Vec2 force = (pother.last_velocity_*pother.mat.weight).xy;
 
+	std::cout << " move " << tag_ << " : " << velocity_.x << " " << pother.last_velocity_.x << " " << std::endl;
+	
+	if (size.y / size.x > ABS(pos.y / pos.x))
+	{
+		if(vel.x<0)
+		{
+			//左に向かっている
+			
+			transform_.translate(vel / vel.x*(-pos.x + size.x / 2));
+		}else if(0<vel.x)
+		{
+			//右に向かっている
+			//if (0 < pos.x)
+			transform_.translate(vel / vel.x * (-pos.x - size.x / 2));
+		}
+			
+		if (pother.mat.is_static)
+			velocity_.x *= -0.8;
+		else
+			velocity_.x += pother.last_velocity_.x - last_velocity_.x;
+		std::cout << " move x "<< std::endl;
+	}
+	else
+	{
+		if (vel.y < 0)
+		{
+			transform_.translate(vel / vel.y * (-pos.y + size.y / 2));
+		}
+		else if (0 < vel.y)
+		{
+			transform_.translate(vel / vel.y * (-pos.y - size.y / 2));
+		}
+
+		if (pother.mat.is_static)
+		{
+			velocity_.y *= -0.8;
+		}
+		else
+			velocity_.y += pother.last_velocity_.y - last_velocity_.y;
+		std::cout << " move y " << vel.y << std::endl;
+	}
 }
 
 void PhysicsActor::collide(Actor& other)
@@ -68,7 +102,15 @@ void PhysicsActor::collide(Actor& other)
 	try
 	{
 		auto& pother = dynamic_cast<PhysicsActor&> (other);
-		if (testHit(get_collision(1), pother.get_collision(1)))
+
+		using namespace collisions;
+		const Box2D box0 = get_collision(1);
+		const Box2D box1 = pother.get_collision(1);
+
+		const Vec2 size = box0.size + box1.size;
+		const Vec2 pos = box0.p - box1.p;
+	
+		if (testHit(box0, box1))
 		{
 			//接触した点を算出 もう面倒だからゴリ押す
 			//float f = 0.5f;
@@ -85,17 +127,16 @@ void PhysicsActor::collide(Actor& other)
 
 			float friction = box2d.mat.friction * pother.box2d.mat.friction;
 			const float restitution = box2d.mat.restitution * pother.box2d.mat.restitution;
-
 			
-			react_physics(pother, box2d,pother.box2d);
-			pother.react_physics(*this, pother.box2d, box2d);
+			store_last();
+			pother.store_last();
 			
-			velocity_ *= -1;
-			pother.velocity_ *= -1;
+			react_physics(pother, box0, box1);
+			pother.react_physics(*this, box1, box0);
 			
 			isHit = true;
 			pother.isHit = true;
-			std::cout << " Hit!! "<< tag_<<" " << last_transform_.position().x<<" "<< transform_.position().x <<std::endl;
+			std::cout << " Hit!! "<< tag_<< " - "<<pother.tag_<<" : " << last_transform_.position().y<<" "<< transform_.position().y <<std::endl;
 		}
 	}
 	catch (const std::bad_cast&)

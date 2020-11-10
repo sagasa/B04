@@ -20,8 +20,19 @@ public:
 
 protected:
 	collisions::physics_mat mat;
-	GStransform last_transform_;
 
 	void react_physics(const PhysicsActor& pother, const collisions::Box2D& box0, const collisions::Box2D& box1);
+
+private:
+	//”»’èŽž‚É—˜—p
+	GStransform last_transform_;
+	//”»’èŽž‚É—˜—p
+	GSvector3 last_velocity_;
+
+	void store_last()
+	{
+		last_transform_ = transform_;
+		last_velocity_ = velocity_;
+	}
 };
 

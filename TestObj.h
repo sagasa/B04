@@ -7,10 +7,9 @@ class TestObj : public PhysicsActor
 	GSvector3 color;
 	
 public:
-	TestObj(IWorld* world, const GSvector3& position,int id);
+	TestObj(IWorld* world, const GSvector3& position, const GSvector2& vel,int id);
 	
 	void draw() const override;
-
 	
 	void update(float delta_time) override;
 };
