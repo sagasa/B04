@@ -185,7 +185,6 @@ class MyGame : public gslib::Game {
         GSmatrix4 tmp = matScreen * matProj * matView;
         gsVector3TransformCoord(&result, &cursor, &tmp);
 
-
         if (i%6==0&&gsGetMouseButtonState(GMOUSE_BUTTON_1))
         {
             if (gsGetKeyState(GKEY_W))
