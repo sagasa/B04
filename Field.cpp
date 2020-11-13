@@ -15,7 +15,8 @@ void Field::update(float delta_time) {
 
 // •`‰æ
 void Field::draw() const {
-    gsDrawOctree(octree_);
+    gsDrawSkyBox(skybox_);
+    gsDrawOctree(octree_);    
 }
 
 bool Field::collide(const Line& line, GSvector3* intersect, GSplane* plane)const {
