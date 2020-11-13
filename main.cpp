@@ -127,17 +127,16 @@ class MyGame : public gslib::Game {
 
         glError();
 
-        GLfloat vertices[] = { 0, 0, 0,  100, 0, 0,  100, 100, 0,  0, 100, 0 };
+        //GLfloat vertices[] = { 0, 0, 0,  100, 0, 0,  100, 100, 0,  0, 100, 0 };
 
-        int indices[] = { 0, 1, 2,  0, 2, 3 };
-        
-        glGenBuffers(1, &vrtVBO);
-        glBindBuffer(GL_ARRAY_BUFFER, vrtVBO);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices[0], GL_STATIC_DRAW);
+        //int indices[] = { 0, 1, 2,  0, 2, 3 };
+        //glGenBuffers(1, &vrtVBO);
+        //glBindBuffer(GL_ARRAY_BUFFER, vrtVBO);
+        //glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices[0], GL_STATIC_DRAW);
 
-        glGenBuffers(1, &idxVBO);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, idxVBO);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), &indices[0], GL_STATIC_DRAW);
+        //glGenBuffers(1, &idxVBO);
+        //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, idxVBO);
+        //glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), &indices[0], GL_STATIC_DRAW);
 
 
         //ByteBuf buf{ 1024 };
@@ -186,7 +185,6 @@ class MyGame : public gslib::Game {
         GSmatrix4 tmp = matScreen * matProj * matView;
         gsVector3TransformCoord(&result, &cursor, &tmp);
 
-
         if (i%6==0&&gsGetMouseButtonState(GMOUSE_BUTTON_1))
         {
             if (gsGetKeyState(GKEY_W))
@@ -222,6 +220,7 @@ class MyGame : public gslib::Game {
     void draw() override {
         glPushMatrix();
         world_.draw();
+        gsDrawMesh(Mesh_Player);
         glPopMatrix();
     	
         glPushMatrix();
@@ -264,8 +263,8 @@ class MyGame : public gslib::Game {
     }
     // èIóπ
     void end() override {
-        glDeleteBuffers(1, &vrtVBO);
-        glDeleteBuffers(1, &idxVBO);
+        //glDeleteBuffers(1, &vrtVBO);
+        //glDeleteBuffers(1, &idxVBO);
     	
         world_.clear();
         // ÉÅÉbÉVÉÖÇÃçÌèú
