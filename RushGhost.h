@@ -58,6 +58,10 @@ private:
 	float target_angle()const;
 	//ターゲットの距離を求める
 	float target_distance()const;
+	//ターゲットのxの距離を求める
+	float target_distance_x() const;
+	//target方向のyの距離を求める
+	float target_distance_y() const;
 	//ターゲット方向のベクトルを求める
 	GSvector3 to_target()const;
 

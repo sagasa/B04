@@ -5,15 +5,13 @@
 #include"CSVReader.h"
 
 //敵生成クラス
-class MapGenerator : public Actor {
+class MapGenerator{
 public:
 	//コンストラクタ
 	MapGenerator(IWorld* world, const std::string& file_name);
-	//更新
-	virtual void update(float delta_time)override;
 private:
 	//敵の生成
-	void generate(int row,int column);
+	void generate(IWorld* world,int row,int column);
 
 private:
 	//出現データ
