@@ -281,10 +281,6 @@ public:
 
     }
 
-public:
-    MyGame() : Game(1000, 1000) {
-
-    }
 };
 
 // ƒƒCƒ“ŠÖ”
