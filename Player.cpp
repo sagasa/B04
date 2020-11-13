@@ -64,6 +64,6 @@ void Player::draw() const {
 void Player::react(Actor& other) {
     // “G‚ÆÕ“Ë‚µ‚½ê‡‚Í€–S
     if (other.tag() == "EnemyTag" || other.tag() == "EnemyBulletTag") {
-        die();
+        //die();
     }
 }

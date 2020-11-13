@@ -14,10 +14,14 @@ enum {
 const float TurnDistance{ 1.5f };
 //攻撃判定の距離
 const float AttackDistance{ 15.0f };
-//移動判定の距離
-const float MoveDistance{ 100.0f };
+//移動判定の距離ｙ
+const float AttackDistance_y{ 50.0f };
 //振り向く角度
 const float TurnAngle{ 2.5f };
+//エネミーの高さ
+const float EnemyHeight{ 90.0f };
+//エネミーの半径
+const float EnemyRadius{ 50.0f };
 
 //コンストラクタ
 CarGhost::CarGhost(IWorld* world, const GSvector3& position) :
@@ -27,9 +31,14 @@ CarGhost::CarGhost(IWorld* world, const GSvector3& position) :
 	world_ = world;
 	name_ = "CarGhost";
 	tag_ = "EnemyTag";
-	transform_.position(position);
 	player_ = world_->find_actor("Player");
-	transform_.eulerAngles(0.0f,-45.0f,0.0f);
+	transform_.position(GSvector3{ 0.0f,0.0f,0.f });
+	mesh_.transform(transform_.localToWorldMatrix());
+	collider_ = BoundingSphere{ EnemyRadius ,mesh_.bone_matrices(3).position()};
+	transform_.position(position);
+	transform_.rotation(GSquaternion::euler(GSvector3{ 0.0f,-45.0f,0.0f }));
+	transform_.localScale(GSvector3{0.5f,0.5f,0.5f});
+	
 }
 
 //更新
@@ -48,11 +57,10 @@ void CarGhost::update(float delta_time) {
 void CarGhost::draw() const {
 	glPushMatrix();
 	glMultMatrixf(transform_.localToWorldMatrix());
-	//glRotatef(-90.0f, 0.0f, 1.0f, 0.0f);
-	glScaled(0.2f, 0.2f, 0.2f);
-	transform_.position();
 	mesh_.draw();
+	collider().draw();
 	glPopMatrix();
+	
 }
 
 //衝突リアクション
@@ -99,6 +107,14 @@ void CarGhost::idle(float delta_time) {
 		change_state(State::Move, MotionIdle);
 		return;
 	}
+	//振り向くか?
+	if (is_turn()) {
+		//左に向くか？右に向くか？
+		GSuint motion = (target_signed_angle() >= 0.0f) ? MotionIdle : MotionIdle;
+		//振り向き状態に遷移
+		change_state(State::Turn, motion);
+		return;
+	}
 }
 
 //巡回
@@ -129,7 +145,7 @@ void CarGhost::move(float delta_time) {
 	//ターゲット方向の角度を求める
 	float angle = CLAMP(target_signed_angle(), -TurnAngle, TurnAngle);
 	//ターゲット方向を向く
-	//transform_.eulerAngles(angle,0.0f,0.0f);
+	//transform_.rotate(0.0f, angle, 0.0f);
 	//移動
 	transform_.translate(velocity_ * delta_time * speed_, GStransform::Space::World);
 	
@@ -137,7 +153,15 @@ void CarGhost::move(float delta_time) {
 
 //ターン
 void CarGhost::turn(float delta_time) {
-
+	if (state_timer_ >= mesh_.motion_end_time()) {
+		//振り向きモーションが終了したらアイドル中に遷移
+		//idle(delta_time);
+	}
+	else {
+		//振り向きモーションをしながらターゲット方向を向く
+		float angle = (target_signed_angle() >= 0.0f) ? TurnAngle : -TurnAngle;
+		transform_.rotate(0.0f, angle, 0.0f);
+	}
 }
 
 //攻撃
@@ -184,7 +208,7 @@ bool CarGhost::is_attack()const {
 //移動判定
 bool CarGhost::is_move()const {
 	//移動距離かつ前方向のベクトルとターゲット方向のベクトルの角度差が180.0度以下か？
-	return (target_distance() <= MoveDistance) && (target_angle() <= 180.0f);
+	return (target_distance_y() <= AttackDistance_y) && (target_angle() <= 180.0f);
 }
 
 //前向き方向のベクトルとターゲット方向のベクトルの角度差を求める(符号付き)
@@ -210,4 +234,22 @@ float CarGhost::target_distance()const {
 //ターゲット方向のベクトルを求める
 GSvector3 CarGhost::to_target() const {
 	return (player_->transform().position() - transform_.position()).normalized();
+}
+
+//ターゲットとのxの距離を求める
+float CarGhost::target_distance_x() const {
+	GSvector3 player = player_->transform().position();
+	player.y = 0.0f;
+	GSvector3 me = transform_.position();
+	me.y = 0.0f;
+	return (player - me).magnitude();
+}
+
+//ターゲットとのyの距離を求める
+float CarGhost::target_distance_y() const {
+	GSvector3 player = player_->transform().position();
+	player.x = 0.0f;
+	GSvector3 me = transform_.position();
+	me.x = 0.0f;
+	return (player - me).magnitude();
 }
