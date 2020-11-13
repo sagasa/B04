@@ -62,7 +62,7 @@ class MyGame : public gslib::Game {
     
     // ワールドクラス
     World world_;
-
+    GLuint vrtVBO, idxVBO;
     // 開始
     void start() override {
         //glfwSetWindowSize(,1920,1080);
@@ -145,6 +145,8 @@ class MyGame : public gslib::Game {
 
     	glError();
     }
+
+    
     // 更新
     void update(float delta_time) override {
         world_.update(delta_time);
