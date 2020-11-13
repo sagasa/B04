@@ -144,7 +144,7 @@ void PhysicsActor::collide(Actor& other)
 	catch (const std::bad_cast&)
 	{
 		Actor::collide(other);
-		std::cout << typeid(other).name() << " test col " << std::endl;
+		//std::cout << typeid(other).name() << " test col " << std::endl;
 	}
 }
 
