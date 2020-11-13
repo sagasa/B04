@@ -144,6 +144,8 @@
   <ItemGroup>
     <ClCompile Include="Actor.cpp" />
     <ClCompile Include="ActorManager.cpp" />
+    <ClCompile Include="AnimatedMesh.cpp" />
+    <ClCompile Include="BossTestScene.cpp" />
     <ClCompile Include="BoundingSphere.cpp" />
     <ClCompile Include="ByteBuf.cpp" />
     <ClCompile Include="Camera.cpp" />
@@ -151,10 +153,14 @@
     <ClCompile Include="CSVReader.cpp" />
     <ClCompile Include="DrawUtil.cpp" />
     <ClCompile Include="EnemyGenerator.cpp" />
+    <ClCompile Include="MapGenerator.cpp" />
+    <ClCompile Include="EnemyTestScene.cpp" />
     <ClCompile Include="GamePlayScene.cpp" />
     <ClCompile Include="MapObject.cpp" />
     <ClCompile Include="PhysicsActor.cpp" />
     <ClCompile Include="Poltergeist.cpp" />
+    <ClCompile Include="PoltergeistBullet.cpp" />
+    <ClCompile Include="PsycokinesisBullet.cpp" />
     <ClCompile Include="RushGhost.cpp" />
     <ClCompile Include="CarGhost.cpp" />
     <ClCompile Include="Field.cpp" />
@@ -170,7 +176,9 @@
   <ItemGroup>
     <ClInclude Include="Actor.h" />
     <ClInclude Include="ActorManager.h" />
+    <ClInclude Include="AnimatedMesh.h" />
     <ClInclude Include="Assets.h" />
+    <ClInclude Include="BossTestScene.h" />
     <ClInclude Include="BoundingSphere.h" />
     <ClInclude Include="ByteBuf.h" />
     <ClInclude Include="Camera.h" />
@@ -178,10 +186,14 @@
     <ClInclude Include="CSVReader.h" />
     <ClInclude Include="DrawUtil.h" />
     <ClInclude Include="EnemyGenerator.h" />
+    <ClInclude Include="MapGenerator.h" />
+    <ClInclude Include="EnemyTestScene.h" />
     <ClInclude Include="GamePlayScene.h" />
     <ClInclude Include="MapObject.h" />
     <ClInclude Include="PhysicsActor.h" />
     <ClInclude Include="Poltergeist.h" />
+    <ClInclude Include="PoltergeistBullet.h" />
+    <ClInclude Include="PsycokinesisBullet.h" />
     <ClInclude Include="RushGhost.h" />
     <ClInclude Include="CarGhost.h" />
     <ClInclude Include="Field.h" />

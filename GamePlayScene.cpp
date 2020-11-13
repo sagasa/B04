@@ -1,6 +1,6 @@
 #include"GamePlayScene.h"
 #include"Player.h"
-#include"EnemyGenerator.h"
+#include"MapGenerator.h"
 
 //ŠJŽn
 void GamePlayScene::start() {
