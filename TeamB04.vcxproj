@@ -184,6 +184,7 @@
     <ClInclude Include="Collision.h" />
     <ClInclude Include="CSVReader.h" />
     <ClInclude Include="DrawUtil.h" />
+    <ClInclude Include="Line.h" />
     <ClInclude Include="MapGenerator.h" />
     <ClInclude Include="EnemyTestScene.h" />
     <ClInclude Include="GamePlayScene.h" />
@@ -192,6 +193,7 @@
     <ClInclude Include="Poltergeist.h" />
     <ClInclude Include="PoltergeistBullet.h" />
     <ClInclude Include="PsycokinesisBullet.h" />
+    <ClInclude Include="Ray.h" />
     <ClInclude Include="RushGhost.h" />
     <ClInclude Include="CarGhost.h" />
     <ClInclude Include="Field.h" />
