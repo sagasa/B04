@@ -28,11 +28,11 @@ public:
     // メッセージ処理
     virtual void handle_message(const std::string& message, void* param);
     // 衝突判定
-    void collide(Actor& other);
+    virtual void collide(Actor& other);
     // 死亡する
     void die();
     // 衝突しているか？
-    bool is_collide(const Actor& other) const;
+    virtual bool is_collide(const Actor& other) const;
     // 死亡しているか？
     bool is_dead() const;
     // 名前を取得
