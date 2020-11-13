@@ -54,7 +54,7 @@ void PhysicsActor::react_physics(const PhysicsActor& pother, const collisions::B
 	const Vec2 vel = (last_velocity_ - pother.last_velocity_).xy;
 	const Vec2 force = (pother.last_velocity_*pother.mat.weight).xy;
 
-	std::cout << " move " << tag_ << " : " << velocity_.x << " " << pother.last_velocity_.x << " " << std::endl;
+	
 	
 	if (size.y / size.x > ABS(pos.y / pos.x))
 	{
@@ -93,8 +93,10 @@ void PhysicsActor::react_physics(const PhysicsActor& pother, const collisions::B
 		}
 		else
 			velocity_.y += pother.last_velocity_.y - last_velocity_.y;
-		std::cout << " move y " << vel.y << std::endl;
+		//std::cout << " move y " << vel.y << std::endl;
 	}
+
+	
 }
 
 void PhysicsActor::collide(Actor& other)
@@ -136,7 +138,7 @@ void PhysicsActor::collide(Actor& other)
 			
 			isHit = true;
 			pother.isHit = true;
-			std::cout << " Hit!! "<< tag_<< " - "<<pother.tag_<<" : " << last_transform_.position().y<<" "<< transform_.position().y <<std::endl;
+			//std::cout << " Hit!! "<< tag_<< " - "<<pother.tag_<<" : " << last_transform_.position().y<<" "<< transform_.position().y <<std::endl;
 		}
 	}
 	catch (const std::bad_cast&)

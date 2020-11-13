@@ -103,7 +103,7 @@ class MyGame : public gslib::Game {
         // ライトの追加
         world_.add_light(new Light{ &world_ });
         // プレーヤの追加
-        world_.add_actor(new Player{ &world_, GSvector3{ 0.0f, 0.0f, 0.0f } });
+        world_.add_actor(new Player{ &world_, GSvector3{ 0.0f, 60.0f, 0.0f } });
         //エネミー1
         //world_.add_actor(new CarGhost{ &world_,GSvector3{0.0f,1.0f,0.0f} });
         //エネミー2
@@ -204,7 +204,7 @@ class MyGame : public gslib::Game {
             
         using namespace std;
         //cout <<x << " " << y <<" -> "<<result.x <<" "<<result.y<<" "<<result.z<< " "<<vp[0] << " " << vp[1] <<endl;
-        cout <<x << " " << y <<" -> "<< ray_pos.x <<" "<< ray_pos.y<<" "<< ray_pos.z << " " << ray_vec.x << " " << ray_vec.y << " " << ray_vec.z <<endl;
+        //cout <<x << " " << y <<" -> "<< ray_pos.x <<" "<< ray_pos.y<<" "<< ray_pos.z << " " << ray_vec.x << " " << ray_vec.y << " " << ray_vec.z <<endl;
         ++i;
     }
     
