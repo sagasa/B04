@@ -1,4 +1,5 @@
 #include"Poltergeist.h"
+#include"PoltergeistBullet.h"
 #include"IWorld.h"
 #include"Assets.h"
 
@@ -12,12 +13,17 @@ enum {
 
 //振り向き判定の距離
 const float TurnDistance{ 1.5f };
-//攻撃判定の距離
-const float AttackDistance{ 1.2f };
-//移動判定の距離
-const float MoveDistance{ 10.0f };
+//移動判定の距離ｙ
+const float AttackDistance_x{ 100.0f };
+//移動判定の距離x
+const float AttackDistance_y{ 100.0f };
 //振り向く角度
 const float TurnAngle{ 2.5f };
+//エネミーの高さ
+const float EnemyHeight{ 1.0f };
+//エネミーの半径
+const float EnemyRadius{ 30.0f };
+
 
 //コンストラクタ
 Poltergeist::Poltergeist(IWorld* world, const GSvector3& position) :
@@ -27,8 +33,14 @@ Poltergeist::Poltergeist(IWorld* world, const GSvector3& position) :
 	world_ = world;
 	name_ = "Poltergeist";
 	tag_ = "EnemyTag";
-	transform_.position(position);
 	player_ = world_->find_actor("Player");
+	transform_.position(GSvector3::zero());
+	collider_ = BoundingSphere{ EnemyRadius,mesh_.bone_matrices(0).position()};
+	mesh_.transform(transform_.localToWorldMatrix());
+	transform_.position(position);
+	transform_.localScale(GSvector3{ 0.5f,0.5f,0.5f });
+	transform_.rotation(GSquaternion::euler(GSvector3{ 0.0f,-45.0f,0.0f }));
+	
 }
 
 //更新
@@ -41,6 +53,8 @@ void Poltergeist::update(float delta_time) {
 	mesh_.update(delta_time);
 	//行列を設定
 	mesh_.transform(transform_.localToWorldMatrix());
+	//射撃タイマー更新
+	shootiong_timer_ -= delta_time;
 
 }
 
@@ -48,15 +62,14 @@ void Poltergeist::update(float delta_time) {
 void Poltergeist::draw() const {
 	glPushMatrix();
 	glMultMatrixf(transform_.localToWorldMatrix());
-	glRotatef(-90.0f, 0.0f, 1.0f, 0.0f);
-	glScalef(0.2f, 0.2f, 0.2f);
 	mesh_.draw();
 	glPopMatrix();
+	collider().draw();
 }
 
 //衝突リアクション
 void Poltergeist::react(Actor& other) {
-	if (other.tag() == "PlayerTag") {
+	if (other.tag() == "PlayerTag" && hp_ <= 0) {
 		//ダメージ状態に変更
 		change_state(State::Damage, MotionDamage);
 	}
@@ -92,11 +105,6 @@ void Poltergeist::idle(float delta_time) {
 		change_state(State::Attack, MotionAttack);
 		return;
 	}
-	//プレイヤーを見つけたか？
-	if (is_move()) {
-		change_state(State::Attack, MotionAttack);
-		return;
-	}
 }
 
 //ターン
@@ -110,6 +118,14 @@ void Poltergeist::attack(float delta_time) {
 	if (state_timer_ >= mesh_.motion_end_time()) {
 		idle(delta_time);
 	}
+	if (shootiong_timer_ <= 0.0f) {
+		GSvector3 target = to_target();
+		//world_->add_actor(new PoltergeistBullet{ world_,transform_.position(),target });
+		shootiong_timer_ = gsRandf(20.0f, 60.0f);
+	}
+	
+
+	
 }
 
 //ダメージ
@@ -142,13 +158,7 @@ bool Poltergeist::is_turn()const {
 //攻撃判定
 bool Poltergeist::is_attack()const {
 	//攻撃距離内かつ前向き方向のベクトルとターゲット方向のベクトルの角度差が20.0度以下か？
-	return (target_distance() <= AttackDistance) && (target_angle() <= 180.0f);
-}
-
-//移動判定
-bool Poltergeist::is_move()const {
-	//移動距離かつ前方向のベクトルとターゲット方向のベクトルの角度差が100.0度以下か？
-	return (target_distance() <= MoveDistance) && (target_angle() <= 180.0f);
+	return (target_distance_x() <= AttackDistance_x) && (target_distance_y() <= AttackDistance_y) && (target_angle() <= 180.0f);
 }
 
 //前向き方向のベクトルとターゲット方向のベクトルの角度差を求める(符号付き)
@@ -169,4 +179,27 @@ float Poltergeist::target_angle()const {
 //ターゲットとの距離を求める
 float Poltergeist::target_distance()const {
 	return (player_->transform().position() - transform_.position()).magnitude();
+}
+
+//ターゲットとのxの距離を求める
+float Poltergeist::target_distance_x() const {
+	GSvector3 player = player_->transform().position();
+	player.y = 0.0f;
+	GSvector3 me = transform_.position();
+	me.y = 0.0f;
+	return (player - me).magnitude();
+}
+
+//ターゲットとのyの距離を求める
+float Poltergeist::target_distance_y() const {
+	GSvector3 player = player_->transform().position();
+	player.x = 0.0f;
+	GSvector3 me = transform_.position();
+	me.x = 0.0f;
+	return (player - me).magnitude();
+}
+
+//ターゲット方向のベクトルを求める
+GSvector3 Poltergeist::to_target() const {
+	return (player_->transform().position() - transform_.position()).normalized();
 }

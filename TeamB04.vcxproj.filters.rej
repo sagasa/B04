@@ -1,0 +1,9 @@
+diff a/TeamB04.vcxproj.filters b/TeamB04.vcxproj.filters	(rejected hunks)
+@@ -167,7 +167,6 @@
+     <ClInclude Include="BossTestScene.h">
+       <Filter>ヘッダー ファイル</Filter>
+     </ClInclude>
+-    <ClInclude Include="PsycokinesisBullet.h">
+     <ClInclude Include="EnemyTestScene.h">
+       <Filter>ヘッダー ファイル</Filter>
+     </ClInclude>
