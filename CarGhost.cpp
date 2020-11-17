@@ -33,7 +33,7 @@ const float HeadOffset{ 1.0f };
 
 //コンストラクタ
 CarGhost::CarGhost(IWorld* world, const GSvector3& position) :
-	mesh_{ Mesh_CarGhost,Mesh_CarGhost,Mesh_CarGhost,MotionIdle },
+	mesh_{ Mesh_Poltergeist,Mesh_CarGhost,Mesh_CarGhost,MotionIdle },
 	motion_{ MotionIdle },
 	motion_loop_{true},
 	state_{ State::Idle },
@@ -76,7 +76,7 @@ void CarGhost::update(float delta_time) {
 //描画
 void CarGhost::draw() const {
 	mesh_.draw();
-	collider().draw();
+	//collider().draw();
 }
 
 //衝突リアクション

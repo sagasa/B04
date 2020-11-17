@@ -10,10 +10,6 @@
 #include"SceneManager.h"
 
 
-// ワールドクラス
-World world_;
-SceneManager scene_;
-
 //開始
 void EnemyTestScene::start() {
     // フィールドの追加
@@ -36,7 +32,6 @@ void EnemyTestScene::start() {
 void EnemyTestScene::update(float delta_time) {
     world_.update(delta_time);
     if (gsGetKeyTrigger(GKEY_RETURN)) {
-        scene_.end();
     }
 }
 
