@@ -27,19 +27,17 @@ const float EnemyRadius{ 30.0f };
 
 //コンストラクタ
 Poltergeist::Poltergeist(IWorld* world, const GSvector3& position) :
-	mesh_{Mesh_Poltergeist,Skeleton_CarGhost,Animation_CarGhost,MotionIdle},
+	mesh_{Mesh_Poltergeist,Mesh_CarGhost,Mesh_CarGhost,MotionIdle},
 	motion_{MotionIdle} ,
 	state_{ State::Idle } {
 	world_ = world;
 	name_ = "Poltergeist";
 	tag_ = "EnemyTag";
 	player_ = world_->find_actor("Player");
-	transform_.position(GSvector3::zero());
-	collider_ = BoundingSphere{ EnemyRadius,mesh_.bone_matrices(0).position()};
 	mesh_.transform(transform_.localToWorldMatrix());
+	collider_ = BoundingSphere{ EnemyRadius ,mesh_.bone_matrices(3).position() };
 	transform_.position(position);
-	transform_.localScale(GSvector3{ 0.5f,0.5f,0.5f });
-	transform_.rotation(GSquaternion::euler(GSvector3{ 0.0f,-45.0f,0.0f }));
+	transform_.localScale(GSvector3{ 0.3f,0.3f,0.3f });
 	
 }
 
@@ -60,11 +58,9 @@ void Poltergeist::update(float delta_time) {
 
 //描画
 void Poltergeist::draw() const {
-	glPushMatrix();
-	glMultMatrixf(transform_.localToWorldMatrix());
 	mesh_.draw();
-	glPopMatrix();
 	collider().draw();
+	
 }
 
 //衝突リアクション

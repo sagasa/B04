@@ -21,23 +21,22 @@ const float TurnAngle{ 2.5f };
 //エネミーの高さ
 const float EnemyHeight{ 90.0f };
 //エネミーの半径
-const float EnemyRadius{ 50.0f };
+const float EnemyRadius{ 45.0f };
 
 //コンストラクタ
 CarGhost::CarGhost(IWorld* world, const GSvector3& position) :
-	mesh_{ Mesh_CarGhost,Skeleton_CarGhost,Animation_CarGhost,MotionIdle },
+	mesh_{ Mesh_CarGhost,Mesh_CarGhost,Mesh_CarGhost,MotionIdle },
 	motion_{ MotionIdle },
 	state_{ State::Idle } {
 	world_ = world;
 	name_ = "CarGhost";
 	tag_ = "EnemyTag";
 	player_ = world_->find_actor("Player");
-	transform_.position(GSvector3{ 0.0f,0.0f,0.f });
+	//transform_.position(GSvector3::zero());
 	mesh_.transform(transform_.localToWorldMatrix());
 	collider_ = BoundingSphere{ EnemyRadius ,mesh_.bone_matrices(3).position()};
 	transform_.position(position);
-	transform_.rotation(GSquaternion::euler(GSvector3{ 0.0f,-45.0f,0.0f }));
-	transform_.localScale(GSvector3{0.5f,0.5f,0.5f});
+	transform_.localScale(GSvector3{0.3f,0.3f,0.3f});
 	
 }
 
@@ -47,7 +46,7 @@ void CarGhost::update(float delta_time) {
 	update_state(delta_time);
 	//モーション変更
 	mesh_.change_motion(motion_);
-	//メッシュの更新1
+	//メッシュの更新
 	mesh_.update(delta_time);
 	//行列を設定
 	mesh_.transform(transform_.localToWorldMatrix());
@@ -55,16 +54,13 @@ void CarGhost::update(float delta_time) {
 
 //描画
 void CarGhost::draw() const {
-	glPushMatrix();
-	glMultMatrixf(transform_.localToWorldMatrix());
 	mesh_.draw();
 	collider().draw();
-	glPopMatrix();
-	
 }
 
 //衝突リアクション
 void CarGhost::react(Actor& other) {
+	if (state_ == State::Damage)return;
 	if (other.tag() == "PlayerTag") {
 		change_state(State::Damage, MotionDamage);
 	}
@@ -145,7 +141,7 @@ void CarGhost::move(float delta_time) {
 	//ターゲット方向の角度を求める
 	float angle = CLAMP(target_signed_angle(), -TurnAngle, TurnAngle);
 	//ターゲット方向を向く
-	//transform_.rotate(0.0f, angle, 0.0f);
+	transform_.rotate(0.0f, angle, 0.0f);
 	//移動
 	transform_.translate(velocity_ * delta_time * speed_, GStransform::Space::World);
 	

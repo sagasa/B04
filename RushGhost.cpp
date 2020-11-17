@@ -13,32 +13,31 @@ enum {
 //振り向き判定の距離
 const float TurnDistance{ 1.5f };
 //攻撃判定の距離
-const float AttackDistance{ 1.2f };
-//移動判定の距離ｙ
-const float AttackDistance_x{ 100.0f };
+const float AttackDistance{ 15.0f };
 //移動判定の距離x
+const float AttackDistance_x{ 100.0f };
+//移動判定の距離ｙ
 const float AttackDistance_y{ 50.0f };
 //振り向く角度
 const float TurnAngle{ 2.5f };
 //エネミーの高さ
-const float EnemyHeight{ 1.0f };
+const float EnemyHeight{ 90.0f };
 //エネミーの半径
-const float EnemyRadius{30.0f };
+const float EnemyRadius{ 45.0f };
 
 //コンストラクタ
 RushGhost::RushGhost(IWorld* world, const GSvector3& position) :
-	mesh_{ Mesh_RushGhost, Skeleton_CarGhost, Animation_CarGhost, MotionIdle },
+	mesh_{ Mesh_RushGhost,Mesh_CarGhost,Mesh_CarGhost, MotionIdle },
 	motion_{ MotionIdle },
 	state_{ State::Idle } {
 	world_ = world;
 	name_ = "RushGhost";
 	tag_ = "EnemyTag";
 	player_ = world_->find_actor("Player");
-	transform_.position(position);
-	transform_.localScale(GSvector3{0.5f,0.5f,0.5f});
-	transform_.rotation(GSquaternion::euler(GSvector3{ 0.0f,-45.0f,0.0f }));
 	mesh_.transform(transform_.localToWorldMatrix());
-	collider_ = BoundingSphere{ EnemyRadius,mesh_.bone_matrices(4).position() };
+	collider_ = BoundingSphere{ EnemyRadius ,mesh_.bone_matrices(3).position() };
+	transform_.position(position);
+	transform_.localScale(GSvector3{ 0.3f,0.3f,0.3f });
 
 }
 
@@ -56,10 +55,7 @@ void RushGhost::update(float delta_time) {
 
 //描画
 void RushGhost::draw() const {
-	glPushMatrix();
-	glMultMatrixf(transform_.localToWorldMatrix());
 	mesh_.draw();
-	glPopMatrix();
 	collider().draw();
 }
 
@@ -132,6 +128,10 @@ void RushGhost::move(float delta_time) {
 	velocity_ = GSvector3{ to_target().x,to_target().y,0.0f };
 	//スピードを上げる
 	speed_ = 0.5f;
+	//ターゲット方向の角度を求める
+	float angle = CLAMP(target_signed_angle(), -TurnAngle, TurnAngle);
+	//ターゲット方向を向く
+	transform_.rotate(0.0f, angle, 0.0f);
 	//transform_.translate(velocity_ * delta_time * speed_, GStransform::Space::World);
 }
 
