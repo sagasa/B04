@@ -20,5 +20,9 @@ public:
 	//終了
 	virtual void end()override;
 
+private:
+	//終了フラグ
+	bool is_end_{ false };
+
 };
 #endif

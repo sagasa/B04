@@ -29,8 +29,12 @@ void BossTestScene::start() {
     //SurogSakonesのアニメーションの読み込み
     gsLoadAnimation(Animation_SurogSakones, "Assets/Model/Enemy/Ghost_T-pose.anm");
 
+    gsLoadOctree(Octree_Stage,"Assets/Octree/stage.oct");
+    gsLoadOctree(Octree_Collider,"Assets/Octree/stage_collider.oct");
+    gsLoadMesh(Mesh_Skybox,"Assets/Skybox/skydome.msh");
+
     // フィールドの追加
-    world_.add_field(new Field{ Texture_BgTileNebulaGreen });
+    world_.add_field(new Field{ Octree_Stage,Octree_Collider,Mesh_Skybox });
     // カメラの追加
     world_.add_camera(new Camera{ &world_ });
     // ライトの追加
@@ -68,4 +72,7 @@ void BossTestScene::end() {
     gsDeleteTexture(Texture_EffectFlash);
     gsDeleteTexture(Texture_EffectLazerCyan);
     gsDeleteTexture(Texture_EffectLazerOrange);
+    gsDeleteMesh(Mesh_Skybox);
+    gsDeleteOctree(Octree_Stage);
+    gsDeleteOctree(Octree_Collider);
 }

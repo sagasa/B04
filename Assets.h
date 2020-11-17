@@ -6,7 +6,8 @@ enum {
     Mesh_CarGhost,                  //CarGhost
     Mesh_RushGhost,                 //RushGhost
     Mesh_Poltergeist,               //Poltergeist
-    Mesh_SurogSakones               //SurogSakones
+    Mesh_SurogSakones,               //SurogSakones
+    Mesh_Skybox
 };
 
 //スケルトンデータ
@@ -51,4 +52,9 @@ enum {
     Se_ExplosionAsteroid,           // 爆発音（隕石）
     Se_WeaponPlayer,                // 発射音（自機）
     Se_WeaponEnemy,                 // 爆発音（敵）
+};
+
+enum {
+    Octree_Stage,
+    Octree_Collider
 };

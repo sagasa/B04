@@ -7,15 +7,17 @@
 #include"Camera.h"
 #include"Light.h"
 #include"Assets.h"
+#include"SceneManager.h"
 
 
 // ワールドクラス
 World world_;
+SceneManager scene_;
 
 //開始
 void EnemyTestScene::start() {
     // フィールドの追加
-    world_.add_field(new Field{ Texture_BgTileNebulaGreen });
+    world_.add_field(new Field{ Octree_Stage,Octree_Collider,Mesh_Skybox });
     // カメラの追加
     world_.add_camera(new Camera{ &world_ });
     // ライトの追加
@@ -33,6 +35,9 @@ void EnemyTestScene::start() {
 //更新
 void EnemyTestScene::update(float delta_time) {
     world_.update(delta_time);
+    if (gsGetKeyTrigger(GKEY_RETURN)) {
+        scene_.end();
+    }
 }
 
 //描画
@@ -42,20 +47,16 @@ void EnemyTestScene::draw() const {
 
 //終了しているか
 bool EnemyTestScene::is_end() const {
-	return false;
+	return is_end_;
 }
 
 //次のシーンを返す
-/*std::string EnemyTestScene::next() const {
+std::string EnemyTestScene::next() const {
+    return "scene_null";
 
-}*/
+}
 
 //終了
 void EnemyTestScene::end() {
     world_.clear();
-    // メッシュの削除
-    gsDeleteMesh(Mesh_Player);
-    gsDeleteMesh(Mesh_CarGhost);
-    gsDeleteMesh(Mesh_RushGhost);
-    gsDeleteMesh(Mesh_Poltergeist);
 }

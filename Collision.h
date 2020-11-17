@@ -72,4 +72,23 @@ namespace collisions {
 // t2 : S2側のベクトル係数（戻り値）
 // 戻り値: 最短距離
     float calcSegmentSegmentDist2D(const Segment2D& s1, const Segment2D& s2, Vec2& p1, Vec2& p2, float& t1, float& t2);
+
+    bool isHit(Box2D box0, Box2D box1);
+
+    bool isHit(Box2D box0, Circle2D cir1);
+    inline bool isHit(Circle2D cir0, Box2D box1) {
+        return isHit(box1, cir0);
+    };
+    bool isHit(Box2D box0, Capsule2D cap1);
+    inline bool isHit(Capsule2D cap0, Box2D box1) {
+        return isHit(box1, cap0);
+    };
+
+    bool isHit(Circle2D cir0, Circle2D cir1);
+    bool isHit(Capsule2D cap0, Capsule2D cap1);
+
+    bool isHit(Circle2D cir0, Capsule2D cap1);
+    inline bool isHit(Capsule2D cap0, Circle2D cir1) {
+        return isHit(cir1, cap0);
+    };
 }

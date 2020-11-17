@@ -148,6 +148,5 @@ namespace collisions {
         p1 = s1.getPoint(t1);
         return (p2 - p1).length();
     }
-
 }
 

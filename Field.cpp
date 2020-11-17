@@ -4,7 +4,9 @@
 const float FieldSize{ 150.0f };
 
 // コンストラクタ
-Field::Field(GSuint bg) : bg_{ bg }, scroll_{ 0.0f } {
+Field::Field(GSuint octree, GSuint collider, GSuint skybox) 
+    : octree_{ octree }, collider_{ collider }, skybox_{skybox} 
+{
 }
 
 // 更新
@@ -13,16 +15,17 @@ void Field::update(float delta_time) {
 
 // 描画
 void Field::draw() const {
+    gsDrawSkyBox(skybox_);
+    gsDrawOctree(octree_);    
 }
 
-// フィールド内か？
-bool Field::is_inside(const GSvector3& position) const {
-    if (ABS(position.x) >= FieldSize) return false;
-    if (ABS(position.y) >= FieldSize) return false;
-    return true;
+bool Field::collide(const Line& line, GSvector3* intersect, GSplane* plane)const {
+    return gsOctreeCollisionLine(gsGetOctree(octree_), &line.start, &line.end, intersect, plane);
 }
-
-// フィールド外か？
-bool Field::is_outside(const GSvector3& position) const {
-    return !is_inside(position);
+bool Field::collide(const Ray& ray, float max_distance, GSvector3* intersect, GSplane* plane)const {
+    Line line{ ray.position,ray.position + (ray.direction.normalized() * max_distance) };
+    return collide(line, intersect, plane);
+}
+bool Field::collide(const BoundingSphere& sphere, GSvector3* center)const {
+    return gsOctreeCollisionSphere(gsGetOctree(0), &sphere.center, sphere.radius, center);
 }
