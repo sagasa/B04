@@ -15,6 +15,10 @@
 #include "ByteBuf.h"
 #include "MapObject.h"
 #include "TestObj.h"
+#include"SceneManager.h"
+#include"EnemyTestScene.h"
+#include"BossTestScene.h"
+
 
 
 void glError()
@@ -62,6 +66,7 @@ class MyGame : public gslib::Game {
     
     // ワールドクラス
     World world_;
+    SceneManager scene_;
     GLuint vrtVBO, idxVBO;
     // 開始
     void start() override {
@@ -73,6 +78,13 @@ class MyGame : public gslib::Game {
         cout << "OpenGL ver. " << glGetString(GL_VERSION) << '\n';
        // cout << "【拡張機能一覧】" << endl;
        // cout << glGetString(GL_EXTENSIONS) << endl;
+        //スカイボックスの読み込み
+        gsLoadMesh(Mesh_Skybox, "Assets/Skybox/skydome.msh");
+        //描画用オクツリーの読み込み
+        gsLoadOctree(Octree_Stage, "Assets/Octree/stage.oct");
+        //衝突判定用オクツリーの読み込み
+        gsLoadOctree(Octree_Collider, "Assets/Octree/stage_collider.oct");
+
 
           // 背景用画像の読み込み
         gsLoadTexture(Texture_BgTileNebulaGreen, "Assets/BG/tile_nebula_green_dff.png");
@@ -89,17 +101,17 @@ class MyGame : public gslib::Game {
         //Poltergeistのメッシュの読み込み
         gsLoadMesh(Mesh_Poltergeist, "Assets/Model/Enemy/Ghost2.msh");
         //エネミーのスケルトンとアニメーションを追加
-        gsLoadSkeleton(Skeleton_CarGhost,"Assets/Model/Enemy/Ghost.skl");
-        gsLoadAnimation(Animation_CarGhost, "Assets/Model/Enemy/Ghost.anm");
+        gsLoadSkeleton(Mesh_CarGhost,"Assets/Model/Enemy/Ghost.skl");
+        gsLoadAnimation(Mesh_CarGhost, "Assets/Model/Enemy/Ghost.anm");
         //SurogSakonesのメッシュの読み込み
         gsLoadMesh(Mesh_SurogSakones, "Assets/Model/Enemy/Ghost_T-pose.msh");
         //SurogSakonesのスケルトンの読み込み
-        gsLoadSkeleton(Skeleton_SurogSakones,"Assets/Model/Enemy/Ghost_T-pose.skl");
+        gsLoadSkeleton(Mesh_SurogSakones,"Assets/Model/Enemy/Ghost_T-pose.skl");
         //SurogSakonesのアニメーションの読み込み
-        gsLoadAnimation(Animation_SurogSakones, "Assets/Model/Enemy/Ghost_T-pose.anm");
+        gsLoadAnimation(Mesh_SurogSakones, "Assets/Model/Enemy/Ghost_T-pose.anm");
 
         // フィールドの追加
-        world_.add_field(new Field{ Texture_BgTileNebulaGreen });
+        world_.add_field(new Field{Octree_Stage,Octree_Collider,Mesh_Skybox});
         // カメラの追加
         world_.add_camera(new Camera{ &world_ });
         // ライトの追加
@@ -113,7 +125,11 @@ class MyGame : public gslib::Game {
         //エネミー3
         world_.add_actor(new Poltergeist{ &world_,GSvector3{70.0f,-50.0f,0.0f} });
         //ボス
-        //world_.add_actor(new SurogSakones{ &world_,GSvector3{1.0f,1.0f,0.0f} });
+        world_.add_actor(new SurogSakones{ &world_,GSvector3{1.0f,1.0f,0.0f} });
+
+        //シーン追加
+        scene_.add("EnemyTestScene", new EnemyTestScene());
+        scene_.add("BossTestScene", new BossTestScene());
 
         world_.add_actor(new MapObject{ &world_,GSvector3{0.0f,0.0f,0.0f}});
 
@@ -210,6 +226,17 @@ class MyGame : public gslib::Game {
         //cout <<x << " " << y <<" -> "<<result.x <<" "<<result.y<<" "<<result.z<< " "<<vp[0] << " " << vp[1] <<endl;
         //cout <<x << " " << y <<" -> "<< ray_pos.x <<" "<< ray_pos.y<<" "<< ray_pos.z << " " << ray_vec.x << " " << ray_vec.y << " " << ray_vec.z <<endl;
         ++i;
+
+        //キーでシーンをチェンジ
+        if (gsGetKeyTrigger(GKEY_0))
+        {
+            scene_.change("EnemyTestScene");
+        }
+        else if (gsGetKeyTrigger(GKEY_9))
+        {
+            scene_.change("BossTestScene");
+        }
+        scene_.update(delta_time);
     }
     
 
@@ -226,6 +253,8 @@ class MyGame : public gslib::Game {
         glPushMatrix();
         using namespace collisions;
         using namespace std;
+
+        scene_.draw();
 
         
         //GSmatrix4 mat4;
