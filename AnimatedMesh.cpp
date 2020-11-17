@@ -4,7 +4,7 @@
 
 const GSfloat LerpTime{ 10.0f };
 
-AnimatedMesh::AnimatedMesh(GSuint mesh, GSuint skeleton, GSuint animation, GSuint motion,bool loop = true) :
+AnimatedMesh::AnimatedMesh(GSuint mesh, GSuint skeleton, GSuint animation, GSuint motion,bool loop) :
 	mesh_{ mesh },
 	skeleton_{ skeleton },
 	animation_{ animation },
@@ -40,7 +40,7 @@ void AnimatedMesh::draw()const {
 	gsDrawMesh(mesh_);
 	gsEnable(GS_CALC_SKELETON);
 }
-void AnimatedMesh::change_motion(GSuint motion, bool loop = true) {
+void AnimatedMesh::change_motion(GSuint motion, bool loop) {
 	if (motion_ == motion)return;
 	prev_motion_ = motion_;
 	prev_motion_timer_ = motion_timer_;

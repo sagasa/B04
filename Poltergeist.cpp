@@ -1,6 +1,8 @@
 #include"Poltergeist.h"
 #include"PoltergeistBullet.h"
 #include"IWorld.h"
+#include"Field.h"
+#include"Line.h"
 #include"Assets.h"
 
 enum {
@@ -20,31 +22,48 @@ const float AttackDistance_y{ 100.0f };
 //振り向く角度
 const float TurnAngle{ 2.5f };
 //エネミーの高さ
-const float EnemyHeight{ 1.0f };
+const float EnemyHeight{ 0.75f };
 //エネミーの半径
-const float EnemyRadius{ 30.0f };
-
+const float EnemyRadius{ 0.5f };
+//足元のオフセット
+const float FootOffset{ 0.1f };
+//重力
+const float Gravity{ -0.016f };
 
 //コンストラクタ
 Poltergeist::Poltergeist(IWorld* world, const GSvector3& position) :
 	mesh_{Mesh_Poltergeist,Mesh_CarGhost,Mesh_CarGhost,MotionIdle},
 	motion_{MotionIdle} ,
-	state_{ State::Idle } {
+	motion_loop_{true},
+	state_{ State::Idle },
+	state_timer_{0.0f},
+	player_{nullptr},
+	hp_{1} {
+	//ワールドの設定
 	world_ = world;
+	//名前の設定
 	name_ = "Poltergeist";
+	//タグ名の設定
 	tag_ = "EnemyTag";
-	player_ = world_->find_actor("Player");
-	mesh_.transform(transform_.localToWorldMatrix());
-	collider_ = BoundingSphere{ EnemyRadius ,mesh_.bone_matrices(3).position() };
+	//衝突判定球の設定
+	collider_ = BoundingSphere{ EnemyRadius ,GSvector3{0.0f,EnemyHeight,0.0f} };
 	transform_.position(position);
 	transform_.localScale(GSvector3{ 0.3f,0.3f,0.3f });
-	
+	mesh_.transform(transform_.localToWorldMatrix());
 }
 
 //更新
 void Poltergeist::update(float delta_time) {
+	//プレイヤーを検索
+	player_ = world_->find_actor("Player");
 	//状態の更新
 	update_state(delta_time);
+	//重力を更新
+	velocity_.y += Gravity * delta_time;
+	//重力を加える
+	transform_.translate(0.0f, velocity_.y, 0.0f);
+	//フィールドとの衝突判定
+	collide_field();
 	//モーション変更
 	mesh_.change_motion(motion_);
 	//メッシュを更新
@@ -65,9 +84,24 @@ void Poltergeist::draw() const {
 
 //衝突リアクション
 void Poltergeist::react(Actor& other) {
-	if (other.tag() == "PlayerTag" && hp_ <= 0) {
-		//ダメージ状態に変更
-		change_state(State::Damage, MotionDamage);
+	//ダメージ中または死亡中の場合は何もしない
+	if (state_ == State::Damage || state_ == State::Died) return;
+	if (other.tag() == "PlayerAttackTag") {
+		hp_--;
+		if (hp_ <= 0) {
+			//ダメージ状態に変更
+			change_state(State::Damage, MotionDamage,false);
+		} else {
+			//攻撃の進行方向にノックバックする移動量を求める
+			velocity_ = other.velocity().getNormalized() * 0.5f;
+			//ダメージ状態に変更
+			change_state(State::Damage, MotionDamage,false);
+		}
+		return;
+	}
+	//プレイヤーまたはエネミーに衝突した
+	if (other.tag() == "PlayerTag" || other.tag() == "EnemyTag") {
+		collide_actor(other);
 	}
 }
 
@@ -85,9 +119,11 @@ void Poltergeist::update_state(float delta_time) {
 }
 
 //状態の変更
-void Poltergeist::change_state(State state, GSuint motion) {
+void Poltergeist::change_state(State state, GSuint motion,bool loop) {
 	//モーション変更
 	motion_ = motion;
+	//モーションのループ指定
+	motion_loop_ = loop;
 	//状態の変更
 	state_ = state;
 	//状態タイマーの初期化
@@ -159,6 +195,8 @@ bool Poltergeist::is_attack()const {
 
 //前向き方向のベクトルとターゲット方向のベクトルの角度差を求める(符号付き)
 float Poltergeist::target_signed_angle()const {
+	//ターゲットがいなければ0を返す
+	if (player_ == nullptr)return 0.0f;
 	//ターゲット方向のベクトルを求める
 	GSvector3 to_target = player_->transform().position() - transform_.position();
 	//前向き方向のベクトルを取得
@@ -174,11 +212,15 @@ float Poltergeist::target_angle()const {
 
 //ターゲットとの距離を求める
 float Poltergeist::target_distance()const {
+	//ターゲットがいなければ最大値を返す
+	if (player_ == nullptr) return FLT_MAX;
 	return (player_->transform().position() - transform_.position()).magnitude();
 }
 
 //ターゲットとのxの距離を求める
 float Poltergeist::target_distance_x() const {
+	//ターゲットがいなければ最大値を返す
+	if (player_ == nullptr) return FLT_MAX;
 	GSvector3 player = player_->transform().position();
 	player.y = 0.0f;
 	GSvector3 me = transform_.position();
@@ -188,6 +230,8 @@ float Poltergeist::target_distance_x() const {
 
 //ターゲットとのyの距離を求める
 float Poltergeist::target_distance_y() const {
+	//ターゲットがいなければ最大値を返す
+	if (player_ == nullptr) return FLT_MAX;
 	GSvector3 player = player_->transform().position();
 	player.x = 0.0f;
 	GSvector3 me = transform_.position();
@@ -197,5 +241,51 @@ float Poltergeist::target_distance_y() const {
 
 //ターゲット方向のベクトルを求める
 GSvector3 Poltergeist::to_target() const {
+	//ターゲットがいなければ0を返す
+	if (player_ == nullptr)return GSvector3::zero();
 	return (player_->transform().position() - transform_.position()).normalized();
+}
+
+//フィールドとの衝突処理
+void Poltergeist::collide_field() {
+	//壁との衝突判定(球体との判定)
+	BoundingSphere sphere{ collider_.radius,transform_.position() };
+	GSvector3 center;//衝突後の球体の中心座標
+	if (world_->field()->collide(collider(), &center)) {
+		//y座標は変更しない
+		center.y = transform_.position().y;
+		//補正後の座標に変更する
+		transform_.position();
+	}
+	//地面との衝突判定(線分との交差判定)
+	GSvector3 position = transform_.position();
+	Line line;
+	line.start = position + collider_.center;
+	line.end = position + GSvector3{ 0.0f,-FootOffset,0.0f };
+	GSvector3 intersect;//地面との交点
+	if (world_->field()->collide(line, &intersect)) {
+		//交差した点からy座標のみ補正する
+		position.y = intersect.y;
+		transform_.position(position);
+	}
+}
+
+//アクターとの衝突処理
+void Poltergeist::collide_actor(Actor& other) {
+	//y座標を除く座標を求める
+	GSvector3 position = transform_.position();
+	position.y = 0.0f;
+	GSvector3 target = other.transform().position();
+	target.y = 0.0f;
+	//相手との距離
+	float distance = GSvector3::distance(position, target);
+	//衝突判定球の半径同士を加えた長さを求める
+	float length = collider_.radius + other.collider().radius;
+	//衝突判定球の重なっている長さを求める
+	float overlap = length - distance;
+	//重なっている部分の半分の距離だけ離れる移動量を求める
+	GSvector3 v = (position - target).getNormalized() * overlap * 0.5f;
+	transform_.translate(v, GStransform::Space::World);
+	//フィールドとの衝突判定
+	collide_field();
 }
