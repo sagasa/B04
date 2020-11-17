@@ -26,7 +26,7 @@ private:
 	//状態更新
 	void update_state(float delta_time);
 	//状態変更
-	void change_state(State state, GSuint motion);
+	void change_state(State state, GSuint motion,bool loop = true);
 	//アイドル
 	void idle(float delta_time);
 	//ターン
@@ -37,6 +37,11 @@ private:
 	void damage(float delta_time);
 	//死亡
 	void died(float delta_time);
+
+	//フィールドとの衝突処理
+	void collide_field();
+	//アクターとの衝突処理
+	void collide_actor(Actor& other);
 
 	//振り向き判定
 	bool is_turn()const;
@@ -62,6 +67,8 @@ private:
 	AnimatedMesh mesh_;
 	//モーション番号
 	GSuint motion_;
+	//モーションのループ指定
+	bool motion_loop_;
 	//プレイヤー
 	Actor* player_;
 	//体力

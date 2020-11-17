@@ -1,5 +1,7 @@
 #include"RushGhost.h"
 #include"IWorld.h"
+#include"Field.h"
+#include"Line.h"
 #include"Assets.h"
 
 enum {
@@ -7,7 +9,8 @@ enum {
 	MotionAttack = 1,
 	MotionSpin = 2,
 	MotionDamage = 3,
-	MotionDie = 4
+	MotionDie = 4,
+	MotionRun = 5
 };
 
 //振り向き判定の距離
@@ -21,9 +24,11 @@ const float AttackDistance_y{ 50.0f };
 //振り向く角度
 const float TurnAngle{ 2.5f };
 //エネミーの高さ
-const float EnemyHeight{ 90.0f };
+const float EnemyHeight{ 0.75f };
 //エネミーの半径
-const float EnemyRadius{ 45.0f };
+const float EnemyRadius{ 0.5f };
+//足元のオフセット
+const float FootOffset{ 0.1f };
 
 //コンストラクタ
 RushGhost::RushGhost(IWorld* world, const GSvector3& position) :
@@ -33,18 +38,21 @@ RushGhost::RushGhost(IWorld* world, const GSvector3& position) :
 	world_ = world;
 	name_ = "RushGhost";
 	tag_ = "EnemyTag";
-	player_ = world_->find_actor("Player");
-	mesh_.transform(transform_.localToWorldMatrix());
-	collider_ = BoundingSphere{ EnemyRadius ,mesh_.bone_matrices(3).position() };
+	collider_ = BoundingSphere{ EnemyRadius ,GSvector3{0.0f,EnemyHeight,0.0f} };
 	transform_.position(position);
-	transform_.localScale(GSvector3{ 0.3f,0.3f,0.3f });
+	//transform_.localScale(GSvector3{ 0.3f,0.3f,0.3f });
+	mesh_.transform(transform_.localToWorldMatrix());
 
 }
 
 //更新
 void RushGhost::update(float delta_time) {
+	//プレイヤーを検索
+	player_ = world_->find_actor("Player");
 	//状態の更新
 	update_state(delta_time);
+	//フィールドとの衝突判定
+	collide_field();
 	//モーション変更
 	mesh_.change_motion(motion_);
 	//メッシュの更新
@@ -61,8 +69,25 @@ void RushGhost::draw() const {
 
 //衝突リアクション
 void RushGhost::react(Actor& other) {
-	if (other.tag() == "PlayerTag") {
-		change_state(State::Damage, MotionDamage);
+	//ダメージ中または死亡中の場合は何もしない
+	if (state_ == State::Damage || state_ == State::Died) return;
+	if (other.tag() == "PlayerAttackTag") {
+		hp_--;
+		if (hp_ <= 0) {
+			//ダメージ状態に変更
+			change_state(State::Damage, MotionDamage, false);
+		}
+		else {
+			//攻撃の進行方向にノックバックする移動量を求める
+			velocity_ = other.velocity().getNormalized() * 0.5f;
+			//ダメージ状態に変更
+			change_state(State::Damage, MotionDamage, false);
+		}
+		return;
+	}
+	//プレイヤーまたはエネミーに衝突した
+	if (other.tag() == "PlayerTag" || other.tag() == "EnemyTag") {
+		collide_actor(other);
 	}
 }
 
@@ -82,9 +107,11 @@ void RushGhost::update_state(float delta_time) {
 }
 
 //状態の変更
-void RushGhost::change_state(State state, GSuint motion) {
+void RushGhost::change_state(State state, GSuint motion,bool loop) {
 	//モーション変更
 	motion_ = motion;
+	//モーションのループ指定
+	motion_loop_ = loop;
 	//状態の変更
 	state_ = state;
 	//状態タイマー初期化
@@ -210,6 +237,8 @@ float RushGhost::target_distance()const {
 
 //ターゲット方向のベクトルを求める
 GSvector3 RushGhost::to_target() const {
+	//ターゲットがいなければ0を返す
+	if (player_ == nullptr)return GSvector3::zero();
 	return (player_->transform().position() - transform_.position()).normalized();
 }
 
@@ -229,4 +258,48 @@ float RushGhost::target_distance_y() const {
 	GSvector3 me = transform_.position();
 	me.x = 0.0f;
 	return (player - me).magnitude();
+}
+
+//フィールドとの衝突処理
+void RushGhost::collide_field() {
+	//壁との衝突判定(球体との判定)
+	BoundingSphere sphere{ collider_.radius,transform_.position() };
+	GSvector3 center;//衝突後の球体の中心座標
+	if (world_->field()->collide(collider(), &center)) {
+		//y座標は変更しない
+		center.y = transform_.position().y;
+		//補正後の座標に変更する
+		transform_.position();
+	}
+	//地面との衝突判定(線分との交差判定)
+	GSvector3 position = transform_.position();
+	Line line;
+	line.start = position + collider_.center;
+	line.end = position + GSvector3{ 0.0f,-FootOffset,0.0f };
+	GSvector3 intersect;//地面との交点
+	if (world_->field()->collide(line, &intersect)) {
+		//交差した点からy座標のみ補正する
+		position.y = intersect.y;
+		transform_.position(position);
+	}
+}
+
+//アクターとの衝突処理
+void RushGhost::collide_actor(Actor& other) {
+	//y座標を除く座標を求める
+	GSvector3 position = transform_.position();
+	position.y = 0.0f;
+	GSvector3 target = other.transform().position();
+	target.y = 0.0f;
+	//相手との距離
+	float distance = GSvector3::distance(position, target);
+	//衝突判定球の半径同士を加えた長さを求める
+	float length = collider_.radius + other.collider().radius;
+	//衝突判定球の重なっている長さを求める
+	float overlap = length - distance;
+	//重なっている部分の半分の距離だけ離れる移動量を求める
+	GSvector3 v = (position - target).getNormalized() * overlap * 0.5f;
+	transform_.translate(v, GStransform::Space::World);
+	//フィールドとの衝突判定
+	collide_field();
 }

@@ -8,7 +8,7 @@
 class EnemyTestScene : public IScene {
 public:
 	//開始
-	virtual void start() override;
+	void start() override;
 	//更新
 	virtual void update(float delta_time)override;
 	//描画
@@ -23,6 +23,8 @@ public:
 private:
 	//終了フラグ
 	bool is_end_{ false };
+	//ワールド
+	World world_;
 
 };
 #endif

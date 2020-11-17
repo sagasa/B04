@@ -129,36 +129,9 @@ class MyGame : public gslib::Game {
 
         //シーン追加
         scene_.add("EnemyTestScene", new EnemyTestScene());
-        scene_.add("BossTestScene", new BossTestScene());
-
-        world_.add_actor(new MapObject{ &world_,GSvector3{0.0f,0.0f,0.0f}});
-
-        for (int i = 0; i < 10; ++i)
-        {
-        	
-           // world_.add_actor(new TestObj{ &world_,GSvector3{-40+4.0f*i,10.0f,0.0f} ,i});
-	        
-        }
-       
+        scene_.add("BossTestScene", new BossTestScene());       
 
         glError();
-
-        //GLfloat vertices[] = { 0, 0, 0,  100, 0, 0,  100, 100, 0,  0, 100, 0 };
-
-        //int indices[] = { 0, 1, 2,  0, 2, 3 };
-        //glGenBuffers(1, &vrtVBO);
-        //glBindBuffer(GL_ARRAY_BUFFER, vrtVBO);
-        //glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices[0], GL_STATIC_DRAW);
-
-        //glGenBuffers(1, &idxVBO);
-        //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, idxVBO);
-        //glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), &indices[0], GL_STATIC_DRAW);
-
-
-        //ByteBuf buf{ 1024 };
-        //cout << "Vendor :" << buf.size() << " " << buf.data() << '\n';
-
-    	glError();
     }
 
     
@@ -172,53 +145,6 @@ class MyGame : public gslib::Game {
         int y = 0;
         gsGetMouseCursorPosition(&x, &y);
 
-        GSmatrix4	matProj;
-        GSmatrix4	matView;
-        GSmatrix4   matScreen;
-        int vp[4];
-        GSvector3   result;
-
-        // ビューポートの取得
-        glGetIntegerv(GL_VIEWPORT, vp);
-        // スクリーン座標変換行列を作成
-        float w = vp[2] / 2.0f;
-        float h = vp[3] / 2.0f;
-        matScreen._11 = w; matScreen._22 = -h;
-        matScreen._41 = w; matScreen._42 = h;
-
-        // 透視変換行列の取得
-        glGetFloatv(GL_PROJECTION_MATRIX, (GLfloat*)&matProj);
-        // 視点変換行列の取得
-        glGetFloatv(GL_MODELVIEW_MATRIX, (GLfloat*)&matView);
-        // 逆行列に
-        matView.inverse();
-        matProj.inverse();
-        matScreen.inverse();
-        // 座標変換を行う
-        GSvector3 cursor = GSvector3{ (float)x - w,vp[3] - (float)y - h,0 };
-
-
-        GSmatrix4 tmp = matScreen * matProj * matView;
-        gsVector3TransformCoord(&result, &cursor, &tmp);
-
-        if (i%6==0&&gsGetMouseButtonState(GMOUSE_BUTTON_1))
-        {
-            if (gsGetKeyState(GKEY_W))
-                world_.add_actor(new TestObj{ &world_,result.xy ,GSvector2{1,1},i });
-            else if (gsGetKeyState(GKEY_D))
-                world_.add_actor(new TestObj{ &world_,result.xy ,GSvector2{1,-1},i });
-            else if (gsGetKeyState(GKEY_S))
-                world_.add_actor(new TestObj{ &world_,result.xy ,GSvector2{-1,-1},i });
-            else if (gsGetKeyState(GKEY_A))
-                world_.add_actor(new TestObj{ &world_,result.xy ,GSvector2{-1,1},i });
-            else
-            {
-                world_.add_actor(new TestObj{ &world_,result.xy ,GSvector2{1,1},i });
-                world_.add_actor(new TestObj{ &world_,result.xy ,GSvector2{1,-1},i });
-                world_.add_actor(new TestObj{ &world_,result.xy ,GSvector2{-1,-1},i });
-                world_.add_actor(new TestObj{ &world_,result.xy ,GSvector2{-1,1},i });
-            }
-        }
         GSvector3 ray_pos, ray_vec;
         gsCalculateRay(x, y, &ray_pos.x, &ray_pos.y, &ray_pos.z, &ray_vec.x, &ray_vec.y, &ray_vec.z);
             
@@ -256,45 +182,12 @@ class MyGame : public gslib::Game {
 
         scene_.draw();
 
-        
-        //GSmatrix4 mat4;
-    //glGetFloatv(GL_MODELVIEW,mat4.v);
-
-    //GSvector3 pos = transform_.position();
-    //std::cout << " pos [" << pos.x << ", "<<pos.y<<", "<<pos.z<<"]";
-    //pos = mat4* pos;
-    //std::cout << " : [" << pos.x << ", " << pos.y << ", " << pos.z << "]";
-
-        
-        //cout << box.isInside(Vec2{0,0}) <<" "<< box.isInside(Vec2{ 4,0 }) <<endl;
-
-    	/*
-        glBindBuffer(GL_ARRAY_BUFFER, vrtVBO);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, idxVBO);
-
-        glEnableClientState(GL_VERTEX_ARRAY);
-        glVertexPointer(3, GL_DOUBLE, 0, 0);
-        
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
-        glDisableClientState(GL_VERTEX_ARRAY);
-
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-        //*/
-    
-
-        //drawUtil::drawLine(Vec2(), Vec2(100,100));
-        //*/
 
         glPopMatrix();
         glError();
     }
     // 終了
     void end() override {
-        //glDeleteBuffers(1, &vrtVBO);
-        //glDeleteBuffers(1, &idxVBO);
-    	
         world_.clear();
         // メッシュの削除
         gsDeleteMesh(0);
