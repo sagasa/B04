@@ -55,6 +55,6 @@ enum {
 };
 
 enum {
-    Octree_stage,
-    Octree_collider
+    Octree_Stage,
+    Octree_Collider
 };
