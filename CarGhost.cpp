@@ -7,7 +7,9 @@ enum {
 	MotionAttack = 1,
 	MotionSpin = 2,
 	MotionDamage = 3,
-	MotionDie = 4
+	MotionDie = 4,
+	MotionRun = 5,
+	MotioinSpawn = 6
 };
 
 //振り向き判定の距離
@@ -19,31 +21,46 @@ const float AttackDistance_y{ 50.0f };
 //振り向く角度
 const float TurnAngle{ 2.5f };
 //エネミーの高さ
-const float EnemyHeight{ 90.0f };
+const float EnemyHeight{ 1.0f };
 //エネミーの半径
-const float EnemyRadius{ 45.0f };
+const float EnemyRadius{ 1.0f };
+//足元のオフセット
+const float FootOffset{ 0.1f };
 
 //コンストラクタ
 CarGhost::CarGhost(IWorld* world, const GSvector3& position) :
 	mesh_{ Mesh_CarGhost,Mesh_CarGhost,Mesh_CarGhost,MotionIdle },
 	motion_{ MotionIdle },
-	state_{ State::Idle } {
+	motion_loop_{true},
+	state_{ State::Idle },
+	state_timer_{0.0f},
+	player_{ nullptr },
+	hp_{1} {
+	//ワールドの設定
 	world_ = world;
+	//名前の設定
 	name_ = "CarGhost";
+	//タグ名の設定
 	tag_ = "EnemyTag";
-	player_ = world_->find_actor("Player");
 	//transform_.position(GSvector3::zero());
-	mesh_.transform(transform_.localToWorldMatrix());
+	//衝突判定球の設定
 	collider_ = BoundingSphere{ EnemyRadius ,mesh_.bone_matrices(3).position()};
+	//座標の初期化
 	transform_.position(position);
+	//サイズ調整
 	transform_.localScale(GSvector3{0.3f,0.3f,0.3f});
-	
+	//メッシュの変換行列を初期化
+	mesh_.transform(transform_.localToWorldMatrix());
 }
 
 //更新
 void CarGhost::update(float delta_time) {
+	//プレイヤーを検索
+	player_ = world_->find_actor("Player");
 	//状態の更新
 	update_state(delta_time);
+	//フィールドとの衝突判定
+	collide_field();
 	//モーション変更
 	mesh_.change_motion(motion_);
 	//メッシュの更新
@@ -60,7 +77,7 @@ void CarGhost::draw() const {
 
 //衝突リアクション
 void CarGhost::react(Actor& other) {
-	if (state_ == State::Damage)return;
+	if (state_ == State::Damage || state_ == State::Died)return;
 	if (other.tag() == "PlayerTag") {
 		change_state(State::Damage, MotionDamage);
 	}
@@ -82,9 +99,11 @@ void CarGhost::update_state(float delta_time) {
 }
 
 //状態の変更
-void CarGhost::change_state(State state, GSuint motion) {
+void CarGhost::change_state(State state, GSuint motion,bool loop = true) {
 	//モーション変更
 	motion_ = motion;
+	//モーションのループ指定
+	motion_loop_ = loop;
 	//状態遷移
 	state_ = state;
 	//状態タイマーを初期化
