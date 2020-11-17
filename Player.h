@@ -1,7 +1,8 @@
 #pragma once
-#include "PhysicsActor.h"
+#include "Actor.h"
+
 // プレーヤ
-class Player : public PhysicsActor {
+class Player : public Actor {
 public:
     // コンストラクタ
     Player(IWorld* world, const GSvector3& position);

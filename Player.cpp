@@ -16,7 +16,6 @@ Player::Player(IWorld* world, const GSvector3& position) {
     tag_ = "PlayerTag";
     transform_.position(position);
     collider_ = BoundingSphere{ 5.0f };
-    box2d.size = collisions::Vec2{4,4};
 }
 
 const GSvector3 gravity{ 0.0f, 0.2f, 0.0f };
@@ -54,7 +53,6 @@ void Player::update(float delta_time) {
     position.x = CLAMP(position.x, -MovingRangeX, MovingRangeX);
     position.y = CLAMP(position.y, -MovingRangeY, MovingRangeY);
     // ç¿ïWÇÃê›íË
-    std::cout << " move " << tag_ << " : " << velocity_.x<< " " << std::endl;
     transform_.position(position);
 
 }

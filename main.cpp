@@ -10,11 +10,8 @@
 #include "Camera.h"
 #include "Field.h"
 #include "World.h"
-#include "DrawUtil.h"
 #include <iostream>
 #include "ByteBuf.h"
-#include "MapObject.h"
-#include "TestObj.h"
 #include"SceneManager.h"
 #include"EnemyTestScene.h"
 #include"BossTestScene.h"
@@ -177,7 +174,6 @@ class MyGame : public gslib::Game {
         glPopMatrix();
     	
         glPushMatrix();
-        using namespace collisions;
         using namespace std;
 
         scene_.draw();
