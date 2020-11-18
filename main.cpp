@@ -90,7 +90,7 @@ class MyGame : public gslib::Game {
         // 敵弾画像を読み込み
         gsLoadTexture(Texture_EffectLazerCyan, "Assets/Effect/fx_lazer_cyan_dff.png");
         // プレーヤメッシュの読み込み
-        gsLoadMesh(Mesh_Player, "Assets/Model/vehicle_playerShip.msh");
+        gsLoadMesh(Mesh_Player, "Assets/Model/Enemy/Ghost.msh");
         // CarGhostのメッシュの読み込み
         gsLoadMesh(Mesh_CarGhost, "Assets/Model/Enemy/Ghost.msh");
         // RushGhostのメッシュの読み込み

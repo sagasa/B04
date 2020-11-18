@@ -1,8 +1,14 @@
 #pragma once
 #include "Actor.h"
+#include "AnimatedMesh.h"
 
 // プレーヤ
 class Player : public Actor {
+    bool on_ground_;
+    //アニメーションメッシュ
+    AnimatedMesh mesh_;
+    //モーション番号
+    GSuint motion_;
 public:
     // コンストラクタ
     Player(IWorld* world, const GSvector3& position);
