@@ -10,11 +10,8 @@
 #include "Camera.h"
 #include "Field.h"
 #include "World.h"
-#include "DrawUtil.h"
 #include <iostream>
 #include "ByteBuf.h"
-#include "MapObject.h"
-#include "TestObj.h"
 #include"SceneManager.h"
 #include"EnemyTestScene.h"
 #include"BossTestScene.h"
@@ -93,7 +90,7 @@ class MyGame : public gslib::Game {
         // 敵弾画像を読み込み
         gsLoadTexture(Texture_EffectLazerCyan, "Assets/Effect/fx_lazer_cyan_dff.png");
         // プレーヤメッシュの読み込み
-        gsLoadMesh(Mesh_Player, "Assets/Model/vehicle_playerShip.msh");
+        gsLoadMesh(Mesh_Player, "Assets/Model/Enemy/Ghost.msh");
         // CarGhostのメッシュの読み込み
         gsLoadMesh(Mesh_CarGhost, "Assets/Model/Enemy/Ghost.msh");
         // RushGhostのメッシュの読み込み
@@ -177,7 +174,6 @@ class MyGame : public gslib::Game {
         glPopMatrix();
     	
         glPushMatrix();
-        using namespace collisions;
         using namespace std;
 
         scene_.draw();

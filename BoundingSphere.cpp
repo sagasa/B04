@@ -23,8 +23,10 @@ bool BoundingSphere::intersects(const BoundingSphere& other) const {
 
 // デバッグ表示
 void BoundingSphere::draw() const {
-    glPushMatrix();
+#ifdef _DEBUG
+	glPushMatrix();
     glTranslatef(center.x, center.y, center.z);
     glutWireSphere(radius, 16, 16); // ワイヤーフレームの球体を描画
     glPopMatrix();
+#endif
 }
