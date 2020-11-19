@@ -26,26 +26,20 @@
       <UniqueIdentifier>{9a39f670-72ca-4499-8e1c-6d0fa32b0200}</UniqueIdentifier>
     </Filter>
     <Filter Include="ソース ファイル\Actors">
-      <UniqueIdentifier>{353ab4af-56e3-4f6b-b2fa-5819f35e5dee}</UniqueIdentifier>
+      <UniqueIdentifier>{50fe2993-84fa-45e7-9cc8-6a2f7570ebd3}</UniqueIdentifier>
     </Filter>
     <Filter Include="ソース ファイル\Scenes">
-      <UniqueIdentifier>{31baaad8-4c87-4c4d-b550-708c351c5abc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\Scenes">
-      <UniqueIdentifier>{318dc7de-6465-49d7-9320-54be433071b4}</UniqueIdentifier>
+      <UniqueIdentifier>{2eabec00-d242-4b64-b44e-62e0ae619c65}</UniqueIdentifier>
     </Filter>
     <Filter Include="ヘッダー ファイル\Actors">
-      <UniqueIdentifier>{c447d882-dbef-476e-916e-20094bf81814}</UniqueIdentifier>
+      <UniqueIdentifier>{4a0544d0-3c33-4e37-9408-74c9f0aa182d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Scenes">
+      <UniqueIdentifier>{46eedc51-8da8-4218-a0ba-96840a60f7a4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="ActorManager.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Field.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="World.cpp">
@@ -60,32 +54,23 @@
     <ClCompile Include="ByteBuf.cpp">
       <Filter>ソース ファイル\SAGASA</Filter>
     </ClCompile>
+    <ClCompile Include="MapObject.cpp">
+      <Filter>ソース ファイル\SAGASA</Filter>
+    </ClCompile>
+    <ClCompile Include="TestObj.cpp">
+      <Filter>ソース ファイル\SAGASA</Filter>
+    </ClCompile>
     <ClCompile Include="MapGenerator.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Actor.cpp">
       <Filter>ソース ファイル\Actors</Filter>
     </ClCompile>
-    <ClCompile Include="AnimatedMesh.cpp">
-      <Filter>ソース ファイル\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="BossTestScene.cpp">
-      <Filter>ソース ファイル\Scenes</Filter>
-    </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>ソース ファイル\Actors</Filter>
     </ClCompile>
     <ClCompile Include="CarGhost.cpp">
       <Filter>ソース ファイル\Actors</Filter>
-    </ClCompile>
-    <ClCompile Include="BoundingSphere.cpp">
-      <Filter>ソース ファイル\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemyTestScene.cpp">
-      <Filter>ソース ファイル\Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="GamePlayScene.cpp">
-      <Filter>ソース ファイル\Scenes</Filter>
     </ClCompile>
     <ClCompile Include="Light.cpp">
       <Filter>ソース ファイル\Actors</Filter>
@@ -96,17 +81,41 @@
     <ClCompile Include="Poltergeist.cpp">
       <Filter>ソース ファイル\Actors</Filter>
     </ClCompile>
-    <ClCompile Include="PoltergeistBullet.cpp">
-      <Filter>ソース ファイル\Actors</Filter>
+    <ClCompile Include="Field.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="PsycokinesisBullet.cpp">
+    <ClCompile Include="SurogSakones.cpp">
       <Filter>ソース ファイル\Actors</Filter>
     </ClCompile>
     <ClCompile Include="RushGhost.cpp">
       <Filter>ソース ファイル\Actors</Filter>
     </ClCompile>
-    <ClCompile Include="SurogSakones.cpp">
+    <ClCompile Include="PsycokinesisBullet.cpp">
       <Filter>ソース ファイル\Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="PoltergeistBullet.cpp">
+      <Filter>ソース ファイル\Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimatedMesh.cpp">
+      <Filter>ソース ファイル\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="BoundingSphere.cpp">
+      <Filter>ソース ファイル\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="ActorManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="BossTestScene.cpp">
+      <Filter>ソース ファイル\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyTestScene.cpp">
+      <Filter>ソース ファイル\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="GamePlayScene.cpp">
+      <Filter>ソース ファイル\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerTestScene.cpp">
+      <Filter>ソース ファイル\Scenes</Filter>
     </ClCompile>
     <ClCompile Include="TitleScene.cpp">
       <Filter>ソース ファイル\Scenes</Filter>
@@ -137,8 +146,17 @@
     <ClInclude Include="ByteBuf.h">
       <Filter>ヘッダー ファイル\SAGASA</Filter>
     </ClInclude>
+    <ClInclude Include="MapObject.h">
+      <Filter>ヘッダー ファイル\SAGASA</Filter>
+    </ClInclude>
+    <ClInclude Include="TestObj.h">
+      <Filter>ヘッダー ファイル\SAGASA</Filter>
+    </ClInclude>
     <ClInclude Include="MapGenerator.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsActor.h">
+      <Filter>ヘッダー ファイル\SAGASA</Filter>
     </ClInclude>
     <ClInclude Include="Actor.h">
       <Filter>ヘッダー ファイル\Actors</Filter>
@@ -147,6 +165,9 @@
       <Filter>ヘッダー ファイル\Actors</Filter>
     </ClInclude>
     <ClInclude Include="CarGhost.h">
+      <Filter>ヘッダー ファイル\Actors</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h">
       <Filter>ヘッダー ファイル\Actors</Filter>
     </ClInclude>
     <ClInclude Include="Player.h">
@@ -167,25 +188,25 @@
     <ClInclude Include="SurogSakones.h">
       <Filter>ヘッダー ファイル\Actors</Filter>
     </ClInclude>
-    <ClInclude Include="Light.h">
-      <Filter>ヘッダー ファイル\Actors</Filter>
-    </ClInclude>
-    <ClInclude Include="TitleScene.h">
-      <Filter>ヘッダー ファイル\Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneNull.h">
-      <Filter>ヘッダー ファイル\Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="GamePlayScene.h">
+    <ClInclude Include="BossTestScene.h">
       <Filter>ヘッダー ファイル\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="EnemyTestScene.h">
       <Filter>ヘッダー ファイル\Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="BossTestScene.h">
+    <ClInclude Include="GamePlayScene.h">
+      <Filter>ヘッダー ファイル\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerTestScene.h">
+      <Filter>ヘッダー ファイル\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleScene.h">
       <Filter>ヘッダー ファイル\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="IScene.h">
+      <Filter>ヘッダー ファイル\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneNull.h">
       <Filter>ヘッダー ファイル\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="Ray.h">

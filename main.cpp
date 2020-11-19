@@ -15,6 +15,8 @@
 #include"SceneManager.h"
 #include"EnemyTestScene.h"
 #include"BossTestScene.h"
+#include"TitleScene.h"
+#include"PlayerTestScene.h"
 
 
 
@@ -126,8 +128,10 @@ class MyGame : public gslib::Game {
 
         //シーン追加
         scene_.add("EnemyTestScene", new EnemyTestScene());
-        scene_.add("BossTestScene", new BossTestScene());       
-
+        scene_.add("BossTestScene", new BossTestScene());
+        scene_.add("PlayerTestScene", new PlayerTestScene());
+        scene_.add("TitleScene", new TitleScene());
+        scene_.change("TitleScene");
         glError();
     }
 
@@ -149,16 +153,6 @@ class MyGame : public gslib::Game {
         //cout <<x << " " << y <<" -> "<<result.x <<" "<<result.y<<" "<<result.z<< " "<<vp[0] << " " << vp[1] <<endl;
         //cout <<x << " " << y <<" -> "<< ray_pos.x <<" "<< ray_pos.y<<" "<< ray_pos.z << " " << ray_vec.x << " " << ray_vec.y << " " << ray_vec.z <<endl;
         ++i;
-
-        //キーでシーンをチェンジ
-        if (gsGetKeyTrigger(GKEY_0))
-        {
-            scene_.change("EnemyTestScene");
-        }
-        else if (gsGetKeyTrigger(GKEY_9))
-        {
-            scene_.change("BossTestScene");
-        }
         scene_.update(delta_time);
     }
     
