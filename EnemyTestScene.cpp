@@ -12,6 +12,13 @@
 
 //開始
 void EnemyTestScene::start() {
+    //スカイボックスの読み込み
+    gsLoadMesh(Mesh_Skybox, "Assets/Skybox/skydome.msh");
+    //描画用オクツリーの読み込み
+    gsLoadOctree(Octree_Stage, "Assets/Octree/stage.oct");
+    //衝突判定用オクツリーの読み込み
+    gsLoadOctree(Octree_Collider, "Assets/Octree/stage_collider.oct");
+
     // フィールドの追加
     world_.add_field(new Field{ Octree_Stage,Octree_Collider,Mesh_Skybox });
     // カメラの追加

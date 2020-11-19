@@ -153,7 +153,6 @@
     <ClCompile Include="MapGenerator.cpp" />
     <ClCompile Include="EnemyTestScene.cpp" />
     <ClCompile Include="GamePlayScene.cpp" />
-    <ClCompile Include="MapObject.cpp" />
     <ClCompile Include="PlayerTestScene.cpp" />
     <ClCompile Include="Poltergeist.cpp" />
     <ClCompile Include="PoltergeistBullet.cpp" />
@@ -165,7 +164,6 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SceneManager.cpp" />
-    <ClCompile Include="TestObj.cpp" />
     <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="SurogSakones.cpp" />
     <ClCompile Include="World.cpp" />
@@ -184,7 +182,6 @@
     <ClInclude Include="MapGenerator.h" />
     <ClInclude Include="EnemyTestScene.h" />
     <ClInclude Include="GamePlayScene.h" />
-    <ClInclude Include="MapObject.h" />
     <ClInclude Include="PhysicsActor.h" />
     <ClInclude Include="PlayerTestScene.h" />
     <ClInclude Include="Poltergeist.h" />
@@ -200,7 +197,6 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SceneNull.h" />
-    <ClInclude Include="TestObj.h" />
     <ClInclude Include="TitleScene.h" />
     <ClInclude Include="SurogSakones.h" />
     <ClInclude Include="World.h" />

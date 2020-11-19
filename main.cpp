@@ -1,14 +1,5 @@
 #include <GSgame.h>
 #include "Assets.h"
-#include "ActorManager.h"
-#include "Player.h"
-#include"CarGhost.h"
-#include"RushGhost.h"
-#include"Poltergeist.h"
-#include"SurogSakones.h"
-#include "Light.h"
-#include "Camera.h"
-#include "Field.h"
 #include "World.h"
 #include <iostream>
 #include "ByteBuf.h"
@@ -77,68 +68,20 @@ class MyGame : public gslib::Game {
         cout << "OpenGL ver. " << glGetString(GL_VERSION) << '\n';
        // cout << "【拡張機能一覧】" << endl;
        // cout << glGetString(GL_EXTENSIONS) << endl;
-        //スカイボックスの読み込み
-        gsLoadMesh(Mesh_Skybox, "Assets/Skybox/skydome.msh");
-        //描画用オクツリーの読み込み
-        gsLoadOctree(Octree_Stage, "Assets/Octree/stage.oct");
-        //衝突判定用オクツリーの読み込み
-        gsLoadOctree(Octree_Collider, "Assets/Octree/stage_collider.oct");
-
-
-          // 背景用画像の読み込み
-        gsLoadTexture(Texture_BgTileNebulaGreen, "Assets/BG/tile_nebula_green_dff.png");
-        // プレーヤー弾画像を読み込み
-        gsLoadTexture(Texture_EffectLazerOrange, "Assets/Effect/fx_lazer_orange_dff.png");
-        // 敵弾画像を読み込み
-        gsLoadTexture(Texture_EffectLazerCyan, "Assets/Effect/fx_lazer_cyan_dff.png");
-        // プレーヤメッシュの読み込み
-        gsLoadMesh(Mesh_Player, "Assets/Model/Enemy/Ghost.msh");
-        // CarGhostのメッシュの読み込み
-        gsLoadMesh(Mesh_CarGhost, "Assets/Model/Enemy/Ghost.msh");
-        // RushGhostのメッシュの読み込み
-        gsLoadMesh(Mesh_RushGhost, "Assets/Model/Enemy/Ghost2.msh");
-        //Poltergeistのメッシュの読み込み
-        gsLoadMesh(Mesh_Poltergeist, "Assets/Model/Enemy/Ghost2.msh");
-        //エネミーのスケルトンとアニメーションを追加
-        gsLoadSkeleton(Mesh_CarGhost,"Assets/Model/Enemy/Ghost.skl");
-        gsLoadAnimation(Mesh_CarGhost, "Assets/Model/Enemy/Ghost.anm");
-        //SurogSakonesのメッシュの読み込み
-        gsLoadMesh(Mesh_SurogSakones, "Assets/Model/Enemy/Ghost_T-pose.msh");
-        //SurogSakonesのスケルトンの読み込み
-        gsLoadSkeleton(Mesh_SurogSakones,"Assets/Model/Enemy/Ghost_T-pose.skl");
-        //SurogSakonesのアニメーションの読み込み
-        gsLoadAnimation(Mesh_SurogSakones, "Assets/Model/Enemy/Ghost_T-pose.anm");
-
-        // フィールドの追加
-        world_.add_field(new Field{Octree_Stage,Octree_Collider,Mesh_Skybox});
-        // カメラの追加
-        world_.add_camera(new Camera{ &world_ });
-        // ライトの追加
-        world_.add_light(new Light{ &world_ });
-        // プレーヤの追加
-        world_.add_actor(new Player{ &world_, GSvector3{ 0.0f, 60.0f, 0.0f } });
-        //エネミー1
-        world_.add_actor(new CarGhost{ &world_,GSvector3{70.0f,30.0f,0.0f} });
-        //エネミー2
-        world_.add_actor(new RushGhost{ &world_,GSvector3{100.0f,0.0f,0.0f} });
-        //エネミー3
-        world_.add_actor(new Poltergeist{ &world_,GSvector3{70.0f,-50.0f,0.0f} });
-        //ボス
-        world_.add_actor(new SurogSakones{ &world_,GSvector3{1.0f,1.0f,0.0f} });
 
         //シーン追加
         scene_.add("EnemyTestScene", new EnemyTestScene());
         scene_.add("BossTestScene", new BossTestScene());
         scene_.add("PlayerTestScene", new PlayerTestScene());
         scene_.add("TitleScene", new TitleScene());
-        scene_.change("TitleScene");
+        scene_.change("PlayerTestScene");
         glError();
     }
 
     
     // 更新
     void update(float delta_time) override {
-        world_.update(delta_time);
+        //world_.update(delta_time);
 
     	//gsCalculateRay()
 
@@ -163,8 +106,8 @@ class MyGame : public gslib::Game {
     // 描画
     void draw() override {
         glPushMatrix();
-        world_.draw();
-        gsDrawMesh(Mesh_Player);
+        //world_.draw();
+        //gsDrawMesh(Mesh_Player);
         glPopMatrix();
     	
         glPushMatrix();

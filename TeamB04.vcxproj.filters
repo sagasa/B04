@@ -54,12 +54,6 @@
     <ClCompile Include="ByteBuf.cpp">
       <Filter>ソース ファイル\SAGASA</Filter>
     </ClCompile>
-    <ClCompile Include="MapObject.cpp">
-      <Filter>ソース ファイル\SAGASA</Filter>
-    </ClCompile>
-    <ClCompile Include="TestObj.cpp">
-      <Filter>ソース ファイル\SAGASA</Filter>
-    </ClCompile>
     <ClCompile Include="MapGenerator.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -144,12 +138,6 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="ByteBuf.h">
-      <Filter>ヘッダー ファイル\SAGASA</Filter>
-    </ClInclude>
-    <ClInclude Include="MapObject.h">
-      <Filter>ヘッダー ファイル\SAGASA</Filter>
-    </ClInclude>
-    <ClInclude Include="TestObj.h">
       <Filter>ヘッダー ファイル\SAGASA</Filter>
     </ClInclude>
     <ClInclude Include="MapGenerator.h">
