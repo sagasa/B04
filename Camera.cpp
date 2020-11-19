@@ -12,8 +12,9 @@ void Camera::draw() const {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     gluLookAt(
-        0.0f, 0.0f, 200.0f,
+        0.0f, 0.0f, 150.0f,
         0.0f, 0.0f, 0.0f,
         0.0f, 1.0f, 0.0f
     );
+    glRotatef(1, 1, 0, 0);
 }
