@@ -42,6 +42,12 @@ void Player::update(float delta_time) {
     if (gsGetKeyState(GKEY_DOWN) == GS_TRUE) {
         inputVelocity.y = -1.0f;
     }
+    if (inputVelocity.x < 0) {
+        transform_.localRotation(GSquaternion::euler(0.0f, -90.0f, 0.0f));
+    }
+    else if(inputVelocity.x > 0){
+        transform_.localRotation(GSquaternion::euler(0.0f, 90.0f, 0.0f));
+    }
     // 移動量を計算
     inputVelocity.normalize();
     float speed = 0.02f;    // 移動スピード
@@ -53,14 +59,15 @@ void Player::update(float delta_time) {
       //  std::cout << "Jump" << std::endl;
     }
     // 座標を取得
-    GSvector3 position = transform_.position();
+    //GSvector3 position = transform_.position();
     // 座標を更新
-    position += velocity_;
+    //position += velocity_;
     // 画面外に出ないように移動範囲を制限する
     //position.x = CLAMP(position.x, -MovingRangeX, MovingRangeX);
     //position.y = CLAMP(position.y, -MovingRangeY, MovingRangeY);
     // 座標の設定
-    transform_.position(position);
+    //transform_.position(position);
+    transform_.translate(velocity_ * delta_time, GStransform::Space::World);
 
    
     /*GSvector3 intersect;//地面との交点
@@ -88,7 +95,7 @@ void Player::update(float delta_time) {
         transform_.position(center);
     }
     //地面との衝突判定(線分との交差判定)
-    //GSvector3 position = transform_.position();
+    GSvector3 position = transform_.position();
     Line line;
     line.start = position + collider_.center;
     line.end = position + GSvector3{ 0.0f,-0.1f,0.0f };
