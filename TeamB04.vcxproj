@@ -149,14 +149,11 @@
     <ClCompile Include="BoundingSphere.cpp" />
     <ClCompile Include="ByteBuf.cpp" />
     <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="Collision.cpp" />
     <ClCompile Include="CSVReader.cpp" />
-    <ClCompile Include="DrawUtil.cpp" />
     <ClCompile Include="MapGenerator.cpp" />
     <ClCompile Include="EnemyTestScene.cpp" />
     <ClCompile Include="GamePlayScene.cpp" />
     <ClCompile Include="MapObject.cpp" />
-    <ClCompile Include="PhysicsActor.cpp" />
     <ClCompile Include="PlayerTestScene.cpp" />
     <ClCompile Include="Poltergeist.cpp" />
     <ClCompile Include="PoltergeistBullet.cpp" />
@@ -182,9 +179,7 @@
     <ClInclude Include="BoundingSphere.h" />
     <ClInclude Include="ByteBuf.h" />
     <ClInclude Include="Camera.h" />
-    <ClInclude Include="Collision.h" />
     <ClInclude Include="CSVReader.h" />
-    <ClInclude Include="DrawUtil.h" />
     <ClInclude Include="Line.h" />
     <ClInclude Include="MapGenerator.h" />
     <ClInclude Include="EnemyTestScene.h" />
@@ -205,7 +200,6 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SceneNull.h" />
-    <ClInclude Include="CollisionType.h" />
     <ClInclude Include="TestObj.h" />
     <ClInclude Include="TitleScene.h" />
     <ClInclude Include="SurogSakones.h" />
