@@ -157,6 +157,7 @@
     <ClCompile Include="GamePlayScene.cpp" />
     <ClCompile Include="MapObject.cpp" />
     <ClCompile Include="PhysicsActor.cpp" />
+    <ClCompile Include="PlayerTestScene.cpp" />
     <ClCompile Include="Poltergeist.cpp" />
     <ClCompile Include="PoltergeistBullet.cpp" />
     <ClCompile Include="PsycokinesisBullet.cpp" />
@@ -190,6 +191,7 @@
     <ClInclude Include="GamePlayScene.h" />
     <ClInclude Include="MapObject.h" />
     <ClInclude Include="PhysicsActor.h" />
+    <ClInclude Include="PlayerTestScene.h" />
     <ClInclude Include="Poltergeist.h" />
     <ClInclude Include="PoltergeistBullet.h" />
     <ClInclude Include="PsycokinesisBullet.h" />

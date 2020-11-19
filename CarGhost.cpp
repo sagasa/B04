@@ -29,7 +29,7 @@ const float EnemyRadius{ 0.5f };
 //足元のオフセット
 const float FootOffset{ 0.1f };
 //頭上のオフセット
-const float HeadOffset{ 1.0f };
+const float HeadOffset{ 0.1f };
 
 //コンストラクタ
 CarGhost::CarGhost(IWorld* world, const GSvector3& position) :
