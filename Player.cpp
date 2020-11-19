@@ -18,6 +18,7 @@ Player::Player(IWorld* world, const GSvector3& position) :mesh_(Mesh_Poltergeist
     tag_ = "PlayerTag";
     transform_.position(position);
     collider_ = BoundingSphere{ 0.75f };
+    transform_.localRotation(GSquaternion::euler( 0.0f, 90.0f, 0.0f ));
 }
 
 const GSvector3 gravity{ 0.0f, 0.02f, 0.0f };
@@ -56,8 +57,8 @@ void Player::update(float delta_time) {
     // 座標を更新
     position += velocity_;
     // 画面外に出ないように移動範囲を制限する
-    position.x = CLAMP(position.x, -MovingRangeX, MovingRangeX);
-    position.y = CLAMP(position.y, -MovingRangeY, MovingRangeY);
+    //position.x = CLAMP(position.x, -MovingRangeX, MovingRangeX);
+    //position.y = CLAMP(position.y, -MovingRangeY, MovingRangeY);
     // 座標の設定
     transform_.position(position);
 
@@ -66,6 +67,8 @@ void Player::update(float delta_time) {
 	BoundingSphere sphere = collider();
     if (world_->field()->collide(sphere, &intersect)) {
         //交差した点からy座標のみ補正する
+        position.y = intersect.y;
+        transform_.position(position);
     }
     if (world_->field()->collide(Line{ sphere .center,sphere.center+GSvector2{0,-sphere.radius}}, &intersect)) {
         //交差した点からy座標のみ補正する
