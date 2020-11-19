@@ -163,7 +163,7 @@ class MyGame : public gslib::Game {
     // •`‰æ
     void draw() override {
         glPushMatrix();
-        //world_.draw();
+        world_.draw();
         gsDrawMesh(Mesh_Player);
         glPopMatrix();
     	
