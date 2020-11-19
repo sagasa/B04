@@ -11,9 +11,12 @@ void PlayerTestScene::start() {
     is_end_ = false;
     // プレーヤメッシュの読み込み
     gsLoadMesh(Mesh_Player, "Assets/Model/Enemy/Ghost.msh");
+    gsLoadMesh(Mesh_Poltergeist, "Assets/Model/Enemy/Ghost.msh");
+    gsLoadSkeleton(Mesh_CarGhost, "Assets/Model/Enemy/Ghost.skl");
+    gsLoadAnimation(Animation_CarGhost, "Assets/Model/Enemy/Ghost.anm");
 
-    gsLoadOctree(Octree_Stage, "Assets/Octree/stage.oct");
-    gsLoadOctree(Octree_Collider, "Assets/Octree/stage_collider.oct");
+    gsLoadOctree(Octree_Stage, "Assets/Octree/stage1.oct");
+    gsLoadOctree(Octree_Collider, "Assets/Octree/stage1_collider.oct");
     gsLoadMesh(Mesh_Skybox, "Assets/Skybox/skydome.msh");
 
     // フィールドの追加
