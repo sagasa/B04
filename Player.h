@@ -5,6 +5,7 @@
 // プレーヤ
 class Player : public Actor {
     bool on_ground_;
+    int jump_count_;
     //アニメーションメッシュ
     AnimatedMesh mesh_;
     //モーション番号
