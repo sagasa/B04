@@ -27,7 +27,7 @@ SurogSakones::SurogSakones(IWorld* world, const GSvector3& position) :
 	tag_ = "EnemyTag";
 	name_ = "SurogSakones";
 	transform_.position(position);
-	collider_ = BoundingSphere{ 5,GSvector3::up() * 5.0f };
+	collider_ = BoundingSphere{ 0.75,GSvector3::up() * 1.0f};
 	state_ = State::Idol;
 	hp_ = 100.0f;
 	transform_.rotation(GSquaternion::euler(GSvector3{ 0.0f,-90.0f,0.0f }));
@@ -204,7 +204,7 @@ void SurogSakones::change_state(State state, GSuint motion) {
 }
 void SurogSakones::draw()const {
 	mesh_.draw();
-	//collider().draw();
+	collider().draw();
 	debug_draw();
 }
 
@@ -240,9 +240,7 @@ void SurogSakones::pshychokinesis(const GSvector3& position) {
 		//プレイヤーのベクトルを求める
 		GSvector3 to_player = (player->transform().position() - transform().position()).normalized();
 		//球を出す処理
-		world_->add_actor(new PsycokinesisBullet(world_, position,GSvector3::right()+GSvector3::up()*75.0f));
-		world_->add_actor(new PsycokinesisBullet(world_, position,GSvector3::up()*75.0f));
-		world_->add_actor(new PsycokinesisBullet(world_, position,GSvector3::up()*75.0f));
+		world_->add_actor(new PsycokinesisBullet(world_, position,GSvector3::up()*2.0f));
 	}
 }
 
