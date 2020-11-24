@@ -120,11 +120,14 @@
     <ClCompile Include="TitleScene.cpp">
       <Filter>ソース ファイル\Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="Paladin.cpp">
-      <Filter>ソース ファイル\Player</Filter>
-    </ClCompile>
     <ClCompile Include="NormalGhost.cpp">
       <Filter>ソース ファイル\Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="player_paladin.cpp">
+      <Filter>ソース ファイル\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="player_ghost.cpp">
+      <Filter>ソース ファイル\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -218,14 +221,17 @@
     <ClInclude Include="AnimatedMesh.h">
       <Filter>ヘッダー ファイル\Math</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerInfo.h">
-      <Filter>ヘッダー ファイル\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="Paladin.h">
-      <Filter>ヘッダー ファイル\Player</Filter>
-    </ClInclude>
     <ClInclude Include="NormalGhost.h">
       <Filter>ヘッダー ファイル\Actors</Filter>
+    </ClInclude>
+    <ClInclude Include="player_paladin.h">
+      <Filter>ヘッダー ファイル\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="player_info.h">
+      <Filter>ヘッダー ファイル\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="player_ghost.h">
+      <Filter>ヘッダー ファイル\Player</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -153,7 +153,8 @@
     <ClCompile Include="MapGenerator.cpp" />
     <ClCompile Include="EnemyTestScene.cpp" />
     <ClCompile Include="GamePlayScene.cpp" />
-    <ClCompile Include="Paladin.cpp" />
+    <ClCompile Include="player_ghost.cpp" />
+    <ClCompile Include="player_paladin.cpp" />
     <ClCompile Include="NormalGhost.cpp" />
     <ClCompile Include="PlayerTestScene.cpp" />
     <ClCompile Include="Poltergeist.cpp" />
@@ -184,8 +185,9 @@
     <ClInclude Include="MapGenerator.h" />
     <ClInclude Include="EnemyTestScene.h" />
     <ClInclude Include="GamePlayScene.h" />
-    <ClInclude Include="Paladin.h" />
-    <ClInclude Include="PlayerInfo.h" />
+    <ClInclude Include="player_ghost.h" />
+    <ClInclude Include="player_paladin.h" />
+    <ClInclude Include="player_info.h" />
     <ClInclude Include="NormalGhost.h" />
     <ClInclude Include="PlayerTestScene.h" />
     <ClInclude Include="Poltergeist.h" />
