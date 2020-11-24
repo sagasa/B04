@@ -6,6 +6,7 @@ class IWorld;
 #include "Actor.h"
 #include<vector>
 #include"AnimatedMesh.h"
+#include "GStransform.h"
 
 class SurogSakones :
 	public Actor
@@ -43,7 +44,7 @@ private:
 	void turn(float delta_time);
 	void move(float delta_time);
 	//状態変化
-	void change_state(State state, GSuint motion);
+	void change_state(State state, GSuint motion,bool loop=true);
 	//念動攻撃
 	void pshychokinesis(const GSvector3& position);
 	//移動しつつ攻撃
@@ -53,13 +54,16 @@ private:
 	void debug_draw()const;
 
 	//計算用関数
-	float target_distance(const Actor* other);
-	float target_signed_angle(const Actor* other);
-	float target_angle(const Actor* other);
+	float target_distance(const Actor* other)const;
+	float target_signed_angle(const Actor* other)const;
+	float target_angle(const Actor* other)const;
+	bool target_posrelation(const Actor* other)const;
+	
 	//判断
 	bool is_scythe_attack(const Actor* other);
 	bool is_psyco1_attack(const Actor* other);
 	bool is_psyco2_attack(const Actor* other);
+	bool is_turn(const Actor* other);
 
 	void collide_field();
 
@@ -78,6 +82,7 @@ private:
 	//アニメーション
 	GSuint motion_;
 	GSuint prev_motion_;
+	bool loop_{ true };
 	//
 	GSvector3 to_rotate_;
 	//向いている方向
@@ -85,6 +90,9 @@ private:
 	bool prev_flip_{ false };
 	
 	float state_timer_{ 0.0f };
+
+	//プレイヤー用の入れ物
+	Actor* player_;
 };
 
 #endif
