@@ -1,9 +1,11 @@
 #include "SurogSakones.h"
-#include"IWorld.h"
-#include"Field.h"
-#include"Player.h"
-#include"Assets.h"
-#include"PsycokinesisBullet.h"
+
+#include "IWorld.h"
+#include "Field.h"
+#include "Player.h"
+#include "Assets.h"
+#include "PsycokinesisBullet.h"
+#include "Line.h"
 
 enum {
 	MotionIdol1 = 0,
@@ -17,17 +19,28 @@ enum {
 	MotionDying = 9
 };
 
-const float MoveSpeed{ 0.35f };
-const float ScytheRange{ 0.5f };
+const float MoveSpeed{ 0.035f };
+const float SlowMoveSpeed{ 0.015f };
+const float FootOffset{ 0.1f };
+const float Gravity{ 0.2f };
+const float TurnDistance{ 2.0f };
+const float MinMoveDistance{ 2.5f };
+const float MaxMoveDistance{ 6.5f };
+
+const float ScytheRange{ 1.5f };
 
 SurogSakones::SurogSakones(IWorld* world, const GSvector3& position) :
-	mesh_{ Mesh_SurogSakones, Skeleton_SurogSakones, Animation_SurogSakones, MotionIdol1 }
+	mesh_{ Mesh_SurogSakones, Skeleton_SurogSakones, Animation_SurogSakones, MotionIdol1 },
+	player_{ nullptr },
+	move_way_{ Move::Normal },
+	loop_{ false },
+	player_cross_{ false }
 {
 	world_ = world;
 	tag_ = "EnemyTag";
 	name_ = "SurogSakones";
 	transform_.position(position);
-	collider_ = BoundingSphere{ 5,GSvector3::up() * 5.0f };
+	collider_ = BoundingSphere{ 0.75,GSvector3::up() * 1.0f };
 	state_ = State::Idol;
 	hp_ = 100.0f;
 	transform_.rotation(GSquaternion::euler(GSvector3{ 0.0f,-90.0f,0.0f }));
@@ -35,17 +48,13 @@ SurogSakones::SurogSakones(IWorld* world, const GSvector3& position) :
 	mesh_.transform(transform_.localToWorldMatrix());
 
 	move_pos_.push_back(transform().position());
-	move_pos_.push_back(transform().position() - GSvector3{ 50.0f,0.0f,0.0f });
-
-	destination_ = move_pos_[0];
-	//gsRandamize();
-	float a[10], b[10];
-	for (int i = 0; i < 10; ++i) {
-		a[i] = gsRand(10, 100);
-		b[i] = gsRand(10, 100);
-	}
+	move_pos_.push_back(transform().position() - GSvector3{ 5.0f,0.0f,0.0f });
 }
-void SurogSakones::update(float delta_time) {
+void SurogSakones::update(float delta_time) {	
+	if (player_ == nullptr)
+	{
+		player_ = world_->find_actor("Player");
+	}
 	if (gsGetKeyTrigger(GKEY_1)) {
 		change_state(State::Idol, MotionIdol1);
 	}
@@ -77,27 +86,19 @@ void SurogSakones::update(float delta_time) {
 	}
 	if (gsGetKeyTrigger(GKEY_SPACE)) {
 		if (state_ != State::Stun)Damage();
-		if (hp_ <= 0)change_state(State::Dying, MotionDying);
+		if (hp_ <= 0)change_state(State::Dying, MotionDying, false);
 	}
 	update_state(delta_time);
-	mesh_.change_motion(motion_);
+	transform_.translate(GSvector3{ 0.0f,-Gravity,0.0f }*delta_time);
+	collide_field();
+	mesh_.change_motion(motion_, loop_);
 	mesh_.update(delta_time);
 	mesh_.transform(transform_.localToWorldMatrix());
-
-	if (gsGetKeyState(GKEY_RCONTROL)) {
-		destination_ = move_pos_[0];
-	}
-	if (gsGetKeyState(GKEY_LCONTROL)) {
-		destination_ = move_pos_[1];
-	}
 }
 void SurogSakones::late_update(float delta_time) {
 	prev_flip_ = flip_;
 }
 void SurogSakones::react(Actor& other) {
-	if (other.tag() == "PlayerTag") {
-		Damage();
-	}
 }
 void SurogSakones::update_state(float delta_time) {
 	//状態によって切り替え
@@ -119,23 +120,34 @@ void SurogSakones::appear(float delta_time) {
 
 }
 void SurogSakones::idol(float delta_time) {
-	Actor* player = world_->find_actor("Player");
-	if (player == nullptr) {
+	if (player_ == nullptr)
+	{
 		change_state(State::Idol, MotionIdol1);
-		return;
 	}
-
-	if (is_scythe_attack(player)) {
+	if (is_scythe_attack(player_)) {
 		change_state(State::ScytheAttack, MotionScytheAttack);
 		return;
 	}
 
-	if (is_psyco1_attack(player)) {
+
+
+	if (is_psyco1_attack(player_)) {
 		change_state(State::PsycoAttack_1, MotionAttack2);
 		return;
 	}
-	if (is_psyco2_attack(player)) {
+	if (is_psyco2_attack(player_)) {
 		change_state(State::PsycoAttack_2, MotionAttack3);
+		return;
+	}
+
+	if (is_turn(player_))
+	{
+		change_state(State::Turn, MotionScytheAttack);
+		return;
+	}
+	if (is_move(player_))
+	{
+		change_state(State::Move, MotionMove);
 		return;
 	}
 
@@ -151,7 +163,7 @@ void SurogSakones::psyco1_attack(float delta_time) {
 		idol(delta_time);
 	}
 }
-void SurogSakones::psyco2_attack(float delta_time) {	
+void SurogSakones::psyco2_attack(float delta_time) {
 	if (state_timer_ >= mesh_.motion_end_time()) {
 		idol(delta_time);
 		pshychokinesis(transform_.position());
@@ -159,7 +171,7 @@ void SurogSakones::psyco2_attack(float delta_time) {
 }
 void SurogSakones::stun(float delta_time) {
 	if (state_timer_ >= mesh_.motion_end_time()) {
-		change_state(prev_state_, prev_motion_);
+		idol(delta_time);
 	}
 }
 void SurogSakones::dying(float delta_time) {
@@ -170,6 +182,27 @@ void SurogSakones::dying(float delta_time) {
 void SurogSakones::turn(float delta_time) {
 	if (!flip_)to_rotate_ = GSvector3{ 0.0f, 90.0f ,0.0f };
 	else to_rotate_ = { 0.0f, -90.0f ,0.0f };
+	if (target_distance(player_) <= 3.0f)
+	{
+		player_cross_ = true;
+	}
+	else
+	{
+		player_cross_ = false;
+	}
+	if (player_cross_)
+	{
+		if (target_posrelation(player_) <= 0)
+		{
+			const GSvector3 vel{ MoveSpeed,0.0f,0.0f };
+			transform_.translate(vel * delta_time, GStransform::Space::World);
+		}
+		else
+		{
+			const GSvector3 vel{ -MoveSpeed,0.0f,0.0f };
+			transform_.translate(vel * delta_time, GStransform::Space::World);
+		}
+	}
 	if (GSquaternion::angle(transform_.rotation(), GSquaternion::euler(to_rotate_)) >= 5.0f) {
 		transform_.rotate(GSvector3{ 0.0f,1.0f,0.0f }, 5.0f / delta_time, GStransform::Space::World);
 	}
@@ -177,41 +210,92 @@ void SurogSakones::turn(float delta_time) {
 		if (state_timer_ >= mesh_.motion_end_time()) {
 			transform_.rotation(GSquaternion::euler(to_rotate_));
 			flip_ = !flip_;
+			player_cross_ = false;
 			idol(delta_time);
 		}
 	}
 }
 void SurogSakones::move(float delta_time) {
-	if (GSvector3::distance(transform_.position(), destination_) <= 0.5f) {
-		transform_.position(destination_);
-		change_state(State::Turn, MotionScytheAttack);
+	if(target_distance(player_)>=MinMoveDistance&& target_distance(player_)<=MaxMoveDistance)
+	{
+		move_way_ = Move::Slowly;
 	}
-	else if (transform_.position() < destination_) {
-		velocity_ = GSvector3{ 1.0f,0.0f,0.0f }*MoveSpeed;
-		transform_.translate(velocity_ * delta_time, GStransform::Space::World);
+	else if(target_distance(player_)<=MinMoveDistance)
+	{
+		move_way_ = Move::Normal;
 	}
-	else if (transform_.position() > destination_) {
-		velocity_ = GSvector3{ -1.0f,0.0f,0.0f }*MoveSpeed;
-		transform_.translate(velocity_ * delta_time, GStransform::Space::World);
+	switch (move_way_)
+	{
+	case Move::Normal:move_normal(delta_time); break;
+	case Move::Slowly:move_slowly(delta_time); break;
+	case Move::Fast:move_fast(delta_time); break;
 	}
 }
-void SurogSakones::change_state(State state, GSuint motion) {
+
+void SurogSakones::move_normal(float delta_time)
+{
+	destination_ = player_->transform().position();
+	GSvector3 vel = GSvector3::zero();
+	if (transform_.position() < destination_) {
+		vel = GSvector3{ 1.0f,0.0f,0.0f }*MoveSpeed;
+		transform_.translate(vel * delta_time, GStransform::Space::World);
+	}
+	else if (transform_.position() > destination_) {
+		vel = GSvector3{ -1.0f,0.0f,0.0f }*MoveSpeed;
+		transform_.translate(vel * delta_time, GStransform::Space::World);
+	}
+	if (target_distance(player_) <= 1.0f) {
+		idol(delta_time);
+		return;
+	}
+}
+void SurogSakones::move_slowly(float delta_time)
+{
+	float distance = target_distance(player_);
+	if (distance<MaxMoveDistance && distance>ScytheRange)
+	{
+		if (flip_)
+		{
+			transform_.translate(GSvector3{ -SlowMoveSpeed,0.0f,0.0f }*delta_time,GStransform::Space::World);
+		}
+		else
+		{
+			transform_.translate(GSvector3{ SlowMoveSpeed,0.0f,0.0f }*delta_time, GStransform::Space::World);
+		}
+	}
+	if (distance >= MaxMoveDistance)
+	{
+		change_state(State::PsycoAttack_1, MotionAttack2);
+		return;
+	}
+	if (distance <= ScytheRange)
+	{
+		change_state(State::ScytheAttack, MotionScytheAttack);
+		return;
+	}
+}
+void SurogSakones::move_fast(float delta_time)
+{
+	return;
+}
+void SurogSakones::change_state(State state, GSuint motion, bool loop) {
 	prev_motion_ = motion_;
 	motion_ = motion;
 	prev_state_ = state_;
 	state_ = state;
 	state_timer_ = 0.0f;
+	loop_ = loop;
 }
 void SurogSakones::draw()const {
 	mesh_.draw();
-	//collider().draw();
+	collider().draw();
 	debug_draw();
 }
 
 void SurogSakones::debug_draw()const {
 	// デバッグ表示
 	gsFontParameter(GS_FONT_BOLD, 16, "ＭＳ ゴシック");
-	gsTextPos(0.0f, 0.0f);
+	gsTextPos(0.0f, 100.0f);
 	gsDrawText("SurogSakones:座標(%f,%f,%f)", transform_.position().x, transform_.position().y, transform_.position().z);
 	gsTextPos(0.0f, 20.0f);
 	gsDrawText("SurogSakones:ローテーション(%f,%f,%f)", transform_.rotation().x, transform_.rotation().y, transform_.rotation().z);
@@ -221,6 +305,8 @@ void SurogSakones::debug_draw()const {
 	gsDrawText("SurogSakones:モーション番号(%d)", motion_);
 	gsTextPos(0.0f, 80.0f);
 	gsDrawText("状態：(%d)", state_);
+	gsTextPos(0.0f, 120.0f);
+	gsDrawText("プレイヤーとの角度(%d)", target_posrelation(player_));
 }
 
 /**
@@ -240,9 +326,7 @@ void SurogSakones::pshychokinesis(const GSvector3& position) {
 		//プレイヤーのベクトルを求める
 		GSvector3 to_player = (player->transform().position() - transform().position()).normalized();
 		//球を出す処理
-		world_->add_actor(new PsycokinesisBullet(world_, position,GSvector3::right()+GSvector3::up()*75.0f));
-		world_->add_actor(new PsycokinesisBullet(world_, position,GSvector3::up()*75.0f));
-		world_->add_actor(new PsycokinesisBullet(world_, position,GSvector3::up()*75.0f));
+		world_->add_actor(new PsycokinesisBullet(world_, position, GSvector3::up() * 2.0f));
 	}
 }
 
@@ -250,22 +334,14 @@ void SurogSakones::move_attack(float delta_time) {
 
 }
 
-void SurogSakones::turn(float delta_time, float slow_value, bool flip) {
-	if (flip)to_rotate_ = GSvector3{ 0.0f, 90.0f ,0.0f };
-	else to_rotate_ = { 0.0f, -90.0f ,0.0f };
-	motion_ = MotionScytheAttack;
-	if (GSquaternion::angle(transform_.rotation(), GSquaternion::euler(to_rotate_)) >= 5.0f) {
-		transform_.rotate(GSvector3{ 0.0f,1.0f,0.0f }, 5.0f / delta_time, GStransform::Space::World);
-	}
-	else {
-		transform_.rotation(GSquaternion::euler(to_rotate_));
-		state_ = State::Idol;
-	}
-}
-float SurogSakones::target_distance(const Actor* other) {
+//ターゲットとの距離
+float SurogSakones::target_distance(const Actor* other)const {
+	if (other == nullptr)return 10000.0f;
 	return (other->transform().position() - transform_.position()).magnitude();
 }
-float SurogSakones::target_signed_angle(const Actor* other) {
+//符号ありの角度
+float SurogSakones::target_signed_angle(const Actor* other)const {
+	if (other == nullptr)return 0.0f;
 	GSvector3 to_player = other->transform().position() - transform_.position();
 	GSvector3 forward = transform_.forward();
 
@@ -274,8 +350,16 @@ float SurogSakones::target_signed_angle(const Actor* other) {
 
 	return GSvector3::signed_angle(to_player, forward);
 }
-float SurogSakones::target_angle(const Actor* other) {
+//符号なしの角度
+float SurogSakones::target_angle(const Actor* other)const {
 	return std::abs(target_signed_angle(other));
+}
+//位置関係(左だったら負、右だったら正)
+//nullptrだったら負
+bool SurogSakones::target_posrelation(const Actor* other)const
+{
+	if (other == nullptr)return false;
+	return (transform_.position().x - other->transform().position().x) <= 0;
 }
 
 bool SurogSakones::is_scythe_attack(const Actor* other) {
@@ -288,4 +372,36 @@ bool SurogSakones::is_psyco2_attack(const Actor* other) {
 	return false;
 	//プレイヤーの状態が憑依しているなら
 	//Player* player = (Player*)other;
+}
+bool SurogSakones::is_turn(const Actor* other)
+{
+	return (target_angle(other) >= 90.0f);
+}
+
+bool SurogSakones::is_move(const Actor* other)
+{
+	return (target_distance(other)<=MaxMoveDistance);
+}
+
+void SurogSakones::collide_field()
+{
+	GSvector3 center;
+	if (world_->field()->collide(collider(), &center))
+	{
+		center.y = transform_.position().y;
+		center.z = 0.0f;
+		transform_.position(center);
+	}
+
+	GSvector3 position = transform_.position();
+	GSvector3 intersect;
+	Line line;
+	line.start = position + collider_.center;
+	line.end = position + GSvector3{ 0.0f,-FootOffset,0.0f };
+	if (world_->field()->collide(line, &intersect))
+	{
+		position.y = intersect.y;
+		transform_.position(position);
+		velocity_.y = 0;
+	}
 }

@@ -23,6 +23,13 @@ public:
 		Stun,
 		Dying,
 	};
+private:
+	enum class Move
+	{
+		Normal,
+		Slowly,
+		Fast,
+	};
 public:
 	SurogSakones(IWorld* world, const GSvector3& position);	
 	virtual void update(float delta_time)override;
@@ -41,9 +48,16 @@ private:
 	void stun(float delta_time);
 	void dying(float delta_time);
 	void turn(float delta_time);
+	
 	void move(float delta_time);
+	//普通に近づく
+	void move_normal(float delta_time);
+	//ゆっくり移動近づきすぎない。(逆に離れるぐらい)
+	void move_slowly(float delta_time);
+	//早く近づき攻撃
+	void move_fast(float delta_time);
 	//状態変化
-	void change_state(State state, GSuint motion);
+	void change_state(State state, GSuint motion,bool loop=true);
 	//念動攻撃
 	void pshychokinesis(const GSvector3& position);
 	//移動しつつ攻撃
@@ -53,36 +67,49 @@ private:
 	void debug_draw()const;
 
 	//計算用関数
-	float target_distance(const Actor* other);
-	float target_signed_angle(const Actor* other);
-	float target_angle(const Actor* other);
+	float target_distance(const Actor* other)const;
+	float target_signed_angle(const Actor* other)const;
+	float target_angle(const Actor* other)const;
+	bool target_posrelation(const Actor* other)const;
+	
 	//判断
 	bool is_scythe_attack(const Actor* other);
 	bool is_psyco1_attack(const Actor* other);
 	bool is_psyco2_attack(const Actor* other);
+	bool is_turn(const Actor* other);
+	bool is_move(const Actor* other);
+
+	void collide_field();
 
 
 private:
 	State state_ = State::Unkown;
 	State prev_state_;
+	float state_timer_{ 0.0f };
 	//体力
 	float hp_{ 0.0f };
 	//スタン値
 	float stun_{ 0.0f };
+	
 	std::vector<GSvector3> move_pos_;
 	GSvector3 destination_;
+	Move move_way_;
 	//アニメーション制御
 	AnimatedMesh mesh_;
 	//アニメーション
 	GSuint motion_;
 	GSuint prev_motion_;
+	bool loop_{ true };
 	//
 	GSvector3 to_rotate_;
 	//向いている方向
 	bool flip_{ false };
 	bool prev_flip_{ false };
-	
-	float state_timer_{ 0.0f };
+
+	bool player_cross_{ false };
+
+	//プレイヤー用の入れ物
+	Actor* player_;
 };
 
 #endif

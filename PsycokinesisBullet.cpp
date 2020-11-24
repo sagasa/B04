@@ -2,17 +2,18 @@
 #include"IWorld.h"
 #include"Field.h"
 
-const float MaxAcceleration = 100.0f;
+const float MaxAcceleration = 10.0f;
 
-PsycokinesisBullet::PsycokinesisBullet(IWorld* world, const GSvector3& position, const GSvector3& velocity)
-	:acceleration_{ GSvector3(0.0f, 0.0f, 0.0f) }, period_{ 3.0f }
+PsycokinesisBullet::PsycokinesisBullet(IWorld* world, const GSvector3& position, const GSvector3& velocity, float period)
+	:acceleration_{ GSvector3(0.0f, 0.0f, 0.0f) },
+	period_{period}
 {
 	world_ = world;
 	name_ = "PsycokinesisBullet";
 	tag_ = "Enemy";
 	transform_.position(position);
 	velocity_ = velocity;
-	collider_ = BoundingSphere{ 3 };
+	collider_ = BoundingSphere{ 0.3f };
 }
 
 void PsycokinesisBullet::update(float delta_time) {
@@ -23,7 +24,7 @@ void PsycokinesisBullet::update(float delta_time) {
 	GSvector3 diff = player->transform().position() - transform_.position();
 	acceleration_ += ((diff - velocity_ * period_) * 2.0f / (period_ * period_));
 	if (acceleration_.magnitude() >= MaxAcceleration) {
-		acceleration_ = acceleration_.normalize() * 100.0f;
+		acceleration_ = acceleration_.normalize() * MaxAcceleration;
 	}
 	period_ -= (delta_time / 60.0f);
 
