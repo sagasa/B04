@@ -6,7 +6,6 @@ class IWorld;
 #include "Actor.h"
 #include<vector>
 #include"AnimatedMesh.h"
-#include "GStransform.h"
 
 class SurogSakones :
 	public Actor
@@ -23,6 +22,13 @@ public:
 		Turn,
 		Stun,
 		Dying,
+	};
+private:
+	enum class Move
+	{
+		Normal,
+		Slowly,
+		Fast,
 	};
 public:
 	SurogSakones(IWorld* world, const GSvector3& position);	
@@ -42,7 +48,14 @@ private:
 	void stun(float delta_time);
 	void dying(float delta_time);
 	void turn(float delta_time);
+	
 	void move(float delta_time);
+	//普通に近づく
+	void move_normal(float delta_time);
+	//ゆっくり移動近づきすぎない。(逆に離れるぐらい)
+	void move_slowly(float delta_time);
+	//早く近づき攻撃
+	void move_fast(float delta_time);
 	//状態変化
 	void change_state(State state, GSuint motion,bool loop=true);
 	//念動攻撃
@@ -64,6 +77,7 @@ private:
 	bool is_psyco1_attack(const Actor* other);
 	bool is_psyco2_attack(const Actor* other);
 	bool is_turn(const Actor* other);
+	bool is_move(const Actor* other);
 
 	void collide_field();
 
@@ -71,12 +85,15 @@ private:
 private:
 	State state_ = State::Unkown;
 	State prev_state_;
+	float state_timer_{ 0.0f };
 	//体力
 	float hp_{ 0.0f };
 	//スタン値
 	float stun_{ 0.0f };
+	
 	std::vector<GSvector3> move_pos_;
 	GSvector3 destination_;
+	Move move_way_;
 	//アニメーション制御
 	AnimatedMesh mesh_;
 	//アニメーション
@@ -88,8 +105,8 @@ private:
 	//向いている方向
 	bool flip_{ false };
 	bool prev_flip_{ false };
-	
-	float state_timer_{ 0.0f };
+
+	bool player_cross_{ false };
 
 	//プレイヤー用の入れ物
 	Actor* player_;

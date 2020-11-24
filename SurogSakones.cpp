@@ -1,4 +1,5 @@
 #include "SurogSakones.h"
+
 #include "IWorld.h"
 #include "Field.h"
 #include "Player.h"
@@ -19,14 +20,21 @@ enum {
 };
 
 const float MoveSpeed{ 0.035f };
+const float SlowMoveSpeed{ 0.015f };
 const float FootOffset{ 0.1f };
 const float Gravity{ 0.2f };
 const float TurnDistance{ 2.0f };
+const float MinMoveDistance{ 2.5f };
+const float MaxMoveDistance{ 6.5f };
 
-const float ScytheRange{ 1.0f };
+const float ScytheRange{ 1.5f };
 
 SurogSakones::SurogSakones(IWorld* world, const GSvector3& position) :
-	mesh_{ Mesh_SurogSakones, Skeleton_SurogSakones, Animation_SurogSakones, MotionIdol1 }, player_{ nullptr },loop_{false}
+	mesh_{ Mesh_SurogSakones, Skeleton_SurogSakones, Animation_SurogSakones, MotionIdol1 },
+	player_{ nullptr },
+	move_way_{ Move::Normal },
+	loop_{ false },
+	player_cross_{ false }
 {
 	world_ = world;
 	tag_ = "EnemyTag";
@@ -42,7 +50,7 @@ SurogSakones::SurogSakones(IWorld* world, const GSvector3& position) :
 	move_pos_.push_back(transform().position());
 	move_pos_.push_back(transform().position() - GSvector3{ 5.0f,0.0f,0.0f });
 }
-void SurogSakones::update(float delta_time) {
+void SurogSakones::update(float delta_time) {	
 	if (player_ == nullptr)
 	{
 		player_ = world_->find_actor("Player");
@@ -62,7 +70,7 @@ void SurogSakones::update(float delta_time) {
 		change_state(State::ScytheAttack, MotionScytheAttack);
 	}
 	if (gsGetKeyTrigger(GKEY_5)) {
-		change_state(State::PsycoAttack_1, MotionAttack2);		
+		change_state(State::PsycoAttack_1, MotionAttack2);
 	}
 	if (gsGetKeyTrigger(GKEY_6)) {
 		change_state(State::PsycoAttack_2, MotionAttack3);
@@ -78,14 +86,14 @@ void SurogSakones::update(float delta_time) {
 	}
 	if (gsGetKeyTrigger(GKEY_SPACE)) {
 		if (state_ != State::Stun)Damage();
-		if (hp_ <= 0)change_state(State::Dying, MotionDying,false);
+		if (hp_ <= 0)change_state(State::Dying, MotionDying, false);
 	}
 	update_state(delta_time);
 	transform_.translate(GSvector3{ 0.0f,-Gravity,0.0f }*delta_time);
 	collide_field();
-	mesh_.change_motion(motion_,loop_);
+	mesh_.change_motion(motion_, loop_);
 	mesh_.update(delta_time);
-	mesh_.transform(transform_.localToWorldMatrix());	
+	mesh_.transform(transform_.localToWorldMatrix());
 }
 void SurogSakones::late_update(float delta_time) {
 	prev_flip_ = flip_;
@@ -112,15 +120,16 @@ void SurogSakones::appear(float delta_time) {
 
 }
 void SurogSakones::idol(float delta_time) {
-	if(player_==nullptr)
+	if (player_ == nullptr)
 	{
 		change_state(State::Idol, MotionIdol1);
 	}
-
 	if (is_scythe_attack(player_)) {
 		change_state(State::ScytheAttack, MotionScytheAttack);
 		return;
 	}
+
+
 
 	if (is_psyco1_attack(player_)) {
 		change_state(State::PsycoAttack_1, MotionAttack2);
@@ -131,9 +140,14 @@ void SurogSakones::idol(float delta_time) {
 		return;
 	}
 
-	if(is_turn(player_))
+	if (is_turn(player_))
 	{
 		change_state(State::Turn, MotionScytheAttack);
+		return;
+	}
+	if (is_move(player_))
+	{
+		change_state(State::Move, MotionMove);
 		return;
 	}
 
@@ -157,7 +171,7 @@ void SurogSakones::psyco2_attack(float delta_time) {
 }
 void SurogSakones::stun(float delta_time) {
 	if (state_timer_ >= mesh_.motion_end_time()) {
-		change_state(prev_state_, prev_motion_);
+		idol(delta_time);
 	}
 }
 void SurogSakones::dying(float delta_time) {
@@ -168,17 +182,25 @@ void SurogSakones::dying(float delta_time) {
 void SurogSakones::turn(float delta_time) {
 	if (!flip_)to_rotate_ = GSvector3{ 0.0f, 90.0f ,0.0f };
 	else to_rotate_ = { 0.0f, -90.0f ,0.0f };
-	if(target_distance(player_)<=4.0f)
+	if (target_distance(player_) <= 3.0f)
 	{
-		if(target_posrelation(player_)<=0)
+		player_cross_ = true;
+	}
+	else
+	{
+		player_cross_ = false;
+	}
+	if (player_cross_)
+	{
+		if (target_posrelation(player_) <= 0)
 		{
-			const GSvector3 vel{ 0.02f,0.0f,0.0f };
-			transform_.translate(vel * delta_time,GStransform::Space::World);			
+			const GSvector3 vel{ MoveSpeed,0.0f,0.0f };
+			transform_.translate(vel * delta_time, GStransform::Space::World);
 		}
 		else
 		{
-			const GSvector3 vel{ -0.02f,0.0f,0.0f };
-			transform_.translate(vel*delta_time, GStransform::Space::World);
+			const GSvector3 vel{ -MoveSpeed,0.0f,0.0f };
+			transform_.translate(vel * delta_time, GStransform::Space::World);
 		}
 	}
 	if (GSquaternion::angle(transform_.rotation(), GSquaternion::euler(to_rotate_)) >= 5.0f) {
@@ -188,23 +210,73 @@ void SurogSakones::turn(float delta_time) {
 		if (state_timer_ >= mesh_.motion_end_time()) {
 			transform_.rotation(GSquaternion::euler(to_rotate_));
 			flip_ = !flip_;
+			player_cross_ = false;
 			idol(delta_time);
 		}
 	}
 }
 void SurogSakones::move(float delta_time) {
-	if (GSvector3::distance(transform_.position(), destination_) <= 0.1f) {
-		transform_.position(destination_);
-		change_state(State::Turn, MotionScytheAttack);
+	if(target_distance(player_)>=MinMoveDistance&& target_distance(player_)<=MaxMoveDistance)
+	{
+		move_way_ = Move::Slowly;
 	}
-	else if (transform_.position() < destination_) {
-		velocity_ = GSvector3{ 1.0f,0.0f,0.0f }*MoveSpeed;
-		transform_.translate(velocity_ * delta_time, GStransform::Space::World);
+	else if(target_distance(player_)<=MinMoveDistance)
+	{
+		move_way_ = Move::Normal;
+	}
+	switch (move_way_)
+	{
+	case Move::Normal:move_normal(delta_time); break;
+	case Move::Slowly:move_slowly(delta_time); break;
+	case Move::Fast:move_fast(delta_time); break;
+	}
+}
+
+void SurogSakones::move_normal(float delta_time)
+{
+	destination_ = player_->transform().position();
+	GSvector3 vel = GSvector3::zero();
+	if (transform_.position() < destination_) {
+		vel = GSvector3{ 1.0f,0.0f,0.0f }*MoveSpeed;
+		transform_.translate(vel * delta_time, GStransform::Space::World);
 	}
 	else if (transform_.position() > destination_) {
-		velocity_ = GSvector3{ -1.0f,0.0f,0.0f }*MoveSpeed;
-		transform_.translate(velocity_ * delta_time, GStransform::Space::World);
+		vel = GSvector3{ -1.0f,0.0f,0.0f }*MoveSpeed;
+		transform_.translate(vel * delta_time, GStransform::Space::World);
 	}
+	if (target_distance(player_) <= 1.0f) {
+		idol(delta_time);
+		return;
+	}
+}
+void SurogSakones::move_slowly(float delta_time)
+{
+	float distance = target_distance(player_);
+	if (distance<MaxMoveDistance && distance>ScytheRange)
+	{
+		if (flip_)
+		{
+			transform_.translate(GSvector3{ -SlowMoveSpeed,0.0f,0.0f }*delta_time,GStransform::Space::World);
+		}
+		else
+		{
+			transform_.translate(GSvector3{ SlowMoveSpeed,0.0f,0.0f }*delta_time, GStransform::Space::World);
+		}
+	}
+	if (distance >= MaxMoveDistance)
+	{
+		change_state(State::PsycoAttack_1, MotionAttack2);
+		return;
+	}
+	if (distance <= ScytheRange)
+	{
+		change_state(State::ScytheAttack, MotionScytheAttack);
+		return;
+	}
+}
+void SurogSakones::move_fast(float delta_time)
+{
+	return;
 }
 void SurogSakones::change_state(State state, GSuint motion, bool loop) {
 	prev_motion_ = motion_;
@@ -290,7 +362,7 @@ bool SurogSakones::target_posrelation(const Actor* other)const
 	return (transform_.position().x - other->transform().position().x) <= 0;
 }
 
-bool SurogSakones::is_scythe_attack(const Actor* other) {	
+bool SurogSakones::is_scythe_attack(const Actor* other) {
 	return (target_distance(other) <= ScytheRange && target_signed_angle(other) <= 60.0f);
 }
 bool SurogSakones::is_psyco1_attack(const Actor* other) {
@@ -304,6 +376,11 @@ bool SurogSakones::is_psyco2_attack(const Actor* other) {
 bool SurogSakones::is_turn(const Actor* other)
 {
 	return (target_angle(other) >= 90.0f);
+}
+
+bool SurogSakones::is_move(const Actor* other)
+{
+	return (target_distance(other)<=MaxMoveDistance);
 }
 
 void SurogSakones::collide_field()
