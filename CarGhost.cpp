@@ -35,7 +35,7 @@ const float Speed{ 0.025f };
 
 //コンストラクタ
 CarGhost::CarGhost(IWorld* world, const GSvector3& position) :
-	mesh_{ Mesh_Poltergeist,Mesh_CarGhost,Mesh_CarGhost,MotionIdle },
+	mesh_{ Mesh_Poltergeist,Skeleton_CarGhost,Animation_CarGhost,MotionIdle },
 	motion_{ MotionIdle },
 	motion_loop_{true},
 	state_{ State::Idle },

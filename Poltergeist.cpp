@@ -32,7 +32,7 @@ const float Gravity{ -0.016f };
 
 //コンストラクタ
 Poltergeist::Poltergeist(IWorld* world, const GSvector3& position) :
-	mesh_{Mesh_Poltergeist,Mesh_CarGhost,Mesh_CarGhost,MotionIdle},
+	mesh_{Mesh_Poltergeist,Skeleton_Poltergeist,Animation_Poltergeist,MotionIdle},
 	motion_{MotionIdle} ,
 	motion_loop_{true},
 	state_{ State::Idle },
