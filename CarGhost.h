@@ -52,8 +52,6 @@ private:
 	//アクターとの衝突処理
 	void collide_actor(Actor& other);
 
-	//振り向き判定
-	bool is_turn()const;
 	//攻撃判定
 	bool is_attack()const;
 	//移動判定
@@ -93,6 +91,8 @@ private:
 	State state_;
 	//状態タイマー
 	float state_timer_;
+	//向きを変えるか
+	bool is_turn_;
 };
 
 #endif

@@ -12,12 +12,24 @@
 
 //開始
 void EnemyTestScene::start() {
+    // CarGhostのメッシュの読み込み
+    gsLoadMesh(Mesh_CarGhost, "Assets/Model/Enemy/Ghost.msh");
+    gsLoadMesh(Mesh_RushGhost, "Assets/Model/Enemy/Ghost2.msh");
+    gsLoadMesh(Mesh_Poltergeist, "Assets/Model/Enemy/Ghost3.msh");
+    gsLoadSkeleton(Mesh_CarGhost, "Assets/Model/Enemy/Ghost.skl");
+    gsLoadSkeleton(Mesh_RushGhost, "Assets/Model/Enemy/Ghost.skl");
+    gsLoadSkeleton(Mesh_Poltergeist, "Assets/Model/Enemy/Ghost.skl");
+    gsLoadAnimation(Animation_CarGhost, "Assets/Model/Enemy/Ghost.anm");
+    gsLoadAnimation(Mesh_CarGhost, "Assets/Model/Enemy/Ghost.anm");
+    gsLoadAnimation(Mesh_RushGhost, "Assets/Model/Enemy/Ghost.anm");
+    gsLoadAnimation(Mesh_Poltergeist, "Assets/Model/Enemy/Ghost.anm");
+
     //スカイボックスの読み込み
     gsLoadMesh(Mesh_Skybox, "Assets/Skybox/skydome.msh");
     //描画用オクツリーの読み込み
-    gsLoadOctree(Octree_Stage, "Assets/Octree/stage.oct");
+    gsLoadOctree(Octree_Stage, "Assets/Octree/stage1.oct");
     //衝突判定用オクツリーの読み込み
-    gsLoadOctree(Octree_Collider, "Assets/Octree/stage_collider.oct");
+    gsLoadOctree(Octree_Collider, "Assets/Octree/stage1_collider.oct");
 
     // フィールドの追加
     world_.add_field(new Field{ Octree_Stage,Octree_Collider,Mesh_Skybox });
@@ -28,11 +40,11 @@ void EnemyTestScene::start() {
     // プレーヤの追加
     world_.add_actor(new Player{ &world_, GSvector3{ 0.0f, 0.0f, 0.0f } });
     //エネミー1
-    world_.add_actor(new CarGhost{ &world_,GSvector3{70.0f,30.0f,0.0f} });
+    world_.add_actor(new CarGhost{ &world_,GSvector3{10.0f,0.0f,0.0f} });
     //エネミー2
-    world_.add_actor(new RushGhost{ &world_,GSvector3{100.0f,0.0f,0.0f} });
+    world_.add_actor(new RushGhost{ &world_,GSvector3{-10.0f,0.0f,0.0f} });
     //エネミー3
-    world_.add_actor(new Poltergeist{ &world_,GSvector3{70.0f,-50.0f,0.0f} });
+    world_.add_actor(new Poltergeist{ &world_,GSvector3{0.0f,5.0f,0.0f} });
 }
 
 //更新

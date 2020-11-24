@@ -9,6 +9,7 @@ public:
 	enum class State {
 		Idle,
 		Turn,
+		Found,
 		Attack,
 		Damage,
 		Died
@@ -29,6 +30,8 @@ private:
 	void change_state(State state, GSuint motion,bool loop = true);
 	//アイドル
 	void idle(float delta_time);
+	//プレイヤーを見つけた
+	void found(float delta_time);
 	//ターン
 	void turn(float delta_time);
 	//攻撃
