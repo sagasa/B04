@@ -16,13 +16,12 @@ void EnemyTestScene::start() {
     gsLoadMesh(Mesh_CarGhost, "Assets/Model/Enemy/Ghost.msh");
     gsLoadMesh(Mesh_RushGhost, "Assets/Model/Enemy/Ghost2.msh");
     gsLoadMesh(Mesh_Poltergeist, "Assets/Model/Enemy/Ghost3.msh");
-    gsLoadSkeleton(Mesh_CarGhost, "Assets/Model/Enemy/Ghost.skl");
-    gsLoadSkeleton(Mesh_RushGhost, "Assets/Model/Enemy/Ghost.skl");
-    gsLoadSkeleton(Mesh_Poltergeist, "Assets/Model/Enemy/Ghost.skl");
+    gsLoadSkeleton(Skeleton_CarGhost, "Assets/Model/Enemy/Ghost.skl");
+    gsLoadSkeleton(Skeleton_RushGhost, "Assets/Model/Enemy/Ghost.skl");
+    gsLoadSkeleton(Skeleton_Poltergeist, "Assets/Model/Enemy/Ghost.skl");
     gsLoadAnimation(Animation_CarGhost, "Assets/Model/Enemy/Ghost.anm");
-    gsLoadAnimation(Mesh_CarGhost, "Assets/Model/Enemy/Ghost.anm");
-    gsLoadAnimation(Mesh_RushGhost, "Assets/Model/Enemy/Ghost.anm");
-    gsLoadAnimation(Mesh_Poltergeist, "Assets/Model/Enemy/Ghost.anm");
+    gsLoadAnimation(Animation_RushGhost, "Assets/Model/Enemy/Ghost.anm");
+    gsLoadAnimation(Animation_Poltergeist, "Assets/Model/Enemy/Ghost.anm");
 
     //スカイボックスの読み込み
     gsLoadMesh(Mesh_Skybox, "Assets/Skybox/skydome.msh");

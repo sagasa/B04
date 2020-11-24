@@ -32,7 +32,7 @@ const float FootOffset{ 0.1f };
 
 //コンストラクタ
 RushGhost::RushGhost(IWorld* world, const GSvector3& position) :
-	mesh_{ Mesh_RushGhost,Mesh_CarGhost,Mesh_CarGhost, MotionIdle },
+	mesh_{ Mesh_RushGhost,Skeleton_RushGhost,Animation_RushGhost, MotionIdle },
 	motion_{ MotionIdle },
 	state_{ State::Idle } {
 	world_ = world;
