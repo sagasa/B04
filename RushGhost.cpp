@@ -16,11 +16,11 @@ enum {
 //振り向き判定の距離
 const float TurnDistance{ 1.5f };
 //攻撃判定の距離
-const float AttackDistance{ 15.0f };
+const float AttackDistance{ 1.5f };
 //移動判定の距離x
-const float AttackDistance_x{ 100.0f };
+const float MoveDistance_x{ 10.0f };
 //移動判定の距離ｙ
-const float AttackDistance_y{ 50.0f };
+const float MoveDistance_y{ 5.0f };
 //振り向く角度
 const float TurnAngle{ 2.5f };
 //エネミーの高さ
@@ -40,7 +40,7 @@ RushGhost::RushGhost(IWorld* world, const GSvector3& position) :
 	tag_ = "EnemyTag";
 	collider_ = BoundingSphere{ EnemyRadius ,GSvector3{0.0f,EnemyHeight,0.0f} };
 	transform_.position(position);
-	//transform_.localScale(GSvector3{ 0.3f,0.3f,0.3f });
+	transform_.localRotation(GSquaternion::euler(0.0f, -90.0f, 0.0f));
 	mesh_.transform(transform_.localToWorldMatrix());
 
 }
@@ -206,13 +206,13 @@ bool RushGhost::is_turn()const {
 //攻撃判定
 bool RushGhost::is_attack()const {
 	//攻撃距離内かつ前向き方向のベクトルとターゲット方向のベクトルの角度差が20.0度以下か？
-	return (target_distance() <= AttackDistance) && (target_angle() <= 180.0f);
+	return (target_distance() <= AttackDistance) && (target_angle() <= 20.0f);
 }
 
 //移動判定
 bool RushGhost::is_move()const {
 	//移動距離かつ前方向のベクトルとターゲット方向のベクトルの角度差が100.0度以下か？
-	return (target_distance_x() <= AttackDistance_x) && (target_distance_y() <= AttackDistance_y) && (target_angle() <= 180.0f);
+	return (target_distance_x() <= MoveDistance_x) && (target_distance_y() <= MoveDistance_y) && (target_angle() <= 180.0f);
 }
 
 //前向き方向のベクトルとターゲット方向のベクトルの角度差を求める(符号付き)
@@ -263,24 +263,12 @@ float RushGhost::target_distance_y() const {
 //フィールドとの衝突処理
 void RushGhost::collide_field() {
 	//壁との衝突判定(球体との判定)
-	BoundingSphere sphere{ collider_.radius,transform_.position() };
+	BoundingSphere sphere{ collider().radius,transform().position() };
 	GSvector3 center;//衝突後の球体の中心座標
-	if (world_->field()->collide(collider(), &center)) {
-		//y座標は変更しない
-		center.y = transform_.position().y;
+	if (world_->field()->collide(sphere, &center)) {
+
 		//補正後の座標に変更する
-		transform_.position();
-	}
-	//地面との衝突判定(線分との交差判定)
-	GSvector3 position = transform_.position();
-	Line line;
-	line.start = position + collider_.center;
-	line.end = position + GSvector3{ 0.0f,-FootOffset,0.0f };
-	GSvector3 intersect;//地面との交点
-	if (world_->field()->collide(line, &intersect)) {
-		//交差した点からy座標のみ補正する
-		position.y = intersect.y;
-		transform_.position(position);
+		transform_.position(center);
 	}
 }
 
