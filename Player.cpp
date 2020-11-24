@@ -12,7 +12,7 @@ const float MovingRangeY = 70.0f;
 const float Velocity = 0.15f;
 
 // コンストラクタ
-Player::Player(IWorld* world, const GSvector3& position) :mesh_(Mesh_Poltergeist, Mesh_CarGhost, Animation_CarGhost){
+Player::Player(IWorld* world, const GSvector3& position) :mesh_(Mesh_Poltergeist, Skeleton_CarGhost, Animation_CarGhost){
     world_ = world;
     name_ = "Player";
     tag_ = "PlayerTag";
@@ -74,6 +74,7 @@ void Player::update(float delta_time) {
     // 座標の設定
     //transform_.position(position);
     transform_.translate(velocity_ * delta_time, GStransform::Space::World);
+
 
    
     /*GSvector3 intersect;//地面との交点
