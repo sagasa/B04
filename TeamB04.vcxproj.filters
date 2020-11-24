@@ -123,6 +123,9 @@
     <ClCompile Include="Paladin.cpp">
       <Filter>ソース ファイル\Player</Filter>
     </ClCompile>
+    <ClCompile Include="NormalGhost.cpp">
+      <Filter>ソース ファイル\Actors</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ActorManager.h">
@@ -220,6 +223,9 @@
     </ClInclude>
     <ClInclude Include="Paladin.h">
       <Filter>ヘッダー ファイル\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="NormalGhost.h">
+      <Filter>ヘッダー ファイル\Actors</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

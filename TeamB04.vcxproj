@@ -154,6 +154,7 @@
     <ClCompile Include="EnemyTestScene.cpp" />
     <ClCompile Include="GamePlayScene.cpp" />
     <ClCompile Include="Paladin.cpp" />
+    <ClCompile Include="NormalGhost.cpp" />
     <ClCompile Include="PlayerTestScene.cpp" />
     <ClCompile Include="Poltergeist.cpp" />
     <ClCompile Include="PoltergeistBullet.cpp" />
@@ -185,6 +186,7 @@
     <ClInclude Include="GamePlayScene.h" />
     <ClInclude Include="Paladin.h" />
     <ClInclude Include="PlayerInfo.h" />
+    <ClInclude Include="NormalGhost.h" />
     <ClInclude Include="PlayerTestScene.h" />
     <ClInclude Include="Poltergeist.h" />
     <ClInclude Include="PoltergeistBullet.h" />
