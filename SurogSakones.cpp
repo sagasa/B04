@@ -4,6 +4,8 @@
 #include"Player.h"
 #include"Assets.h"
 #include"PsycokinesisBullet.h"
+#include"GStransform.h"
+#include"Line.h"
 
 enum {
 	MotionIdol1 = 0,
@@ -17,8 +19,10 @@ enum {
 	MotionDying = 9
 };
 
-const float MoveSpeed{ 0.35f };
+const float MoveSpeed{ 0.035f };
 const float ScytheRange{ 0.5f };
+const float FootOffset{ 0.1f };
+const float Gravity{ 0.2f };
 
 SurogSakones::SurogSakones(IWorld* world, const GSvector3& position) :
 	mesh_{ Mesh_SurogSakones, Skeleton_SurogSakones, Animation_SurogSakones, MotionIdol1 }
@@ -27,7 +31,7 @@ SurogSakones::SurogSakones(IWorld* world, const GSvector3& position) :
 	tag_ = "EnemyTag";
 	name_ = "SurogSakones";
 	transform_.position(position);
-	collider_ = BoundingSphere{ 0.75,GSvector3::up() * 1.0f};
+	collider_ = BoundingSphere{ 0.75,GSvector3::up() * 1.0f };
 	state_ = State::Idol;
 	hp_ = 100.0f;
 	transform_.rotation(GSquaternion::euler(GSvector3{ 0.0f,-90.0f,0.0f }));
@@ -35,7 +39,7 @@ SurogSakones::SurogSakones(IWorld* world, const GSvector3& position) :
 	mesh_.transform(transform_.localToWorldMatrix());
 
 	move_pos_.push_back(transform().position());
-	move_pos_.push_back(transform().position() - GSvector3{ 50.0f,0.0f,0.0f });
+	move_pos_.push_back(transform().position() - GSvector3{ 5.0f,0.0f,0.0f });
 
 	destination_ = move_pos_[0];
 	//gsRandamize();
@@ -79,7 +83,13 @@ void SurogSakones::update(float delta_time) {
 		if (state_ != State::Stun)Damage();
 		if (hp_ <= 0)change_state(State::Dying, MotionDying);
 	}
+	if (gsGetKeyState(GKEY_UPARROW))
+	{
+		transform_.translate(0.0f, 0.9f * delta_time, 0.0f);
+	}
 	update_state(delta_time);
+	transform_.translate(GSvector3{ 0.0f,-Gravity,0.0f }*delta_time);
+	collide_field();
 	mesh_.change_motion(motion_);
 	mesh_.update(delta_time);
 	mesh_.transform(transform_.localToWorldMatrix());
@@ -94,10 +104,7 @@ void SurogSakones::update(float delta_time) {
 void SurogSakones::late_update(float delta_time) {
 	prev_flip_ = flip_;
 }
-void SurogSakones::react(Actor& other) {
-	if (other.tag() == "PlayerTag") {
-		Damage();
-	}
+void SurogSakones::react(Actor& other) {	
 }
 void SurogSakones::update_state(float delta_time) {
 	//状態によって切り替え
@@ -151,7 +158,7 @@ void SurogSakones::psyco1_attack(float delta_time) {
 		idol(delta_time);
 	}
 }
-void SurogSakones::psyco2_attack(float delta_time) {	
+void SurogSakones::psyco2_attack(float delta_time) {
 	if (state_timer_ >= mesh_.motion_end_time()) {
 		idol(delta_time);
 		pshychokinesis(transform_.position());
@@ -182,7 +189,7 @@ void SurogSakones::turn(float delta_time) {
 	}
 }
 void SurogSakones::move(float delta_time) {
-	if (GSvector3::distance(transform_.position(), destination_) <= 0.5f) {
+	if (GSvector3::distance(transform_.position(), destination_) <= 0.1f) {
 		transform_.position(destination_);
 		change_state(State::Turn, MotionScytheAttack);
 	}
@@ -211,7 +218,7 @@ void SurogSakones::draw()const {
 void SurogSakones::debug_draw()const {
 	// デバッグ表示
 	gsFontParameter(GS_FONT_BOLD, 16, "ＭＳ ゴシック");
-	gsTextPos(0.0f, 0.0f);
+	gsTextPos(0.0f, 100.0f);
 	gsDrawText("SurogSakones:座標(%f,%f,%f)", transform_.position().x, transform_.position().y, transform_.position().z);
 	gsTextPos(0.0f, 20.0f);
 	gsDrawText("SurogSakones:ローテーション(%f,%f,%f)", transform_.rotation().x, transform_.rotation().y, transform_.rotation().z);
@@ -240,7 +247,7 @@ void SurogSakones::pshychokinesis(const GSvector3& position) {
 		//プレイヤーのベクトルを求める
 		GSvector3 to_player = (player->transform().position() - transform().position()).normalized();
 		//球を出す処理
-		world_->add_actor(new PsycokinesisBullet(world_, position,GSvector3::up()*2.0f));
+		world_->add_actor(new PsycokinesisBullet(world_, position, GSvector3::up() * 2.0f));
 	}
 }
 
@@ -286,4 +293,27 @@ bool SurogSakones::is_psyco2_attack(const Actor* other) {
 	return false;
 	//プレイヤーの状態が憑依しているなら
 	//Player* player = (Player*)other;
+}
+
+void SurogSakones::collide_field()
+{
+	GSvector3 center;
+	if (world_->field()->collide(collider(), &center))
+	{
+		center.y = transform_.position().y;
+		center.z = 0.0f;
+		transform_.position(center);
+	}
+
+	GSvector3 position = transform_.position();
+	GSvector3 intersect;
+	Line line;
+	line.start = position + collider_.center;
+	line.end = position + GSvector3{ 0.0f,-FootOffset,0.0f };
+	if (world_->field()->collide(line, &intersect))
+	{
+		position.y = intersect.y;
+		transform_.position(position);
+		velocity_.y = 0;
+	}
 }

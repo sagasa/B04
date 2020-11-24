@@ -61,6 +61,8 @@ private:
 	bool is_psyco1_attack(const Actor* other);
 	bool is_psyco2_attack(const Actor* other);
 
+	void collide_field();
+
 
 private:
 	State state_ = State::Unkown;
