@@ -3,7 +3,6 @@
 #include"Field.h"
 #include"Line.h"
 #include"Assets.h"
-#include<random>
 
 enum {
 	MotionIdle = 0,
@@ -31,6 +30,8 @@ const float EnemyRadius{ 0.5f };
 const float FootOffset{ 0.1f };
 //頭上のオフセット
 const float HeadOffset{ 1.0f };
+//スピード
+const float Speed{ 0.025f };
 
 //コンストラクタ
 CarGhost::CarGhost(IWorld* world, const GSvector3& position) :
@@ -170,14 +171,12 @@ void CarGhost::patrol(float delta_time) {
 //移動
 void CarGhost::move(float delta_time) {
 	velocity_ = GSvector3{ to_target().x,to_target().y,0.0f };
-	//スピードを上げる
-	speed_ = 0.025f;
 	//ターゲット方向の角度を求める
 	float angle = CLAMP(target_signed_angle(), -TurnAngle, TurnAngle);
 	//ターゲット方向を向く
 	transform_.rotate(0.0f, angle, 0.0f);
 	//移動
-	transform_.translate(velocity_ * delta_time * speed_, GStransform::Space::World);
+	transform_.translate(velocity_ * delta_time * Speed, GStransform::Space::World);
 	
 	//攻撃するか？
 	if (is_attack()) {

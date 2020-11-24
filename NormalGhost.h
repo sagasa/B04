@@ -1,25 +1,22 @@
-#ifndef CAR_GHOST_H_
-#define CAR_GHOST_H_
+#ifndef NORMAL_GHOST_H_
+#define NORMAL_GHOST_H_
 
 #include"Actor.h"
 #include"AnimatedMesh.h"
 
-
-
-class CarGhost : public Actor {
+//ノーマルゴーストクラス
+class NormalGhost : public Actor {
 public:
-	//状態
+
 	enum class State {
 		Idle,
-		Patrol,
 		Move,
-		Turn,
-		Attack,
 		Damage,
-		Died
+		died
 	};
+
 	//コンストラクタ
-	CarGhost(IWorld* world,const GSvector3& position);
+	NormalGhost(IWorld* world, const GSvector3& position);
 	//更新
 	virtual void update(float delta_time) override;
 	//描画
@@ -28,23 +25,18 @@ public:
 	virtual void react(Actor& other) override;
 
 private:
+
 	//状態の更新
 	void update_state(float delta_time);
 	//状態の変更
-	void change_state(State state, GSuint motion,bool loop = true);
+	void change_state(State state, GSuint motion, bool loop = true);
 	//アイドル
 	void idle(float delta_time);
-	//巡回
-	void patrol(float delta_time);
 	//移動
 	void move(float delta_time);
-	//ターン
-	void turn(float delta_time);
-	//攻撃
-	void attack(float delta_time);
-	//ダメージ
+	//ダメージ中
 	void damage(float delta_time);
-	//死亡
+	//死亡中
 	void died(float delta_time);
 
 	//フィールドとの衝突処理
@@ -52,8 +44,6 @@ private:
 	//アクターとの衝突処理
 	void collide_actor(Actor& other);
 
-	//攻撃判定
-	bool is_attack()const;
 	//移動判定
 	bool is_move()const;
 
@@ -63,17 +53,11 @@ private:
 	float target_angle()const;
 	//ターゲットの距離を求める
 	float target_distance()const;
-	//ターゲットのxの距離を求める
-	float target_distance_x() const;
-	//target方向のyの距離を求める
-	float target_distance_y() const;
 	//ターゲット方向のベクトルを求める
 	GSvector3 to_target()const;
 
-
-
 private:
-	//アニメーションメッシュ
+	///アニメーションメッシュ
 	AnimatedMesh mesh_;
 	//モーション番号
 	GSuint motion_;
@@ -89,8 +73,9 @@ private:
 	State state_;
 	//状態タイマー
 	float state_timer_;
-	//向きを変えるか
-	bool is_turn_;
+	
 };
 
+
 #endif
+

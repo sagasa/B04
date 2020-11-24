@@ -114,6 +114,9 @@
     <ClCompile Include="TitleScene.cpp">
       <Filter>ソース ファイル\Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="NormalGhost.cpp">
+      <Filter>ソース ファイル\Actors</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ActorManager.h">
@@ -208,6 +211,9 @@
     </ClInclude>
     <ClInclude Include="AnimatedMesh.h">
       <Filter>ヘッダー ファイル\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="NormalGhost.h">
+      <Filter>ヘッダー ファイル\Actors</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
