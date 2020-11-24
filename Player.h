@@ -1,11 +1,13 @@
 #pragma once
 #include "Actor.h"
 #include "AnimatedMesh.h"
+#include "PlayerInfo.h"
 
 // プレーヤ
 class Player : public Actor {
     bool on_ground_;
     int jump_count_;
+    PlayerInfo* info;
     //アニメーションメッシュ
     AnimatedMesh mesh_;
     //モーション番号

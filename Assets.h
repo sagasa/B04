@@ -1,7 +1,7 @@
 #pragma once
 
 // メッシュデータ
-enum {
+enum Mesh {
     Mesh_Player,                    // 自機
     Mesh_CarGhost,                  //CarGhost
     Mesh_RushGhost,                 //RushGhost
@@ -11,7 +11,7 @@ enum {
 };
 
 //スケルトンデータ
-enum {
+enum Skeleton {
     Skeleton_Player,       //プレイヤー
     Skeleton_CarGhost,     //CarGhost
     Skeleton_RushGhost,    //RushGhost
@@ -21,7 +21,7 @@ enum {
 };
 
 //アニメーションデータ
-enum {
+enum  Animation {
     Animation_Player,      //プレイヤー
     Animation_CarGhost,    //CarGhost
     Animation_RushGhost,   //RushGhost
@@ -30,7 +30,7 @@ enum {
 };
 
 // テクスチャデータ
-enum {
+enum Texture {
     // 2Dスプライト
     Texture_BgTileNebulaGreen,      // 背景
 
@@ -41,12 +41,12 @@ enum {
 };
 
 // ＢＧＭデータ
-enum {
+enum Music {
     Music_BackGround                // 爆発フラッシュ
 };
 
 // ＳＥデータ
-enum {
+enum Se {
     Se_ExplosionPlayer,             // 爆発音（自機）
     Se_ExplosionEnemy,              // 爆発音（敵）
     Se_ExplosionAsteroid,           // 爆発音（隕石）
@@ -54,7 +54,7 @@ enum {
     Se_WeaponEnemy,                 // 爆発音（敵）
 };
 
-enum {
+enum Octree {
     Octree_Stage,
     Octree_Collider
 };

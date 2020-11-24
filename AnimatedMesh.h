@@ -3,11 +3,12 @@
 
 #include<gslib.h>
 #include<array>
+#include "Assets.h"
 
 class AnimatedMesh
 {
 public:
-	AnimatedMesh(GSuint mesh, GSuint skeleton, GSuint animation, GSuint motion = 0,bool loop = true);
+	AnimatedMesh(Mesh mesh, Skeleton skeleton, Animation animation, GSuint motion = 0,bool loop = true);
 	void update(float delta_time);
 	void draw()const;
 	void change_motion(GSuint motion,bool loop = true);
