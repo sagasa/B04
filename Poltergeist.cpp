@@ -14,11 +14,11 @@ enum {
 };
 
 //振り向き判定の距離
-const float TurnDistance{ 1.5f };
+const float TurnDistance{ 10.0f };
 //移動判定の距離ｙ
-const float AttackDistance_x{ 100.0f };
+const float MoveDistance_x{ 10.0f };
 //移動判定の距離x
-const float AttackDistance_y{ 100.0f };
+const float MoveDistance_y{ 10.0f };
 //振り向く角度
 const float TurnAngle{ 2.5f };
 //エネミーの高さ
@@ -48,7 +48,7 @@ Poltergeist::Poltergeist(IWorld* world, const GSvector3& position) :
 	//衝突判定球の設定
 	collider_ = BoundingSphere{ EnemyRadius ,GSvector3{0.0f,EnemyHeight,0.0f} };
 	transform_.position(position);
-	transform_.localScale(GSvector3{ 0.3f,0.3f,0.3f });
+	transform_.localRotation(GSquaternion::euler(0.0f, -90.0f, 0.0f));
 	mesh_.transform(transform_.localToWorldMatrix());
 }
 
@@ -110,6 +110,7 @@ void Poltergeist::update_state(float delta_time) {
 	switch (state_) {
 	case State::Idle: idle(delta_time); break;
 	case State::Turn: turn(delta_time); break;
+	case State::Found: found(delta_time); break;
 	case State::Attack: attack(delta_time); break;
 	case State::Damage: damage(delta_time); break;
 	case State::Died: died(delta_time); break;
@@ -134,14 +135,36 @@ void Poltergeist::change_state(State state, GSuint motion,bool loop) {
 void Poltergeist::idle(float delta_time) {
 	//攻撃するか？
 	if (is_attack()) {
-		change_state(State::Attack, MotionAttack);
+		change_state(State::Found, MotionIdle);
 		return;
 	}
+	//何もなければアイドルへ
+	change_state(State::Idle, MotionIdle);
 }
 
 //ターン
 void Poltergeist::turn(float delta_time) {
+	if (state_timer_ >= mesh_.motion_end_time()) {
+		//振り向きモーションが終了したら発見中に遷移
+		found(delta_time);
+	}
+	else {
+		//振り向きモーションをしながらターゲット方向を向く
+		float angle = (target_signed_angle() >= 0.0f) ? TurnAngle : -TurnAngle;
+		transform_.rotate(0.0f, angle, 0.0f);
+	}
+}
 
+//プレイヤーを見つけた
+void Poltergeist::found(float delta_time) {
+	//振り向くか?
+	if (is_turn()) {
+		change_state(State::Turn, MotionIdle);
+	}
+	//攻撃するか？
+	if (is_attack()) {
+		change_state(State::Attack, MotionAttack);
+	}
 }
 
 //攻撃
@@ -153,7 +176,7 @@ void Poltergeist::attack(float delta_time) {
 	if (shootiong_timer_ <= 0.0f) {
 		GSvector3 target = to_target();
 		//world_->add_actor(new PoltergeistBullet{ world_,transform_.position(),target });
-		shootiong_timer_ = gsRandf(20.0f, 60.0f);
+		shootiong_timer_ = 120.0f;
 	}
 	
 
@@ -167,7 +190,7 @@ void Poltergeist::damage(float delta_time) {
 		hp_ -= 1.0f;
 		if (hp_ <= 0) {
 			//死亡状態に変更
-			change_state(State::Died, MotionDie);
+			change_state(State::Died, MotionDie,false);
 		}
 	}
 	
@@ -190,7 +213,7 @@ bool Poltergeist::is_turn()const {
 //攻撃判定
 bool Poltergeist::is_attack()const {
 	//攻撃距離内かつ前向き方向のベクトルとターゲット方向のベクトルの角度差が20.0度以下か？
-	return (target_distance_x() <= AttackDistance_x) && (target_distance_y() <= AttackDistance_y) && (target_angle() <= 180.0f);
+	return (target_distance_x() <= MoveDistance_x) && (target_distance_y() <= MoveDistance_y) && (target_angle() <= 20.0f);
 }
 
 //前向き方向のベクトルとターゲット方向のベクトルの角度差を求める(符号付き)
@@ -267,6 +290,7 @@ void Poltergeist::collide_field() {
 		//交差した点からy座標のみ補正する
 		position.y = intersect.y;
 		transform_.position(position);
+		velocity_.y = 0.0f;
 	}
 }
 
