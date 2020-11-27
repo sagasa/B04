@@ -1,0 +1,2280 @@
+# MotionDataCount
+1
+
+# BoneFrameCount
+65
+
+# BoneNo0 mixamorig:Hips
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+0.000057 0.000014 -0.000343 1.000000
+2
+0.000057 0.000014 -0.000343 1.000000
+
+# PositionKey
+0
+0.004465 102.984283 3.507931
+2
+0.004465 102.984283 3.507931
+
+# BoneNo1 mixamorig:Spine
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+-0.088079 -0.000044 0.000341 0.996113
+2
+-0.088079 -0.000044 0.000341 0.996113
+
+# PositionKey
+0
+-0.000000 12.566544 -2.238385
+2
+-0.000000 12.566544 -2.238385
+
+# BoneNo2 mixamorig:Spine1
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+0.000000 0.000000 -0.000000 1.000000
+2
+0.000000 0.000000 -0.000000 1.000000
+
+# PositionKey
+0
+0.000000 14.891728 -0.000000
+2
+0.000000 14.891728 -0.000000
+
+# BoneNo3 mixamorig:Spine2
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+-0.000000 0.000000 -0.000000 1.000000
+2
+-0.000000 0.000000 -0.000000 1.000000
+
+# PositionKey
+0
+-0.000000 17.019131 -0.000000
+2
+-0.000000 17.019131 -0.000000
+
+# BoneNo4 mixamorig:Neck
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+0.088023 -0.000000 -0.000000 0.996118
+2
+0.088023 -0.000000 -0.000000 0.996118
+
+# PositionKey
+0
+0.000000 19.146503 -0.000002
+2
+0.000000 19.146503 -0.000002
+
+# BoneNo5 mixamorig:Head
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+0.000000 0.000000 0.000000 1.000000
+2
+0.000000 0.000000 0.000000 1.000000
+
+# PositionKey
+0
+0.000000 5.523270 2.429955
+2
+0.000000 5.523270 2.429955
+
+# BoneNo6 mixamorig:HeadTop_End
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+0.000000 0.000000 0.000000 1.000000
+2
+0.000000 0.000000 0.000000 1.000000
+
+# PositionKey
+0
+0.000000 23.854263 10.494644
+2
+0.000000 23.854263 10.494644
+
+# BoneNo7 mixamorig:LeftShoulder
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+0.582588 0.415025 -0.546753 0.435208
+2
+0.582588 0.415025 -0.546753 0.435208
+
+# PositionKey
+0
+7.713956 15.575880 0.233470
+2
+7.713956 15.575880 0.233470
+
+# BoneNo8 mixamorig:LeftArm
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+-0.126964 0.257420 -0.064345 0.955759
+2
+-0.126964 0.257420 -0.064345 0.955759
+
+# PositionKey
+0
+-0.000000 16.957735 -0.000000
+2
+-0.000000 16.957735 -0.000000
+
+# BoneNo9 mixamorig:LeftForeArm
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+0.000000 -0.018665 0.000000 0.999826
+2
+0.000000 -0.018665 0.000000 0.999826
+
+# PositionKey
+0
+-0.000000 29.706684 0.000001
+2
+-0.000000 29.706684 0.000001
+
+# BoneNo10 mixamorig:LeftHand
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+0.054741 -0.176712 -0.056099 0.981137
+2
+0.054741 -0.176712 -0.056099 0.981137
+
+# PositionKey
+0
+0.000000 29.784893 0.000000
+2
+0.000000 29.784893 0.000000
+
+# BoneNo11 mixamorig:LeftHandThumb1
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+0.207049 0.023264 0.203136 0.956726
+2
+0.207049 0.023264 0.203136 0.956726
+
+# PositionKey
+0
+-2.643909 4.786019 2.308961
+2
+-2.643909 4.786019 2.308961
+
+# BoneNo12 mixamorig:LeftHandThumb2
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+0.000694 -0.009534 0.103269 0.994608
+2
+0.000694 -0.009534 0.103269 0.994608
+
+# PositionKey
+0
+-0.831784 4.674797 -0.000000
+2
+-0.831784 4.674797 -0.000000
+
+# BoneNo13 mixamorig:LeftHandThumb3
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+-0.001160 -0.010786 0.076257 0.997029
+2
+-0.001160 -0.010786 0.076257 0.997029
+
+# PositionKey
+0
+0.142140 4.607986 0.000000
+2
+0.142140 4.607986 0.000000
+
+# BoneNo14 mixamorig:LeftHandThumb4
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+0.000000 0.000000 -0.000000 1.000000
+2
+0.000000 0.000000 -0.000000 1.000000
+
+# PositionKey
+0
+0.689645 3.715833 -0.000000
+2
+0.689645 3.715833 -0.000000
+
+# BoneNo15 mixamorig:LeftHandIndex1
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+-0.042619 -0.020742 0.068515 0.996523
+2
+-0.042619 -0.020742 0.068515 0.996523
+
+# PositionKey
+0
+-5.182062 12.985035 -0.349481
+2
+-5.182062 12.985035 -0.349481
+
+# BoneNo16 mixamorig:LeftHandIndex2
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+0.000002 -0.000497 -0.009216 0.999957
+2
+0.000002 -0.000497 -0.009216 0.999957
+
+# PositionKey
+0
+0.024829 4.585208 -0.000000
+2
+0.024829 4.585208 -0.000000
+
+# BoneNo17 mixamorig:LeftHandIndex3
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+-0.000001 0.000252 0.010853 0.999941
+2
+-0.000001 0.000252 0.010853 0.999941
+
+# PositionKey
+0
+-0.053718 4.123301 -0.000000
+2
+-0.053718 4.123301 -0.000000
+
+# BoneNo18 mixamorig:LeftHandIndex4
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+0.000000 0.000000 0.000000 1.000000
+2
+0.000000 0.000000 0.000000 1.000000
+
+# PositionKey
+0
+0.028889 3.328289 -0.000000
+2
+0.028889 3.328289 -0.000000
+
+# BoneNo19 mixamorig:LeftHandMiddle1
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+-0.042797 -0.018777 0.071768 0.996326
+2
+-0.042797 -0.018777 0.071768 0.996326
+
+# PositionKey
+0
+-1.656942 12.644285 -1.121268
+2
+-1.656942 12.644285 -1.121268
+
+# BoneNo20 mixamorig:LeftHandMiddle2
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+0.000002 0.000475 -0.007356 0.999973
+2
+0.000002 0.000475 -0.007356 0.999973
+
+# PositionKey
+0
+0.063125 5.216156 0.000000
+2
+0.063125 5.216156 0.000000
+
+# BoneNo21 mixamorig:LeftHandMiddle3
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+0.000005 -0.000695 -0.005380 0.999985
+2
+0.000005 -0.000695 -0.005380 0.999985
+
+# PositionKey
+0
+-0.011675 4.474154 -0.000000
+2
+-0.011675 4.474154 -0.000000
+
+# BoneNo22 mixamorig:LeftHandMiddle4
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+0.000000 0.000000 0.000000 1.000000
+2
+0.000000 0.000000 0.000000 1.000000
+
+# PositionKey
+0
+-0.051450 3.850265 0.000000
+2
+-0.051450 3.850265 0.000000
+
+# BoneNo23 mixamorig:LeftHandRing1
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+-0.043136 -0.014335 0.077724 0.995938
+2
+-0.043136 -0.014335 0.077724 0.995938
+
+# PositionKey
+0
+1.909233 13.319807 -0.768139
+2
+1.909233 13.319807 -0.768139
+
+# BoneNo24 mixamorig:LeftHandRing2
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+0.000016 0.002062 -0.016717 0.999858
+2
+0.000016 0.002062 -0.016717 0.999858
+
+# PositionKey
+0
+0.109500 4.484410 -0.000000
+2
+0.109500 4.484410 -0.000000
+
+# BoneNo25 mixamorig:LeftHandRing3
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+0.000026 -0.001621 -0.006941 0.999975
+2
+0.000026 -0.001621 -0.006941 0.999975
+
+# PositionKey
+0
+-0.033670 3.734930 -0.000000
+2
+-0.033670 3.734930 -0.000000
+
+# BoneNo26 mixamorig:LeftHandRing4
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+-0.000000 -0.000000 -0.000000 1.000000
+2
+-0.000000 -0.000000 -0.000000 1.000000
+
+# PositionKey
+0
+-0.075830 3.308684 0.000000
+2
+-0.075830 3.308684 0.000000
+
+# BoneNo27 mixamorig:LeftHandPinky1
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+-0.040512 -0.052655 0.068569 0.995432
+2
+-0.040512 -0.052655 0.068569 0.995432
+
+# PositionKey
+0
+4.929770 13.191722 -0.728887
+2
+4.929770 13.191722 -0.728887
+
+# BoneNo28 mixamorig:LeftHandPinky2
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+0.000001 -0.000294 -0.005817 0.999983
+2
+0.000001 -0.000294 -0.005817 0.999983
+
+# PositionKey
+0
+0.010056 3.532719 0.000000
+2
+0.010056 3.532719 0.000000
+
+# BoneNo29 mixamorig:LeftHandPinky3
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+-0.000000 0.000138 0.008017 0.999968
+2
+-0.000000 0.000138 0.008017 0.999968
+
+# PositionKey
+0
+-0.021762 2.484311 -0.000000
+2
+-0.021762 2.484311 -0.000000
+
+# BoneNo30 mixamorig:LeftHandPinky4
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+0.000000 -0.000000 -0.000000 1.000000
+2
+0.000000 -0.000000 -0.000000 1.000000
+
+# PositionKey
+0
+0.011705 1.611825 -0.000000
+2
+0.011705 1.611825 -0.000000
+
+# BoneNo31 mixamorig:RightShoulder
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+0.505247 -0.461407 0.604458 0.407995
+2
+0.505247 -0.461407 0.604458 0.407995
+
+# PositionKey
+0
+-7.713957 15.876103 -1.452015
+2
+-7.713957 15.876103 -1.452015
+
+# BoneNo32 mixamorig:RightArm
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+-0.130570 -0.176730 -0.056668 0.973913
+2
+-0.130570 -0.176730 -0.056668 0.973913
+
+# PositionKey
+0
+-0.000000 16.957735 -0.000000
+2
+-0.000000 16.957735 -0.000000
+
+# BoneNo33 mixamorig:RightForeArm
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+0.000000 0.172086 -0.000000 0.985082
+2
+0.000000 0.172086 -0.000000 0.985082
+
+# PositionKey
+0
+0.000000 30.094233 -0.000000
+2
+0.000000 30.094233 -0.000000
+
+# BoneNo34 mixamorig:RightHand
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+0.031090 -0.081574 0.077543 0.993160
+2
+0.031090 -0.081574 0.077543 0.993160
+
+# PositionKey
+0
+-0.000000 29.025341 0.000000
+2
+-0.000000 29.025341 0.000000
+
+# BoneNo35 mixamorig:RightHandThumb1
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+0.220496 -0.018209 -0.199742 0.954543
+2
+0.220496 -0.018209 -0.199742 0.954543
+
+# PositionKey
+0
+2.595313 4.829648 2.520545
+2
+2.595313 4.829648 2.520545
+
+# BoneNo36 mixamorig:RightHandThumb2
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+0.000985 0.010248 -0.093298 0.995585
+2
+0.000985 0.010248 -0.093298 0.995585
+
+# PositionKey
+0
+0.908167 4.741347 0.000000
+2
+0.908167 4.741347 0.000000
+
+# BoneNo37 mixamorig:RightHandThumb3
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+-0.000988 0.007676 -0.130027 0.991480
+2
+-0.000988 0.007676 -0.130027 0.991480
+
+# PositionKey
+0
+0.010929 4.578123 -0.000000
+2
+0.010929 4.578123 -0.000000
+
+# BoneNo38 mixamorig:RightHandThumb4
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+0.000000 -0.000000 -0.000000 1.000000
+2
+0.000000 -0.000000 -0.000000 1.000000
+
+# PositionKey
+0
+-0.919096 3.477098 -0.000000
+2
+-0.919096 3.477098 -0.000000
+
+# BoneNo39 mixamorig:RightHandIndex1
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+-0.035382 0.026527 -0.077870 0.995982
+2
+-0.035382 0.026527 -0.077870 0.995982
+
+# PositionKey
+0
+5.290048 13.153609 -0.270887
+2
+5.290048 13.153609 -0.270887
+
+# BoneNo40 mixamorig:RightHandIndex2
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+0.000001 0.000357 0.006746 0.999977
+2
+0.000001 0.000357 0.006746 0.999977
+
+# PositionKey
+0
+-0.018656 4.305923 0.000000
+2
+-0.018656 4.305923 0.000000
+
+# BoneNo41 mixamorig:RightHandIndex3
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+-0.000000 -0.000187 -0.007708 0.999970
+2
+-0.000000 -0.000187 -0.007708 0.999970
+
+# PositionKey
+0
+0.039864 4.360484 -0.000000
+2
+0.039864 4.360484 -0.000000
+
+# BoneNo42 mixamorig:RightHandIndex4
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+0.000000 0.000000 0.000000 1.000000
+2
+0.000000 0.000000 0.000000 1.000000
+
+# PositionKey
+0
+-0.021208 3.383726 0.000000
+2
+-0.021208 3.383726 0.000000
+
+# BoneNo43 mixamorig:RightHandMiddle1
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+-0.036319 0.014778 -0.083306 0.995752
+2
+-0.036319 0.014778 -0.083306 0.995752
+
+# PositionKey
+0
+1.882555 12.462498 -0.940355
+2
+1.882555 12.462498 -0.940355
+
+# BoneNo44 mixamorig:RightHandMiddle2
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+0.000005 -0.001127 0.010907 0.999940
+2
+0.000005 -0.001127 0.010907 0.999940
+
+# PositionKey
+0
+-0.081857 5.090494 0.000000
+2
+-0.081857 5.090494 0.000000
+
+# BoneNo45 mixamorig:RightHandMiddle3
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+0.000007 0.000721 0.003747 0.999993
+2
+0.000007 0.000721 0.003747 0.999993
+
+# PositionKey
+0
+0.028583 4.994162 0.000000
+2
+0.028583 4.994162 0.000000
+
+# BoneNo46 mixamorig:RightHandMiddle4
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+0.000000 -0.000000 -0.000000 1.000000
+2
+0.000000 -0.000000 -0.000000 1.000000
+
+# PositionKey
+0
+0.053274 4.031250 0.000000
+2
+0.053274 4.031250 0.000000
+
+# BoneNo47 mixamorig:RightHandRing1
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+-0.036513 0.012756 -0.088844 0.995294
+2
+-0.036513 0.012756 -0.088844 0.995294
+
+# PositionKey
+0
+-2.074055 12.632902 -0.737821
+2
+-2.074055 12.632902 -0.737821
+
+# BoneNo48 mixamorig:RightHandRing2
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+0.000013 -0.001856 0.020506 0.999788
+2
+0.000013 -0.001856 0.020506 0.999788
+
+# PositionKey
+0
+-0.126711 4.631851 -0.000000
+2
+-0.126711 4.631851 -0.000000
+
+# BoneNo49 mixamorig:RightHandRing3
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+0.000018 0.000995 0.004248 0.999990
+2
+0.000018 0.000995 0.004248 0.999990
+
+# PositionKey
+0
+0.055204 4.038563 -0.000000
+2
+0.055204 4.038563 -0.000000
+
+# BoneNo50 mixamorig:RightHandRing4
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+-0.000000 -0.000000 -0.000000 1.000000
+2
+-0.000000 -0.000000 -0.000000 1.000000
+
+# PositionKey
+0
+0.071507 3.225616 -0.000000
+2
+0.071507 3.225616 -0.000000
+
+# BoneNo51 mixamorig:RightHandPinky1
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+-0.032236 0.066739 -0.076953 0.994276
+2
+-0.032236 0.066739 -0.076953 0.994276
+
+# PositionKey
+0
+-5.098544 13.062305 -0.807634
+2
+-5.098544 13.062305 -0.807634
+
+# BoneNo52 mixamorig:RightHandPinky2
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+-0.000000 0.000085 0.001352 0.999999
+2
+-0.000000 0.000085 0.001352 0.999999
+
+# PositionKey
+0
+0.000751 3.408841 0.000000
+2
+0.000751 3.408841 0.000000
+
+# BoneNo53 mixamorig:RightHandPinky3
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+0.000000 0.000080 -0.003621 0.999993
+2
+0.000000 0.000080 -0.003621 0.999993
+
+# PositionKey
+0
+0.007594 2.587006 0.000000
+2
+0.007594 2.587006 0.000000
+
+# BoneNo54 mixamorig:RightHandPinky4
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+-0.000000 0.000000 0.000000 1.000000
+2
+-0.000000 0.000000 0.000000 1.000000
+
+# PositionKey
+0
+-0.008345 1.928484 -0.000000
+2
+-0.008345 1.928484 -0.000000
+
+# BoneNo55 mixamorig:LeftUpLeg
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+-0.002212 -0.019109 0.999487 -0.025591
+2
+-0.002212 -0.019109 0.999487 -0.025591
+
+# PositionKey
+0
+10.928622 -6.991882 -1.678721
+2
+10.928622 -6.991882 -1.678721
+
+# BoneNo56 mixamorig:LeftLeg
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+-0.018665 0.000621 -0.050312 0.998559
+2
+-0.018665 0.000621 -0.050312 0.998559
+
+# PositionKey
+0
+0.000000 40.742619 0.000000
+2
+0.000000 40.742619 0.000000
+
+# BoneNo57 mixamorig:LeftFoot
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+0.447230 -0.038564 0.055903 0.891837
+2
+0.447230 -0.038564 0.055903 0.891837
+
+# PositionKey
+0
+0.000000 38.294064 -0.000000
+2
+0.000000 38.294064 -0.000000
+
+# BoneNo58 mixamorig:LeftToeBase
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+0.340296 -0.038484 0.013940 0.939427
+2
+0.340296 -0.038484 0.013940 0.939427
+
+# PositionKey
+0
+0.000000 19.409245 -0.000000
+2
+0.000000 19.409245 -0.000000
+
+# BoneNo59 mixamorig:LeftToe_End
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+-0.000000 0.000000 0.000000 1.000000
+2
+-0.000000 0.000000 0.000000 1.000000
+
+# PositionKey
+0
+0.000000 8.045305 -0.000000
+2
+0.000000 8.045305 -0.000000
+
+# BoneNo60 mixamorig:RightUpLeg
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+-0.000792 0.030287 0.999229 0.024953
+2
+-0.000792 0.030287 0.999229 0.024953
+
+# PositionKey
+0
+-10.928622 -6.991882 -5.276595
+2
+-10.928622 -6.991882 -5.276595
+
+# BoneNo61 mixamorig:RightLeg
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+-0.073351 -0.002277 0.050191 0.996040
+2
+-0.073351 -0.002277 0.050191 0.996040
+
+# PositionKey
+0
+-0.000000 40.689846 -0.000000
+2
+-0.000000 40.689846 -0.000000
+
+# BoneNo62 mixamorig:RightFoot
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+0.447420 0.037394 -0.056938 0.891726
+2
+0.447420 0.037394 -0.056938 0.891726
+
+# PositionKey
+0
+-0.000000 38.455769 -0.000000
+2
+-0.000000 38.455769 -0.000000
+
+# BoneNo63 mixamorig:RightToeBase
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+0.344320 0.042025 -0.015430 0.937784
+2
+0.344320 0.042025 -0.015430 0.937784
+
+# PositionKey
+0
+-0.000000 19.207344 0.000000
+2
+-0.000000 19.207344 0.000000
+
+# BoneNo64 mixamorig:RightToe_End
+
+# KeyFrameFlag
+00000000
+
+# ScaleKeyCount
+2
+
+# RotateKeyCount
+2
+
+# PositionKeyCount
+2
+
+# MatrixKeyCount
+0
+
+# ScaleKey
+0
+1.000000 1.000000 1.000000
+2
+1.000000 1.000000 1.000000
+
+# RotateKey
+0
+-0.000000 -0.000000 -0.000000 1.000000
+2
+-0.000000 -0.000000 -0.000000 1.000000
+
+# PositionKey
+0
+-0.000000 7.853073 0.000000
+2
+-0.000000 7.853073 0.000000
