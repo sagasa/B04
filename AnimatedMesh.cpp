@@ -2,12 +2,13 @@
 #include<algorithm>
 #include<cmath>
 
+
 const GSfloat LerpTime{ 10.0f };
 
-AnimatedMesh::AnimatedMesh(GSuint mesh, GSuint skeleton, GSuint animation, GSuint motion,bool loop) :
-	mesh_{ mesh },
-	skeleton_{ skeleton },
-	animation_{ animation },
+AnimatedMesh::AnimatedMesh(Mesh mesh, Skeleton skeleton, Animation animation, GSuint motion,bool loop) :
+	mesh_{static_cast<GSuint>(mesh)},
+	skeleton_{ static_cast<GSuint>(skeleton) },
+	animation_{ static_cast<GSuint>(animation) },
 	motion_{ motion },
 	motion_timer_{0.0f},
 	motion_loop_{loop},

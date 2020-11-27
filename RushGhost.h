@@ -83,12 +83,14 @@ private:
 	float hp_{ 1.0f };
 	//タイマー
 	float moving_timer_{ 0.0f};
-	//動くスピード
-	float speed_{ 1.0f };
 	//状態
 	State state_;
 	//状態タイマー
 	float state_timer_;
+	//角度
+	float angle_;
+	//ポイント
+	float point_;
 };
 
 

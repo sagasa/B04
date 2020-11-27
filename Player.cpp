@@ -5,14 +5,21 @@
 #include <iostream>
 
 
+#include "player_ghost.h"
+#include "player_paladin.h"
+
+
 // 移動範囲
 const float MovingRangeX = 100.0f;
 const float MovingRangeY = 70.0f;
 
 const float Velocity = 0.15f;
 
+static player_paladin Paladin =player_paladin{};
+static player_ghost Ghost = player_ghost{};
+
 // コンストラクタ
-Player::Player(IWorld* world, const GSvector3& position) :mesh_(Mesh_Poltergeist, Mesh_CarGhost, Animation_CarGhost){
+Player::Player(IWorld* world, const GSvector3& position) :info(Ghost){//どうすりゃいいのヨ
     world_ = world;
     name_ = "Player";
     tag_ = "PlayerTag";
@@ -62,7 +69,7 @@ void Player::update(float delta_time) {
 	if(0<jump_count_)
 	{
         jump_count_--;
-        velocity_.y += 0.2f;
+        velocity_.y += 0.1f;
 	}
     // 座標を取得
     //GSvector3 position = transform_.position();
@@ -74,6 +81,7 @@ void Player::update(float delta_time) {
     // 座標の設定
     //transform_.position(position);
     transform_.translate(velocity_ * delta_time, GStransform::Space::World);
+
 
    
     /*GSvector3 intersect;//地面との交点
@@ -125,20 +133,15 @@ void Player::update(float delta_time) {
         }
     }
     
-
-    //モーション変更
-    mesh_.change_motion(motion_);
-    //メッシュの更新
-    mesh_.update(delta_time);
-    //行列を設定
-    mesh_.transform(transform_.localToWorldMatrix());
+    info.update(static_cast<Actor&>(*this),delta_time);
+   
 }
 
 
 // 描画
 void Player::draw() const {
-    glPushMatrix();
-    mesh_.draw();
+    info.draw();
+	glPushMatrix();
     glMultMatrixf(transform_.localToWorldMatrix());
     //gsDrawMesh(Mesh_Player);
     glPushAttrib(GL_ENABLE_BIT);
@@ -154,6 +157,6 @@ void Player::draw() const {
 void Player::react(Actor& other) {
     // 敵と衝突した場合は死亡
     if (other.tag() == "EnemyTag" || other.tag() == "EnemyBulletTag") {
-        //die();
+        info.hit();
     }
 }

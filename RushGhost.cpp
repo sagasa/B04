@@ -16,11 +16,11 @@ enum {
 //振り向き判定の距離
 const float TurnDistance{ 1.5f };
 //攻撃判定の距離
-const float AttackDistance{ 15.0f };
+const float AttackDistance{ 1.5f };
 //移動判定の距離x
-const float AttackDistance_x{ 100.0f };
+const float MoveDistance_x{ 10.0f };
 //移動判定の距離ｙ
-const float AttackDistance_y{ 50.0f };
+const float MoveDistance_y{ 5.0f };
 //振り向く角度
 const float TurnAngle{ 2.5f };
 //エネミーの高さ
@@ -29,18 +29,24 @@ const float EnemyHeight{ 0.75f };
 const float EnemyRadius{ 0.5f };
 //足元のオフセット
 const float FootOffset{ 0.1f };
+//スピード
+const float Speed{ 0.025f };
+//円周率
+const float PI{ 3.141592654 };
 
 //コンストラクタ
 RushGhost::RushGhost(IWorld* world, const GSvector3& position) :
-	mesh_{ Mesh_RushGhost,Mesh_CarGhost,Mesh_CarGhost, MotionIdle },
+	mesh_{ Mesh_RushGhost,Skeleton_RushGhost,Animation_RushGhost, MotionIdle },
 	motion_{ MotionIdle },
-	state_{ State::Idle } {
+	state_{ State::Idle },
+	angle_{0.0f},
+	point_{0.0f} {
 	world_ = world;
 	name_ = "RushGhost";
 	tag_ = "EnemyTag";
 	collider_ = BoundingSphere{ EnemyRadius ,GSvector3{0.0f,EnemyHeight,0.0f} };
 	transform_.position(position);
-	//transform_.localScale(GSvector3{ 0.3f,0.3f,0.3f });
+	transform_.localRotation(GSquaternion::euler(0.0f, -90.0f, 0.0f));
 	mesh_.transform(transform_.localToWorldMatrix());
 
 }
@@ -151,15 +157,15 @@ void RushGhost::move(float delta_time) {
 	//攻撃するか？
 	if (is_attack()) {
 		change_state(State::Attack, MotionAttack);
+		point_ = 0.0f;
+		angle_ = 0.0f;
 	}
 	velocity_ = GSvector3{ to_target().x,to_target().y,0.0f };
-	//スピードを上げる
-	speed_ = 0.5f;
 	//ターゲット方向の角度を求める
 	float angle = CLAMP(target_signed_angle(), -TurnAngle, TurnAngle);
 	//ターゲット方向を向く
 	transform_.rotate(0.0f, angle, 0.0f);
-	//transform_.translate(velocity_ * delta_time * speed_, GStransform::Space::World);
+	transform_.translate(velocity_ * delta_time * Speed, GStransform::Space::World);
 }
 
 //ターン
@@ -169,22 +175,24 @@ void RushGhost::turn(float delta_time) {
 
 //攻撃
 void RushGhost::attack(float delta_time) {
-	//モーション終了後に移動中に遷移
-	if (state_timer_ >= mesh_.motion_end_time()) {
+	if(point_ < 100){
+		angle_ = PI * point_ / 100;
+		GSvector3 position{ (float)cos(angle_),(float)sin(angle_),0.0f };
+		GSvector3 velocity = (position - transform_.position()).normalized();
+		velocity_ = velocity;
+		transform_.translate(velocity_ * delta_time, GStransform::Space::World);
+		point_++;
+	}
+	else {
 		idle(delta_time);
 	}
 }
 
 //ダメージ
 void RushGhost::damage(float delta_time) {
-	//モーション終了後にダメージ計算
+	//モーション終了後に移動中へ
 	if (state_timer_ >= mesh_.motion_end_time()) {
-		//プレイヤーのatkを引く
-		hp_ -= 1.0f;
-		if (hp_ <= 0) {
-			//Dieに状態変更
-			change_state(State::Died, MotionDie);
-		}
+		idle(delta_time);
 	}
 
 }
@@ -192,7 +200,7 @@ void RushGhost::damage(float delta_time) {
 //死亡
 void RushGhost::died(float delta_time) {
 	//モーション終了後に死亡
-	if (state_timer_ >= mesh_.motion_end_time() - 30.0f) {
+	if (state_timer_ >= mesh_.motion_end_time()) {
 		die();
 	}
 
@@ -206,13 +214,13 @@ bool RushGhost::is_turn()const {
 //攻撃判定
 bool RushGhost::is_attack()const {
 	//攻撃距離内かつ前向き方向のベクトルとターゲット方向のベクトルの角度差が20.0度以下か？
-	return (target_distance() <= AttackDistance) && (target_angle() <= 180.0f);
+	return (target_distance() <= AttackDistance) && (target_angle() <= 20.0f);
 }
 
 //移動判定
 bool RushGhost::is_move()const {
 	//移動距離かつ前方向のベクトルとターゲット方向のベクトルの角度差が100.0度以下か？
-	return (target_distance_x() <= AttackDistance_x) && (target_distance_y() <= AttackDistance_y) && (target_angle() <= 180.0f);
+	return (target_distance_x() <= MoveDistance_x) && (target_distance_y() <= MoveDistance_y) && (target_angle() <= 20.0f);
 }
 
 //前向き方向のベクトルとターゲット方向のベクトルの角度差を求める(符号付き)
@@ -263,34 +271,22 @@ float RushGhost::target_distance_y() const {
 //フィールドとの衝突処理
 void RushGhost::collide_field() {
 	//壁との衝突判定(球体との判定)
-	BoundingSphere sphere{ collider_.radius,transform_.position() };
+	BoundingSphere sphere{ collider().radius,transform().position() };
 	GSvector3 center;//衝突後の球体の中心座標
-	if (world_->field()->collide(collider(), &center)) {
-		//y座標は変更しない
-		center.y = transform_.position().y;
+	if (world_->field()->collide(sphere, &center)) {
+		center.z = 0.0f;
 		//補正後の座標に変更する
-		transform_.position();
-	}
-	//地面との衝突判定(線分との交差判定)
-	GSvector3 position = transform_.position();
-	Line line;
-	line.start = position + collider_.center;
-	line.end = position + GSvector3{ 0.0f,-FootOffset,0.0f };
-	GSvector3 intersect;//地面との交点
-	if (world_->field()->collide(line, &intersect)) {
-		//交差した点からy座標のみ補正する
-		position.y = intersect.y;
-		transform_.position(position);
+		transform_.position(center);
 	}
 }
 
 //アクターとの衝突処理
 void RushGhost::collide_actor(Actor& other) {
-	//y座標を除く座標を求める
+	//z座標を除く座標を求める
 	GSvector3 position = transform_.position();
-	position.y = 0.0f;
+	position.z = 0.0f;
 	GSvector3 target = other.transform().position();
-	target.y = 0.0f;
+	target.z = 0.0f;
 	//相手との距離
 	float distance = GSvector3::distance(position, target);
 	//衝突判定球の半径同士を加えた長さを求める

@@ -37,6 +37,12 @@
     <Filter Include="ヘッダー ファイル\Scenes">
       <UniqueIdentifier>{46eedc51-8da8-4218-a0ba-96840a60f7a4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Player">
+      <UniqueIdentifier>{ccbdfccc-1743-4972-874c-5d621a4befe2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Player">
+      <UniqueIdentifier>{6541b4ac-e7f9-46e9-aa1b-1c7e75a71aba}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -114,6 +120,15 @@
     <ClCompile Include="TitleScene.cpp">
       <Filter>ソース ファイル\Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="NormalGhost.cpp">
+      <Filter>ソース ファイル\Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="player_paladin.cpp">
+      <Filter>ソース ファイル\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="player_ghost.cpp">
+      <Filter>ソース ファイル\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ActorManager.h">
@@ -142,9 +157,6 @@
     </ClInclude>
     <ClInclude Include="MapGenerator.h">
       <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="PhysicsActor.h">
-      <Filter>ヘッダー ファイル\SAGASA</Filter>
     </ClInclude>
     <ClInclude Include="Actor.h">
       <Filter>ヘッダー ファイル\Actors</Filter>
@@ -208,6 +220,18 @@
     </ClInclude>
     <ClInclude Include="AnimatedMesh.h">
       <Filter>ヘッダー ファイル\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="NormalGhost.h">
+      <Filter>ヘッダー ファイル\Actors</Filter>
+    </ClInclude>
+    <ClInclude Include="player_paladin.h">
+      <Filter>ヘッダー ファイル\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="player_info.h">
+      <Filter>ヘッダー ファイル\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="player_ghost.h">
+      <Filter>ヘッダー ファイル\Player</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
