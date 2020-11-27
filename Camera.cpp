@@ -27,7 +27,7 @@ void Camera::update(float delta_time) {
 	//’Ž‹“_‚ÌˆÊ’u‚ð‹‚ß‚é
 	GSvector3 at = player_->transform().position() + ReferncePointOffset;
 	transform_.position(position);
-	//transform_.lookAt(at);
+	transform_.lookAt(at);
 }
 
 // •`‰æ
