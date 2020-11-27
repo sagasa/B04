@@ -41,7 +41,7 @@ CarGhost::CarGhost(IWorld* world, const GSvector3& position) :
 	state_{ State::Idle },
 	state_timer_{0.0f},
 	player_{ nullptr },
-	hp_{1},
+	hp_{3},
 	is_turn_{false} {
 	//ワールドの設定
 	world_ = world;
@@ -71,10 +71,6 @@ void CarGhost::update(float delta_time) {
 	mesh_.change_motion(motion_);
 	//メッシュの更新
 	mesh_.update(delta_time);
-	//Z軸を０にする
-	GSvector3 position = transform_.position();
-	position.z = 0.0f;
-	transform_.position(position);
 	//行列を設定
 	mesh_.transform(transform_.localToWorldMatrix());
 }
@@ -93,13 +89,14 @@ void CarGhost::react(Actor& other) {
 		hp_--;
 		if (hp_ <= 0) {
 			//ダメージ状態に変更
-			change_state(State::Damage, MotionDamage,false);
+			change_state(State::Died, MotionDie,false);
 		} else {
 			//攻撃の進行方向にノックバックする移動量を求める
 			velocity_ = other.velocity().getNormalized() * 0.5f;
 			//ダメージ状態に変更
 			change_state(State::Damage, MotionDamage,false);
 		}
+		return;
 	}
 	//プレイヤーまたはエネミーに衝突した場合
 	if (other.tag() == "PlayerTag" || other.tag() == "EnemyTag") {
@@ -160,7 +157,7 @@ void CarGhost::patrol(float delta_time) {
 	}
 	//プレイヤーを見つけたか？
 	if (is_move()) {
-		change_state(State::Move, MotionIdle);
+		change_state(State::Move, MotionRun);
 		return;
 	}
 	//何もなければ巡回
@@ -207,10 +204,17 @@ void CarGhost::attack(float delta_time) {
 
 //ダメージ
 void CarGhost::damage(float delta_time) {
-	//モーションが終了したらダメージ計算
+	if (state_timer_ < mesh_.motion_end_time()) {
+		//ノックバック処理
+		transform_.translate(velocity_ * delta_time, GStransform::Space::World);
+		velocity_ -= GSvector3{ velocity_.x,velocity_.y,0.0f } *0.5f, delta_time;
+	}
+	//モーションが終了したらアイドルへ
 	if (state_timer_ >= mesh_.motion_end_time()) {
 		idle(delta_time);
 	}
+
+
 
 }
 
@@ -225,13 +229,13 @@ void CarGhost::died(float delta_time) {
 //攻撃判定
 bool CarGhost::is_attack()const {
 	//攻撃距離内かつ前向き方向のベクトルとターゲット方向のベクトルの角度差が20.0度以下か？
-	return (target_distance() <= AttackDistance) && (target_angle() <= 30.0f);
+	return (target_distance() <= AttackDistance) && (target_angle() <= 20.0f);
 }
 
 //移動判定
 bool CarGhost::is_move()const {
 	//移動距離かつ前方向のベクトルとターゲット方向のベクトルの角度差が20.0度以下か？
-	return (target_distance_y() <= MoveDistance_y) && (target_angle() <= 100.0f);
+	return (target_distance_y() <= MoveDistance_y) && (target_angle() <= 20.0f);
 }
 
 //前向き方向のベクトルとターゲット方向のベクトルの角度差を求める(符号付き)
@@ -292,7 +296,7 @@ void CarGhost::collide_field() {
 	BoundingSphere sphere{ collider().radius,transform().position() };
 	GSvector3 center;//衝突後の球体の中心座標
 	if (world_->field()->collide(sphere,&center)) {
-		
+		center.z = 0.0f;
 		//補正後の座標に変更する
 		transform_.position(center);
 	}
@@ -300,11 +304,11 @@ void CarGhost::collide_field() {
 
 //アクターとの衝突処理
 void CarGhost::collide_actor(Actor& other) {
-	//y座標を除く座標を求める
+	//z座標を除く座標を求める
 	GSvector3 position = transform_.position();
-	position.y = 0.0f;
+	position.z = 0.0f;
 	GSvector3 target = other.transform().position();
-	target.y = 0.0f;
+	target.z = 0.0f;
 	//相手との距離
 	float distance = GSvector3::distance(position, target);
 	//衝突判定球の半径同士を加えた長さを求める

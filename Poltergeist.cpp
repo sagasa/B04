@@ -296,11 +296,11 @@ void Poltergeist::collide_field() {
 
 //アクターとの衝突処理
 void Poltergeist::collide_actor(Actor& other) {
-	//y座標を除く座標を求める
+	//z座標を除く座標を求める
 	GSvector3 position = transform_.position();
-	position.y = 0.0f;
+	position.z = 0.0f;
 	GSvector3 target = other.transform().position();
-	target.y = 0.0f;
+	target.z = 0.0f;
 	//相手との距離
 	float distance = GSvector3::distance(position, target);
 	//衝突判定球の半径同士を加えた長さを求める
