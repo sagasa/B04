@@ -10,7 +10,6 @@ public:
 	enum class State {
 		Idle,
 		Move,
-		Attack,
 		Damage,
 		Died
 	};
@@ -34,8 +33,6 @@ private:
 	void move(float delta_time);
 	//ƒ^[ƒ“
 	void turn(float delta_time);
-	//UŒ‚
-	void attack(float delta_time);
 	//ƒ_ƒ[ƒW
 	void damage(float delta_time);
 	//€–S
@@ -48,8 +45,6 @@ private:
 
 	//U‚èŒü‚«”»’è
 	bool is_turn()const;
-	//UŒ‚”»’è
-	bool is_attack()const;
 	//ˆÚ“®”»’è
 	bool is_move()const;
 

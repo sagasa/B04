@@ -43,7 +43,8 @@ CarGhost::CarGhost(IWorld* world, const GSvector3& position) :
 	player_{ nullptr },
 	hp_{3},
 	moving_timer_{gsRandf(0,60.0f)},
-	is_turn_{false} {
+	is_turn_{false},
+	is_hit_{ false } {
 	//ワールドの設定
 	world_ = world;
 	//名前の設定
@@ -88,7 +89,7 @@ void CarGhost::draw() const {
 void CarGhost::react(Actor& other) {
 	//ダメージ中または死亡中は何もしない
 	if (state_ == State::Damage || state_ == State::Died)return;
-	if (other.tag() == "PlayerAttackTag") {
+	if (other.tag() == "PlayerAttackTag") { //プレイヤーの攻撃と衝突した場合
 		hp_--;
 		if (hp_ <= 0) {
 			//ダメージ状態に変更
@@ -100,11 +101,12 @@ void CarGhost::react(Actor& other) {
 			change_state(State::Damage, MotionDamage,false);
 		}
 		return;
-	}
-	//プレイヤーまたはエネミーに衝突した場合
-	if (other.tag() == "EnemyTag") {
+	} else if (other.tag() == "EnemyTag") { //エネミーに衝突した場合
 		collide_actor(other);
 		change_state(State::Move, MotionRun);
+	}
+	else if (other.tag() == "PlayerTag") {
+		is_hit_ = true;
 	}
 }
 
@@ -112,10 +114,8 @@ void CarGhost::react(Actor& other) {
 void CarGhost::update_state(float delta_time) {
 	switch (state_) {
 	case State::Idle: idle(delta_time); break;
-	case State::Patrol: patrol(delta_time); break;
 	case State::Move: move(delta_time); break;
 	case State::Turn: turn(delta_time); break;
-	case State::Attack: attack(delta_time); break;
 	case State::Damage: damage(delta_time); break;
 	case State::Died: died(delta_time); break;
 	}
@@ -137,56 +137,36 @@ void CarGhost::change_state(State state, GSuint motion,bool loop) {
 
 //アイドル
 void CarGhost::idle(float delta_time) {
-	//攻撃するか？
-	if (is_attack()) {
-		change_state(State::Attack, MotionAttack,false);
-		return;
-	}
 	//プレイヤーを見つけたか？
 	if (is_move()) {
 		change_state(State::Move, MotionRun);
 		return;
 	}
-	if (is_turn()) {
-		change_state(State::Turn, MotionIdle);
-	}
 	//何もなければ巡回
-	change_state(State::Patrol, MotionIdle);
-}
-
-//巡回
-void CarGhost::patrol(float delta_time) {
-
-	//攻撃するか？
-	if (is_attack()) {
-		change_state(State::Attack, MotionAttack,false);
-	}
-	//プレイヤーを見つけたか？
-	if (is_move()) {
-		change_state(State::Move, MotionRun);
-		return;
-	}
-	if (is_turn()) {
-		change_state(State::Turn, MotionIdle);
-	}
-	//何もなければ巡回
-	change_state(State::Patrol, MotionIdle);
-
+	change_state(State::Idle, MotionIdle);
 }
 
 //移動
 void CarGhost::move(float delta_time) {
-	//攻撃するか？
-	/*if (is_attack()) {
-		change_state(State::Attack, MotionAttack, false);
-	}*/
-	if (is_turn()) {
-		change_state(State::Turn, MotionIdle);
+	if (!is_hit_) {
+		if (is_turn()) {
+			change_state(State::Turn, MotionIdle);
+		}
+		if (moving_timer_ <= 0) {
+			velocity_ = GSvector3{ to_target().x,to_target().y,0.0f };
+			moving_timer_ = gsRandf(30.0f, 60.0f);
+		}
+		//ターゲット方向の角度を求める
+		float angle = CLAMP(target_signed_angle(), -TurnAngle / 3, TurnAngle / 3);
+		//ターゲット方向を向く
+		transform_.rotate(0.0f, angle, 0.0f);
 	}
-	if (moving_timer_ <= 0) {
-		velocity_ = GSvector3{ to_target().x,to_target().y,0.0f };
-		moving_timer_ = gsRandf(30.0f, 60.0f);
+	else {
+		velocity_.y = 0.0f;
+		GSquaternion rotation = GSquaternion::rotateTowards(transform_.rotation(), GSquaternion::lookRotation(velocity_), 12.0f * delta_time);
+		transform_.rotation(rotation);
 	}
+	
 	/*if (player_ ->transform().position().y > transform_.position().y) {
 		
 	}
@@ -205,21 +185,13 @@ void CarGhost::move(float delta_time) {
 //ターン
 void CarGhost::turn(float delta_time) {
 	if (state_timer_ >= mesh_.motion_end_time()) {
-		//振り向きモーションが終了したらアイドル中に遷移
-		idle(delta_time);
+		//振り向きモーションが終了したら移動中に遷移
+		change_state(State::Move, MotionRun);
 	}
 	else {
 		//振り向きモーションをしながらターゲット方向を向く
 		float angle = (target_signed_angle() >= 0.0f) ? TurnAngle : -TurnAngle;
 		transform_.rotate(0.0f, angle, 0.0f);
-	}
-}
-
-//攻撃
-void CarGhost::attack(float delta_time) {
-	//モーションが終了したらMove状態に遷移
-	if (state_timer_ >= mesh_.motion_end_time()) {
-		idle(delta_time);
 	}
 }
 
@@ -232,7 +204,7 @@ void CarGhost::damage(float delta_time) {
 	}
 	//モーションが終了したらアイドルへ
 	if (state_timer_ >= mesh_.motion_end_time()) {
-		idle(delta_time);
+		change_state(State::Move, MotionRun);
 	}
 
 
@@ -328,6 +300,14 @@ void CarGhost::collide_field() {
 		//補正後の座標に変更する
 		transform_.position(center);
 	}
+	if (is_hit_) {
+		Line line{ collider().center,GSvector3{collider().center.x - EnemyRadius,collider().center.y,0.0f} };
+		GSvector3 intersect;
+		if (world_->field()->collide(line, &intersect)) {
+			velocity_.y = -velocity_.y;
+		}
+	}
+	
 }
 
 //アクターとの衝突処理
@@ -345,6 +325,7 @@ void CarGhost::collide_actor(Actor& other) {
 	float overlap = length - distance;
 	//重なっている部分の半分の距離だけ離れる移動量を求める
 	GSvector3 v = (position - target).getNormalized() * overlap * 0.5f;
+	v.z = 0.0f;
 	transform_.translate(v, GStransform::Space::World);
 	//フィールドとの衝突判定
 	collide_field();
