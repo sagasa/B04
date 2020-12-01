@@ -145,6 +145,7 @@
     <ClCompile Include="Actor.cpp" />
     <ClCompile Include="ActorManager.cpp" />
     <ClCompile Include="AnimatedMesh.cpp" />
+    <ClCompile Include="AttackCollider.cpp" />
     <ClCompile Include="BossTestScene.cpp" />
     <ClCompile Include="BoundingSphere.cpp" />
     <ClCompile Include="ByteBuf.cpp" />
@@ -176,6 +177,7 @@
     <ClInclude Include="ActorManager.h" />
     <ClInclude Include="AnimatedMesh.h" />
     <ClInclude Include="Assets.h" />
+    <ClInclude Include="AttackCollider.h" />
     <ClInclude Include="BossTestScene.h" />
     <ClInclude Include="BoundingSphere.h" />
     <ClInclude Include="ByteBuf.h" />

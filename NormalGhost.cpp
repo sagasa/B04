@@ -117,6 +117,7 @@ void NormalGhost::change_state(State state, GSuint motion, bool loop) {
 void NormalGhost::idle(float delta_time) {
 	if (is_move()) {
 		change_state(State::Move, MotionRun);
+		return;
 	}
 	change_state(State::Idle, MotionIdle);
 }
@@ -146,14 +147,15 @@ void NormalGhost::died(float delta_time) {
 
 //移動判定
 bool NormalGhost::is_move() const {
-	Actor* camera = world_->camera();
+	Camera* camera = world_->camera();
 	if (camera == nullptr) return false;
 	//画面内にいたら移動する
 	GSvector3 to_target = transform_.position() - camera->transform().position();
+	//カメラの前ベクトル
 	GSvector3 forward = camera->transform().forward();
-	float angle = GSvector3::signed_angle(forward, to_target);
+	float angle = abs(GSvector3::signed_angle(forward, to_target));
 	float distance = (camera->transform().position() - transform_.position()).magnitude();
-	return (distance <= MoveDistance) && (angle <= 45.0f);
+	return (angle <= 45.0f);
 }
 
 //ターゲット方向の角度を求める(符号付)
@@ -191,6 +193,11 @@ void NormalGhost::collide_field() {
 		transform_.position(center);
 		change_state(State::Died, MotionDie,false);
 	}
+	Line line{ collider().center,GSvector3{collider().center.x - EnemyRadius,collider().center.y,0.0f} };
+	GSvector3 intersect;
+	if (world_->field()->collide(line, &intersect)) {
+		velocity_.y *= 0.1f;
+	}
 }
 
 //アクターとの衝突処理
@@ -208,6 +215,7 @@ void NormalGhost::collide_actor(Actor& other) {
 	float overlap = length - distance;
 	//重なっている部分の半分の距離だけ離れる移動
 	GSvector3 v = (position - target).getNormalized() * overlap * 0.5f;
+	v.z = 0.0f;
 	transform_.translate(v, GStransform::Space::World);
 	//フィールドとの衝突判定
 	collide_field();

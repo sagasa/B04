@@ -37,7 +37,9 @@ public:
     virtual void send_message(const std::string& message, void* param = nullptr) override;
 
     // カメラの取得
-    virtual Actor* camera() override;
+    //virtual Actor* camera() override;
+    // カメラの取得
+    virtual Camera* camera() override;
     // ライトの取得
     virtual Actor* light() override;
     // フィールドの取得
@@ -54,6 +56,8 @@ private:
     Actor* light_{ nullptr };
     // カメラ
     Actor* camera_{ nullptr };
+    // カメラ
+    //Camera* camera_{ nullptr };
     // フィールド
     Field* field_{ nullptr };
 };

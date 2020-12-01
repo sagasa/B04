@@ -11,10 +11,8 @@ public:
 	//状態
 	enum class State {
 		Idle,
-		Patrol,
 		Move,
 		Turn,
-		Attack,
 		Damage,
 		Died
 	};
@@ -34,14 +32,10 @@ private:
 	void change_state(State state, GSuint motion,bool loop = true);
 	//アイドル
 	void idle(float delta_time);
-	//巡回
-	void patrol(float delta_time);
 	//移動
 	void move(float delta_time);
 	//ターン
 	void turn(float delta_time);
-	//攻撃
-	void attack(float delta_time);
 	//ダメージ
 	void damage(float delta_time);
 	//死亡
@@ -93,6 +87,8 @@ private:
 	float state_timer_;
 	//向きを変えるか
 	bool is_turn_;
+	//プレイヤーと衝突したか?
+	bool is_hit_;
 };
 
 #endif
