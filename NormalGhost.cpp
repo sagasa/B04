@@ -125,7 +125,7 @@ void NormalGhost::move(float delta_time) {
 //ƒ_ƒ[ƒW’†
 void NormalGhost::damage(float delta_time) {
 	if (state_timer_ >= mesh_.motion_end_time()) {
-		idle(delta_time);
+		change_state(State::Died,MotionDie,false);
 	}
 }
 
