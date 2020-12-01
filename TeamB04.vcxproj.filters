@@ -129,6 +129,9 @@
     <ClCompile Include="player_ghost.cpp">
       <Filter>ソース ファイル\Player</Filter>
     </ClCompile>
+    <ClCompile Include="AttackCollider.cpp">
+      <Filter>ソース ファイル\Actors</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ActorManager.h">
@@ -232,6 +235,9 @@
     </ClInclude>
     <ClInclude Include="player_ghost.h">
       <Filter>ヘッダー ファイル\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="AttackCollider.h">
+      <Filter>ヘッダー ファイル\Actors</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

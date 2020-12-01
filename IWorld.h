@@ -3,6 +3,7 @@
 #include <vector>
 class Actor;
 class Field;
+class Camera;
 
 // ワールド抽象インターフェース
 class IWorld {
@@ -26,7 +27,9 @@ public:
     // フィールドの取得
     virtual Field* field() = 0;
     // カメラの取得
-    virtual Actor* camera() = 0;
+    //virtual Actor* camera() = 0;
+    // カメラの取得
+    virtual Camera* camera() = 0;
     // ライトの取得
     virtual Actor* light() = 0;
 };

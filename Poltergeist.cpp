@@ -309,6 +309,7 @@ void Poltergeist::collide_actor(Actor& other) {
 	float overlap = length - distance;
 	//重なっている部分の半分の距離だけ離れる移動量を求める
 	GSvector3 v = (position - target).getNormalized() * overlap * 0.5f;
+	v.z = 0.0f;
 	transform_.translate(v, GStransform::Space::World);
 	//フィールドとの衝突判定
 	collide_field();

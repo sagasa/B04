@@ -54,8 +54,8 @@ void EnemyTestScene::start() {
     //エネミー3
     world_.add_actor(new Poltergeist{ &world_,GSvector3{5.0f,0.0f,0.0f} });
     //エネミー4
-    //world_.add_actor(new NormalGhost{ &world_,GSvector3{0.0f,0.0f,0.0f} });
-    world_.add_actor(new SurogSakones{ &world_,GSvector3{15.0f,0.0f,0.0f} });
+    world_.add_actor(new NormalGhost{ &world_,GSvector3{15.0f,0.0f,0.0f} });
+    //world_.add_actor(new SurogSakones{ &world_,GSvector3{15.0f,0.0f,0.0f} });
 }
 
 //更新

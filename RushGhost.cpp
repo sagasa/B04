@@ -18,9 +18,7 @@ const float TurnDistance{ 1.5f };
 //攻撃判定の距離
 const float AttackDistance{ 1.5f };
 //移動判定の距離x
-const float MoveDistance_x{ 15.0f };
-//移動判定の距離ｙ
-const float MoveDistance_y{ 15.0f };
+const float MoveDistance{ 5.0f };
 //振り向く角度
 const float TurnAngle{ 5.0f };
 //エネミーの高さ
@@ -106,7 +104,6 @@ void RushGhost::update_state(float delta_time) {
 	switch (state_) {
 	case State::Idle: idle(delta_time); break;
 	case State::Move: move(delta_time); break;
-	case State::Attack: attack(delta_time); break;
 	case State::Damage: damage(delta_time); break;
 	case State::Died: died(delta_time); break;
 	}
@@ -128,11 +125,6 @@ void RushGhost::change_state(State state, GSuint motion,bool loop) {
 
 //アイドル
 void RushGhost::idle(float delta_time) {
-	//攻撃するか？
-	if (is_attack()) {
-		change_state(State::Attack, MotionAttack);
-		return;
-	}
 	//プレイヤーを見つけたか？
 	if (is_move()) {
 		change_state(State::Move, MotionIdle);
@@ -147,25 +139,18 @@ void RushGhost::idle(float delta_time) {
 
 //移動
 void RushGhost::move(float delta_time) {
-	//攻撃するか？
-	/*if (is_attack()) {
-		change_state(State::Attack, MotionAttack);
-	}*/
-	if (point_ < 100) {//回数
-		angle_ = PI * point_ / 100;
+	if (point_ <= 180) {//回数
+		angle_ = PI * point_ / 180;
 		GSvector3 position{  rotate_centrer_.x + to_targe_angle_ *(float)cos(angle_) * radius,rotate_centrer_.y + -(float)sin(angle_) * radius,0.0f };
 		GSvector3 velocity = (position - transform_.position());
 		velocity_ = velocity;
-		transform_.translate(velocity_ * delta_time, GStransform::Space::World);
-		point_++;
+		transform_.translate(velocity_, GStransform::Space::World);
+		point_ += delta_time;
 	}
 	else {
+		transform_.position(rotate_centrer_ - to_targe_angle_ * GSvector3{ radius,0.0f,0.0f });
 		change_state(State::Idle, MotionIdle);
 	}
-	//velocity_ = GSvector3{ to_target().x,to_target().y,0.0f };
-	//ターゲット方向の角度を求める
-	
-	//transform_.translate(velocity_ * delta_time * Speed, GStransform::Space::World);
 }
 
 //ターン
@@ -173,14 +158,6 @@ void RushGhost::turn(float delta_time) {
 	float angle = CLAMP(target_signed_angle(), -TurnAngle, TurnAngle);
 	//ターゲット方向を向く
 	transform_.rotate(0.0f, angle, 0.0f);
-}
-
-//攻撃
-void RushGhost::attack(float delta_time) {
-	//モーション終了後に移動中へ
-	if (state_timer_ >= mesh_.motion_end_time()) {
-		idle(delta_time);
-	}
 }
 
 //ダメージ
@@ -206,16 +183,10 @@ bool RushGhost::is_turn()const {
 	return(target_distance() <= TurnDistance) && (target_angle() >= 20.0f);
 }
 
-//攻撃判定
-bool RushGhost::is_attack()const {
-	//攻撃距離内かつ前向き方向のベクトルとターゲット方向のベクトルの角度差が20.0度以下か？
-	return (target_distance() <= AttackDistance);
-}
-
 //移動判定
 bool RushGhost::is_move()const {
 	//移動距離かつ前方向のベクトルとターゲット方向のベクトルの角度差が100.0度以下か？
-	return (target_distance_x() <= MoveDistance_x) && (target_distance_y() <= MoveDistance_y) && (target_angle() <= 20.0f);
+	return (target_distance() <= MoveDistance);
 }
 
 //前向き方向のベクトルとターゲット方向のベクトルの角度差を求める(符号付き)
@@ -277,20 +248,20 @@ void RushGhost::collide_field() {
 
 //アクターとの衝突処理
 void RushGhost::collide_actor(Actor& other) {
-	////z座標を除く座標を求める
-	//GSvector3 position = transform_.position();
-	//position.z = 0.0f;
-	//GSvector3 target = other.transform().position();
-	//target.z = 0.0f;
-	////相手との距離
-	//float distance = GSvector3::distance(position, target);
-	////衝突判定球の半径同士を加えた長さを求める
-	//float length = collider_.radius + other.collider().radius;
-	////衝突判定球の重なっている長さを求める
-	//float overlap = length - distance;
-	////重なっている部分の半分の距離だけ離れる移動量を求める
-	//GSvector3 v = (position - target).getNormalized() * overlap * 0.5f;
-	//transform_.translate(v, GStransform::Space::World);
-	////フィールドとの衝突判定
-	//collide_field();
+	/*//z座標を除く座標を求める
+	GSvector3 position = transform_.position();
+	position.z = 0.0f;
+	GSvector3 target = other.transform().position();
+	target.z = 0.0f;
+	//相手との距離
+	float distance = GSvector3::distance(position, target);
+	//衝突判定球の半径同士を加えた長さを求める
+	float length = collider_.radius + other.collider().radius;
+	//衝突判定球の重なっている長さを求める
+	float overlap = length - distance;
+	//重なっている部分の半分の距離だけ離れる移動量を求める
+	GSvector3 v = (position - target).getNormalized() * overlap * 0.5f;
+	transform_.translate(v, GStransform::Space::World);
+	//フィールドとの衝突判定
+	collide_field();*/
 }

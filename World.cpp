@@ -1,6 +1,7 @@
 #include "World.h"
 #include "Field.h"
 #include "Actor.h"
+#include"Camera.h"
 
 // デストラクタ
 World::~World() {
@@ -105,8 +106,12 @@ void World::send_message(const std::string& message, void* param) {
 }
 
 // カメラの取得
-Actor* World::camera() {
+/*Actor* World::camera() {
     return camera_;
+}*/
+// カメラの取得
+Camera* World::camera() {
+    return (Camera*)camera_;
 }
 
 // ライトの取得
