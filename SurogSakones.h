@@ -15,6 +15,7 @@ public:
 		Unkown,
 		Appear,
 		Idol,
+		Attack,
 		ScytheAttack,
 		PsycoAttack_1,
 		PsycoAttack_2,
@@ -42,6 +43,7 @@ private:
 	void update_state(float delta_time);
 	void appear(float delta_time);
 	void idol(float delta_time);
+	void attack(float delta_time);
 	void scythe_attack(float delta_time);
 	void psyco1_attack(float delta_time);
 	void psyco2_attack(float delta_time);
@@ -105,6 +107,11 @@ private:
 	//Œü‚¢‚Ä‚¢‚é•ûŒü
 	bool flip_{ false };
 	bool prev_flip_{ false };
+
+	bool scythe_attack_flag_{ false };
+	bool psyco1_attack_flag_{ false };
+	bool psyco2_attack_flag_{ false };
+	float attack_timer_{ 0.0f };
 
 	bool player_cross_{ false };
 
