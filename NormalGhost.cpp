@@ -3,6 +3,7 @@
 #include"Field.h"
 #include"Line.h"
 #include"Assets.h"
+#include"Camera.h"
 
 enum {
 	MotionIdle = 0,
@@ -18,7 +19,7 @@ const float TurnDistance{ 1.5f };
 //攻撃判定の距離
 const float AttackDistance{ 1.5f };
 //移動判定の距離ｙ
-const float MoveDistance_y{ 5.0f };
+const float MoveDistance{10.0f};
 //振り向く角度
 const float TurnAngle{ 5.0f };
 //エネミーの高さ
@@ -61,7 +62,7 @@ void NormalGhost::update(float delta_time) {
 	//状態の更新
 	update_state(delta_time);
 	//フィールドとの衝突判定
-	collide_field();
+	//collide_field();
 	mesh_.change_motion(motion_);
 	//メッシュを更新
 	mesh_.update(delta_time);
@@ -81,8 +82,11 @@ void NormalGhost::draw() const {
 void NormalGhost::react(Actor& other) {
 	//ダメージ中または死亡中は何もしない
 	if (state_ == State::Damage || state_ == State::Died) return;
-	hp_--;
-	change_state(State::Damage, MotionDamage);
+	if (other.tag() == "PlayerTag") {
+		hp_--;
+		change_state(State::Damage, MotionDamage);
+	}
+	
 }
 
 //状態の更新
@@ -111,7 +115,10 @@ void NormalGhost::change_state(State state, GSuint motion, bool loop) {
 
 //アイドル中
 void NormalGhost::idle(float delta_time) {
-	change_state(State::Move, MotionRun);
+	if (is_move()) {
+		change_state(State::Move, MotionRun);
+	}
+	change_state(State::Idle, MotionIdle);
 }
 
 //移動中
@@ -137,7 +144,17 @@ void NormalGhost::died(float delta_time) {
 	}
 }
 
-
+//移動判定
+bool NormalGhost::is_move() const {
+	Actor* camera = world_->camera();
+	if (camera == nullptr) return false;
+	//画面内にいたら移動する
+	GSvector3 to_target = transform_.position() - camera->transform().position();
+	GSvector3 forward = camera->transform().forward();
+	float angle = GSvector3::signed_angle(forward, to_target);
+	float distance = (camera->transform().position() - transform_.position()).magnitude();
+	return (distance <= MoveDistance) && (angle <= 45.0f);
+}
 
 //ターゲット方向の角度を求める(符号付)
 float NormalGhost::target_signed_angle() const {

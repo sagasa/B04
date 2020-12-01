@@ -50,11 +50,11 @@ void EnemyTestScene::start() {
     //エネミー1
     world_.add_actor(new CarGhost{ &world_,GSvector3{10.0f,0.0f,0.0f} });
     //エネミー2
-    world_.add_actor(new RushGhost{ &world_,GSvector3{-10.0f,0.0f,0.0f} });
+    world_.add_actor(new RushGhost{ &world_,GSvector3{5.0f,5.0f,0.0f} });
     //エネミー3
     world_.add_actor(new Poltergeist{ &world_,GSvector3{5.0f,0.0f,0.0f} });
     //エネミー4
-    world_.add_actor(new NormalGhost{ &world_,GSvector3{3.0f,5.0f,0.0f} });
+    //world_.add_actor(new NormalGhost{ &world_,GSvector3{0.0f,0.0f,0.0f} });
     world_.add_actor(new SurogSakones{ &world_,GSvector3{15.0f,0.0f,0.0f} });
 }
 
