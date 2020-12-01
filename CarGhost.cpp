@@ -15,7 +15,7 @@ enum {
 };
 
 //振り向き判定の距離
-const float TurnDistance{ 1.5f };
+const float TurnDistance{ 5.0f };
 //攻撃判定の距離
 const float AttackDistance{ 1.5f };
 //移動判定の距離ｙ
@@ -31,7 +31,7 @@ const float FootOffset{ 0.1f };
 //頭上のオフセット
 const float HeadOffset{ 1.0f };
 //スピード
-const float Speed{ 0.025f };
+const float Speed{ 0.05f };
 
 //コンストラクタ
 CarGhost::CarGhost(IWorld* world, const GSvector3& position) :
@@ -42,6 +42,7 @@ CarGhost::CarGhost(IWorld* world, const GSvector3& position) :
 	state_timer_{0.0f},
 	player_{ nullptr },
 	hp_{3},
+	moving_timer_{gsRandf(0,60.0f)},
 	is_turn_{false} {
 	//ワールドの設定
 	world_ = world;
@@ -73,6 +74,8 @@ void CarGhost::update(float delta_time) {
 	mesh_.update(delta_time);
 	//行列を設定
 	mesh_.transform(transform_.localToWorldMatrix());
+	//タイマー更新
+	moving_timer_ -= delta_time;
 }
 
 //描画
@@ -144,6 +147,9 @@ void CarGhost::idle(float delta_time) {
 		change_state(State::Move, MotionRun);
 		return;
 	}
+	if (is_turn()) {
+		change_state(State::Turn, MotionIdle);
+	}
 	//何もなければ巡回
 	change_state(State::Patrol, MotionIdle);
 }
@@ -160,6 +166,9 @@ void CarGhost::patrol(float delta_time) {
 		change_state(State::Move, MotionRun);
 		return;
 	}
+	if (is_turn()) {
+		change_state(State::Turn, MotionIdle);
+	}
 	//何もなければ巡回
 	change_state(State::Patrol, MotionIdle);
 
@@ -167,25 +176,37 @@ void CarGhost::patrol(float delta_time) {
 
 //移動
 void CarGhost::move(float delta_time) {
-	velocity_ = GSvector3{ to_target().x,to_target().y,0.0f };
+	//攻撃するか？
+	/*if (is_attack()) {
+		change_state(State::Attack, MotionAttack, false);
+	}*/
+	if (is_turn()) {
+		change_state(State::Turn, MotionIdle);
+	}
+	if (moving_timer_ <= 0) {
+		velocity_ = GSvector3{ to_target().x,to_target().y,0.0f };
+		moving_timer_ = gsRandf(30.0f, 60.0f);
+	}
+	/*if (player_ ->transform().position().y > transform_.position().y) {
+		
+	}
+	else if (player_->transform().position().y < transform_.position().y) {
+		transform_.rotate(GSvector3{ -1.0f,0.0f,0.0f }, 20.0f);
+	}
 	//ターゲット方向の角度を求める
-	float angle = CLAMP(target_signed_angle(), -TurnAngle, TurnAngle);
-	//ターゲット方向を向く
-	transform_.rotate(0.0f, angle, 0.0f);
+		float angle = CLAMP(target_signed_angle(), -TurnAngle, TurnAngle);
+		//ターゲット方向を向く
+		transform_.rotate(angle, 0.0f, 0.0f);*/
 	//移動
 	transform_.translate(velocity_ * delta_time * Speed, GStransform::Space::World);
 	
-	//攻撃するか？
-	if (is_attack()) {
-		change_state(State::Attack, MotionAttack, false);
-	}
 }
 
 //ターン
 void CarGhost::turn(float delta_time) {
 	if (state_timer_ >= mesh_.motion_end_time()) {
 		//振り向きモーションが終了したらアイドル中に遷移
-		//idle(delta_time);
+		idle(delta_time);
 	}
 	else {
 		//振り向きモーションをしながらターゲット方向を向く
@@ -238,6 +259,12 @@ bool CarGhost::is_move()const {
 	return (target_distance_y() <= MoveDistance_y) && (target_angle() <= 20.0f);
 }
 
+//振り向き判定
+bool CarGhost::is_turn() const {
+	//振り向き距離内かつ前向き方向のベクトルとターゲット方向のベクトルの角度差が20度以下か？
+	return (target_distance() <= TurnDistance) && (target_angle() >= 90.0f);
+}
+
 //前向き方向のベクトルとターゲット方向のベクトルの角度差を求める(符号付き)
 float CarGhost::target_signed_angle()const {
 	//ターゲットがいなければ0を返す
@@ -287,7 +314,8 @@ float CarGhost::target_distance_y() const {
 GSvector3 CarGhost::to_target() const {
 	//ターゲットがいなければ0を返す
 	if (player_ == nullptr)return GSvector3::zero();
-	return (player_->transform().position() - transform_.position()).normalized();
+	GSvector3 player = player_->transform().position() - GSvector3{1.5f,1.5f,0.0f};
+	return (player - transform_.position()).normalized();
 }
 
 //フィールドとの衝突処理
