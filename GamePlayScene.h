@@ -22,6 +22,8 @@ public:
 private:
 	//ワールドクラス
 	World world_;
+	//終了フラグ
+	bool is_end_{ false };
 };
 
 #endif

@@ -9,9 +9,7 @@ public:
 	//状態
 	enum class State {
 		Idle,
-		Patrol,
 		Move,
-		Turn,
 		Attack,
 		Damage,
 		Died
@@ -32,8 +30,6 @@ private:
 	void change_state(State state, GSuint motion,bool loop = true);
 	//アイドル
 	void idle(float delta_time);
-	//巡回
-	void patrol(float delta_time);
 	//移動
 	void move(float delta_time);
 	//ターン
@@ -91,6 +87,11 @@ private:
 	float angle_;
 	//ポイント
 	float point_;
+	//回転の中心
+	GSvector3 rotate_centrer_;
+	//移動する向き
+	float to_targe_angle_;
+	
 };
 
 

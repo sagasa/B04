@@ -102,7 +102,7 @@ void CarGhost::react(Actor& other) {
 		return;
 	}
 	//プレイヤーまたはエネミーに衝突した場合
-	if (other.tag() == "PlayerTag" || other.tag() == "EnemyTag") {
+	if (other.tag() == "EnemyTag") {
 		collide_actor(other);
 		change_state(State::Move, MotionRun);
 	}
