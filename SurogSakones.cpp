@@ -25,9 +25,11 @@ const float FootOffset{ 0.1f };
 const float Gravity{ 0.2f };
 const float TurnDistance{ 2.0f };
 const float MinMoveDistance{ 2.5f };
-const float MaxMoveDistance{ 5.5f };
+const float SarchMoveDistance{ 5.5f };
+const float MaxMoveDistance{ 10.0f };
 
 const float ScytheRange{ 1.5f };
+const float Psyco1Range{ 5.5f };
 
 //アタック時のフレーム数
 const float ScytheAttackFlame{ 20.0f };
@@ -72,15 +74,12 @@ void SurogSakones::update(float delta_time) {
 		else destination_ = move_pos_[0];
 	}
 	if (gsGetKeyTrigger(GKEY_4)) {
-		scythe_attack_flag_ = true;
 		change_state(State::Attack, MotionScytheAttack);
 	}
 	if (gsGetKeyTrigger(GKEY_5)) {
-		psyco1_attack_flag_ = true;
 		change_state(State::Attack, MotionAttack2);
 	}
 	if (gsGetKeyTrigger(GKEY_6)) {
-		psyco2_attack_flag_ = true;
 		change_state(State::Attack, MotionAttack3);
 	}
 	if (gsGetKeyTrigger(GKEY_7)) {
@@ -131,25 +130,6 @@ void SurogSakones::idol(float delta_time) {
 	{
 		change_state(State::Idol, MotionIdol1);
 	}
-	if (is_scythe_attack(player_)) {
-		scythe_attack_flag_ = true;
-		change_state(State::Attack, MotionScytheAttack);
-		return;
-	}
-
-
-
-	if (is_psyco1_attack(player_)) {
-		psyco1_attack_flag_ = true;
-		change_state(State::Attack, MotionAttack2);
-		return;
-	}
-	if (is_psyco2_attack(player_)) {
-		psyco2_attack_flag_ = true;
-		change_state(State::Attack, MotionAttack3);
-		return;
-	}
-
 	if (is_turn(player_))
 	{
 		change_state(State::Turn, MotionScytheAttack);
@@ -171,48 +151,34 @@ void SurogSakones::attack(float delta_time)
 		psyco2_attack_flag_ = false;
 		scythe_attack_flag_ = false;
 		idol(delta_time);
-	}
-	if (scythe_attack_flag_)
-	{
-		if(attack_timer_>=ScytheAttackFlame)
-		{
-			scythe_attack_flag_ = false;
-			pshychokinesis((transform_.position() + GSvector3::up()));
-		}
-	}
-	if (psyco1_attack_flag_)
-	{
-		if (attack_timer_ >= Psyco1AttackFlame)
-		{
-			psyco1_attack_flag_ = false;
-			pshychokinesis((transform_.position() + GSvector3::up()));
-		}
 		return;
 	}
-	if (psyco2_attack_flag_)
+	switch (motion_)
 	{
-		if (attack_timer_ >= Psyco2AttackFlame)
-		{
-			psyco2_attack_flag_ = false;
-			pshychokinesis((transform_.position() + GSvector3::up()));
-		}
-		return;
+	case MotionScytheAttack:scythe_attack(delta_time); break;
+	case MotionAttack2:psyco1_attack(delta_time); break;
+	case MotionAttack3:psyco2_attack(delta_time); break;
 	}
 }
 void SurogSakones::scythe_attack(float delta_time) {
-	if (state_timer_ >= mesh_.motion_end_time()) {
-		idol(delta_time);
+	if (!scythe_attack_flag_ && attack_timer_ >= ScytheAttackFlame)
+	{
+		scythe_attack_flag_ = true;
+		pshychokinesis(transform_.position() + GSvector3::up() * 2.0f, GSvector3::up() * 3.0f);
 	}
 }
 void SurogSakones::psyco1_attack(float delta_time) {
-	if (state_timer_ >= mesh_.motion_end_time()) {
-		change_state(State::Move, MotionMove);
+	if (!psyco1_attack_flag_ && attack_timer_ >= ScytheAttackFlame)
+	{
+		psyco1_attack_flag_ = true;
+		pshychokinesis(transform_.position() + GSvector3::up() * 2.0f, GSvector3::up() * 4.0f);
 	}
 }
 void SurogSakones::psyco2_attack(float delta_time) {
-	if (state_timer_ >= mesh_.motion_end_time()) {
-		idol(delta_time);
-		pshychokinesis(transform_.position());
+	if (!psyco2_attack_flag_ && attack_timer_ >= ScytheAttackFlame)
+	{
+		psyco2_attack_flag_ = true;
+		pshychokinesis(transform_.position() + GSvector3::up() * 2.0f, GSvector3::up() * 3.0f);
 	}
 }
 void SurogSakones::stun(float delta_time) {
@@ -241,11 +207,15 @@ void SurogSakones::turn(float delta_time) {
 	}
 }
 void SurogSakones::move(float delta_time) {
-	if (target_distance(player_) >= MinMoveDistance && target_distance(player_) <= MaxMoveDistance)
+	if(target_distance(player_)<=MinMoveDistance)
+	{
+		move_way_ = Move::Normal;
+	}
+	else if(target_distance(player_) > MinMoveDistance&& target_distance(player_) <= SarchMoveDistance)
 	{
 		move_way_ = Move::Slowly;
 	}
-	else if (target_distance(player_) <= MinMoveDistance)
+	else if(target_distance(player_)>SarchMoveDistance&&target_distance(player_)<=MaxMoveDistance)
 	{
 		move_way_ = Move::Normal;
 	}
@@ -260,11 +230,24 @@ void SurogSakones::move(float delta_time) {
 	case Move::Slowly:move_slowly(delta_time); break;
 	case Move::Fast:move_fast(delta_time); break;
 	}
+
+	//攻撃処理
+	
 }
 
 void SurogSakones::move_normal(float delta_time)
 {
+	if (is_scythe_attack(player_)) {
+		change_state(State::Attack, MotionScytheAttack);
+		return;
+	}
+	if(is_psyco1_attack(player_))
+	{
+		change_state(State::Attack, MotionAttack2);
+		return;
+	}
 	destination_ = player_->transform().position();
+
 	GSvector3 vel = GSvector3::zero();
 	if (transform_.position() < destination_) {
 		vel = GSvector3{ 1.0f,0.0f,0.0f }*MoveSpeed;
@@ -273,22 +256,17 @@ void SurogSakones::move_normal(float delta_time)
 	else if (transform_.position() > destination_) {
 		vel = GSvector3{ -1.0f,0.0f,0.0f }*MoveSpeed;
 		transform_.translate(vel * delta_time, GStransform::Space::World);
-	}
-	if (target_distance(player_) <= 1.0f) {
-		idol(delta_time);
-		return;		
-	}
+	}	
 }
 void SurogSakones::move_slowly(float delta_time)
 {
 	float distance = target_distance(player_);
-	if (distance <= MaxMoveDistance)
+	if(is_psyco1_attack(player_))
 	{
-		psyco1_attack_flag_ = true;
-		change_state(State::Attack, MotionAttack2);
+		change_state(State::Attack, MotionAttack2, false);
 		return;
 	}
-	if (distance<MaxMoveDistance && distance>ScytheRange)
+	if (distance<Psyco1Range && distance>ScytheRange)
 	{
 		if (flip_)
 		{
@@ -298,18 +276,6 @@ void SurogSakones::move_slowly(float delta_time)
 		{
 			transform_.translate(GSvector3{ SlowMoveSpeed,0.0f,0.0f }*delta_time, GStransform::Space::World);
 		}
-	}
-	if (distance >= MaxMoveDistance)
-	{
-		psyco1_attack_flag_ = true;
-		change_state(State::Attack, MotionAttack2);
-		return;
-	}
-	if (distance <= ScytheRange)
-	{
-		scythe_attack_flag_ = true;
-		change_state(State::Attack, MotionScytheAttack);
-		return;
 	}
 }
 void SurogSakones::move_fast(float delta_time)
@@ -346,6 +312,8 @@ void SurogSakones::debug_draw()const {
 	gsDrawText("状態：(%d)", state_);
 	gsTextPos(0.0f, 120.0f);
 	gsDrawText("プレイヤーとの角度(%d)", target_posrelation(player_));
+	gsTextPos(0.0f, 140.0f);
+	gsDrawText("移動状態(%d)", move_way_);
 }
 
 /**
@@ -357,7 +325,7 @@ void SurogSakones::Damage() {
 	change_state(State::Stun, MotionDamage1);
 }
 
-void SurogSakones::pshychokinesis(const GSvector3& position) {
+void SurogSakones::pshychokinesis(const GSvector3& position, GSvector3 velocity) {
 	Actor* player = world_->find_actor("Player");
 	//プレイヤーが憑依中かしらべ、憑依中じゃなかったらreturnする処理を後々追加
 	//プレイヤーがヌルでないか
@@ -365,7 +333,7 @@ void SurogSakones::pshychokinesis(const GSvector3& position) {
 		//プレイヤーのベクトルを求める
 		GSvector3 to_player = (player->transform().position() - transform().position()).normalized();
 		//球を出す処理
-		world_->add_actor(new PsycokinesisBullet(world_, position, GSvector3::up() * 2.0f));
+		world_->add_actor(new PsycokinesisBullet(world_, position, velocity));
 	}
 }
 
@@ -405,7 +373,7 @@ bool SurogSakones::is_scythe_attack(const Actor* other) {
 	return (target_distance(other) <= ScytheRange && target_signed_angle(other) <= 60.0f);
 }
 bool SurogSakones::is_psyco1_attack(const Actor* other) {
-	return false;
+	return (target_distance(other) <= Psyco1Range);
 }
 bool SurogSakones::is_psyco2_attack(const Actor* other) {
 	return false;

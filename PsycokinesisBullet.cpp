@@ -29,6 +29,10 @@ void PsycokinesisBullet::update(float delta_time) {
 		acceleration_ = acceleration_.normalize() * MaxAcceleration;
 	}
 	period_ -= (delta_time / 60.0f);
+	if(period_<0.0f)
+	{
+		return;
+	}
 	velocity_ += acceleration_ * (delta_time / 60.0f);
 
 	Line line;
@@ -40,7 +44,7 @@ void PsycokinesisBullet::update(float delta_time) {
 	glEnd();
 	transform_.position(transform_.position() + velocity_ * (delta_time / 60.0f));
 
-	if (period_ < 0.0f|| world_->field()->collide(collider()))die();
+	if (world_->field()->collide(collider()))die();
 }
 
 void PsycokinesisBullet::draw()const {
