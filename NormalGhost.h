@@ -12,7 +12,7 @@ public:
 		Idle,
 		Move,
 		Damage,
-		died
+		Died
 	};
 
 	//コンストラクタ

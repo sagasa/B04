@@ -2,7 +2,7 @@
 #include"IWorld.h"
 
 //プレイヤーからの相対座標
-const GSvector3 PlayerOffset{ 0.0f,1.0f,10.0f };
+const GSvector3 PlayerOffset{ 0.0f,2.0f,10.0f };
 //カメラの注視点の補正値
 const GSvector3 ReferncePointOffset{ 0.0f,1.7,0.0f };
 //スムースダンプによる滑らかな補間
@@ -11,9 +11,9 @@ const float MaxSpeed{ 1.0f };   //移動スピードの最大値
 
 // コンストラクタ
 Camera::Camera(IWorld* world) {
-    world_ = world;
-    name_ = "Camera";
-    tag_ = "CamaraTag";
+	world_ = world;
+	name_ = "Camera";
+	tag_ = "CamaraTag";
 }
 
 //更新
@@ -27,7 +27,7 @@ void Camera::update(float delta_time) {
 	//注視点の位置を求める
 	GSvector3 at = player_->transform().position() + ReferncePointOffset;
 	transform_.position(position);
-	//transform_.lookAt(at);
+	transform_.lookAt(at);
 }
 
 // 描画
@@ -41,4 +41,28 @@ void Camera::draw() const {
 		at.x, at.y, 0.0f,
 		0.0f, 1.0f, 0.0f
 	);
+}
+
+bool Camera::is_viewing(const BoundingSphere& sphere) {
+	GSfrustum		Frustum;
+	GSmatrix4		matProj;
+	GSmatrix4		matView;
+	/* 透視変換行列を取得 */
+	glGetFloatv(GL_PROJECTION_MATRIX, (GLfloat*)&matProj);
+
+	/* モデルビュー変換マトリクスを取得する */
+	glGetFloatv(GL_MODELVIEW_MATRIX, (GLfloat*)&matView);
+
+	/* 視錐台を作成する */
+	gsFrustumFromMatrices(&Frustum, &matView, &matProj);
+	return gsFrustumIsSphereInside
+	(
+		&Frustum,
+		&sphere.center,
+		sphere.radius
+	);
+	 //return gsFrustumIsPointInside(&Frustum, &sphere.center) == GS_FALSE;
+	
+
+
 }
