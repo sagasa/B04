@@ -232,20 +232,23 @@ void SurogSakones::move(float delta_time) {
 	}
 
 	//UŒ‚ˆ—
+	if(cool_timer_<0.0f)
+	{
+		if(is_scythe_attack(player_))
+		{
+			change_state(State::Attack, MotionScytheAttack);
+			return;
+		}
+		if(is_psyco1_attack(player_))
+		{
+			
+		}
+	}
 	
 }
 
 void SurogSakones::move_normal(float delta_time)
 {
-	if (is_scythe_attack(player_)) {
-		change_state(State::Attack, MotionScytheAttack);
-		return;
-	}
-	if(is_psyco1_attack(player_))
-	{
-		change_state(State::Attack, MotionAttack2);
-		return;
-	}
 	destination_ = player_->transform().position();
 
 	GSvector3 vel = GSvector3::zero();
