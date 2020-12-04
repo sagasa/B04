@@ -185,7 +185,7 @@ bool RushGhost::is_turn()const {
 
 //移動判定
 bool RushGhost::is_move()const {
-	//移動距離かつ前方向のベクトルとターゲット方向のベクトルの角度差が100.0度以下か？
+	//移動距離?
 	return (target_distance() <= MoveDistance);
 }
 

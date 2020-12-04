@@ -64,6 +64,8 @@ private:
 
 	//ターゲット方向のベクトルを求める
 	GSvector3 to_target()const;
+	//弾生成
+	void generate_bullet() const;
 
 private:
 	//アニメーションメッシュ
@@ -76,12 +78,8 @@ private:
 	Actor* player_;
 	//体力
 	float hp_{ 1.0f };
-	//移動タイマー
-	float moving_timer_{ 0.0f };
 	//射撃タイマー
 	float shootiong_timer_{ 0.0f };
-	//スピード
-	float speed_{ 1.0f };
 	//状態
 	State state_;
 	//状態タイマー
