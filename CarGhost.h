@@ -11,10 +11,8 @@ public:
 	//状態
 	enum class State {
 		Idle,
-		Patrol,
 		Move,
 		Turn,
-		Attack,
 		Damage,
 		Died
 	};
@@ -34,14 +32,10 @@ private:
 	void change_state(State state, GSuint motion,bool loop = true);
 	//アイドル
 	void idle(float delta_time);
-	//巡回
-	void patrol(float delta_time);
 	//移動
 	void move(float delta_time);
 	//ターン
 	void turn(float delta_time);
-	//攻撃
-	void attack(float delta_time);
 	//ダメージ
 	void damage(float delta_time);
 	//死亡
@@ -56,6 +50,8 @@ private:
 	bool is_attack()const;
 	//移動判定
 	bool is_move()const;
+	//振り向き判定
+	bool is_turn() const;
 
 	//ターゲット方向の角度を求める(符号付き)
 	float target_signed_angle()const;
@@ -82,15 +78,17 @@ private:
 	//プレイヤー
 	Actor* player_;
 	//体力
-	float hp_{ 1.0f };
+	float hp_;
 	//タイマー
-	float moving_timer_{ 0.0f };
+	float moving_timer_;
 	//状態
 	State state_;
 	//状態タイマー
 	float state_timer_;
 	//向きを変えるか
 	bool is_turn_;
+	//プレイヤーと衝突したか?
+	bool is_hit_;
 };
 
 #endif

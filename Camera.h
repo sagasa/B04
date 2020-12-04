@@ -11,6 +11,9 @@ public:
     virtual void update(float delta_time)override;
     // •`‰æ
     virtual void draw() const override;
+    //Œ©‚¦‚Ä‚¢‚é‚©‚Ç‚¤‚©H
+    bool is_viewing(const BoundingSphere& sphere);
+    
 
 private:
     Actor* player_;
