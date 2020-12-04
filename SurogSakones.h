@@ -15,9 +15,7 @@ public:
 		Unkown,
 		Appear,
 		Idol,
-		ScytheAttack,
-		PsycoAttack_1,
-		PsycoAttack_2,
+		Attack,
 		Move,
 		Turn,
 		Stun,
@@ -42,6 +40,7 @@ private:
 	void update_state(float delta_time);
 	void appear(float delta_time);
 	void idol(float delta_time);
+	void attack(float delta_time);
 	void scythe_attack(float delta_time);
 	void psyco1_attack(float delta_time);
 	void psyco2_attack(float delta_time);
@@ -59,7 +58,7 @@ private:
 	//ó‘Ô•Ï‰»
 	void change_state(State state, GSuint motion,bool loop=true);
 	//”O“®UŒ‚
-	void pshychokinesis(const GSvector3& position);
+	void pshychokinesis(const GSvector3& position,GSvector3 velocity=GSvector3::up());
 	//ˆÚ“®‚µ‚Â‚ÂUŒ‚
 	void move_attack(float delta_time);
 	//ˆÚ“®‚µ‚½Œã‚Ìƒ^[ƒ“
@@ -105,6 +104,12 @@ private:
 	//Œü‚¢‚Ä‚¢‚é•ûŒü
 	bool flip_{ false };
 	bool prev_flip_{ false };
+
+	bool scythe_attack_flag_{ false };
+	bool psyco1_attack_flag_{ false };
+	bool psyco2_attack_flag_{ false };
+	float attack_timer_{ 0.0f };
+	float cool_timer_{ 0.0f };
 
 	bool player_cross_{ false };
 
