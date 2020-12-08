@@ -32,6 +32,10 @@ const float FootOffset{ 0.1f };
 const float HeadOffset{ 1.0f };
 //移動速度
 const float Speed{ 0.05f };
+//x座標の死亡座標
+const float LimitDistance_x{ 100.0f };
+//y座標の死亡座標
+const float LimitDistance_y{ 100.0f };
 
 //コンストラクタ
 NormalGhost::NormalGhost(IWorld* world, const GSvector3& position) :
@@ -58,6 +62,10 @@ NormalGhost::NormalGhost(IWorld* world, const GSvector3& position) :
 
 //更新
 void NormalGhost::update(float delta_time) {
+	//x座標が-100を超えたら
+	if (transform_.position().x <= -LimitDistance_x) {
+		die();
+	}
 	player_ = world_->find_actor("Player");
 	//状態の更新
 	update_state(delta_time);
