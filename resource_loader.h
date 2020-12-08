@@ -2,18 +2,19 @@
 #include "thread_pool.h"
 #include "GSgame.h"
 
+//
 class resource_loader
 {
 	thread_pool pool_{4};
     std::atomic_int count_{0};
 
-    std::function<void()>* end_func_=nullptr;
+    void (*end_func_)() = nullptr;
 
 	void end()
 	{
 		if(end_func_!=nullptr&&count_==0)
 		{
-            end_func_();
+			end_func_();
             end_func_ = nullptr;
 		}
 	}
@@ -21,7 +22,7 @@ class resource_loader
 	void post(const std::function<void()> f)
 	{
         ++count_;
-        pool_.post([&]
+        pool_.post([this,f]
             {
                 f();
                 --count_;
@@ -43,15 +44,15 @@ public:
     }
     void load_octree(const GSuint id, const char* path)
     {
-        post([&] {gsLoadOctree(id, path); });
+        post([=] {gsLoadOctree(id, path); });
     }
 
-    void on_end(std::function<void()> f)
+    void on_end(void (*f)())
     {
     	//実行中が無ければ即時
         if (count_ == 0)
             f();
         else
-            end_func_ = &f;//これ大丈夫？
+            end_func_ = f;//これ大丈夫？
     }
 };
