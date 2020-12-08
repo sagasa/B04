@@ -12,9 +12,7 @@ const float size_{ 1 };
 MapGenerator::MapGenerator(IWorld* world, const std::string& file_name) {
 	csv_.load(file_name);//CSVファイルの読み込み
 	for (int row = 0; row < csv_.rows(); row++) {
-		for (int column = 0; column < csv_.columns(); column++) {
-			generate(world,row, column);
-		}
+			generate(world,row, 0);
 	}
 }
 
@@ -22,34 +20,29 @@ MapGenerator::MapGenerator(IWorld* world, const std::string& file_name) {
 void MapGenerator::generate(IWorld* world ,int row, int column) {
 	
 	//数字を取得
-	int num = csv_.geti(row, column);
+	std::string num = csv_.get(row, column);
 	//座標を取得
 	GSvector3 position{
-		column * size_,
-		row * size_,
+		csv_.getf(row,1),
+		csv_.getf(row,2),
 		0.0f
 	};
 
-	if (num == 0) {//地面
-		//ブロックの生成
-	}
-	else if (num == 1) {//プレイヤー
+
+	 if (num == "Player") {//プレイヤー
 		world->add_actor(new Player{ world,position });
 	}
-	else if (num == 2) {//CarGhost
+	else if (num == "CarGhost") {//CarGhost
 		world->add_actor(new CarGhost{ world,position });
 	}
-	else if (num == 3) {//RushGhost
+	else if (num == "RushGhost") {//RushGhost
 		world->add_actor(new RushGhost{ world,position });
 	}
-	else if (num == 4) {//Poltergeist
+	else if (num == "Poltergeist") {//Poltergeist
 		world->add_actor(new Poltergeist{ world,position });
 	}
-	else if (num == 5) {//SurogSakones
+	else if (num == "SurogSakones") {//SurogSakones
 		world->add_actor(new SurogSakones{ world,position });
-	}
-	else if (num == -1) {
-
 	}
 
 }
