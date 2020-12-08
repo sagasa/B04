@@ -105,7 +105,6 @@ void CarGhost::react(Actor& other) {
 	}
 	else if (other.tag() == "PlayerTag") {
 		is_hit_ = true;
-		collide_actor(other);
 	}
 }
 
