@@ -16,9 +16,7 @@ enum {
 //振り向き判定の距離
 const float TurnDistance{ 10.0f };
 //移動判定の距離ｙ
-const float MoveDistance_x{ 10.0f };
-//移動判定の距離x
-const float MoveDistance_y{ 10.0f };
+const float MoveDistance{ 10.0f };
 //振り向く角度
 const float TurnAngle{ 5.0f };
 //エネミーの高さ
@@ -213,7 +211,7 @@ bool Poltergeist::is_turn()const {
 //攻撃判定
 bool Poltergeist::is_attack()const {
 	//攻撃距離内かつ前向き方向のベクトルとターゲット方向のベクトルの角度差が20.0度以下か？
-	return (target_distance_x() <= MoveDistance_x) && (target_distance_y() <= MoveDistance_y) && (target_angle() <= 20.0f);
+	return (target_distance_x() <= MoveDistance) && (target_angle() <= 20.0f);
 }
 
 //前向き方向のベクトルとターゲット方向のベクトルの角度差を求める(符号付き)
