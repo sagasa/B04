@@ -19,7 +19,7 @@ static player_paladin Paladin =player_paladin{};
 static player_ghost Ghost = player_ghost{};
 
 // コンストラクタ
-Player::Player(IWorld* world, const GSvector3& position) :info(Ghost){//どうすりゃいいのヨ
+Player::Player(IWorld* world, const GSvector3& position) :info(Paladin){//どうすりゃいいのヨ
     world_ = world;
     name_ = "Player";
     tag_ = "PlayerTag";

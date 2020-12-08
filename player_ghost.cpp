@@ -1,6 +1,6 @@
 ﻿#include "player_ghost.h"
 
-player_ghost::player_ghost():player_info(AnimatedMesh{ Mesh_Poltergeist, Skeleton_CarGhost, Animation_CarGhost })
+player_ghost::player_ghost():player_info(AnimatedMesh{ Mesh_Player, Skeleton_Player, Animation_Player })
 {
 
 }
