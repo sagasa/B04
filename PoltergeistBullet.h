@@ -7,7 +7,7 @@ class PoltergeistBullet : public Actor {
 public:
 
 	//コンストラクタ
-	PoltergeistBullet(IWorld* world, const GSvector3& position,const GSvector3& target);
+	PoltergeistBullet(IWorld* world, const GSvector3& position,const GSvector3& velocity);
 	//更新
 	virtual void update(float delta_time) override;
 	//描画
@@ -16,15 +16,12 @@ public:
 	virtual void react(Actor& other) override;
 
 private:
-	//計算
-	void parabola();
+	//画面外か？
+	bool is_out_camera() const;
 
 private:
-	//ターゲットの位置
-	GSvector3 target_;
-	GSvector3 this_target_;
-	//オフセット
-	GSvector3 offset_;
+	//死亡タイマー
+	float died_timer_;
 };
 
 

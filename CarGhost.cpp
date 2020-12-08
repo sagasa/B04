@@ -148,12 +148,14 @@ void CarGhost::idle(float delta_time) {
 
 //移動
 void CarGhost::move(float delta_time) {
+	GSvector3 velocity = GSvector3::zero();
 	if (!is_hit_) {
 		if (is_turn()) {
 			change_state(State::Turn, MotionIdle);
 		}
 		if (moving_timer_ <= 0) {
-			velocity_ = GSvector3{ to_target().x,to_target().y,0.0f };
+			velocity = GSvector3{ to_target().x,to_target().y,0.0f };
+			velocity_ = velocity;
 			moving_timer_ = gsRandf(30.0f, 60.0f);
 		}
 		//ターゲット方向の角度を求める
@@ -165,18 +167,9 @@ void CarGhost::move(float delta_time) {
 		velocity_.y = 0.0f;
 		GSquaternion rotation = GSquaternion::rotateTowards(transform_.rotation(), GSquaternion::lookRotation(velocity_), 12.0f * delta_time);
 		transform_.rotation(rotation);
+		velocity = transform_.forward();
+		velocity_ = velocity;
 	}
-	
-	/*if (player_ ->transform().position().y > transform_.position().y) {
-		
-	}
-	else if (player_->transform().position().y < transform_.position().y) {
-		transform_.rotate(GSvector3{ -1.0f,0.0f,0.0f }, 20.0f);
-	}
-	//ターゲット方向の角度を求める
-		float angle = CLAMP(target_signed_angle(), -TurnAngle, TurnAngle);
-		//ターゲット方向を向く
-		transform_.rotate(angle, 0.0f, 0.0f);*/
 	//移動
 	transform_.translate(velocity_ * delta_time * Speed, GStransform::Space::World);
 	
@@ -184,15 +177,22 @@ void CarGhost::move(float delta_time) {
 
 //ターン
 void CarGhost::turn(float delta_time) {
-	if (state_timer_ >= mesh_.motion_end_time()) {
-		//振り向きモーションが終了したら移動中に遷移
-		change_state(State::Move, MotionRun);
+	if (!is_hit_) {
+		if (state_timer_ >= mesh_.motion_end_time()) {
+			//振り向きモーションが終了したら移動中に遷移
+			change_state(State::Move, MotionRun);
+		}
+		else {
+			/*//振り向きモーションをしながらターゲット方向を向く
+			float angle = (target_signed_angle() >= 0.0f) ? TurnAngle : -TurnAngle;
+			transform_.rotate(0.0f, angle, 0.0f);*/
+			GSquaternion rotation = GSquaternion::rotateTowards(transform_.rotation(), GSquaternion::lookRotation(-velocity_), 6.0f * delta_time);
+			rotation.x = 0.0f;
+			rotation.z = 0.0f;
+			transform_.rotation(rotation);
+		}
 	}
-	else {
-		//振り向きモーションをしながらターゲット方向を向く
-		float angle = (target_signed_angle() >= 0.0f) ? TurnAngle : -TurnAngle;
-		transform_.rotate(0.0f, angle, 0.0f);
-	}
+	
 }
 
 //ダメージ
@@ -304,7 +304,7 @@ void CarGhost::collide_field() {
 		Line line{ collider().center,GSvector3{collider().center.x - EnemyRadius,collider().center.y,0.0f} };
 		GSvector3 intersect;
 		if (world_->field()->collide(line, &intersect)) {
-			velocity_.y = -velocity_.y;
+			//velocity_ = -velocity_;
 		}
 	}
 	

@@ -20,7 +20,7 @@ const float MoveDistance_x{ 10.0f };
 //移動判定の距離x
 const float MoveDistance_y{ 10.0f };
 //振り向く角度
-const float TurnAngle{ 2.5f };
+const float TurnAngle{ 5.0f };
 //エネミーの高さ
 const float EnemyHeight{ 0.75f };
 //エネミーの半径
@@ -29,6 +29,9 @@ const float EnemyRadius{ 0.5f };
 const float FootOffset{ 0.1f };
 //重力
 const float Gravity{ -0.016f };
+//射撃時間のインターバル
+const float Interval{240.0f};
+
 
 //コンストラクタ
 Poltergeist::Poltergeist(IWorld* world, const GSvector3& position) :
@@ -38,7 +41,8 @@ Poltergeist::Poltergeist(IWorld* world, const GSvector3& position) :
 	state_{ State::Idle },
 	state_timer_{0.0f},
 	player_{nullptr},
-	hp_{1} {
+	hp_{1} ,
+	shootiong_timer_{ 0.0f }{
 	//ワールドの設定
 	world_ = world;
 	//名前の設定
@@ -160,10 +164,14 @@ void Poltergeist::found(float delta_time) {
 	//振り向くか?
 	if (is_turn()) {
 		change_state(State::Turn, MotionIdle);
+		return;
 	}
 	//攻撃するか？
-	if (is_attack()) {
+	if (is_attack() && shootiong_timer_ <= 0.0f) {
 		change_state(State::Attack, MotionAttack);
+		generate_bullet();
+		shootiong_timer_ = Interval;
+		return;
 	}
 }
 
@@ -173,14 +181,6 @@ void Poltergeist::attack(float delta_time) {
 	if (state_timer_ >= mesh_.motion_end_time()) {
 		idle(delta_time);
 	}
-	if (shootiong_timer_ <= 0.0f) {
-		GSvector3 target = to_target();
-		//world_->add_actor(new PoltergeistBullet{ world_,transform_.position(),target });
-		shootiong_timer_ = 120.0f;
-	}
-	
-
-	
 }
 
 //ダメージ
@@ -207,7 +207,7 @@ void Poltergeist::died(float delta_time) {
 
 //振り向き判定
 bool Poltergeist::is_turn()const {
-	return(target_distance() <= TurnDistance) && (target_angle() <= 20.0f);
+	return (target_distance() <= TurnDistance) && (target_angle() >= 90.0f);
 }
 
 //攻撃判定
@@ -313,4 +313,24 @@ void Poltergeist::collide_actor(Actor& other) {
 	transform_.translate(v, GStransform::Space::World);
 	//フィールドとの衝突判定
 	collide_field();
+}
+
+//弾の生成
+void Poltergeist::generate_bullet() const {
+	//弾を生成する場所の距離
+	const float GenerateDistance{ 0.75f };
+	//弾の生成位置の高さの補正値
+	const float GenerateHeight{ 1.0f };
+	//弾のスピード
+	const float BulletSpeed{ 0.025f };
+	//生成位置の計算
+	GSvector3 position = transform_.position() + transform_.forward() * GenerateDistance;
+	//y座標を補正する
+	position.y += GenerateHeight;
+	//z座標を0にする
+	position.z = 0.0f;
+	//移動量の計算
+	GSvector3 velocity = to_target() * BulletSpeed;
+	//弾の生成
+	world_->add_actor(new PoltergeistBullet{ world_,position,velocity });
 }
