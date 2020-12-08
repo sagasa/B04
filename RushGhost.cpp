@@ -33,6 +33,10 @@ const float Speed{ 0.025f };
 const float PI{ 3.141592654 };
 //半径
 const float radius{ 5.0f };
+//x座標の死亡座標
+const float LimitDistance_x{ 100.0f };
+//y座標の死亡座標
+const float LimitDistance_y{ 100.0f };
 
 //コンストラクタ
 RushGhost::RushGhost(IWorld* world, const GSvector3& position) :
@@ -53,12 +57,16 @@ RushGhost::RushGhost(IWorld* world, const GSvector3& position) :
 
 //更新
 void RushGhost::update(float delta_time) {
+	//x座標が-100を超えたら
+	if (transform_.position().x <= -LimitDistance_x) {
+		die();
+	}
 	//プレイヤーを検索
 	player_ = world_->find_actor("Player");
 	//状態の更新
 	update_state(delta_time);
 	//フィールドとの衝突判定
-	collide_field();
+	//collide_field();
 	//モーション変更
 	mesh_.change_motion(motion_);
 	//メッシュの更新
@@ -95,7 +103,7 @@ void RushGhost::react(Actor& other) {
 	}
 	//プレイヤーまたはエネミーに衝突した
 	if (other.tag() == "PlayerTag" || other.tag() == "EnemyTag") {
-		collide_actor(other);
+		//collide_actor(other);
 	}
 }
 
@@ -185,7 +193,7 @@ bool RushGhost::is_turn()const {
 
 //移動判定
 bool RushGhost::is_move()const {
-	//移動距離かつ前方向のベクトルとターゲット方向のベクトルの角度差が100.0度以下か？
+	//移動距離?
 	return (target_distance() <= MoveDistance);
 }
 
@@ -248,7 +256,7 @@ void RushGhost::collide_field() {
 
 //アクターとの衝突処理
 void RushGhost::collide_actor(Actor& other) {
-	/*//z座標を除く座標を求める
+	//z座標を除く座標を求める
 	GSvector3 position = transform_.position();
 	position.z = 0.0f;
 	GSvector3 target = other.transform().position();
@@ -263,5 +271,5 @@ void RushGhost::collide_actor(Actor& other) {
 	GSvector3 v = (position - target).getNormalized() * overlap * 0.5f;
 	transform_.translate(v, GStransform::Space::World);
 	//フィールドとの衝突判定
-	collide_field();*/
+	collide_field();
 }

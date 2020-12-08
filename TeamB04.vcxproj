@@ -196,6 +196,7 @@
     <ClInclude Include="PoltergeistBullet.h" />
     <ClInclude Include="PsycokinesisBullet.h" />
     <ClInclude Include="Ray.h" />
+    <ClInclude Include="resource_loader.h" />
     <ClInclude Include="RushGhost.h" />
     <ClInclude Include="CarGhost.h" />
     <ClInclude Include="Field.h" />
@@ -205,6 +206,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SceneNull.h" />
+    <ClInclude Include="thread_pool.h" />
     <ClInclude Include="TitleScene.h" />
     <ClInclude Include="SurogSakones.h" />
     <ClInclude Include="World.h" />
