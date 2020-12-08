@@ -33,6 +33,10 @@ const float Speed{ 0.025f };
 const float PI{ 3.141592654 };
 //半径
 const float radius{ 5.0f };
+//x座標の死亡座標
+const float LimitDistance_x{ 100.0f };
+//y座標の死亡座標
+const float LimitDistance_y{ 100.0f };
 
 //コンストラクタ
 RushGhost::RushGhost(IWorld* world, const GSvector3& position) :
@@ -53,6 +57,10 @@ RushGhost::RushGhost(IWorld* world, const GSvector3& position) :
 
 //更新
 void RushGhost::update(float delta_time) {
+	//x座標が-100を超えたら
+	if (transform_.position().x <= -LimitDistance_x) {
+		die();
+	}
 	//プレイヤーを検索
 	player_ = world_->find_actor("Player");
 	//状態の更新

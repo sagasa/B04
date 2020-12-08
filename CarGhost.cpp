@@ -3,6 +3,7 @@
 #include"Field.h"
 #include"Line.h"
 #include"Assets.h"
+#include"AttackCollider.h"
 
 enum {
 	MotionIdle = 0,
@@ -30,6 +31,12 @@ const float EnemyRadius{ 0.5f };
 const float EnemySideOffset{0.6f };
 //スピード
 const float Speed{ 0.075f };
+//x座標の死亡座標
+const float LimitDistance_x{100.0f};
+//y座標の死亡座標
+const float LimitDistance_y{100.0f};
+//攻撃判定球の半径
+//const float EnemyAttackRadius{ 5.0f };
 
 //コンストラクタ
 CarGhost::CarGhost(IWorld* world, const GSvector3& position) :
@@ -61,6 +68,10 @@ CarGhost::CarGhost(IWorld* world, const GSvector3& position) :
 
 //更新
 void CarGhost::update(float delta_time) {
+	//x座標が-100を超えたら
+	if (transform_.position().x <= -LimitDistance_x) {
+		die();
+	}
 	//プレイヤーを検索
 	player_ = world_->find_actor("Player");
 	//状態の更新

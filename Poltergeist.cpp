@@ -29,6 +29,10 @@ const float FootOffset{ 0.1f };
 const float Gravity{ -0.016f };
 //射撃時間のインターバル
 const float Interval{240.0f};
+//x座標の死亡座標
+const float LimitDistance_x{ 100.0f };
+//y座標の死亡座標
+const float LimitDistance_y{ 100.0f };
 
 
 //コンストラクタ
@@ -56,6 +60,10 @@ Poltergeist::Poltergeist(IWorld* world, const GSvector3& position) :
 
 //更新
 void Poltergeist::update(float delta_time) {
+	//x座標が-100を超えたら
+	if (transform_.position().x <= -LimitDistance_x) {
+		die();
+	}
 	//プレイヤーを検索
 	player_ = world_->find_actor("Player");
 	//状態の更新
