@@ -5,6 +5,7 @@
 #include "Player.h"
 #include "Assets.h"
 #include "PsycokinesisBullet.h"
+#include "AttackCollider.h"
 #include "Line.h"
 
 enum {
@@ -45,8 +46,7 @@ SurogSakones::SurogSakones(IWorld* world, const GSvector3& position) :
 	mesh_{ Mesh_SurogSakones, Skeleton_SurogSakones, Animation_SurogSakones, MotionIdol1 },
 	player_{ nullptr },
 	move_way_{ Move::Normal },
-	loop_{ false },
-	player_cross_{ false }
+	loop_{ false }
 {
 	world_ = world;
 	tag_ = "EnemyTag";
@@ -72,6 +72,10 @@ void SurogSakones::update(float delta_time) {
 	}
 	if (gsGetKeyTrigger(GKEY_2)) {
 		change_state(State::Idol, MotionIdol2);
+	}
+	if(gsGetKeyTrigger(GKEY_3))
+	{
+		change_state(State::Turn, MotionScytheAttack);
 	}
 	if (gsGetKeyTrigger(GKEY_4)) {
 		change_state(State::Attack, MotionScytheAttack);
@@ -173,21 +177,21 @@ void SurogSakones::scythe_attack(float delta_time) {
 	if (!scythe_attack_flag_ && attack_timer_ >= ScytheAttackFlame)
 	{
 		scythe_attack_flag_ = true;
-		pshychokinesis(transform_.position() + GSvector3::up() * 2.0f, GSvector3::up() * 3.0f);
+		generate_pshychokinesis(transform_.position() + GSvector3::up() * 2.0f, GSvector3::up() * 3.0f);
 	}
 }
 void SurogSakones::psyco1_attack(float delta_time) {
 	if (!psyco1_attack_flag_ && attack_timer_ >= ScytheAttackFlame)
 	{
 		psyco1_attack_flag_ = true;
-		pshychokinesis(transform_.position() + GSvector3::up() * 2.0f, GSvector3::up() * 4.0f);
+		generate_pshychokinesis(transform_.position() + GSvector3::up() * 2.0f, GSvector3::up() * 4.0f);
 	}
 }
 void SurogSakones::psyco2_attack(float delta_time) {
 	if (!psyco2_attack_flag_ && attack_timer_ >= ScytheAttackFlame)
 	{
 		psyco2_attack_flag_ = true;
-		pshychokinesis(transform_.position() + GSvector3::up() * 2.0f, GSvector3::up() * 3.0f);
+		generate_pshychokinesis(transform_.position() + GSvector3::up() * 2.0f, GSvector3::up() * 3.0f);
 	}
 }
 void SurogSakones::stun(float delta_time) {
@@ -206,13 +210,10 @@ void SurogSakones::turn(float delta_time) {
 	if (GSquaternion::angle(transform_.rotation(), GSquaternion::euler(to_rotate_)) >= 5.0f) {
 		transform_.rotate(GSvector3{ 0.0f,1.0f,0.0f }, 5.0f / delta_time, GStransform::Space::World);
 	}
-	else {
-		if (state_timer_ >= mesh_.motion_end_time()) {
-			transform_.rotation(GSquaternion::euler(to_rotate_));
-			flip_ = !flip_;
-			player_cross_ = false;
-			idol(delta_time);
-		}
+	if (state_timer_ >= mesh_.motion_end_time()) {
+		transform_.rotation(GSquaternion::euler(to_rotate_));
+		flip_ = !flip_;
+		idol(delta_time);
 	}
 }
 void SurogSakones::move(float delta_time) {
@@ -346,20 +347,18 @@ void SurogSakones::debug_draw()const {
 
 void SurogSakones::scythe_attack()
 {
+	generate_attackcollider();
 	change_state(State::Attack, MotionScytheAttack,false);
-	cool_timer_ = ScytheAttackCoolTime;
 }
 
 void SurogSakones::psyco1_attack()
 {
 	change_state(State::Attack, MotionAttack2,false);
-	cool_timer_ = Psyco1AttackCoolTime;
 }
 
 void SurogSakones::psyco2_attack()
 {
 	change_state(State::Attack, MotionAttack3,false);
-	cool_timer_ = Psyco2AttackCoolTime;
 }
 
 /**
@@ -371,7 +370,7 @@ void SurogSakones::Damage() {
 	change_state(State::Stun, MotionDamage1);
 }
 
-void SurogSakones::pshychokinesis(const GSvector3& position, GSvector3 velocity) {
+void SurogSakones::generate_pshychokinesis(const GSvector3& position, GSvector3 velocity) {
 	Actor* player = world_->find_actor("Player");
 	//プレイヤーが憑依中かしらべ、憑依中じゃなかったらreturnする処理を後々追加
 	//プレイヤーがヌルでないか
@@ -381,6 +380,21 @@ void SurogSakones::pshychokinesis(const GSvector3& position, GSvector3 velocity)
 		//球を出す処理
 		world_->add_actor(new PsycokinesisBullet(world_, position, velocity));
 	}
+}
+
+void SurogSakones::generate_attackcollider()
+{
+	const float AttackColliderDistance{ 1.5f };
+	const float AttackColliderRadius{ 0.3f };
+	const float AttackColliderHeight{ 1.0f };
+
+	const float AttackCollideDelay{ 15.0f };
+	const float AttackCollideLifeSpan{ 5.0f };
+
+	GSvector3 position = transform_.position() + transform_.forward() * AttackColliderDistance;
+	position.y += AttackColliderHeight;
+	BoundingSphere collider{ AttackColliderRadius,position };
+	world_->add_actor(new AttackCollider{ world_,collider,"EnemyAttackTag","BossAttack",AttackCollideLifeSpan,AttackCollideDelay });
 }
 
 void SurogSakones::move_attack(float delta_time) {

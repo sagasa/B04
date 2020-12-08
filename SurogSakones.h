@@ -58,7 +58,9 @@ private:
 	//状態変化
 	void change_state(State state, GSuint motion,bool loop=true);
 	//念動攻撃
-	void pshychokinesis(const GSvector3& position,GSvector3 velocity=GSvector3::up());
+	void generate_pshychokinesis(const GSvector3& position,GSvector3 velocity=GSvector3::up());
+	//近接攻撃
+	void generate_attackcollider();
 	//移動しつつ攻撃
 	void move_attack(float delta_time);
 	//移動した後のターン
@@ -114,8 +116,6 @@ private:
 	bool psyco2_attack_flag_{ false };
 	float attack_timer_{ 0.0f };
 	float cool_timer_{ 0.0f };
-
-	bool player_cross_{ false };
 
 	//プレイヤー用の入れ物
 	Actor* player_;
