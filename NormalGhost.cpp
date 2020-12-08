@@ -30,7 +30,7 @@ const float EnemyRadius{ 0.5f };
 const float FootOffset{ 0.1f };
 //頭上のオフセット
 const float HeadOffset{ 1.0f };
-//スピード
+//移動速度
 const float Speed{ 0.05f };
 
 //コンストラクタ
@@ -154,7 +154,6 @@ bool NormalGhost::is_move() const {
 	//カメラの前ベクトル
 	GSvector3 forward = camera->transform().forward();
 	float angle = abs(GSvector3::signed_angle(forward, to_target));
-	float distance = (camera->transform().position() - transform_.position()).magnitude();
 	return (angle <= 45.0f);
 }
 

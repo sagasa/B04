@@ -16,6 +16,10 @@ public:
 	virtual void react(Actor& other) override;
 
 private:
+	//画面外か？
+	bool is_out_camera() const;
+
+private:
 	//死亡タイマー
 	float died_timer_;
 };

@@ -18,6 +18,8 @@ void EnemyTestScene::start() {
     gsLoadMesh(Mesh_CarGhost, "Assets/Model/Enemy/Ghost.msh");
     gsLoadMesh(Mesh_RushGhost, "Assets/Model/Enemy/Ghost2.msh");
     gsLoadMesh(Mesh_Poltergeist, "Assets/Model/Enemy/Ghost3.msh");
+    //バレット(本)のメッシュの追加
+    gsLoadMesh(6, "Assets/Model/Bullet/books.msh");
     gsLoadSkeleton(Skeleton_CarGhost, "Assets/Model/Enemy/Ghost.skl");
     gsLoadSkeleton(Skeleton_RushGhost, "Assets/Model/Enemy/Ghost.skl");
     gsLoadSkeleton(Skeleton_Poltergeist, "Assets/Model/Enemy/Ghost.skl");
@@ -33,11 +35,12 @@ void EnemyTestScene::start() {
     gsLoadAnimation(Animation_SurogSakones, "Assets/Model/Enemy/Ghost_T-pose.anm");
 
     //スカイボックスの読み込み
-    gsLoadMesh(Mesh_Skybox, "Assets/Skybox/skydome.msh");
+    gsLoadMesh(Mesh_Skybox, "Assets/Skybox/DarkStorm4K.msh");
     //描画用オクツリーの読み込み
     gsLoadOctree(Octree_Stage, "Assets/Octree/stage1.oct");
     //衝突判定用オクツリーの読み込み
     gsLoadOctree(Octree_Collider, "Assets/Octree/stage1_collider.oct");
+    
 
     // フィールドの追加
     world_.add_field(new Field{ Octree_Stage,Octree_Collider,Mesh_Skybox });
