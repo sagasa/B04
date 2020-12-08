@@ -1,14 +1,18 @@
+#include <condition_variable>
 #include <GSgame.h>
 #include "Assets.h"
 #include "World.h"
 #include <iostream>
+#include <queue>
+
 #include "ByteBuf.h"
 #include"SceneManager.h"
 #include"EnemyTestScene.h"
 #include"BossTestScene.h"
 #include"TitleScene.h"
 #include"PlayerTestScene.h"
-
+#include "resource_loader.h"
+#include "thread_pool.h"
 
 
 void glError()
@@ -74,10 +78,12 @@ class MyGame : public gslib::Game {
         scene_.add("BossTestScene", new BossTestScene());
         scene_.add("PlayerTestScene", new PlayerTestScene());
         scene_.add("TitleScene", new TitleScene());
-        scene_.change("EnemyTestScene");
-        glError();
+        scene_.change("TitleScene");
+        glError();      
     }
 
+
+	
     
     // 更新
     void update(float delta_time) override {
@@ -122,13 +128,6 @@ class MyGame : public gslib::Game {
     // 終了
     void end() override {
         world_.clear();
-        // メッシュの削除
-        gsDeleteMesh(0);
-        gsDeleteMesh(Mesh_Player);
-        gsDeleteMesh(Mesh_CarGhost);
-        gsDeleteMesh(Mesh_RushGhost);
-        gsDeleteMesh(Mesh_Poltergeist);
-        gsDeleteMesh(Mesh_SurogSakones);
     }
 public:
     MyGame() : Game(1920, 1080, false, 60) {
@@ -139,5 +138,5 @@ public:
 
 // メイン関数
 int main() {
-    return MyGame().run();
+	return MyGame().run();
 }

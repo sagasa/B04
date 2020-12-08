@@ -1,5 +1,6 @@
 #pragma once
 
+
 // メッシュデータ
 enum Mesh {
     Mesh_Player,                    // 自機
@@ -7,7 +8,8 @@ enum Mesh {
     Mesh_RushGhost,                 //RushGhost
     Mesh_Poltergeist,               //Poltergeist
     Mesh_SurogSakones,               //SurogSakones
-    Mesh_Skybox
+    Mesh_Skybox,
+    Mesh_Paladin
 };
 
 //スケルトンデータ
@@ -17,7 +19,7 @@ enum Skeleton {
     Skeleton_RushGhost,    //RushGhost
     Skeleton_Poltergeist,  //Poltergeist
     Skeleton_SurogSakones, //SurogSakones
-
+    Skeleton_Paladin
 };
 
 //アニメーションデータ
@@ -26,7 +28,8 @@ enum  Animation {
     Animation_CarGhost,    //CarGhost
     Animation_RushGhost,   //RushGhost
     Animation_Poltergeist, //Poltergeist
-    Animation_SurogSakones //SurogSakones
+    Animation_SurogSakones, //SurogSakones
+    Animation_Paladin
 };
 
 // テクスチャデータ

@@ -15,6 +15,10 @@ void PlayerTestScene::start() {
     gsLoadSkeleton(Mesh_CarGhost, "Assets/Model/Enemy/Ghost.skl");
     gsLoadAnimation(Animation_CarGhost, "Assets/Model/Enemy/Ghost.anm");
 
+    gsLoadMesh(Mesh_Paladin, "Assets/Model/Paladin/Paladin.msh");
+    gsLoadSkeleton(Skeleton_Paladin, "Assets/Model/Paladin/Paladin.skl");
+    gsLoadAnimation(Animation_Paladin, "Assets/Model/Paladin/Paladin.anm");
+
     gsLoadOctree(Octree_Stage, "Assets/Octree/stage1.oct");
     gsLoadOctree(Octree_Collider, "Assets/Octree/stage1_collider.oct");
     gsLoadMesh(Mesh_Skybox, "Assets/Skybox/skydome.msh");
@@ -52,6 +56,7 @@ void PlayerTestScene::end() {
     gsDeleteMesh(Mesh_SurogSakones);
     gsDeleteSkeleton(Skeleton_SurogSakones);
     gsDeleteAnimation(Animation_SurogSakones);
+	
     gsDeleteTexture(Texture_BgTileNebulaGreen);
     gsDeleteTexture(Texture_EffectFlash);
     gsDeleteTexture(Texture_EffectLazerCyan);
