@@ -58,7 +58,7 @@ void RushGhost::update(float delta_time) {
 	//状態の更新
 	update_state(delta_time);
 	//フィールドとの衝突判定
-	collide_field();
+	//collide_field();
 	//モーション変更
 	mesh_.change_motion(motion_);
 	//メッシュの更新
@@ -95,7 +95,7 @@ void RushGhost::react(Actor& other) {
 	}
 	//プレイヤーまたはエネミーに衝突した
 	if (other.tag() == "PlayerTag" || other.tag() == "EnemyTag") {
-		collide_actor(other);
+		//collide_actor(other);
 	}
 }
 
@@ -248,7 +248,7 @@ void RushGhost::collide_field() {
 
 //アクターとの衝突処理
 void RushGhost::collide_actor(Actor& other) {
-	/*//z座標を除く座標を求める
+	//z座標を除く座標を求める
 	GSvector3 position = transform_.position();
 	position.z = 0.0f;
 	GSvector3 target = other.transform().position();
@@ -263,5 +263,5 @@ void RushGhost::collide_actor(Actor& other) {
 	GSvector3 v = (position - target).getNormalized() * overlap * 0.5f;
 	transform_.translate(v, GStransform::Space::World);
 	//フィールドとの衝突判定
-	collide_field();*/
+	collide_field();
 }
