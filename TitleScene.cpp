@@ -29,7 +29,7 @@ void TitleScene::update(float delta_time) {
 
 //ï`âÊ
 void TitleScene::draw() const {
-
+	glPushMatrix();
 	gsFontParameter(GS_FONT_BOLD, 16, "ÇlÇr ÉSÉVÉbÉN");
 	gsTextPos(0.0f, 20.0f);
 	gsDrawText("1 to EnemyTestScene");
@@ -37,6 +37,7 @@ void TitleScene::draw() const {
 	gsDrawText("2 to BossTestScene");
 	gsTextPos(0.0f, 60.0f);
 	gsDrawText("3 to PlayerTestScene");
+	glPopMatrix();
 }
 
 //èIóπÇµÇƒÇ¢ÇÈÇ©ÅH
