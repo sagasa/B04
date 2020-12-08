@@ -65,6 +65,10 @@ private:
 	void turn(float delta_time, float slow_value, bool flip);
 	void debug_draw()const;
 
+	void scythe_attack();
+	void psyco1_attack();
+	void psyco2_attack();
+
 	//åvéZópä÷êî
 	float target_distance(const Actor* other)const;
 	float target_signed_angle(const Actor* other)const;
