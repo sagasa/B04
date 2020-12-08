@@ -9,18 +9,19 @@ void TitleScene::start() {
 
 void TitleScene::update(float delta_time) {
 	//キーでシーンをチェンジ
-	if (gsGetKeyTrigger(GKEY_RETURN)) {
+	if (gsGetKeyTrigger(GKEY_1)) {
 		is_end_ = true;//シーン終了
-		nextScene_ = "PlayerTestScene";
-	} else if (gsGetKeyTrigger(GKEY_0))
-	{
-		is_end_ = true;
 		nextScene_ = "EnemyTestScene";
 	}
-	else if (gsGetKeyTrigger(GKEY_9))
+	else if (gsGetKeyTrigger(GKEY_2))
 	{
 		is_end_ = true;
 		nextScene_ = "BossTestScene";
+	}
+	if (gsGetKeyTrigger(GKEY_3))
+	{
+		is_end_ = true;
+		nextScene_ = "PlayerTestScene";
 	}
 	//背景のスクロール値を更新
 	scroll_ += delta_time;
@@ -28,6 +29,14 @@ void TitleScene::update(float delta_time) {
 
 //描画
 void TitleScene::draw() const {
+
+	gsFontParameter(GS_FONT_BOLD, 16, "ＭＳ ゴシック");
+	gsTextPos(0.0f, 20.0f);
+	gsDrawText("1 to EnemyTestScene");
+	gsTextPos(0.0f, 40.0f);
+	gsDrawText("2 to BossTestScene");
+	gsTextPos(0.0f, 60.0f);
+	gsDrawText("3 to PlayerTestScene");
 }
 
 //終了しているか？

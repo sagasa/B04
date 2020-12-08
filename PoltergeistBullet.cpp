@@ -10,7 +10,7 @@ PoltergeistBullet::PoltergeistBullet(IWorld* world, const GSvector3& position, c
 	world_ = world;
 	name_ = "PoltergeistBullet";
 	tag_ = "EnemyAttackTag";
-	collider_ = BoundingSphere{0.25f };
+	collider_ = BoundingSphere{0.4f };
 	transform_.position(position);
 	velocity_ = velocity;
 }
@@ -40,7 +40,7 @@ void PoltergeistBullet::draw() const {
 	glMultMatrixf(transform_.localToWorldMatrix());
 	gsDrawMesh(6);
 	glPopMatrix();
-	//collider().draw();
+	collider().draw();
 }
 
 //Õ“ËƒŠƒAƒNƒVƒ‡ƒ“

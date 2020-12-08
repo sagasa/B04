@@ -239,5 +239,11 @@
     <ClInclude Include="AttackCollider.h">
       <Filter>ヘッダー ファイル\Actors</Filter>
     </ClInclude>
+    <ClInclude Include="thread_pool.h">
+      <Filter>ヘッダー ファイル\SAGASA</Filter>
+    </ClInclude>
+    <ClInclude Include="resource_loader.h">
+      <Filter>ヘッダー ファイル\SAGASA</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

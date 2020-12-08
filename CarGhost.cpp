@@ -3,6 +3,7 @@
 #include"Field.h"
 #include"Line.h"
 #include"Assets.h"
+#include"AttackCollider.h"
 
 enum {
 	MotionIdle = 0,
@@ -26,12 +27,16 @@ const float TurnAngle{ 5.0f };
 const float EnemyHeight{ 0.75f };
 //エネミーの半径
 const float EnemyRadius{ 0.5f };
-//足元のオフセット
-const float FootOffset{ 0.1f };
-//頭上のオフセット
-const float HeadOffset{ 1.0f };
+//エネミーの横のオフセット
+const float EnemySideOffset{0.6f };
 //スピード
-const float Speed{ 0.05f };
+const float Speed{ 0.075f };
+//x座標の死亡座標
+const float LimitDistance_x{100.0f};
+//y座標の死亡座標
+const float LimitDistance_y{100.0f};
+//攻撃判定球の半径
+//const float EnemyAttackRadius{ 5.0f };
 
 //コンストラクタ
 CarGhost::CarGhost(IWorld* world, const GSvector3& position) :
@@ -63,6 +68,10 @@ CarGhost::CarGhost(IWorld* world, const GSvector3& position) :
 
 //更新
 void CarGhost::update(float delta_time) {
+	//x座標が-100を超えたら
+	if (transform_.position().x <= -LimitDistance_x) {
+		die();
+	}
 	//プレイヤーを検索
 	player_ = world_->find_actor("Player");
 	//状態の更新
@@ -164,11 +173,11 @@ void CarGhost::move(float delta_time) {
 		transform_.rotate(0.0f, angle, 0.0f);
 	}
 	else {
-		velocity_.y = 0.0f;
-		GSquaternion rotation = GSquaternion::rotateTowards(transform_.rotation(), GSquaternion::lookRotation(velocity_), 12.0f * delta_time);
-		transform_.rotation(rotation);
 		velocity = transform_.forward();
+		velocity.y = 0.0f;
 		velocity_ = velocity;
+		/*GSquaternion rotation = GSquaternion::rotateTowards(transform_.rotation(), GSquaternion::lookRotation(velocity_), 12.0f * delta_time);
+		transform_.rotation(rotation);*/
 	}
 	//移動
 	transform_.translate(velocity_ * delta_time * Speed, GStransform::Space::World);
@@ -177,7 +186,6 @@ void CarGhost::move(float delta_time) {
 
 //ターン
 void CarGhost::turn(float delta_time) {
-	if (!is_hit_) {
 		if (state_timer_ >= mesh_.motion_end_time()) {
 			//振り向きモーションが終了したら移動中に遷移
 			change_state(State::Move, MotionRun);
@@ -186,13 +194,11 @@ void CarGhost::turn(float delta_time) {
 			/*//振り向きモーションをしながらターゲット方向を向く
 			float angle = (target_signed_angle() >= 0.0f) ? TurnAngle : -TurnAngle;
 			transform_.rotate(0.0f, angle, 0.0f);*/
-			GSquaternion rotation = GSquaternion::rotateTowards(transform_.rotation(), GSquaternion::lookRotation(-velocity_), 6.0f * delta_time);
+			GSquaternion rotation = GSquaternion::rotateTowards(transform_.rotation(), GSquaternion::lookRotation(-velocity_), 5.0f * delta_time);
 			rotation.x = 0.0f;
 			rotation.z = 0.0f;
 			transform_.rotation(rotation);
 		}
-	}
-	
 }
 
 //ダメージ
@@ -301,10 +307,24 @@ void CarGhost::collide_field() {
 		transform_.position(center);
 	}
 	if (is_hit_) {
-		Line line{ collider().center,GSvector3{collider().center.x - EnemyRadius,collider().center.y,0.0f} };
+		Line line;
+		line.start = collider().center;
+		line.end = collider().center + GSvector3{ -EnemySideOffset,0.0f,0.0f };
 		GSvector3 intersect;
+		GSvector3 position = transform_.position();
+		//左側を調べる
 		if (world_->field()->collide(line, &intersect)) {
-			//velocity_ = -velocity_;
+			change_state(State::Turn, MotionIdle);
+			position.x += 0.1f;
+			transform_.position(position);
+		}
+		//右側を調べる
+		line.start = collider().center;
+		line.end = collider().center + GSvector3{ EnemySideOffset,0.0f,0.0f };
+		if (world_->field()->collide(line, &intersect)) {
+			change_state(State::Turn, MotionIdle);
+			position.x -= 0.1f;
+			transform_.position(position);
 		}
 	}
 	
