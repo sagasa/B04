@@ -19,7 +19,7 @@ Camera::Camera(IWorld* world) {
 //更新
 void Camera::update(float delta_time) {
 	//プレイヤーを検索
-	player_ = world_->find_actor("Player");
+	player_ = world_->find_actor("CarGhost");
 	if (player_ == nullptr) return;
 	//カメラの位置を求める
 	GSvector3 position = PlayerOffset + player_->transform().position();
