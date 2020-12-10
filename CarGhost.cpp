@@ -161,16 +161,17 @@ void CarGhost::move(float delta_time) {
 	if (!is_hit_) {
 		if (is_turn()) {
 			change_state(State::Turn, MotionIdle);
+			return;
 		}
 		if (moving_timer_ <= 0) {
 			velocity = GSvector3{ to_target().x,to_target().y,0.0f };
 			velocity_ = velocity;
 			moving_timer_ = gsRandf(30.0f, 60.0f);
 		}
-		//ターゲット方向の角度を求める
-		float angle = CLAMP(target_signed_angle(), -TurnAngle / 3, TurnAngle / 3);
+		/*//ターゲット方向の角度を求める
+		/float angle = CLAMP(target_signed_angle(), -TurnAngle / 3, TurnAngle / 3);
 		//ターゲット方向を向く
-		transform_.rotate(0.0f, angle, 0.0f);
+		transform_.rotate(0.0f, angle, 0.0f);*/
 	}
 	else {
 		velocity = transform_.forward();
