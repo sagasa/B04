@@ -36,36 +36,32 @@ public:
     {
         post([=]
             {
-                std::cout << "load mesh " << path << " start" << "\n";
-                gsLoadMesh(id, path);
-                std::cout << "load mesh " << path << " end" << "\n";
+                std::cout << "[load] mesh start " << path  << "\n";
+                std::cout << "[load] mesh " << (gsLoadMesh(id, path) ? "ok " : "fuck ") << path << "\n";
             });
     }
     void load_skeleton(GSuint id, const char* path)
     {
         post([=]
             {
-                std::cout << "load skeleton " << path << " start" << "\n";
-                gsLoadSkeleton(id, path);
-                std::cout << "load skeleton " << path << " end" << "\n";
+                std::cout << "[load] skeleton start " << path << "\n";
+                std::cout << "[load] skeleton " << (gsLoadSkeleton(id, path) ? "ok " : "fuck ") << path << "\n";
             });
     }
     void load_animation(GSuint id, const char* path)
     {
         post([=]
             {
-                std::cout << "load animation " << path << " start" << "\n";
-                gsLoadAnimation(id, path);
-                std::cout << "load animation " << path << " end" << "\n";
+                std::cout << "[load] animation start " << path <<  "\n";
+                std::cout << "[load] animation " << (gsLoadAnimation(id, path) ? "ok " : "fuck ") << path  << "\n";
             });
     }
     void load_octree(GSuint id, const char* path)
     {
         post([=]
             {
-                std::cout << "load octree " << path << " start" << "\n";
-                gsLoadOctree(id, path);
-                std::cout << "load octree " << path << " end" << "\n";
+                std::cout << "[load] octree start " << path << " start" << "\n";
+                std::cout << "[load] octree " << (gsLoadOctree(id, path) ? "ok " : "fuck ") << path << "\n";
             });
     }
 
