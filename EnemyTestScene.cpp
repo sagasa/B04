@@ -14,18 +14,24 @@
 
 //開始
 void EnemyTestScene::start() {
-    // CarGhostのメッシュの読み込み
+    // Ghostのメッシュの読み込み
+    gsLoadMesh(Mesh_Player, "Assets/Model/Enemy/Ghost.msh");
+    gsLoadMesh(Mesh_Paladin, "Assets/Model/Paladin/Paladin.msh");
     gsLoadMesh(Mesh_CarGhost, "Assets/Model/Enemy/Ghost.msh");
     gsLoadMesh(Mesh_RushGhost, "Assets/Model/Enemy/Ghost2.msh");
     gsLoadMesh(Mesh_Poltergeist, "Assets/Model/Enemy/Ghost3.msh");
     //バレット(本)のメッシュの追加
-    gsLoadMesh(6, "Assets/Model/Bullet/books.msh");
+    gsLoadMesh(Mesh_Book, "Assets/Model/Bullet/books.msh");
+    //Ghostのスケルトンの読み込み
     gsLoadSkeleton(Skeleton_CarGhost, "Assets/Model/Enemy/Ghost.skl");
     gsLoadSkeleton(Skeleton_RushGhost, "Assets/Model/Enemy/Ghost.skl");
     gsLoadSkeleton(Skeleton_Poltergeist, "Assets/Model/Enemy/Ghost.skl");
+    gsLoadSkeleton(Skeleton_Paladin, "Assets/Model/Paladin/Paladin.skl");
+    //Ghostのアニメーションの読み込み
     gsLoadAnimation(Animation_CarGhost, "Assets/Model/Enemy/Ghost.anm");
     gsLoadAnimation(Animation_RushGhost, "Assets/Model/Enemy/Ghost.anm");
     gsLoadAnimation(Animation_Poltergeist, "Assets/Model/Enemy/Ghost.anm");
+    gsLoadAnimation(Animation_Paladin, "Assets/Model/Paladin/Paladin.anm");
 
     //SurogSakonesのメッシュの読み込み
     gsLoadMesh(Mesh_SurogSakones, "Assets/Model/Enemy/Ghost_T-pose.msh");

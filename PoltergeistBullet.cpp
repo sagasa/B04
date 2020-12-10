@@ -1,6 +1,7 @@
 #include"PoltergeistBullet.h"
 #include"IWorld.h"
 #include"Camera.h"
+#include"Assets.h"
 
 //Ž€–S‚·‚é‚Ü‚Å‚ÌŽžŠÔ
 const float Delay_time{3.0f};
@@ -38,7 +39,7 @@ void PoltergeistBullet::update(float delta_time) {
 void PoltergeistBullet::draw() const {
 	glPushMatrix();
 	glMultMatrixf(transform_.localToWorldMatrix());
-	gsDrawMesh(6);
+	gsDrawMesh(Mesh_Book);
 	glPopMatrix();
 	collider().draw();
 }
