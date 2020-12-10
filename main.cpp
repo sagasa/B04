@@ -9,6 +9,8 @@
 #include"SceneManager.h"
 #include"EnemyTestScene.h"
 #include"BossTestScene.h"
+#include "CarGhost.h"
+#include "Player.h"
 #include"TitleScene.h"
 #include"PlayerTestScene.h"
 #include "resource_loader.h"
@@ -79,12 +81,10 @@ class MyGame : public gslib::Game {
         scene_.add("PlayerTestScene", new PlayerTestScene());
         scene_.add("TitleScene", new TitleScene());
         scene_.change("TitleScene");
-        glError();      
+        glError();        
     }
 
-
 	
-    
     // çXêV
     void update(float delta_time) override {
         //world_.update(delta_time);
