@@ -177,7 +177,7 @@ void SurogSakones::scythe_attack(float delta_time) {
 	if (!scythe_attack_flag_ && attack_timer_ >= ScytheAttackFlame)
 	{
 		scythe_attack_flag_ = true;
-		generate_pshychokinesis(transform_.position() + GSvector3::up() * 2.0f, GSvector3::up() * 3.0f);
+		generate_attackcollider();
 	}
 }
 void SurogSakones::psyco1_attack(float delta_time) {
@@ -382,13 +382,12 @@ void SurogSakones::generate_pshychokinesis(const GSvector3& position, GSvector3 
 	}
 }
 
-void SurogSakones::generate_attackcollider()
-{
-	const float AttackColliderDistance{ 1.5f };
+void SurogSakones::generate_attackcollider(){
+	const float AttackColliderDistance{ 0.5f };
 	const float AttackColliderRadius{ 0.3f };
 	const float AttackColliderHeight{ 1.0f };
 
-	const float AttackCollideDelay{ 15.0f };
+	const float AttackCollideDelay{ 60.0f };
 	const float AttackCollideLifeSpan{ 5.0f };
 
 	GSvector3 position = transform_.position() + transform_.forward() * AttackColliderDistance;
