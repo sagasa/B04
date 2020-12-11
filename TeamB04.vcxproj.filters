@@ -245,5 +245,8 @@
     <ClInclude Include="resource_loader.h">
       <Filter>ヘッダー ファイル\SAGASA</Filter>
     </ClInclude>
+    <ClInclude Include="ActorProp.h">
+      <Filter>ヘッダー ファイル\Actors</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

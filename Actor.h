@@ -35,6 +35,8 @@ public:
     virtual bool is_collide(const Actor& other) const;
     // 死亡しているか？
     bool is_dead() const;
+    //攻撃が当たるか？(ActorPropを継承しているか?)
+    bool is_hit() const;
     // 名前を取得
     const std::string& name() const;
     // タグ名を取得
@@ -47,6 +49,7 @@ public:
     GSvector3 velocity() const;
     // 衝突判定データを取得
     BoundingSphere collider() const;
+    
 
     // コピー禁止
     Actor(const Actor& other) = delete;
@@ -69,5 +72,7 @@ protected:
     BoundingSphere  collider_;
     // 死亡フラグ
     bool            dead_{ false };
+    //攻撃が当たるか？(ActorPropを継承しているか?)
+	bool hit_{ false };
 };
 

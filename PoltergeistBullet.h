@@ -2,8 +2,9 @@
 #define POLTERGEIST_BULLET_H_
 
 #include"Actor.h"
+#include"ActorProp.h"
 
-class PoltergeistBullet : public Actor {
+class PoltergeistBullet : public Actor,public ActorProp {
 public:
 
 	//コンストラクタ
