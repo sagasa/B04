@@ -4,6 +4,8 @@
 #include"Field.h"
 #include"Line.h"
 #include"Assets.h"
+#include"ActorProp.h"
+#include<iostream>
 
 enum {
 	MotionIdle = 0,
@@ -43,7 +45,6 @@ Poltergeist::Poltergeist(IWorld* world, const GSvector3& position) :
 	state_{ State::Idle },
 	state_timer_{0.0f},
 	player_{nullptr},
-	hp_{1} ,
 	shootiong_timer_{ 0.0f }{
 	//ワールドの設定
 	world_ = world;
@@ -51,6 +52,12 @@ Poltergeist::Poltergeist(IWorld* world, const GSvector3& position) :
 	name_ = "Poltergeist";
 	//タグ名の設定
 	tag_ = "EnemyTag";
+	//ActorPropを継承しているか？
+	hit_ = true;
+	//体力の設定
+	hp_ = 1.0f;
+	//攻撃力の設定
+	atk_power_ = 1.0f;
 	//衝突判定球の設定
 	collider_ = BoundingSphere{ EnemyRadius ,GSvector3{0.0f,EnemyHeight,0.0f} };
 	transform_.position(position);
@@ -89,7 +96,6 @@ void Poltergeist::update(float delta_time) {
 void Poltergeist::draw() const {
 	mesh_.draw();
 	collider().draw();
-	
 }
 
 //衝突リアクション
@@ -97,7 +103,9 @@ void Poltergeist::react(Actor& other) {
 	//ダメージ中または死亡中の場合は何もしない
 	if (state_ == State::Damage || state_ == State::Died) return;
 	if (other.tag() == "PlayerAttackTag") {
-		hp_--;
+		//衝突した相手の攻撃力を取得
+		float atk = dynamic_cast<ActorProp*>(&other)->atk_power();
+		hp_ -= atk;
 		if (hp_ <= 0) {
 			//ダメージ状態に変更
 			change_state(State::Damage, MotionDamage,false);
@@ -108,10 +116,13 @@ void Poltergeist::react(Actor& other) {
 			change_state(State::Damage, MotionDamage,false);
 		}
 		return;
-	}
-	//プレイヤーまたはエネミーに衝突した
-	if (other.tag() == "PlayerTag" || other.tag() == "EnemyTag") {
+	} else if (other.tag() == "PlayerTag") { 
 		collide_actor(other);
+	}
+	else if (other.tag() == "EnemyTag") {
+		//またはエネミーに衝突したら
+		collide_actor(other);
+		return;
 	}
 }
 
@@ -175,8 +186,6 @@ void Poltergeist::found(float delta_time) {
 	//攻撃するか？
 	if (is_attack() && shootiong_timer_ <= 0.0f) {
 		change_state(State::Attack, MotionAttack);
-		generate_bullet();
-		shootiong_timer_ = Interval;
 		return;
 	}
 }
@@ -187,17 +196,17 @@ void Poltergeist::attack(float delta_time) {
 	if (state_timer_ >= mesh_.motion_end_time()) {
 		idle(delta_time);
 	}
+	else if (state_timer_ >= mesh_.motion_end_time() - 30.0f && shootiong_timer_ <= 0.0f) {
+		generate_bullet();
+		shootiong_timer_ = Interval;
+	}
 }
 
 //ダメージ
 void Poltergeist::damage(float delta_time) {
-	//モーション終了後にダメージ計算
+	//モーション終了後にアイドルへ
 	if (state_timer_ >= mesh_.motion_end_time()) {
-		hp_ -= 1.0f;
-		if (hp_ <= 0) {
-			//死亡状態に変更
-			change_state(State::Died, MotionDie,false);
-		}
+		idle(delta_time);
 	}
 	
 }

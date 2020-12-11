@@ -93,4 +93,29 @@ std::string EnemyTestScene::next() const {
 //終了
 void EnemyTestScene::end() {
     world_.clear();
+    //メッシュの削除
+    gsDeleteMesh(Mesh_Player);
+    gsDeleteMesh(Mesh_Paladin);
+    gsDeleteMesh(Mesh_CarGhost);
+    gsDeleteMesh(Mesh_Poltergeist);
+    gsDeleteMesh(Mesh_RushGhost);
+    gsDeleteMesh(Mesh_Book);
+    gsDeleteMesh(Mesh_Skybox);
+    gsDeleteMesh(Mesh_SurogSakones);
+    //スケルトンの削除
+    gsDeleteSkeleton(Skeleton_CarGhost);
+    gsDeleteSkeleton(Skeleton_Paladin);
+    gsDeleteSkeleton(Skeleton_Poltergeist);
+    gsDeleteSkeleton(Skeleton_RushGhost);
+    gsDeleteSkeleton(Skeleton_SurogSakones);
+    //アニメーションの削除
+    gsDeleteAnimation(Animation_CarGhost);
+    gsDeleteAnimation(Animation_Paladin);
+    gsDeleteAnimation(Animation_Poltergeist);
+    gsDeleteAnimation(Animation_RushGhost);
+    gsDeleteAnimation(Animation_SurogSakones);
+    //オクツリーの削除
+    gsDeleteOctree(Octree_Collider);
+    gsDeleteOctree(Octree_Stage);
+
 }
