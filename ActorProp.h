@@ -3,7 +3,7 @@
 
 
 
-//アクタープロファイルクラス
+//アクタープロパティクラス
 class ActorProp {
 public:
 	//コンストラクタ
@@ -12,9 +12,19 @@ public:
 	//仮想デストラクタ
 	virtual ~ActorProp() = default;
 
+	//体力を設定
+	void set_hp(float hp) {
+		hp_ = hp;
+	}
+
 	//体力を取得
 	const float hp() const {
 		return hp_;
+	}
+
+	//攻撃力を設定
+	void set_atk_power(float atk) {
+		atk_power_ = atk;
 	}
 
 	//攻撃力を取得
