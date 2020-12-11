@@ -9,7 +9,8 @@ enum Mesh {
     Mesh_Poltergeist,               //Poltergeist
     Mesh_SurogSakones,               //SurogSakones
     Mesh_Skybox,
-    Mesh_Paladin
+    Mesh_Paladin,
+    Mesh_Book
 };
 
 //スケルトンデータ
