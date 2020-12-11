@@ -175,6 +175,7 @@
   <ItemGroup>
     <ClInclude Include="Actor.h" />
     <ClInclude Include="ActorManager.h" />
+    <ClInclude Include="ActorProp.h" />
     <ClInclude Include="AnimatedMesh.h" />
     <ClInclude Include="Assets.h" />
     <ClInclude Include="AttackCollider.h" />

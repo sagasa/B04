@@ -48,6 +48,12 @@ RushGhost::RushGhost(IWorld* world, const GSvector3& position) :
 	world_ = world;
 	name_ = "RushGhost";
 	tag_ = "EnemyTag";
+	//ActorPropを継承しているか？
+	hit_ = true;
+	//体力の設定
+	hp_ = 3.0f;
+	//攻撃力の設定
+	atk_power_ = 1.0f;
 	collider_ = BoundingSphere{ EnemyRadius ,GSvector3{0.0f,EnemyHeight,0.0f} };
 	transform_.position(position);
 	transform_.localRotation(GSquaternion::euler(0.0f, -90.0f, 0.0f));
@@ -88,7 +94,9 @@ void RushGhost::react(Actor& other) {
 	//ダメージ中または死亡中の場合は何もしない
 	if (state_ == State::Damage || state_ == State::Died) return;
 	if (other.tag() == "PlayerAttackTag") {
-		hp_--;
+		//衝突した相手の攻撃力を取得
+		float atk = dynamic_cast<ActorProp*>(&other)->atk_power();
+		hp_ -= atk;
 		if (hp_ <= 0) {
 			//ダメージ状態に変更
 			change_state(State::Damage, MotionDamage, false);

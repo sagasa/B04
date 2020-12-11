@@ -2,11 +2,12 @@
 #define CAR_GHOST_H_
 
 #include"Actor.h"
+#include"ActorProp.h"
 #include"AnimatedMesh.h"
 
 
 
-class CarGhost : public Actor {
+class CarGhost : public Actor, public ActorProp{
 public:
 	//状態
 	enum class State {
@@ -77,8 +78,6 @@ private:
 	bool motion_loop_;
 	//プレイヤー
 	Actor* player_;
-	//体力
-	float hp_;
 	//タイマー
 	float moving_timer_;
 	//状態
