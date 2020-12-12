@@ -1,4 +1,7 @@
 #include"SceneManager.h"
+
+#include <iostream>
+
 #include"SceneNull.h"
 
 static SceneNull scene_null;
@@ -6,6 +9,12 @@ static SceneNull scene_null;
 //コンストラクタ
 SceneManager::SceneManager() :
 	current_scene_{ &scene_null } {
+	load_end_ = [this] {
+		//次のシーンを開始 戻るまでアップデートしないように
+		next_scene_->start();
+		current_scene_ = next_scene_;
+		next_scene_ = nullptr;
+	};
 }
 
 //デストラクタ
@@ -16,6 +25,12 @@ SceneManager::~SceneManager() {
 void SceneManager::update(float delta_time) {
 	//シーンの更新
 	current_scene_->update(delta_time);
+	//ロードが終わっていれば
+	if (next_scene_!=nullptr&&loader_.count_ == 0)
+	{
+		load_end_();
+	}
+
 	//シーンが終了しているか？
 	if (current_scene_->is_end()) {
 		//シーンを変更する
@@ -47,10 +62,17 @@ void SceneManager::change(const std::string& name) {
 	//現在のシーンを終了
 	end();
 	//現在のシーンを変更
-	current_scene_ = scenes_[name];
-	//現在のシーンを開始
-	current_scene_->start();
+	next_scene_ = scenes_[name];
+	next_scene_->load(loader_);
+	//綺麗に書きたかったです
+	if(loader_.count_==0)
+	{
+		load_end_();
+	}
+	//loader_.on_end(load_end_);
 }
+
+
 
 //シーンの消去
 void SceneManager::clear() {
