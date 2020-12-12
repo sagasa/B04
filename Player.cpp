@@ -119,17 +119,18 @@ void Player::update(float delta_time) {
         GSvector3 center;
         //衝突後の球体の中心座標
         if (world_->field()->collide(sphere, &center)) {
-            
-
             //座標系を戻す
-            center-= collider_.center;
-            GSvector3 vel = (center - transform_.position());
-    	
-            velocity_+= vel*delta_time*0.2f;
-            velocity_.z = 0;
-
+            
+        	//ゴースト時のふわふわ
+            {
+                center -= collider_.center;
+                //GSvector3 vel = (center - transform_.position());
+                //velocity_ += vel * delta_time * 0.2f;
+                //velocity_.z = 0;
+            }
+            
         	//補正後の座標に変更する
-           // transform_.position(center);
+			transform_.position(center);
         }
     }
     
