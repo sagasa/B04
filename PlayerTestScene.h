@@ -6,6 +6,7 @@
 class PlayerTestScene :
 	public IScene
 {
+	void load(resource_loader& loader) override;
 	//開始
 	virtual void start() override;
 	//更新

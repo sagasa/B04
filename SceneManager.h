@@ -4,6 +4,8 @@
 #include<unordered_map>
 #include<string>
 
+#include "resource_loader.h"
+
 class IScene;
 //シーン管理クラス
 class SceneManager {
@@ -28,8 +30,12 @@ public:
 	SceneManager(const SceneManager& other) = delete;
 	SceneManager& operator = (const SceneManager& other) = delete;
 private:
+	//読み込み完了 次のシーンを実行
+	std::function<void()> load_end_;
 	//シーン
 	std::unordered_map<std::string, IScene* > scenes_;
+	resource_loader loader_;
+	IScene* next_scene_;
 	IScene* current_scene_;
 };
 
