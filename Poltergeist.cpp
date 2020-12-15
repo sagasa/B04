@@ -103,9 +103,9 @@ void Poltergeist::react(Actor& other) {
 	//ダメージ中または死亡中の場合は何もしない
 	if (state_ == State::Damage || state_ == State::Died) return;
 	if (other.tag() == "PlayerAttackTag") {
-		//衝突した相手の攻撃力を取得
+		/*//衝突した相手の攻撃力を取得
 		float atk = dynamic_cast<ActorProp*>(&other)->atk_power();
-		hp_ -= atk;
+		hp_ -= atk;*/
 		if (hp_ <= 0) {
 			//ダメージ状態に変更
 			change_state(State::Damage, MotionDamage,false);
