@@ -1,4 +1,12 @@
 Name,posX,posY,posZ
-CarGhost ,24.38,-1.781211,-0.02
-CarGhost ,18.89,-1.781211,-0.02
-CarGhost,10.05032,-1.781211,-0.02
+NormalGhost ,235.4352,9.255775,0
+NormalGhost ,154.6634,7.666627,0
+NormalGhost ,135.9446,12.34639,0
+NormalGhost,112.53,7.17,0
+NormalGhost ,205.24,11.38,0
+NormalGhost ,206.48,-1.33,0
+NormalGhost ,179.41,1.25,0
+CarGhost ,140.29,-2.38,0.2470197
+CarGhost,113.66,0.4,0.2470197
+NormalGhost,74.80998,-1.8,0
+Paladin,10.90001,-2.8,5.3
