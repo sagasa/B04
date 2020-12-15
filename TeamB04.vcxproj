@@ -150,6 +150,7 @@
     <ClCompile Include="BoundingSphere.cpp" />
     <ClCompile Include="ByteBuf.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="ChangeItem.cpp" />
     <ClCompile Include="CSVReader.cpp" />
     <ClCompile Include="MapGenerator.cpp" />
     <ClCompile Include="EnemyTestScene.cpp" />
@@ -184,6 +185,7 @@
     <ClInclude Include="BoundingSphere.h" />
     <ClInclude Include="ByteBuf.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="ChangeItem.h" />
     <ClInclude Include="CSVReader.h" />
     <ClInclude Include="Line.h" />
     <ClInclude Include="MapGenerator.h" />
