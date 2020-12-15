@@ -1,5 +1,10 @@
 #include "SurogSakones.h"
 
+
+#include <iostream>
+#include <typeinfo>
+
+
 #include "IWorld.h"
 #include "Field.h"
 #include "Player.h"
@@ -110,6 +115,26 @@ void SurogSakones::late_update(float delta_time) {
 	prev_flip_ = flip_;
 }
 void SurogSakones::react(Actor& other) {
+	if(other.tag()=="PlayerAttackTag")
+	{
+		try
+		{
+			ActorProp& ap = dynamic_cast<ActorProp&>(other);
+			hp_ -= ap.atk_power();
+		}
+		catch(std::bad_cast& e)
+		{
+			std::cout << e.what() << std::endl;
+		}
+
+		if(hp_<=0.0f)
+		{
+			change_state(State::Dying, MotionDying, false);
+		}
+		else {
+			change_state(State::Stun, MotionDamage1, false);
+		}
+	}
 }
 void SurogSakones::update_state(float delta_time) {
 	//ó‘Ô‚É‚æ‚Á‚ÄØ‚è‘Ö‚¦
