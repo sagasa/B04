@@ -26,6 +26,9 @@ public:
 	//衝突リアクション
 	virtual void react(Actor& other) override;
 
+	//攻撃を受けた
+	//virtual void on_hit(Actor& attacker, float atk_power) override;
+
 private:
 	//状態の更新
 	void update_state(float delta_time);
@@ -66,8 +69,6 @@ private:
 	float target_distance_y() const;
 	//ターゲット方向のベクトルを求める
 	GSvector3 to_target()const;
-
-
 
 private:
 	//アニメーションメッシュ
