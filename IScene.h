@@ -3,11 +3,15 @@
 
 #include<string>
 
+class resource_loader;
+
 //シーン抽象インターフェース
 class IScene {
 public:
 	//仮想デストラクタ
 	virtual ~IScene() = default;
+	//読み込み開始
+	virtual void load(resource_loader& loader) {}
 	//開始
 	virtual void start() = 0;
 	//更新

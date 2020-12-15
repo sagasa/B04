@@ -5,25 +5,42 @@
 #include"Camera.h"
 #include"Light.h"
 #include"Player.h"
+#include "resource_loader.h"
 #include"SurogSakones.h"
+
+void PlayerTestScene::load(resource_loader& loader)
+{
+    // プレーヤメッシュの読み込み
+    //loader.load_mesh(Mesh_Player, "Assets/Model/Enemy/Ghost.msh");
+    //loader.load_skeleton(Skeleton_Player, "Assets/Model/Enemy/Ghost.skl");
+    //loader.load_animation(Animation_Player, "Assets/Model/Enemy/Ghost.anm");
+
+    //loader.load_mesh(Mesh_Paladin, "Assets/Model/Paladin/Paladin.msh");
+    //loader.load_skeleton(Skeleton_Paladin, "Assets/Model/Paladin/Paladin.skl");
+    //loader.load_animation(Animation_Paladin, "Assets/Model/Paladin/Paladin.anm");
+
+ 	
+    //loader.load_octree(Octree_Stage, "Assets/Octree/stage1.oct");
+    //loader.load_octree(Octree_Collider, "Assets/Octree/stage1_collider.oct"); //なぜかこっちで読んでいるのに消える
+    //loader.load_mesh(Mesh_Skybox, "Assets/Skybox/skydome.msh");
+}
 
 void PlayerTestScene::start() {
     is_end_ = false;
-    // プレーヤメッシュの読み込み
+
     gsLoadMesh(Mesh_Player, "Assets/Model/Enemy/Ghost.msh");
-    gsLoadMesh(Mesh_Poltergeist, "Assets/Model/Enemy/Ghost.msh");
-    gsLoadSkeleton(Mesh_CarGhost, "Assets/Model/Enemy/Ghost.skl");
-    gsLoadAnimation(Animation_CarGhost, "Assets/Model/Enemy/Ghost.anm");
+    gsLoadSkeleton(Skeleton_Player, "Assets/Model/Enemy/Ghost.skl");
+    gsLoadAnimation(Animation_Player, "Assets/Model/Enemy/Ghost.anm");
 
     gsLoadMesh(Mesh_Paladin, "Assets/Model/Paladin/Paladin.msh");
     gsLoadSkeleton(Skeleton_Paladin, "Assets/Model/Paladin/Paladin.skl");
     gsLoadAnimation(Animation_Paladin, "Assets/Model/Paladin/Paladin.anm");
-
+	
     gsLoadOctree(Octree_Stage, "Assets/Octree/stage1.oct");
-    gsLoadOctree(Octree_Collider, "Assets/Octree/stage1_collider.oct");
+    gsLoadOctree(Octree_Collider, "Assets/Octree/stage1_collider.oct"); 
     gsLoadMesh(Mesh_Skybox, "Assets/Skybox/skydome.msh");
 
-    // フィールドの追加
+	// フィールドの追加
     world_.add_field(new Field{ Octree_Stage,Octree_Collider,Mesh_Skybox });
     // カメラの追加
     world_.add_camera(new Camera{ &world_ });

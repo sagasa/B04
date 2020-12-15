@@ -1,18 +1,31 @@
 #include"PoltergeistBullet.h"
 #include"IWorld.h"
 #include"Camera.h"
+#include"Assets.h"
 
 //死亡するまでの時間
 const float Delay_time{3.0f};
 
 PoltergeistBullet::PoltergeistBullet(IWorld* world, const GSvector3& position, const GSvector3& velocity) :
 	died_timer_{0.0f} {
+	//ワールドの設定
 	world_ = world;
+	//名前の設定
 	name_ = "PoltergeistBullet";
+	//タグ名の設定
 	tag_ = "EnemyAttackTag";
-	collider_ = BoundingSphere{0.4f };
+	//衝突判定球の設定
+	collider_ = BoundingSphere{0.4f};
+	//座標の初期化
 	transform_.position(position);
+	//
 	velocity_ = velocity;
+	//ActorPropを継承しているか？
+	hit_ = true;
+	//体力の設定
+	hp_ = 1.0f;
+	//攻撃力の設定
+	atk_power_ = 1.0f;
 }
 
 //更新
@@ -38,14 +51,15 @@ void PoltergeistBullet::update(float delta_time) {
 void PoltergeistBullet::draw() const {
 	glPushMatrix();
 	glMultMatrixf(transform_.localToWorldMatrix());
-	gsDrawMesh(6);
+	gsDrawMesh(Mesh_Book);
 	glPopMatrix();
 	collider().draw();
 }
 
 //衝突リアクション
 void PoltergeistBullet::react(Actor& other) {
-	if (other.tag() == "PlayerTag") {
+	//エネミー以外に当たったら死亡
+	if (other.tag() != "EnemyTag") {
 		die();
 	}
 }

@@ -3,7 +3,8 @@
 
 //コンストラクタ
 AttackCollider::AttackCollider(IWorld* world, const BoundingSphere& collider,
-	const std::string& tag, const std::string& name, float lifespan, float delay)
+	const std::string& tag, const std::string& name, float lifespan, float delay):
+	lifespan_timer_{lifespan},delay_timer_{delay}
 {
 	//ワールドの設定
 	world_ = world;

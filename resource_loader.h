@@ -1,54 +1,73 @@
 ﻿#pragma once
 #include "thread_pool.h"
 #include "GSgame.h"
-
+#include <iostream>
+//
 class resource_loader
 {
-	thread_pool pool_{4};
-    std::atomic_int count_{0};
+    thread_pool pool_{ 4 };
 
-    std::function<void()>* end_func_=nullptr;
+    std::function<void()>* end_func_ = nullptr;
 
-	void end()
-	{
-		if(end_func_!=nullptr&&count_==0)
-		{
-            end_func_();
+    void end()
+    {
+        if (end_func_ != nullptr && count_ == 0)
+        {
+            end_func_->operator()();
             end_func_ = nullptr;
-		}
-	}
+        }
+    }
 
-	void post(const std::function<void()> f)
-	{
+    void post(const std::function<void()> f)
+    {
         ++count_;
-        pool_.post([&]
+        pool_.post([this, f]
             {
                 f();
                 --count_;
                 end();
             });
-	}
-public:	
-    void load_mesh(const GSuint id, const char* path)
-    {
-        post([&] {gsLoadMesh(id, path); });
     }
-    void load_skeleton(const GSuint id, const char* path)
+public:
+    std::atomic_int count_{ 0 };
+
+
+    void load_mesh(GSuint id, const char* path)
     {
-        post([&] {gsLoadSkeleton(id, path); });
+        post([=]
+            {
+                std::cout << "[load] mesh start " << path  << "\n";
+                std::cout << "[load] mesh " << (gsLoadMesh(id, path) ? "ok " : "fuck ") << path << "\n";
+            });
     }
-    void load_animation(const GSuint id, const char* path)
+    void load_skeleton(GSuint id, const char* path)
     {
-        post([&] {gsLoadAnimation(id, path); });
+        post([=]
+            {
+                std::cout << "[load] skeleton start " << path << "\n";
+                std::cout << "[load] skeleton " << (gsLoadSkeleton(id, path) ? "ok " : "fuck ") << path << "\n";
+            });
     }
-    void load_octree(const GSuint id, const char* path)
+    void load_animation(GSuint id, const char* path)
     {
-        post([&] {gsLoadOctree(id, path); });
+        post([=]
+            {
+                std::cout << "[load] animation start " << path <<  "\n";
+                std::cout << "[load] animation " << (gsLoadAnimation(id, path) ? "ok " : "fuck ") << path  << "\n";
+            });
+    }
+    void load_octree(GSuint id, const char* path)
+    {
+        post([=]
+            {
+                std::cout << "[load] octree start " << path << " start" << "\n";
+                std::cout << "[load] octree " << (gsLoadOctree(id, path) ? "ok " : "fuck ") << path << "\n";
+            });
     }
 
-    void on_end(std::function<void()> f)
+    void on_end(std::function<void()>& f)
     {
-    	//実行中が無ければ即時
+        //実行中が無ければ即時
         if (count_ == 0)
             f();
         else

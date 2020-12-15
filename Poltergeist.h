@@ -2,9 +2,10 @@
 #define POLTER_GEIST_H_
 
 #include"Actor.h"
+#include"ActorProp.h"
 #include"AnimatedMesh.h"
 
-class Poltergeist : public Actor {
+class Poltergeist : public Actor,public ActorProp {
 public:
 	enum class State {
 		Idle,
@@ -76,8 +77,6 @@ private:
 	bool motion_loop_;
 	//プレイヤー
 	Actor* player_;
-	//体力
-	float hp_{ 1.0f };
 	//射撃タイマー
 	float shootiong_timer_{ 0.0f };
 	//状態

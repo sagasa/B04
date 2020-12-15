@@ -4,6 +4,7 @@
 #include"Line.h"
 #include"Assets.h"
 #include"AttackCollider.h"
+#include"ActorProp.h"
 
 enum {
 	MotionIdle = 0,
@@ -46,7 +47,6 @@ CarGhost::CarGhost(IWorld* world, const GSvector3& position) :
 	state_{ State::Idle },
 	state_timer_{0.0f},
 	player_{ nullptr },
-	hp_{3},
 	moving_timer_{gsRandf(0,60.0f)},
 	is_turn_{false},
 	is_hit_{ false } {
@@ -56,6 +56,12 @@ CarGhost::CarGhost(IWorld* world, const GSvector3& position) :
 	name_ = "CarGhost";
 	//タグ名の設定
 	tag_ = "EnemyTag";
+	//ActorPropを継承しているか？
+	hit_ = true;
+	//体力の設定
+	hp_ = 1.0f;
+	//攻撃力の設定
+	atk_power_ = 2.0f;
 	//transform_.position(GSvector3::zero());
 	//衝突判定球の設定
 	collider_ = BoundingSphere{ EnemyRadius ,GSvector3{0.0f,EnemyHeight,0.0f} };
@@ -114,7 +120,7 @@ void CarGhost::react(Actor& other) {
 		collide_actor(other);
 		change_state(State::Move, MotionRun);
 	}
-	else if (other.tag() == "PlayerTag") {
+	else if (other.tag() == "PlayerTag") {//プレイヤーと衝突した場合
 		is_hit_ = true;
 	}
 }
@@ -161,16 +167,17 @@ void CarGhost::move(float delta_time) {
 	if (!is_hit_) {
 		if (is_turn()) {
 			change_state(State::Turn, MotionIdle);
+			return;
 		}
 		if (moving_timer_ <= 0) {
 			velocity = GSvector3{ to_target().x,to_target().y,0.0f };
 			velocity_ = velocity;
 			moving_timer_ = gsRandf(30.0f, 60.0f);
 		}
-		//ターゲット方向の角度を求める
-		float angle = CLAMP(target_signed_angle(), -TurnAngle / 3, TurnAngle / 3);
+		/*//ターゲット方向の角度を求める
+		/float angle = CLAMP(target_signed_angle(), -TurnAngle / 3, TurnAngle / 3);
 		//ターゲット方向を向く
-		transform_.rotate(0.0f, angle, 0.0f);
+		transform_.rotate(0.0f, angle, 0.0f);*/
 	}
 	else {
 		velocity = transform_.forward();
