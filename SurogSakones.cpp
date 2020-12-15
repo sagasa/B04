@@ -1,5 +1,10 @@
 #include "SurogSakones.h"
 
+
+#include <iostream>
+#include <typeinfo>
+
+
 #include "IWorld.h"
 #include "Field.h"
 #include "Player.h"
@@ -110,6 +115,26 @@ void SurogSakones::late_update(float delta_time) {
 	prev_flip_ = flip_;
 }
 void SurogSakones::react(Actor& other) {
+	if(other.tag()=="PlayerAttackTag")
+	{
+		try
+		{
+			ActorProp& ap = dynamic_cast<ActorProp&>(other);
+			hp_ -= ap.atk_power();
+		}
+		catch(std::bad_cast& e)
+		{
+			std::cout << e.what() << std::endl;
+		}
+
+		if(hp_<=0.0f)
+		{
+			change_state(State::Dying, MotionDying, false);
+		}
+		else {
+			change_state(State::Stun, MotionDamage1, false);
+		}
+	}
 }
 void SurogSakones::update_state(float delta_time) {
 	//ó‘Ô‚É‚æ‚Á‚ÄØ‚è‘Ö‚¦
@@ -177,7 +202,7 @@ void SurogSakones::scythe_attack(float delta_time) {
 	if (!scythe_attack_flag_ && attack_timer_ >= ScytheAttackFlame)
 	{
 		scythe_attack_flag_ = true;
-		generate_pshychokinesis(transform_.position() + GSvector3::up() * 2.0f, GSvector3::up() * 3.0f);
+		generate_attackcollider();
 	}
 }
 void SurogSakones::psyco1_attack(float delta_time) {
@@ -382,13 +407,12 @@ void SurogSakones::generate_pshychokinesis(const GSvector3& position, GSvector3 
 	}
 }
 
-void SurogSakones::generate_attackcollider()
-{
-	const float AttackColliderDistance{ 1.5f };
+void SurogSakones::generate_attackcollider(){
+	const float AttackColliderDistance{ 0.5f };
 	const float AttackColliderRadius{ 0.3f };
 	const float AttackColliderHeight{ 1.0f };
 
-	const float AttackCollideDelay{ 15.0f };
+	const float AttackCollideDelay{ 60.0f };
 	const float AttackCollideLifeSpan{ 5.0f };
 
 	GSvector3 position = transform_.position() + transform_.forward() * AttackColliderDistance;
