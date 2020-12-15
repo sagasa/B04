@@ -132,6 +132,9 @@
     <ClCompile Include="AttackCollider.cpp">
       <Filter>ソース ファイル\Actors</Filter>
     </ClCompile>
+    <ClCompile Include="UI.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ActorManager.h">
@@ -247,6 +250,9 @@
     </ClInclude>
     <ClInclude Include="ActorProp.h">
       <Filter>ヘッダー ファイル\Actors</Filter>
+    </ClInclude>
+    <ClInclude Include="UI.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

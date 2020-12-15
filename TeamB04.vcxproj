@@ -170,6 +170,7 @@
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="SurogSakones.cpp" />
+    <ClCompile Include="UI.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -210,6 +211,7 @@
     <ClInclude Include="thread_pool.h" />
     <ClInclude Include="TitleScene.h" />
     <ClInclude Include="SurogSakones.h" />
+    <ClInclude Include="UI.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
