@@ -34,7 +34,7 @@ public:
 	}
 
 	//UŒ‚‚ğó‚¯‚½
-	static void hit();
+	void hit(float atk_power);
 
 protected:
 	//‘Ì—Í
