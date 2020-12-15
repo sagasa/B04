@@ -9,6 +9,7 @@
 #include"SceneManager.h"
 #include"EnemyTestScene.h"
 #include"BossTestScene.h"
+#include"GamePlayScene.h"
 #include "CarGhost.h"
 #include "Player.h"
 #include"TitleScene.h"
@@ -80,6 +81,7 @@ class MyGame : public gslib::Game {
         scene_.add("BossTestScene", new BossTestScene());
         scene_.add("PlayerTestScene", new PlayerTestScene());
         scene_.add("TitleScene", new TitleScene());
+        scene_.add("GamePlayScene", new GamePlayScene());
         scene_.change("TitleScene");
         glError();        
     }
