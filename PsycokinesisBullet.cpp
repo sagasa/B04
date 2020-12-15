@@ -31,10 +31,6 @@ void PsycokinesisBullet::update(float delta_time) {
 		acceleration_ = acceleration_.normalize() * MaxAcceleration;
 	}
 	period_ -= (delta_time / 60.0f);
-	if(period_<0.0f)
-	{
-		return;
-	}
 	velocity_ += acceleration_ * (delta_time / 60.0f);
 	
 	transform_.position(transform_.position() + velocity_ * (delta_time / 60.0f));

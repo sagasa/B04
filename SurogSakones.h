@@ -86,6 +86,7 @@ private:
 	bool is_move(const Actor* other);
 
 	void collide_field();
+	void collide_actor(Actor& other);
 
 
 private:
