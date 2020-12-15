@@ -15,10 +15,8 @@ enum {
 
 //振り向き判定の距離
 const float TurnDistance{ 1.5f };
-//攻撃判定の距離
-const float AttackDistance{ 1.5f };
-//移動判定の距離x
-const float MoveDistance{ 5.0f };
+//移動判定の距離
+const float MoveDistance{ 7.0f };
 //振り向く角度
 const float TurnAngle{ 5.0f };
 //エネミーの高さ
@@ -27,8 +25,6 @@ const float EnemyHeight{ 0.75f };
 const float EnemyRadius{ 0.5f };
 //足元のオフセット
 const float FootOffset{ 0.1f };
-//スピード
-const float Speed{ 0.025f };
 //円周率
 const float PI{ 3.141592654 };
 //半径
@@ -155,8 +151,10 @@ void RushGhost::idle(float delta_time) {
 
 //移動
 void RushGhost::move(float delta_time) {
-	if (point_ <= 180) {//回数
-		angle_ = PI * point_ / 180;
+	//回数
+	const int NumOfTimes{ 90};//移動速度が変化
+	if (point_ <= NumOfTimes) {//回数
+		angle_ = PI * point_ / NumOfTimes;
 		GSvector3 position{  rotate_centrer_.x + to_targe_angle_ *(float)cos(angle_) * radius,rotate_centrer_.y + -(float)sin(angle_) * radius,0.0f };
 		GSvector3 velocity = (position - transform_.position());
 		velocity_ = velocity;
