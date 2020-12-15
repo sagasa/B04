@@ -102,26 +102,31 @@ void Poltergeist::draw() const {
 void Poltergeist::react(Actor& other) {
 	//ダメージ中または死亡中の場合は何もしない
 	if (state_ == State::Damage || state_ == State::Died) return;
-	if (other.tag() == "PlayerAttackTag") {
-		/*//衝突した相手の攻撃力を取得
-		float atk = dynamic_cast<ActorProp*>(&other)->atk_power();
-		hp_ -= atk;*/
-		if (hp_ <= 0) {
-			//ダメージ状態に変更
-			change_state(State::Damage, MotionDamage,false);
-		} else {
-			//攻撃の進行方向にノックバックする移動量を求める
-			velocity_ = other.velocity().getNormalized() * 0.5f;
-			//ダメージ状態に変更
-			change_state(State::Damage, MotionDamage,false);
-		}
-		return;
-	} else if (other.tag() == "PlayerTag") { 
+
+	if (other.tag() == "PlayerTag") { 
 		collide_actor(other);
 	}
 	else if (other.tag() == "EnemyTag") {
 		//またはエネミーに衝突したら
 		collide_actor(other);
+	}
+}
+
+void Poltergeist::on_hit(const Actor& other, float atk_power) {
+	//ダメージ中または死亡中の場合は何もしない
+	if (state_ == State::Damage || state_ == State::Died) return;
+	if (other.tag() == "PlayerAttack") {
+		hp_ -= atk_power_;
+		if (hp_ <= 0) {
+			//ダメージ状態に変更
+			change_state(State::Damage, MotionDamage, false);
+		}
+		else {
+			//攻撃の進行方向にノックバックする移動量を求める
+			velocity_ = other.velocity().getNormalized() * 0.5f;
+			//ダメージ状態に変更
+			change_state(State::Damage, MotionDamage, false);
+		}
 		return;
 	}
 }

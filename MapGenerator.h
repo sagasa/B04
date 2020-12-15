@@ -11,7 +11,7 @@ public:
 	MapGenerator(IWorld* world, const std::string& file_name);
 private:
 	//敵の生成
-	void generate(IWorld* world,int row,int column);
+	void generate(IWorld* world);
 
 private:
 	//出現データ

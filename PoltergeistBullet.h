@@ -8,7 +8,7 @@ class PoltergeistBullet : public Actor,public ActorProp {
 public:
 
 	//コンストラクタ
-	PoltergeistBullet(IWorld* world, const GSvector3& position,const GSvector3& velocity);
+	PoltergeistBullet(IWorld* world, const GSvector3& position,const GSvector3& velocity, float atk_power = 1.0f);
 	//更新
 	virtual void update(float delta_time) override;
 	//描画
@@ -23,6 +23,8 @@ private:
 private:
 	//死亡タイマー
 	float died_timer_;
+	//攻撃力
+	float atk_power_;
 };
 
 

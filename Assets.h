@@ -46,7 +46,7 @@ enum Texture {
 
 // ＢＧＭデータ
 enum Music {
-    Music_BackGround                // 爆発フラッシュ
+    Music_BackGround                // BGM
 };
 
 // ＳＥデータ
