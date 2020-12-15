@@ -5,6 +5,7 @@
 
 //アクタープロパティクラス
 class ActorProp {
+
 public:
 	//コンストラクタ
 	ActorProp() = default;
@@ -18,7 +19,7 @@ public:
 	}
 
 	//体力を取得
-	const float hp() const {
+	float hp() const {
 		return hp_;
 	}
 
@@ -28,9 +29,12 @@ public:
 	}
 
 	//攻撃力を取得
-	const float atk_power()const {
+    float atk_power()const {
 		return atk_power_;
 	}
+
+	//攻撃を受けた
+	static void hit();
 
 protected:
 	//体力
