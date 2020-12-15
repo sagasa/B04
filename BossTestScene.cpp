@@ -30,6 +30,9 @@ void BossTestScene::start() {
     gsLoadOctree(Octree_Stage, "Assets/Octree/stage1.oct");
     gsLoadOctree(Octree_Collider, "Assets/Octree/stage1_collider.oct");
     gsLoadMesh(Mesh_Skybox, "Assets/Skybox/skydome.msh");
+
+    //バレット(本)のメッシュの追加
+    gsLoadMesh(Mesh_Book, "Assets/Model/Bullet/books.msh");
 	
     // フィールドの追加
     world_.add_field(new Field{ Octree_Stage,Octree_Collider,Mesh_Skybox });
