@@ -103,25 +103,33 @@ void CarGhost::draw() const {
 //衝突リアクション
 void CarGhost::react(Actor& other) {
 	//ダメージ中または死亡中は何もしない
-	if (state_ == State::Damage || state_ == State::Died)return;
-	if (other.tag() == "PlayerAttackTag") { //プレイヤーの攻撃と衝突した場合
-		hp_--;
-		if (hp_ <= 0) {
-			//ダメージ状態に変更
-			change_state(State::Died, MotionDie,false);
-		} else {
-			//攻撃の進行方向にノックバックする移動量を求める
-			velocity_ = other.velocity().getNormalized() * 0.5f;
-			//ダメージ状態に変更
-			change_state(State::Damage, MotionDamage,false);
-		}
-		return;
-	} else if (other.tag() == "EnemyTag") { //エネミーに衝突した場合
+	if (state_ == State::Damage || state_ == State::Died) return;
+	if (other.tag() == "EnemyTag") { //エネミーに衝突した場合
 		collide_actor(other);
-		change_state(State::Move, MotionRun);
 	}
 	else if (other.tag() == "PlayerTag") {//プレイヤーと衝突した場合
 		is_hit_ = true;
+		ActorProp::do_attack(other, *this, atk_power_);
+	}
+}
+
+//攻撃を受ける
+void CarGhost::on_hit(const Actor& other, float atk_power) {
+	//ダメージ中または死亡中は何もしない
+	if (state_ == State::Damage || state_ == State::Died)return;
+	if (other.tag() == "PlayerAttack") { //プレイヤーの攻撃と衝突した場合
+		hp_-= atk_power_;
+		if (hp_ <= 0) {
+			//死亡状態に変更
+			change_state(State::Died, MotionDie, false);
+		}
+		else {
+			//攻撃の進行方向にノックバックする移動量を求める
+			velocity_ = other.velocity().getNormalized() * 0.5f;
+			//ダメージ状態に変更
+			change_state(State::Damage, MotionDamage, false);
+		}
+		return;
 	}
 }
 

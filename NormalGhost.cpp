@@ -90,11 +90,20 @@ void NormalGhost::draw() const {
 void NormalGhost::react(Actor& other) {
 	//ダメージ中または死亡中は何もしない
 	if (state_ == State::Damage || state_ == State::Died) return;
+
 	if (other.tag() == "PlayerTag") {
-		hp_--;
-		change_state(State::Damage, MotionDamage);
+		ActorProp::do_attack(other, *this, atk_power_);
 	}
 	
+}
+
+void NormalGhost::on_hit(const Actor& other, float atk_power) {
+	//ダメージ中または死亡中は何もしない
+	if (state_ == State::Damage || state_ == State::Died) return;
+	if (other.tag() == "PlayerTag" || other.tag() == "PlayerAttack") {
+		hp_-= atk_power_;
+		change_state(State::Damage, MotionDamage);
+	}
 }
 
 //状態の更新
