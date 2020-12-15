@@ -23,11 +23,13 @@ void EnemyTestScene::start() {
     //バレット(本)のメッシュの追加
     gsLoadMesh(Mesh_Book, "Assets/Model/Bullet/books.msh");
     //Ghostのスケルトンの読み込み
+    gsLoadSkeleton(Skeleton_Player,"Assets/Model/Enemy/Ghost.skl");
     gsLoadSkeleton(Skeleton_CarGhost, "Assets/Model/Enemy/Ghost.skl");
     gsLoadSkeleton(Skeleton_RushGhost, "Assets/Model/Enemy/Ghost.skl");
     gsLoadSkeleton(Skeleton_Poltergeist, "Assets/Model/Enemy/Ghost.skl");
     gsLoadSkeleton(Skeleton_Paladin, "Assets/Model/Paladin/Paladin.skl");
     //Ghostのアニメーションの読み込み
+    gsLoadAnimation(Animation_Player, "Assets/Model/Enemy/Ghost.anm");
     gsLoadAnimation(Animation_CarGhost, "Assets/Model/Enemy/Ghost.anm");
     gsLoadAnimation(Animation_RushGhost, "Assets/Model/Enemy/Ghost.anm");
     gsLoadAnimation(Animation_Poltergeist, "Assets/Model/Enemy/Ghost.anm");

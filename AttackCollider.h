@@ -9,7 +9,7 @@ public:
 	//コンストラクタ
 	AttackCollider(IWorld* world, const BoundingSphere& collider,
 		const std::string& tag, const std::string& name,
-		float lifespan = 1.0f, float delay = 0.0f);
+		float lifespan = 1.0f, float delay = 0.0f, float atk_power = 1.0f);
 	//更新
 	virtual void update(float delta_time) override;
 	//描画
@@ -22,6 +22,8 @@ private:
 	float lifespan_timer_;
 	//衝突判定が有効になるまでの遅延時間
 	float delay_timer_;
+	//攻撃力
+	float atk_power_;
 };
 
 

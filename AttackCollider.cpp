@@ -1,9 +1,10 @@
 #include"AttackCollider.h"
+#include"ActorProp.h"
 
 
 //コンストラクタ
 AttackCollider::AttackCollider(IWorld* world, const BoundingSphere& collider,
-	const std::string& tag, const std::string& name, float lifespan, float delay):
+	const std::string& tag, const std::string& name, float lifespan, float delay, float atk_power):
 	lifespan_timer_{lifespan},delay_timer_{delay}
 {
 	//ワールドの設定
@@ -18,6 +19,8 @@ AttackCollider::AttackCollider(IWorld* world, const BoundingSphere& collider,
 	transform_.position(collider.center);
 	//無敵状態にする
 	enable_collider_ = false;
+	//攻撃力を設定
+	atk_power_ = atk_power;
 }
 
 //更新
@@ -47,6 +50,7 @@ void AttackCollider::draw() const
 //衝突リアクション
 void AttackCollider::react(Actor& other)
 {
+	ActorProp::do_attack(other,atk_power_);
 	//衝突したら死亡
 	die();
 }
