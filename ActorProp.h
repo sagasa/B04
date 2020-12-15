@@ -1,6 +1,6 @@
 #ifndef ACTOR_PROP_H_
 #define ACTOR_PROP_H_
-
+#include <typeinfo>
 
 
 //アクタープロパティクラス
@@ -34,7 +34,23 @@ public:
 	}
 
 	//攻撃を受けた
-	void hit(float atk_power);
+	virtual void on_hit(float atk_power){};
+
+	static bool do_attack(Actor& victim, float value)
+	{
+		try
+		{
+			ActorProp& actor = dynamic_cast<ActorProp&>(victim);
+			//減らす処理
+			actor.hp_ -= value;
+			actor.on_hit(value);
+			return true;
+		}catch (std::bad_cast& e)
+		{
+			return false;
+		}
+	}
+
 
 protected:
 	//体力
@@ -43,8 +59,5 @@ protected:
 	float atk_power_{ 0.0f };
 
 };
-
-
-
 #endif
 
