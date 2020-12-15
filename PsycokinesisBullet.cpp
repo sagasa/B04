@@ -51,6 +51,7 @@ void PsycokinesisBullet::draw()const {
 }
 void PsycokinesisBullet::react(Actor& other) {
 	if (other.tag() == "PlayerTag") {
+		do_attack(other, *this, 1.0f);
 		die();
 	}
 }

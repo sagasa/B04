@@ -116,29 +116,25 @@ void SurogSakones::late_update(float delta_time) {
 	prev_flip_ = flip_;
 }
 void SurogSakones::react(Actor& other) {
-	if(other.tag()=="PlayerAttackTag")
+	
+	if(other.tag()=="PlayerTag")
 	{
-		try
-		{
-			ActorProp& ap = dynamic_cast<ActorProp&>(other);
-			hp_ -= ap.atk_power();
-		}
-		catch(std::bad_cast& e)
-		{
-			std::cout << e.what() << std::endl;
-		}
+		collide_actor(other);
+	}
+}
+void SurogSakones::on_hit(const Actor& attacker, float atk_power)
+{
+	if (attacker.tag() == "PlayerAttack")
+	{
+		hp_ -= atk_power;
 
-		if(hp_<=0.0f)
+		if (hp_ <= 0.0f)
 		{
 			change_state(State::Dying, MotionDying, false);
 		}
 		else {
 			change_state(State::Stun, MotionDamage1, false);
 		}
-	}
-	if(other.tag()=="PlayerTag")
-	{
-		collide_actor(other);
 	}
 }
 void SurogSakones::update_state(float delta_time) {
@@ -375,6 +371,8 @@ void SurogSakones::debug_draw()const {
 	gsDrawText("プレイヤーとの角度(%d)", target_posrelation(player_));
 	gsTextPos(0.0f, 140.0f);
 	gsDrawText("移動状態(%d)", move_way_);
+	gsTextPos(0.0f, 160.0f);
+	gsDrawText("移動状態(%f)", hp_);
 }
 
 void SurogSakones::scythe_attack()
