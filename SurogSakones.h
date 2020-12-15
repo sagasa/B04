@@ -4,11 +4,12 @@
 class IWorld;
 
 #include "Actor.h"
+#include "ActorProp.h"
 #include<vector>
 #include"AnimatedMesh.h"
 
 class SurogSakones :
-	public Actor
+	public Actor,public ActorProp
 {
 public:
 	enum class State {
@@ -91,8 +92,6 @@ private:
 	State state_ = State::Unkown;
 	State prev_state_;
 	float state_timer_{ 0.0f };
-	//‘Ì—Í
-	float hp_{ 0.0f };
 	//ƒXƒ^ƒ“’l
 	float stun_{ 0.0f };
 	
