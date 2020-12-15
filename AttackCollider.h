@@ -18,10 +18,6 @@ public:
 	virtual void react(Actor& other) override;
 
 private:
-	//UŒ‚—Í‚ğæ“¾
-	float get_atk_power() const;
-
-private:
 	//õ–½
 	float lifespan_timer_;
 	//Õ“Ë”»’è‚ª—LŒø‚É‚È‚é‚Ü‚Å‚Ì’x‰„ŠÔ

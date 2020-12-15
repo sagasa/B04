@@ -1,4 +1,5 @@
 #include"AttackCollider.h"
+#include"ActorProp.h"
 
 
 //コンストラクタ
@@ -49,11 +50,7 @@ void AttackCollider::draw() const
 //衝突リアクション
 void AttackCollider::react(Actor& other)
 {
+	ActorProp::do_attack(other,atk_power_);
 	//衝突したら死亡
 	die();
-}
-
-//攻撃力を取得
-float AttackCollider::get_atk_power() const {
-	return atk_power_;
 }

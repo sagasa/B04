@@ -74,7 +74,6 @@ void PlayerTestScene::end() {
     gsDeleteSkeleton(Skeleton_SurogSakones);
     gsDeleteAnimation(Animation_SurogSakones);
 	
-    gsDeleteTexture(Texture_BgTileNebulaGreen);
     gsDeleteTexture(Texture_EffectFlash);
     gsDeleteTexture(Texture_EffectLazerCyan);
     gsDeleteTexture(Texture_EffectLazerOrange);

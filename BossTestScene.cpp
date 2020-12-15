@@ -8,8 +8,6 @@
 #include"SurogSakones.h"
 
 void BossTestScene::start() {
-    // ”wŒi—p‰æ‘œ‚Ì“Ç‚İ‚İ
-    gsLoadTexture(Texture_BgTileNebulaGreen, "Assets/BG/tile_nebula_green_dff.png");
     // ƒvƒŒ[ƒ„[’e‰æ‘œ‚ğ“Ç‚İ‚İ
     gsLoadTexture(Texture_EffectLazerOrange, "Assets/Effect/fx_lazer_orange_dff.png");
     // “G’e‰æ‘œ‚ğ“Ç‚İ‚İ
@@ -66,7 +64,6 @@ void BossTestScene::end() {
     gsDeleteMesh(Mesh_SurogSakones);
     gsDeleteSkeleton(Skeleton_SurogSakones);
     gsDeleteAnimation(Animation_SurogSakones);
-    gsDeleteTexture(Texture_BgTileNebulaGreen);
     gsDeleteTexture(Texture_EffectFlash);
     gsDeleteTexture(Texture_EffectLazerCyan);
     gsDeleteTexture(Texture_EffectLazerOrange);
