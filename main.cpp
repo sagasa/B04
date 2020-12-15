@@ -132,7 +132,7 @@ class MyGame : public gslib::Game {
         world_.clear();
     }
 public:
-    MyGame() : Game(1920, 1080, false, 60) {
+    MyGame() : Game(1920, 1080, true, 60) {
 
     }
 

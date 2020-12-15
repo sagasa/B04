@@ -23,6 +23,9 @@ public:
 	//衝突リアクション
 	virtual void react(Actor& other) override;
 
+	//攻撃を受けた
+	void on_hit(const Actor& attacker, float atk_power) override;
+
 private:
 	//状態の更新
 	void update_state(float delta_time);

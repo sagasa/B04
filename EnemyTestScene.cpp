@@ -10,10 +10,14 @@
 #include"Assets.h"
 #include"SceneManager.h"
 #include"SurogSakones.h"
+#include<GSmusic.h>
 
 
 //開始
 void EnemyTestScene::start() {
+    //BGMの読み込み
+    gsLoadMusic(Music_BackGround, "Assets/BGM/Horror-MusicBox.mp3",GS_TRUE);
+
     // Ghostのメッシュの読み込み
     gsLoadMesh(Mesh_Player, "Assets/Model/Enemy/Ghost.msh");
     gsLoadMesh(Mesh_Paladin, "Assets/Model/Paladin/Paladin.msh");
@@ -67,6 +71,13 @@ void EnemyTestScene::start() {
     //エネミー4
     world_.add_actor(new NormalGhost{ &world_,GSvector3{15.0f,0.0f,0.0f} });
     //world_.add_actor(new SurogSakones{ &world_,GSvector3{15.0f,0.0f,0.0f} });
+
+    //BGMのバインド
+    gsBindMusic(Music_BackGround);
+    gsSetMusicVolume(0.8f);
+    //BGMの再生
+    gsPlayMusic();
+    
 }
 
 //更新
@@ -94,6 +105,8 @@ std::string EnemyTestScene::next() const {
 
 //終了
 void EnemyTestScene::end() {
+    gsPauseMusic();
+    gsDeleteMusic(Music_BackGround);
     world_.clear();
     //メッシュの削除
     gsDeleteMesh(Mesh_Player);

@@ -2,10 +2,11 @@
 #define NORMAL_GHOST_H_
 
 #include"Actor.h"
+#include"ActorProp.h"
 #include"AnimatedMesh.h"
 
 //ノーマルゴーストクラス
-class NormalGhost : public Actor {
+class NormalGhost : public Actor, public ActorProp {
 public:
 
 	enum class State {
@@ -23,6 +24,9 @@ public:
 	virtual void draw() const override;
 	//衝突リアクション
 	virtual void react(Actor& other) override;
+
+	//攻撃を受けた
+	void on_hit(const Actor& attacker, float atk_power) override;
 
 private:
 
