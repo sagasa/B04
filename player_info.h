@@ -17,7 +17,7 @@ struct player_info
 	
 	virtual  bool attack() = 0;
 	virtual  bool hit() = 0;
-	virtual  void update(Actor& player,float delta) = 0;//‚±‚ê‚Ç‚¤‚µ‚Ü‚µ‚å‚¤
+	virtual  void update(const Actor& player,float delta) = 0;//‚±‚ê‚Ç‚¤‚µ‚Ü‚µ‚å‚¤
 	virtual  void draw() = 0;
 	
 	virtual ~player_info() = default;

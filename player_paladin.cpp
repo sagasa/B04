@@ -22,9 +22,8 @@ bool player_paladin::hit()
 	return false;
 }
 
-void player_paladin::update(Actor& player, float delta)
+void player_paladin::update(const Actor& player, float delta)
 {
-
     //モーション変更
     mesh_.change_motion(motion_);
     //メッシュの更新
