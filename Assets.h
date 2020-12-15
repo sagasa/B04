@@ -35,9 +35,9 @@ enum  Animation {
 
 // テクスチャデータ
 enum Texture {
-    // 2Dスプライト
-    Texture_BgTileNebulaGreen,      // 背景
-
+    //UI
+    Texture_Hp,                     //体力(ハート)
+    Texture_Shield,                 //体力(盾)
     // 3Dスプライト
     Texture_EffectLazerCyan,        // レーザー（水色）
     Texture_EffectLazerOrange,      // レーザー（オレンジ色）
