@@ -23,6 +23,10 @@ void TitleScene::update(float delta_time) {
 		is_end_ = true;
 		nextScene_ = "PlayerTestScene";
 	}
+	if (gsGetKeyTrigger(GKEY_4)) {
+		is_end_ = true;
+		nextScene_ = "GamePlayScene";
+	}
 	//背景のスクロール値を更新
 	scroll_ += delta_time;
 }
@@ -37,6 +41,8 @@ void TitleScene::draw() const {
 	gsDrawText("2 to BossTestScene");
 	gsTextPos(0.0f, 60.0f);
 	gsDrawText("3 to PlayerTestScene");
+	gsTextPos(0.0f, 80.0f);
+	gsDrawText("4 to GamePlayScene");
 	glPopMatrix();
 }
 

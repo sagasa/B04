@@ -10,8 +10,16 @@
 #include"Assets.h"
 #include"SceneManager.h"
 #include"SurogSakones.h"
+#include"MapGenerator.h"
+
+
+
 //開始
 void GamePlayScene::start() {
+    
+    //生成
+    MapGenerator generator{ &world_,"Assets/Map/Stage1.csv"};
+
     is_end_ = false;
     // CarGhostのメッシュの読み込み
     gsLoadMesh(Mesh_CarGhost, "Assets/Model/Enemy/Ghost.msh");
@@ -46,15 +54,6 @@ void GamePlayScene::start() {
     world_.add_light(new Light{ &world_ });
     // プレーヤの追加
     world_.add_actor(new Player{ &world_, GSvector3{ 0.0f, 0.0f, 0.0f } });
-    //エネミー1
-    world_.add_actor(new CarGhost{ &world_,GSvector3{10.0f,0.0f,0.0f} });
-    //エネミー2
-    world_.add_actor(new RushGhost{ &world_,GSvector3{5.0f,10.0f,0.0f} });
-    //エネミー3
-    world_.add_actor(new Poltergeist{ &world_,GSvector3{30.0f,0.0f,0.0f} });
-    //エネミー4
-    world_.add_actor(new NormalGhost{ &world_,GSvector3{3.0f,5.0f,0.0f} });
-    world_.add_actor(new SurogSakones{ &world_,GSvector3{15.0f,0.0f,0.0f} });
 }
 
 //更新
