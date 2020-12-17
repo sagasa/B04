@@ -68,7 +68,7 @@ Poltergeist::Poltergeist(IWorld* world, const GSvector3& position) :
 
 //更新
 void Poltergeist::update(float delta_time) {
-	if (transform_.position().x <= -10.0f) {
+	if (transform_.position().x <= 0.0f) {
 		change_state(State::Died, MotionDie, false);
 	}
 	//カメラの外側にいると何もしない
