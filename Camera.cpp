@@ -20,7 +20,7 @@ Camera::Camera(IWorld* world) {
 //更新
 void Camera::update(float delta_time) {
 	if (transform_.position().x >= 500.0f) {
-		is_fixed_ = true;
+		//is_fixed_ = true;
 	}
 	if (!is_fixed_) {
 		//プレイヤーを検索
@@ -35,7 +35,7 @@ void Camera::update(float delta_time) {
 		transform_.lookAt(at);
 	}
 	else {
-		GSvector3 velocity = GSvector3{ 520.0f,13.0f,20.0f } - transform_.position();
+		GSvector3 velocity = (GSvector3{ 520.0f,13.0f,20.0f } - transform_.position()).normalized();
 		transform_.translate(velocity_ * delta_time,GStransform::Space::World);
 	}
 	
