@@ -76,7 +76,7 @@ CarGhost::CarGhost(IWorld* world, const GSvector3& position) :
 //更新
 void CarGhost::update(float delta_time) {
 	//カメラの外側にいると何もしない
-	if (!is_outside()) {
+	if (is_inside()) {
 		//プレイヤーを検索
 		player_ = world_->find_actor("Player");
 		//状態の更新
@@ -251,8 +251,8 @@ bool CarGhost::is_turn() const {
 	return (target_distance() <= TurnDistance) && (target_angle() >= 90.0f);
 }
 
-//カメラの外側にいるか
-bool CarGhost::is_outside() const {
+//カメラの内側にいるか
+bool CarGhost::is_inside() const {
 	Camera* camera = world_->camera();
 	if (camera == nullptr) return false;
 	//画面内にいたら移動する

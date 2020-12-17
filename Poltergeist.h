@@ -54,8 +54,8 @@ private:
 	bool is_turn()const;
 	//攻撃判定
 	bool is_attack()const;
-	//カメラの外側にいるか？
-	bool is_outside() const;
+	//カメラの内側にいるか？
+	bool is_inside() const;
 
 	//ターゲット方向の角度を求める(符号付き)
 	float target_signed_angle()const;
