@@ -56,7 +56,12 @@ void player_ghost::update_attack()
 
 bool player_ghost::on_hit(const Actor& attacker, float atk_power)
 {
-    std::cout << "Hit\n";
+	if(attacker.tag()=="EnemyAttack")
+	{
+        std::cout << "Hit\n";
+        return true;
+	}
+    return false;
 }
 
 player_ghost::player_ghost(IWorld* world, const GSvector3& position):Player(world,position, AnimatedMesh{ Mesh_Player, Skeleton_Player, Animation_Player })

@@ -63,9 +63,6 @@ RushGhost::RushGhost(IWorld* world, const GSvector3& position) :
 
 //更新
 void RushGhost::update(float delta_time) {
-	if (transform_.position().x <= -10.0f) {
-		change_state(State::Died, MotionDie, false);
-	}
 	//プレイヤーを検索
 	player_ = world_->find_actor("Player");
 	//状態の更新
@@ -99,9 +96,9 @@ void RushGhost::react(Actor& other) {
 }
 
 
-void RushGhost::on_hit(const Actor& other, float atk_power) {
+bool RushGhost::on_hit(const Actor& other, float atk_power) {
 	//ダメージ中または死亡中の場合は何もしない
-	if (state_ == State::Damage || state_ == State::Died) return;
+	if (state_ == State::Damage || state_ == State::Died) return false;
 	if (other.tag() == "PlayerAttack") {
 		//float atk = dynamic_cast<ActorProp*>(&other)->atk_power();
 		//hp_ -= atk;
@@ -116,8 +113,9 @@ void RushGhost::on_hit(const Actor& other, float atk_power) {
 			//ダメージ状態に変更
 			change_state(State::Damage, MotionDamage, false);
 		}
-		return;
+		return true;
 	}
+	return false;
 }
 
 //状態の更新
@@ -160,6 +158,10 @@ void RushGhost::idle(float delta_time) {
 
 //移動
 void RushGhost::move(float delta_time) {
+	if (transform_.position().x <= -10.0f) {
+		change_state(State::Died, MotionDie, false);
+		return;
+	}
 	//回数
 	const int NumOfTimes{ 90};//移動速度が変化
 	if (point_ <= NumOfTimes) {//回数
