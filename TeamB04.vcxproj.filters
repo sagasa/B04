@@ -43,6 +43,9 @@
     <Filter Include="ヘッダー ファイル\Actors\Player">
       <UniqueIdentifier>{6541b4ac-e7f9-46e9-aa1b-1c7e75a71aba}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\Actors\Prop">
+      <UniqueIdentifier>{184c4d0c-6f0e-49b3-885a-c52142fb405d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -136,6 +139,9 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp">
+      <Filter>ソース ファイル\Actors\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="interact_collider.cpp">
       <Filter>ソース ファイル\Actors\Player</Filter>
     </ClCompile>
   </ItemGroup>
@@ -248,9 +254,6 @@
     <ClInclude Include="resource_loader.h">
       <Filter>ヘッダー ファイル\SAGASA</Filter>
     </ClInclude>
-    <ClInclude Include="ActorProp.h">
-      <Filter>ヘッダー ファイル\Actors</Filter>
-    </ClInclude>
     <ClInclude Include="ChangeItem.h">
       <Filter>ヘッダー ファイル\Actors</Filter>
     </ClInclude>
@@ -259,6 +262,15 @@
     </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>ヘッダー ファイル\Actors\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="interact_collider.h">
+      <Filter>ヘッダー ファイル\Actors\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="DamageProp.h">
+      <Filter>ヘッダー ファイル\Actors\Prop</Filter>
+    </ClInclude>
+    <ClInclude Include="interact_prop.h">
+      <Filter>ヘッダー ファイル\Actors\Prop</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

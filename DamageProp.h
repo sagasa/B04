@@ -4,14 +4,14 @@
 
 
 //アクタープロパティクラス
-class ActorProp {
+class DamageProp {
 
 public:
 	//コンストラクタ
-	ActorProp() = default;
+	DamageProp() = default;
 
 	//仮想デストラクタ
-	virtual ~ActorProp() = default;
+	virtual ~DamageProp() = default;
 
 	//体力を設定
 	void set_hp(float hp) {
@@ -23,15 +23,6 @@ public:
 		return hp_;
 	}
 
-	//攻撃力を設定
-	void set_atk_power(float atk) {
-		atk_power_ = atk;
-	}
-
-	//攻撃力を取得
-    float atk_power()const {
-		return atk_power_;
-	}
 
 	//攻撃を受けた
 	virtual bool on_hit(const Actor& attacker, float atk_power) = 0;
@@ -40,7 +31,7 @@ public:
 	{
 		try
 		{
-			ActorProp& actor = dynamic_cast<ActorProp&>(victim);
+			auto& actor = dynamic_cast<DamageProp&>(victim);
 			//減らす処理
 			return actor.on_hit(attacker, value);
 		}catch (std::bad_cast&)
@@ -52,9 +43,6 @@ public:
 protected:
 	//体力
 	float hp_{ 0.0f };
-	//攻撃力
-	float atk_power_{ 0.0f };
-
 };
 #endif
 

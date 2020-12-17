@@ -4,7 +4,7 @@
 #include"Field.h"
 #include"Line.h"
 #include"Assets.h"
-#include"ActorProp.h"
+#include"DamageProp.h"
 #include"Camera.h"
 #include<iostream>
 
@@ -34,7 +34,8 @@ const float Interval{240.0f};
 const float LimitDistance_x{ 100.0f };
 //yÀ•W‚ÌŽ€–SÀ•W
 const float LimitDistance_y{ 100.0f };
-
+//UŒ‚—Í‚ÌÝ’è
+const float atk_power = 1.0f;
 
 //ƒRƒ“ƒXƒgƒ‰ƒNƒ^
 Poltergeist::Poltergeist(IWorld* world, const GSvector3& position) :
@@ -55,8 +56,6 @@ Poltergeist::Poltergeist(IWorld* world, const GSvector3& position) :
 	hit_ = true;
 	//‘Ì—Í‚ÌÝ’è
 	hp_ = 1.0f;
-	//UŒ‚—Í‚ÌÝ’è
-	atk_power_ = 1.0f;
 	//Õ“Ë”»’è‹…‚ÌÝ’è
 	collider_ = BoundingSphere{ EnemyRadius ,GSvector3{0.0f,EnemyHeight,0.0f} };
 	transform_.position(position);
@@ -343,5 +342,5 @@ void Poltergeist::generate_bullet() const {
 	//ˆÚ“®—Ê‚ÌŒvŽZ
 	GSvector3 velocity = to_target() * BulletSpeed;
 	//’e‚Ì¶¬
-	world_->add_actor(new PoltergeistBullet{ world_,position,velocity, atk_power_});
+	world_->add_actor(new PoltergeistBullet{ world_,position,velocity, atk_power});
 }

@@ -3,7 +3,7 @@
 #include"Field.h"
 #include"Line.h"
 #include"Assets.h"
-#include"ActorProp.h"
+#include"DamageProp.h"
 
 enum {
 	MotionIdle = 0,
@@ -34,6 +34,8 @@ const float radius{ 5.0f };
 const float LimitDistance_x{ 100.0f };
 //y座標の死亡座標
 const float LimitDistance_y{ 100.0f };
+//攻撃力の設定
+const float atk_power = 1.0f;
 
 //コンストラクタ
 RushGhost::RushGhost(IWorld* world, const GSvector3& position) :
@@ -49,8 +51,6 @@ RushGhost::RushGhost(IWorld* world, const GSvector3& position) :
 	hit_ = true;
 	//体力の設定
 	hp_ = 3.0f;
-	//攻撃力の設定
-	atk_power_ = 1.0f;
 	//衝突判定球の設定
 	collider_ = BoundingSphere{ EnemyRadius ,GSvector3{0.0f,EnemyHeight,0.0f} };
 	//座標の初期化
@@ -91,7 +91,7 @@ void RushGhost::react(Actor& other) {
 	if (state_ == State::Damage || state_ == State::Died) return;
 
 	if (other.tag() == "PlayerTag") {
-		ActorProp::do_attack(other, *this, atk_power_);
+		DamageProp::do_attack(other, *this, atk_power);
 	}
 }
 
@@ -100,7 +100,7 @@ bool RushGhost::on_hit(const Actor& other, float atk_power) {
 	//ダメージ中または死亡中の場合は何もしない
 	if (state_ == State::Damage || state_ == State::Died) return false;
 	if (other.tag() == "PlayerAttack") {
-		//float atk = dynamic_cast<ActorProp*>(&other)->atk_power();
+		//float atk = dynamic_cast<DamageProp*>(&other)->atk_power();
 		//hp_ -= atk;
 		hp_ -= atk_power;
 		if (hp_ <= 0) {

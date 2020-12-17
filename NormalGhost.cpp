@@ -4,7 +4,7 @@
 #include"Line.h"
 #include"Assets.h"
 #include"Camera.h"
-#include"ActorProp.h"
+#include"DamageProp.h"
 
 enum {
 	MotionIdle = 0,
@@ -38,6 +38,8 @@ const float LimitDistance_x{ 100.0f };
 //y座標の死亡座標
 const float LimitDistance_y{ 100.0f };
 
+const float atk_power = 1.0f;
+
 //コンストラクタ
 NormalGhost::NormalGhost(IWorld* world, const GSvector3& position) :
 	mesh_{ Mesh_CarGhost,Skeleton_CarGhost,Animation_CarGhost,MotionIdle },
@@ -59,7 +61,7 @@ NormalGhost::NormalGhost(IWorld* world, const GSvector3& position) :
 		//メッシュの変換行列を初期化
 		mesh_.transform(transform_.localToWorldMatrix());
 		hp_ = 1.0f;
-		atk_power_ = 1.0f;
+		
 }
 
 //更新
@@ -90,7 +92,7 @@ void NormalGhost::react(Actor& other) {
 	if (state_ == State::Damage || state_ == State::Died) return;
 
 	if (other.tag() == "PlayerTag") {
-		ActorProp::do_attack(other, *this, atk_power_);
+		DamageProp::do_attack(other, *this, atk_power);
 	}
 	
 }

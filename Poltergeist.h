@@ -2,10 +2,10 @@
 #define POLTER_GEIST_H_
 
 #include"Actor.h"
-#include"ActorProp.h"
+#include"DamageProp.h"
 #include"AnimatedMesh.h"
 
-class Poltergeist : public Actor,public ActorProp {
+class Poltergeist : public Actor,public DamageProp {
 public:
 	enum class State {
 		Idle,

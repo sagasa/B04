@@ -16,7 +16,7 @@
 #include"PlayerTestScene.h"
 #include "resource_loader.h"
 #include "thread_pool.h"
-#include"ActorProp.h"
+#include"DamageProp.h"
 
 
 void glError()

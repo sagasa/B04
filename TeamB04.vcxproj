@@ -153,6 +153,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ChangeItem.cpp" />
     <ClCompile Include="CSVReader.cpp" />
+    <ClCompile Include="interact_collider.cpp" />
     <ClCompile Include="MapGenerator.cpp" />
     <ClCompile Include="EnemyTestScene.cpp" />
     <ClCompile Include="GamePlayScene.cpp" />
@@ -178,7 +179,7 @@
   <ItemGroup>
     <ClInclude Include="Actor.h" />
     <ClInclude Include="ActorManager.h" />
-    <ClInclude Include="ActorProp.h" />
+    <ClInclude Include="DamageProp.h" />
     <ClInclude Include="AnimatedMesh.h" />
     <ClInclude Include="Assets.h" />
     <ClInclude Include="AttackCollider.h" />
@@ -188,6 +189,8 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ChangeItem.h" />
     <ClInclude Include="CSVReader.h" />
+    <ClInclude Include="interact_collider.h" />
+    <ClInclude Include="interact_prop.h" />
     <ClInclude Include="Line.h" />
     <ClInclude Include="MapGenerator.h" />
     <ClInclude Include="EnemyTestScene.h" />

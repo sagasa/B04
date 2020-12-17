@@ -1,5 +1,5 @@
 #include"AttackCollider.h"
-#include"ActorProp.h"
+#include"DamageProp.h"
 
 
 //コンストラクタ
@@ -48,7 +48,7 @@ void AttackCollider::draw() const
 //衝突リアクション
 void AttackCollider::react(Actor& other)
 {
-	if(ActorProp::do_attack(other,*this,atk_power_))
+	if(DamageProp::do_attack(other,*this,atk_power_))
 		//衝突したら死亡
 		die();
 }

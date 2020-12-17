@@ -4,12 +4,12 @@
 class IWorld;
 
 #include "Actor.h"
-#include "ActorProp.h"
+#include "DamageProp.h"
 #include<vector>
 #include"AnimatedMesh.h"
 
 class SurogSakones :
-	public Actor,public ActorProp
+	public Actor,public DamageProp
 {
 public:
 	enum class State {

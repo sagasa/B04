@@ -2,11 +2,11 @@
 #define NORMAL_GHOST_H_
 
 #include"Actor.h"
-#include"ActorProp.h"
+#include"DamageProp.h"
 #include"AnimatedMesh.h"
 
 //ノーマルゴーストクラス
-class NormalGhost : public Actor, public ActorProp {
+class NormalGhost : public Actor, public DamageProp {
 public:
 
 	enum class State {

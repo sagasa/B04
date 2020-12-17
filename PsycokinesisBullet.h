@@ -2,10 +2,10 @@
 #define PSYCOKINESIS_BULLET_H_
 
 #include "Actor.h"
-#include "ActorProp.h"
+#include "DamageProp.h"
 
 class PsycokinesisBullet :
-	public Actor,public ActorProp
+	public Actor,public DamageProp
 {
 public:
 	PsycokinesisBullet(IWorld* world_, const GSvector3& position, const GSvector3& velocity,float period=3.0f,float power=1.0f);
@@ -17,6 +17,7 @@ public:
 private:
 	GSvector3 acceleration_;
 	float period_;
+	float damage_;
 };
 
 #endif

@@ -2,7 +2,7 @@
 #define POLTERGEIST_BULLET_H_
 
 #include"Actor.h"
-#include"ActorProp.h"
+#include"DamageProp.h"
 
 class PoltergeistBullet : public Actor {
 public:

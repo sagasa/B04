@@ -16,7 +16,7 @@ PsycokinesisBullet::PsycokinesisBullet(IWorld* world, const GSvector3& position,
 	velocity_ = velocity;
 	collider_ = BoundingSphere{ 0.3f };
 	transform_.position(position);
-	set_atk_power(power);
+	damage_ = power;
 	set_hp(0.0f);
  }
 
@@ -51,7 +51,7 @@ void PsycokinesisBullet::draw()const {
 }
 void PsycokinesisBullet::react(Actor& other) {
 	if (other.tag() == "PlayerTag") {
-		do_attack(other, *this, 1.0f);
+		do_attack(other, *this, damage_);
 		die();
 	}
 }

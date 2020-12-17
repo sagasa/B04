@@ -4,34 +4,38 @@
 
 #include "IWorld.h"
 #include "AttackCollider.h"
-
+#include "interact_collider.h"
 
 void player_ghost::wake_up()
 {
+	
 }
 
 void player_ghost::stop()
 {
+    die();
 }
+
 
 void player_ghost::change_state(State state, GSuint motion, bool loop)
 {
     state_ = state;
     motion_loop_ = loop;
+    state_timer_ = 0;
     mesh_.change_motion(motion, loop);
 }
 
 void player_ghost::attack()
 {
     // 攻撃判定を出現させる場所の距離
-    const float AttackColliderDistance{ 0.5f };
+    const float AttackColliderDistance{ 1.4f };
     // 攻撃判定の半径
-    const float AttackColliderRadius{ 0.3f };
+    const float AttackColliderRadius{ 0.9f };
     // 攻撃判定を出す場所の高さ
     const float AttackColliderHeight{ 1.0f };
 
     // 攻撃判定が有効になるまでの遅延時間
-    const float AttackCollideDelay{ 15.0f };
+    const float AttackCollideDelay{ 5.0f };
     // 攻撃判定の寿命
     const float AttackCollideLifeSpan{ 5.0f };
 
@@ -43,22 +47,24 @@ void player_ghost::attack()
     BoundingSphere collider{ AttackColliderRadius, position };
     // 衝突判定を出現させる
     world_->add_actor(new AttackCollider{ world_, collider,
-        "PlayerAttackTag", "PlayerAttack", AttackCollideLifeSpan, AttackCollideDelay });
+        "PlayerAttack", "PlayerAttack", AttackCollideLifeSpan, AttackCollideDelay });
 
     change_state(Attack, 2, false);
 
 }
 
-void player_ghost::update_attack()
-{
-}
-
 
 bool player_ghost::on_hit(const Actor& attacker, float atk_power)
 {
-	if(attacker.tag()=="EnemyAttack")
+	if((attacker.tag()=="EnemyAttack"|| attacker.tag() == "EnemyTag")&&state_!=Damage&&state_!=Attack)
 	{
-        std::cout << "Hit\n";
+        hp_-=atk_power;
+		if(hp_<=0)
+		{
+            world_->game_over();
+		}
+        change_state(Damage, 3,false);
+        std::cout << "Hit "<<hp_<<"\n";
         return true;
 	}
     return false;
@@ -66,8 +72,8 @@ bool player_ghost::on_hit(const Actor& attacker, float atk_power)
 
 player_ghost::player_ghost(IWorld* world, const GSvector3& position):Player(world,position, AnimatedMesh{ Mesh_Player, Skeleton_Player, Animation_Player })
 {
-    motion_ = 0;
-    mesh_.change_motion(motion_);
+    change_state(Attack, 2,false);
+    hp_ = 3;
 }
 
 
@@ -75,21 +81,7 @@ const float Velocity = 0.15f;
 const GSvector3 gravity{ 0.0f, 0.01f, 0.0f };
 
 void player_ghost::update(float delta_time)
-{
-	switch (state_)
-	{
-    case Idle:
-        //攻撃開始
-        if (gsGetKeyState(GKEY_F) == GS_TRUE)
-            attack();
-        break;
-    case Attack:
-        update_attack();
-        break;
-    case Damage:
-
-        break;
-	}
+{	
 	//デフォ以外なら
 	if(state_!=Idle)
 	{
@@ -99,10 +91,24 @@ void player_ghost::update(float delta_time)
             if (motion_loop_)
                 state_timer_ = 0;
             else
+            {
+                std::cout << "Idle\n";
                 change_state(Idle, 0);
+            }
         }
+	}else
+	{
+        //攻撃開始
+        if (gsGetKeyState(GKEY_F) == GS_TRUE)
+            attack();
 	}
-	
+    //攻撃開始
+    if (gsGetKeyTrigger(GKEY_E)&&state_!=Attack)
+        world_->add_actor(new interact_collider{world_,collider(),tag_,name_,[this](Actor& actor)
+        {
+            dynamic_cast<Player&>(actor).wake_up();
+            stop();
+        }});
     //重力？
 	if(0<gravity_timer_)
 	{
@@ -138,11 +144,9 @@ void player_ghost::update(float delta_time)
 	float speed = 0.04f;    // 移動スピード
     velocity_ += inputVelocity * delta_time * speed;
     velocity_.x = CLAMP(velocity_.x, -Velocity, Velocity);
+    velocity_.y = CLAMP(velocity_.y, -Velocity, Velocity);
 
     update_physics(delta_time);
-	
-    //モーション変更
-    
     
     //メッシュの更新
     mesh_.update(delta_time);
