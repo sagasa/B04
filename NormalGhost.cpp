@@ -64,9 +64,8 @@ NormalGhost::NormalGhost(IWorld* world, const GSvector3& position) :
 
 //更新
 void NormalGhost::update(float delta_time) {
-	//x座標が-100を超えたら
-	if (transform_.position().x <= -LimitDistance_x) {
-		die();
+	if (transform_.position().x <= -10.0f) {
+		change_state(State::Died, MotionDie, false);
 	}
 	player_ = world_->find_actor("Player");
 	//状態の更新

@@ -68,9 +68,8 @@ Poltergeist::Poltergeist(IWorld* world, const GSvector3& position) :
 
 //更新
 void Poltergeist::update(float delta_time) {
-	//x座標が-100を超えたら
-	if (transform_.position().x <= -LimitDistance_x) {
-		die();
+	if (transform_.position().x <= 0.0f) {
+		change_state(State::Died, MotionDie, false);
 	}
 	//カメラの外側にいると何もしない
 	if (is_inside()) {
