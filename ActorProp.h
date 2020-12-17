@@ -34,16 +34,13 @@ public:
 	}
 
 	//UŒ‚‚ğó‚¯‚½
-	virtual void on_hit(const Actor& attacker,float atk_power)
-	{
-		hp_ -= atk_power;
-	}
+	virtual void on_hit(const Actor& attacker, float atk_power) = 0;
 
 	static bool do_attack(Actor& victim,const Actor& attacker, float value = 1)
 	{
 		try
 		{
-			auto actor = dynamic_cast<ActorProp&>(victim);
+			ActorProp& actor = dynamic_cast<ActorProp&>(victim);
 			//Œ¸‚ç‚·ˆ—
 			actor.hp_ -= value;
 			actor.on_hit(attacker,value);

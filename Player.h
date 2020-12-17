@@ -2,15 +2,14 @@
 #include "Actor.h"
 #include "ActorProp.h"
 #include "AnimatedMesh.h"
-#include "player_info.h"
 
 // プレーヤ
 class Player : public Actor, public ActorProp {
-    bool on_ground_;
     int jump_count_;
     float jump_force_;
 
 protected:
+    bool on_ground_;
     //アニメーションメッシュ
     AnimatedMesh mesh_;
     //モーション番号
@@ -28,7 +27,7 @@ protected:
 
     //入力をvec2として取得
     GSvector2 static get_input();
-public:
+public:	
     // コンストラクタ
     Player(IWorld* world, const GSvector3& position,const AnimatedMesh& mesh);
     // 描画

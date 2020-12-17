@@ -46,5 +46,9 @@ void MapGenerator::generate(IWorld* world) {
 	}
 	else if (name == "Paladin") {
 	}
+	else if (name == "SurogSakones")
+	{
+		world->add_actor(new SurogSakones{ world,position });
+	}
 
 }
