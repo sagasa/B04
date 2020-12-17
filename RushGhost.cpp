@@ -63,9 +63,6 @@ RushGhost::RushGhost(IWorld* world, const GSvector3& position) :
 
 //更新
 void RushGhost::update(float delta_time) {
-	if (transform_.position().x <= -10.0f) {
-		change_state(State::Died, MotionDie, false);
-	}
 	//プレイヤーを検索
 	player_ = world_->find_actor("Player");
 	//状態の更新
@@ -161,6 +158,10 @@ void RushGhost::idle(float delta_time) {
 
 //移動
 void RushGhost::move(float delta_time) {
+	if (transform_.position().x <= -10.0f) {
+		change_state(State::Died, MotionDie, false);
+		return;
+	}
 	//回数
 	const int NumOfTimes{ 90};//移動速度が変化
 	if (point_ <= NumOfTimes) {//回数
