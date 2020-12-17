@@ -14,8 +14,8 @@
 #include	<windows.h>
 #include	<GL/gl.h>
 
-#undef min
 #undef max
+#undef min
 
 #pragma warning(push)
 #pragma warning(disable:4201) // 無名構造体の使用
@@ -388,7 +388,7 @@ typedef struct GSvector3
 	// magnitude を 1 としたベクトル
 	GSvector3 normalized() const;
 	// ベクトルの2乗の長さ
-	float sqr_magnitude() const;
+	float sqrMagnitude() const;
 	// [0] や[1] を使用して x や y 成分にアクセスします
 	float operator[](int index) const;
 	float& operator[](int index);
@@ -432,12 +432,14 @@ typedef struct GSvector3
 	// 法線で定義された平面でベクトルを反射します
 	static GSvector3 reflect(const GSvector3& inDirection, const GSvector3& inNormal);
 	// 現在の位置 current から target に向けてベクトルを回転します。
-	static GSvector3 rotate_towards(const GSvector3& current, const GSvector3& target, float max_radian_delta, float max_magnitude_delta);
+	static GSvector3 rotateTowards(const GSvector3& current, const GSvector3& target, float max_radian_delta, float max_magnitude_delta);
 	// 2つのベクトルの各成分を乗算します
 	static GSvector3 scale(const GSvector3& a, const GSvector3& b);
 	// 2点間（from と to）の符号付き角度を返します
 	static float signed_angle(const GSvector3& from, const GSvector3& to, const GSvector3& axis = up());
-	// 球状に 2 つのベクトル間を補間します
+    // 2点間（from と to）の符号付き角度を返します
+    static float signedAngle(const GSvector3& from, const GSvector3& to, const GSvector3& axis = up());
+    // 球状に 2 つのベクトル間を補間します
 	static GSvector3 slerp(const GSvector3& a, const GSvector3& b, float t);
 	// 球状に 2 つのベクトル間を補間します
 	static GSvector3 slerpUnclamped(const GSvector3& a, const GSvector3& b, float t);

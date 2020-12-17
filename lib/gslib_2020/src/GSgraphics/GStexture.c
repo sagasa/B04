@@ -557,7 +557,10 @@ static void tex_filter(GStexture* pTexture)
 	else
 	{
 		glTexParameteri(pTexture->Type, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-		glTexParameteri(pTexture->Type, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTexParameteri(pTexture->Type, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        float maxAnisotropy = 1.0f;
+        glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &maxAnisotropy);
+        glTexParameterf(pTexture->Type, GL_TEXTURE_MAX_ANISOTROPY_EXT, maxAnisotropy);
 	}
 }
 

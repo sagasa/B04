@@ -22,7 +22,7 @@
     <ProjectGuid>{B8A708CB-9E41-4DC4-B253-A452187BE3F1}</ProjectGuid>
     <RootNamespace>gsgraphics</RootNamespace>
     <Keyword>Win32Proj</Keyword>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='gsgraphics_md|Win32'" Label="Configuration">
@@ -193,6 +193,7 @@
     <ClCompile Include="..\src\GSgraphics\GSplane.c" />
     <ClCompile Include="..\src\GSgraphics\GSquaternion.c" />
     <ClCompile Include="..\src\GSgraphics\GSquaternion_unity.cpp" />
+    <ClCompile Include="..\src\GSgraphics\GSreflection_probe.c" />
     <ClCompile Include="..\src\GSgraphics\GSrender_target.c" />
     <ClCompile Include="..\src\GSgraphics\GSsave_dds.cpp" />
     <ClCompile Include="..\src\GSgraphics\GSsave_texture_file.c" />
@@ -233,6 +234,7 @@
     <ClInclude Include="..\inc\GSpixel_format.h" />
     <ClInclude Include="..\inc\GSplane.h" />
     <ClInclude Include="..\inc\GSquaternion.h" />
+    <ClInclude Include="..\inc\GSreflection_probe.h" />
     <ClInclude Include="..\inc\GSsave_texture_file.h" />
     <ClInclude Include="..\inc\GSskeleton.h" />
     <ClInclude Include="..\inc\GSsound.h" />

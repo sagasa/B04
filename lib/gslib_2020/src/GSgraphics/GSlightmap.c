@@ -47,8 +47,9 @@ static GSlightmap* gsLightmapNew(void);
 static void gsLightmapDelete(GSlightmap* pLightmap);
 static GSboolean gsLightmapLoad(GSlightmap* pLightmap, const char* pszFileName);
 static void gsLightmapBind(GSlightmap* pLightmap, int index);
-static GStexture* LoadTexture(GFILE	file);
+static GStexture* LoadLightmapTexture(GFILE	file);
 extern void gsSetShaderParam1f(const char*, GSfloat);
+extern void gsSetShaderParamTexture(const char*, GSint);
 
 /* ライトマップの最大数　*/
 #define GS_LIGHTMAP_MAX	256
@@ -61,9 +62,9 @@ static GSuint			s_BindLightmap = 0;
 
 /*=============================================================================
 *
-* Purpose : ライトマップの読み込み．
+* Purpose : ライトマップの読み込み
 *
-* Return  : メッシュを返す．
+* Return  : 読み込みが成功すれば真、失敗すれば偽を返す
 *
 *============================================================================*/
 extern GSboolean
@@ -93,7 +94,7 @@ gsLoadLightmap
 *
 * Purpose : ライトマップの削除．
 *
-* Return  : メッシュを返す．
+* Return  : なし
 *
 *============================================================================*/
 extern void
@@ -115,9 +116,9 @@ gsDeleteLightmap
 
 /*=============================================================================
 *
-* Purpose : 全ライトマップを削除．
+* Purpose : 全ライトマップを削除
 *
-* Return  : メッシュを返す．
+* Return  : なし
 *
 *============================================================================*/
 extern void
@@ -134,9 +135,9 @@ gsCleanUpLightmap
 
 /*=============================================================================
 *
-* Purpose : ライトマップのバインド．
+* Purpose : ライトマップのバインド
 *
-* Return  : なし．
+* Return  : なし
 *
 *============================================================================*/
 extern void
@@ -152,7 +153,7 @@ gsBindLightmap
 *
 * Purpose : ライトマップオブジェクトのアンバインド
 *
-* Return  : 読み込みが成功すれば真、失敗すれば偽を返す．
+* Return  : なし
 *
 *============================================================================*/
 extern void
@@ -172,9 +173,9 @@ gsUnBindLightmap
 
 /*=============================================================================
 *
-* Purpose : ライトマップ用のテクスチャをバインド．
+* Purpose : ライトマップ用のテクスチャをバインド
 *
-* Return  : なし．
+* Return  : なし
 *
 *============================================================================*/
 extern void
@@ -194,7 +195,7 @@ gsBindLightmapTexture
 *
 * Purpose : ライトマップオブジェクトの生成
 *
-* Return  : ライトマップオブジェクト．
+* Return  : ライトマップオブジェクトを返す
 *
 *----------------------------------------------------------------------------*/
 static GSlightmap*
@@ -215,7 +216,7 @@ gsLightmapNew
 *
 * Purpose : ライトマップオブジェクトの削除
 *
-* Return  : ライトマップオブジェクト．
+* Return  : なし
 *
 *----------------------------------------------------------------------------*/
 static void
@@ -284,31 +285,19 @@ gsLightmapLoad
 		pLightmap->pLightmaps[i].pLightmapColor = NULL;
 		if ((pLightmap->pLightmaps[i].dwFlag & GS_LIGHTMAP_COLOR) != 0)
 		{
-			pLightmap->pLightmaps[i].pLightmapColor = LoadTexture(file);
-			gsTextureBind(pLightmap->pLightmaps[i].pLightmapColor);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-			gsTextureUnbind(pLightmap->pLightmaps[i].pLightmapColor);
+			pLightmap->pLightmaps[i].pLightmapColor = LoadLightmapTexture(file);
 		}
 		// ライトマップディレクションの読み込み
 		pLightmap->pLightmaps[i].pLightmapDirection = NULL;
 		if ((pLightmap->pLightmaps[i].dwFlag & GS_LIGHTMAP_DIRECTION) != 0)
 		{
-			pLightmap->pLightmaps[i].pLightmapDirection = LoadTexture(file);
-			gsTextureBind(pLightmap->pLightmaps[i].pLightmapDirection);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-			gsTextureUnbind(pLightmap->pLightmaps[i].pLightmapDirection);
+			pLightmap->pLightmaps[i].pLightmapDirection = LoadLightmapTexture(file);
 		}
 		// シャドウマスクの読み込み
 		pLightmap->pLightmaps[i].pShadowMask = NULL;
 		if ((pLightmap->pLightmaps[i].dwFlag & GS_LIGHTMAP_SHADOW_MASK) != 0)
 		{
-			pLightmap->pLightmaps[i].pShadowMask = LoadTexture(file);
-			gsTextureBind(pLightmap->pLightmaps[i].pShadowMask);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-			gsTextureUnbind(pLightmap->pLightmaps[i].pShadowMask);
+			pLightmap->pLightmaps[i].pShadowMask = LoadLightmapTexture(file);
 		}
 		pLightmap->pLightmaps[i].fLightmapHDR = 5.0f;
 		if ((pLightmap->pLightmaps[i].dwFlag & GS_LIGHTMAP_HDR) != 0)
@@ -338,6 +327,9 @@ gsLightmapBind
 )
 {
 	gsSetShaderParam1f("gs_LightmapHDR", pLightmap->pLightmaps[index].fLightmapHDR);
+    gsSetShaderParamTexture("gs_LigtmapColor", 10);
+    gsSetShaderParamTexture("gs_LigtmapDirection", 11);
+    gsSetShaderParamTexture("gs_LigtmapShadowMask", 12);
 
 	if (pLightmap->pLightmaps[index].pLightmapColor != NULL)
 	{
@@ -365,7 +357,7 @@ gsLightmapBind
 *
 *----------------------------------------------------------------------------*/
 static GStexture*
-LoadTexture
+LoadLightmapTexture
 (
 	GFILE		file					/* ファイル			*/
 )
@@ -373,6 +365,7 @@ LoadTexture
 	char		TexFileName[_MAX_PATH];
 	char		Drive[_MAX_DRIVE];
 	char		Dir[_MAX_DIR];
+	GStexture*	textute;
 
 	/* オープンしているメッシュファイルのパスを取得する */
 	gsSplitPath(GFileGetFileName(file), Drive, Dir, NULL, NULL);
@@ -383,7 +376,20 @@ LoadTexture
 	GFileReadString(file, TexFileName + strlen(TexFileName));
 
 	/* テクスチャを生成 */
-	return gsLoadTextureFile(TexFileName);
+	textute = gsLoadTextureFile(TexFileName);
+
+	gsTextureBind(textute);
+	if (textute->Mipmap > 0) {
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	} else {
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	}
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	gsTextureUnbind(textute);
+
+	return textute;
 }
 
 /********** End of File ******************************************************/

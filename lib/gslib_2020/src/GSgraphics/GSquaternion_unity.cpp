@@ -138,9 +138,9 @@ GSquaternion GSquaternion::fromToRotation(const GSvector3& fromDirection, const 
 	// ‰ñ“]‚Ì²‚ğŒvZ
 	GSvector3 axis = GSvector3::cross(fromDirection, toDirection);
 	// ‰ñ“]‚Ì²‚ª‚Å‚«‚È‚©‚Á‚½ê‡‚Ì•â³
-	if (axis.sqr_magnitude() < (kEpsilon * kEpsilon)) {
+	if (axis.sqrMagnitude() < (kEpsilon * kEpsilon)) {
 		axis = GSvector3::cross(GSvector3{ 0.0f, 0.0f, 1.0f }, fromDirection);
-		if (axis.sqr_magnitude() < (kEpsilon * kEpsilon)) {
+		if (axis.sqrMagnitude() < (kEpsilon * kEpsilon)) {
 			axis = GSvector3::cross(GSvector3{ 1.0f, 0.0f, 0.0f }, fromDirection);
 		}
 	}
@@ -155,11 +155,11 @@ GSquaternion GSquaternion::inverse(const GSquaternion& rotation) {
 // w’è‚³‚ê‚½ forward ‚Æ upwards •ûŒü‚É‰ñ“]‚µ‚Ü‚·
 GSquaternion GSquaternion::lookRotation(const GSvector3& view, const GSvector3& up) {
 	GSvector3 forward = GSvector3::normalize(view);
-	if (forward.sqr_magnitude() < (kEpsilon * kEpsilon)) {
+	if (forward.sqrMagnitude() < (kEpsilon * kEpsilon)) {
 		forward = GSvector3{ 0.0f, 0.0f, 1.0f };
 	}
 	GSvector3 left = GSvector3::cross(up, forward);
-	if (left.sqr_magnitude() < (kEpsilon * kEpsilon)) {
+	if (left.sqrMagnitude() < (kEpsilon * kEpsilon)) {
 		left = GSvector3{ 1.0f, 0.0f, 0.0f };
 	}
 	GSvector3 upwards = GSvector3::cross(forward, left);
