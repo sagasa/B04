@@ -105,11 +105,11 @@ void CarGhost::draw() const {
 
 #ifdef _DEBUG
 	collider().draw();
-	gsFontParameter(GS_FONT_BOLD, 16, "ＭＳ ゴシック");
+	/*gsFontParameter(GS_FONT_BOLD, 16, "ＭＳ ゴシック");
 	gsTextPos(0.0f, 20.0f);
 	gsDrawText("CarGhost:ベクトル(%f,%f,%f)", velocity_.x, velocity_.y, velocity_.z);
 	gsTextPos(0.0f, 40.0f);
-	gsDrawText("CarGhost:座標(%f,%f,%f)", transform_.position().x, transform_.position().y, transform_.position().z);
+	gsDrawText("CarGhost:座標(%f,%f,%f)", transform_.position().x, transform_.position().y, transform_.position().z);*/
 #endif
 
 }
