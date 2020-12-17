@@ -15,7 +15,7 @@ void Field::update(float delta_time) {
 
 // •`‰æ
 void Field::draw() const {
-    gsDrawSkyBox(skybox_);
+    gsDrawSkybox(skybox_);
     gsDrawOctree(octree_);    
 }
 

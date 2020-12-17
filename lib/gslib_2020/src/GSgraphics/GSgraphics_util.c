@@ -246,7 +246,7 @@ extern void gsDrawSprite3DEx(
 }
 
 // スカイボックスの描画
-extern void gsDrawSkyBox(GSuint meshID) {
+extern void gsDrawSkybox(GSuint meshID) {
 	GSmatrix4 matView;
 	// 各種レンダリングモードの退避
 	glPushAttrib(GL_ENABLE_BIT);
@@ -276,7 +276,7 @@ extern void gsDrawSkyBox(GSuint meshID) {
 }
 
 // スカイボックスの描画
-extern void gsDrawSkyBoxEx(GSuint cube_map) {
+extern void gsDrawSkyboxEx(GSuint cubemap) {
 	// インデックスバッファ
 	static const GLushort indices[] = {
 		0, 3, 1, 1, 3, 2,	// 前
@@ -301,17 +301,17 @@ extern void gsDrawSkyBoxEx(GSuint cube_map) {
 	glDisable(GL_CULL_FACE);
 	glDisable(GL_DEPTH_TEST);
 	glActiveTexture(GL_TEXTURE0);
-	gsBindTexture(cube_map);
+	gsBindTexture(cubemap);
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, vertices);
 	glDrawElements(GL_TRIANGLES, 6 * 6, GL_UNSIGNED_SHORT, indices);
 	glDisableVertexAttribArray(0);
-	gsUnbindTexture(cube_map);
+	gsUnbindTexture(cubemap);
 	glPopAttrib();
 }
 
 // スカイボックスの描画
-extern void gsDrawSkyBoxCubeMap(GSuint cube_map) {
+extern void gsDrawSkyboxCubemap(GSuint cubemap) {
 	// インデックスバッファ
 	static const GLushort indices[] = {
 		0, 3, 1, 1, 3, 2,	// 前
@@ -352,7 +352,7 @@ extern void gsDrawSkyBoxCubeMap(GSuint cube_map) {
 	matView.m[3][2] = 0;
 	glLoadMatrixf((GLfloat*)&matView);
 	// キューブマップをバインド
-	gsBindTexture(cube_map);
+	gsBindTexture(cubemap);
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glVertexPointer(3, GL_FLOAT, 0, vertices);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -361,7 +361,7 @@ extern void gsDrawSkyBoxCubeMap(GSuint cube_map) {
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	// キューブマップをアンバインド
-	gsUnbindTexture(cube_map);
+	gsUnbindTexture(cubemap);
 	// 視野変換行列を復帰する
 	glPopMatrix();
 	// 各種レンダリングモードの復帰
@@ -369,7 +369,7 @@ extern void gsDrawSkyBoxCubeMap(GSuint cube_map) {
 }
 
 // キューブマップに描画
-extern void gsDrawCubeMap(GSuint cube_map, const GSvector3* pViewPosition, void(*draw_scene)(void*), void* user) {
+extern void gsDrawCubemap(GSuint cube_map, const GSvector3* pViewPosition, void(*draw_scene)(void*), void* user) {
 	static const struct {
 		GSenum		face;
 		GSvector3	at;
@@ -417,7 +417,7 @@ extern void gsDrawCubeMap(GSuint cube_map, const GSvector3* pViewPosition, void(
 }
 
 // キューブマップに描画
-extern void gsDrawCubeMapEx(GSuint cube_map, const GSvector3* pViewPosition, void(*draw_scene)(const GSmatrix4* projection, const GSmatrix4* view, void* user), void* user) {
+extern void gsDrawCubemapEx(GSuint cube_map, const GSvector3* pViewPosition, void(*draw_scene)(const GSmatrix4* projection, const GSmatrix4* view, void* user), void* user) {
 	static const struct {
 		GSenum		face;
 		GSvector3	at;
