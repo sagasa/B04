@@ -39,6 +39,15 @@ void GamePlayScene::start() {
     //SurogSakonesのアニメーションの読み込み
     gsLoadAnimation(Animation_SurogSakones, "Assets/Model/Enemy/Ghost_T-pose.anm");
 
+    //Player
+    gsLoadMesh(Mesh_Player, "Assets/Model/Enemy/Ghost.msh");
+    gsLoadSkeleton(Skeleton_Player, "Assets/Model/Enemy/Ghost.skl");
+    gsLoadAnimation(Animation_Player, "Assets/Model/Enemy/Ghost.anm");
+
+    gsLoadMesh(Mesh_Paladin, "Assets/Model/Paladin/Paladin.msh");
+    gsLoadSkeleton(Skeleton_Paladin, "Assets/Model/Paladin/Paladin.skl");
+    gsLoadAnimation(Animation_Paladin, "Assets/Model/Paladin/Paladin.anm");
+	
     //スカイボックスの読み込み
     gsLoadMesh(Mesh_Skybox, "Assets/Skybox/skydome.msh");
     //描画用オクツリーの読み込み
