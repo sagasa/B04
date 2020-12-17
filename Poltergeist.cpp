@@ -72,25 +72,27 @@ void Poltergeist::update(float delta_time) {
 	if (transform_.position().x <= -LimitDistance_x) {
 		die();
 	}
-	//プレイヤーを検索
-	player_ = world_->find_actor("Player");
-	//状態の更新
-	update_state(delta_time);
-	//重力を更新
-	velocity_.y += Gravity * delta_time;
-	//重力を加える
-	transform_.translate(0.0f, velocity_.y, 0.0f);
-	//フィールドとの衝突判定
-	collide_field();
-	//モーション変更
-	mesh_.change_motion(motion_);
-	//メッシュを更新
-	mesh_.update(delta_time);
-	//行列を設定
-	mesh_.transform(transform_.localToWorldMatrix());
-	//射撃タイマー更新
-	shootiong_timer_ -= delta_time;
-
+	//カメラの外側にいると何もしない
+	if (is_inside()) {
+		//プレイヤーを検索
+		player_ = world_->find_actor("Player");
+		//状態の更新
+		update_state(delta_time);
+		//重力を更新
+		velocity_.y += Gravity * delta_time;
+		//重力を加える
+		transform_.translate(0.0f, velocity_.y, 0.0f);
+		//フィールドとの衝突判定
+		collide_field();
+		//モーション変更
+		mesh_.change_motion(motion_);
+		//メッシュを更新
+		mesh_.update(delta_time);
+		//行列を設定
+		mesh_.transform(transform_.localToWorldMatrix());
+		//射撃タイマー更新
+		shootiong_timer_ -= delta_time;
+	}
 }
 
 //描画
@@ -231,8 +233,8 @@ bool Poltergeist::is_attack()const {
 	return (target_distance_x() <= MoveDistance) && (target_angle() <= 20.0f);
 }
 
-//カメラの外側にいるか？
-bool Poltergeist::is_outside() const {
+//カメラの内側にいるか？
+bool Poltergeist::is_inside() const {
 	Camera* camera = world_->camera();
 	if (camera == nullptr) return false;
 	//画面内にいたら移動する
