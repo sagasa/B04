@@ -42,7 +42,6 @@ public:
 		{
 			ActorProp& actor = dynamic_cast<ActorProp&>(victim);
 			//Œ¸‚ç‚·ˆ—
-			actor.hp_ -= value;
 			actor.on_hit(attacker,value);
 			return true;
 		}catch (std::bad_cast&)
