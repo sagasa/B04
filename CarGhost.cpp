@@ -126,9 +126,9 @@ void CarGhost::react(Actor& other) {
 }
 
 //攻撃を受ける
-void CarGhost::on_hit(const Actor& other, float atk_power) {
+bool CarGhost::on_hit(const Actor& other, float atk_power) {
 	//ダメージ中または死亡中は何もしない
-	if (state_ == State::Damage || state_ == State::Died)return;
+	if (state_ == State::Damage || state_ == State::Died)return false;
 
 	if (other.tag() == "PlayerAttack") { //プレイヤーの攻撃と衝突した場合
 		hp_ -= atk_power;
@@ -142,8 +142,9 @@ void CarGhost::on_hit(const Actor& other, float atk_power) {
 			//ダメージ状態に変更
 			change_state(State::Damage, MotionDamage, false);
 		}
-		return;
+		return true;
 	}
+	return false;
 }
 
 //状態の更新

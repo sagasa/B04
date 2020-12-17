@@ -25,7 +25,7 @@ public:
 	virtual void react(Actor& other) override;
 
 	//UŒ‚‚ğó‚¯‚½
-	virtual void on_hit(const Actor& attacker, float atk_power) override;
+	virtual bool on_hit(const Actor& attacker, float atk_power) override;
 
 private:
 	//ó‘ÔXV
