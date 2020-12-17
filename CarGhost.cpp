@@ -5,6 +5,7 @@
 #include"Assets.h"
 #include"AttackCollider.h"
 #include"ActorProp.h"
+#include"Camera.h"
 
 enum {
 	MotionIdle = 0,
@@ -19,9 +20,7 @@ enum {
 //振り向き判定の距離
 const float TurnDistance{ 5.0f };
 //攻撃判定の距離
-const float AttackDistance{ 1.5f };
-//移動判定の距離ｙ
-const float MoveDistance_y{ 5.0f };
+const float MoveDistance{ 5.0f };
 //振り向く角度
 const float TurnAngle{ 5.0f };
 //エネミーの高さ
@@ -29,26 +28,28 @@ const float EnemyHeight{ 0.75f };
 //エネミーの半径
 const float EnemyRadius{ 0.5f };
 //エネミーの横のオフセット
-const float EnemySideOffset{0.6f };
+const float EnemySideOffset{ 0.6f };
+//足元のオフセット
+const float FootOffset{ 0.1f };
 //スピード
-const float Speed{ 0.075f };
+const float Speed{ 0.05f };
 //x座標の死亡座標
-const float LimitDistance_x{100.0f};
+const float LimitDistance_x{ 100.0f };
 //y座標の死亡座標
-const float LimitDistance_y{100.0f};
-//攻撃判定球の半径
-//const float EnemyAttackRadius{ 5.0f };
+const float LimitDistance_y{ 100.0f };
+//重力
+const float Gravity{ -0.0016f };
+
 
 //コンストラクタ
 CarGhost::CarGhost(IWorld* world, const GSvector3& position) :
 	mesh_{ Mesh_Poltergeist,Skeleton_CarGhost,Animation_CarGhost,MotionIdle },
 	motion_{ MotionIdle },
-	motion_loop_{true},
+	motion_loop_{ true },
 	state_{ State::Idle },
-	state_timer_{0.0f},
+	state_timer_{ 0.0f },
 	player_{ nullptr },
-	moving_timer_{gsRandf(0,60.0f)},
-	is_turn_{false},
+	is_turn_{ false },
 	is_hit_{ false } {
 	//ワールドの設定
 	world_ = world;
@@ -61,7 +62,7 @@ CarGhost::CarGhost(IWorld* world, const GSvector3& position) :
 	//体力の設定
 	hp_ = 1.0f;
 	//攻撃力の設定
-	atk_power_ = 2.0f;
+	atk_power_ = 1.0f;
 	//transform_.position(GSvector3::zero());
 	//衝突判定球の設定
 	collider_ = BoundingSphere{ EnemyRadius ,GSvector3{0.0f,EnemyHeight,0.0f} };
@@ -74,39 +75,43 @@ CarGhost::CarGhost(IWorld* world, const GSvector3& position) :
 
 //更新
 void CarGhost::update(float delta_time) {
-	//x座標が-100を超えたら
-	if (transform_.position().x <= -LimitDistance_x) {
-		die();
+	//カメラの外側にいると何もしない
+	if (!is_outside()) {
+		//プレイヤーを検索
+		player_ = world_->find_actor("Player");
+		//状態の更新
+		update_state(delta_time);
+		//重力を更新
+		velocity_.y += Gravity * delta_time;
+		//重力を加える
+		transform_.translate(0.0f, velocity_.y, 0.0f);
+		//フィールドとの衝突判定
+		collide_field();
+		//モーション変更
+		mesh_.change_motion(motion_);
+		//メッシュの更新
+		mesh_.update(delta_time);
+		//行列を設定
+		mesh_.transform(transform_.localToWorldMatrix());
 	}
-	//プレイヤーを検索
-	player_ = world_->find_actor("Player");
-	//状態の更新
-	update_state(delta_time);
-	//フィールドとの衝突判定
-	collide_field();
-	//モーション変更
-	mesh_.change_motion(motion_);
-	//メッシュの更新
-	mesh_.update(delta_time);
-	//行列を設定
-	mesh_.transform(transform_.localToWorldMatrix());
-	//タイマー更新
-	moving_timer_ -= delta_time;
 }
 
 //描画
 void CarGhost::draw() const {
 	mesh_.draw();
 	collider().draw();
+	gsFontParameter(GS_FONT_BOLD, 16, "ＭＳ ゴシック");
+	gsTextPos(0.0f, 20.0f);
+	gsDrawText("CarGhost:ベクトル(%f,%f,%f)", velocity_.x, velocity_.y, velocity_.z);
+	gsTextPos(0.0f, 40.0f);
+	gsDrawText("CarGhost:座標(%f,%f,%f)", transform_.position().x, transform_.position().y, transform_.position().z);
 }
 
 //衝突リアクション
 void CarGhost::react(Actor& other) {
 	//ダメージ中または死亡中は何もしない
 	if (state_ == State::Damage || state_ == State::Died) return;
-	if (other.tag() == "EnemyTag") { //エネミーに衝突した場合
-		collide_actor(other);
-	}
+
 	else if (other.tag() == "PlayerTag") {//プレイヤーと衝突した場合
 		is_hit_ = true;
 		ActorProp::do_attack(other, *this, atk_power_);
@@ -117,8 +122,9 @@ void CarGhost::react(Actor& other) {
 void CarGhost::on_hit(const Actor& other, float atk_power) {
 	//ダメージ中または死亡中は何もしない
 	if (state_ == State::Damage || state_ == State::Died)return;
+
 	if (other.tag() == "PlayerAttack") { //プレイヤーの攻撃と衝突した場合
-		hp_-= atk_power_;
+		hp_ -= atk_power;
 		if (hp_ <= 0) {
 			//死亡状態に変更
 			change_state(State::Died, MotionDie, false);
@@ -147,7 +153,7 @@ void CarGhost::update_state(float delta_time) {
 }
 
 //状態の変更
-void CarGhost::change_state(State state, GSuint motion,bool loop) {
+void CarGhost::change_state(State state, GSuint motion, bool loop) {
 	//モーション変更
 	motion_ = motion;
 	//モーションのループ指定
@@ -165,7 +171,7 @@ void CarGhost::idle(float delta_time) {
 		change_state(State::Move, MotionRun);
 		return;
 	}
-	//何もなければ巡回
+	//何もなければアイドル
 	change_state(State::Idle, MotionIdle);
 }
 
@@ -177,43 +183,39 @@ void CarGhost::move(float delta_time) {
 			change_state(State::Turn, MotionIdle);
 			return;
 		}
-		if (moving_timer_ <= 0) {
-			velocity = GSvector3{ to_target().x,to_target().y,0.0f };
-			velocity_ = velocity;
-			moving_timer_ = gsRandf(30.0f, 60.0f);
-		}
-		/*//ターゲット方向の角度を求める
-		/float angle = CLAMP(target_signed_angle(), -TurnAngle / 3, TurnAngle / 3);
+		velocity = GSvector3{ to_target().x,0.0f,0.0f };
+		velocity_ = velocity;
+		//ターゲット方向の角度を求める
+		float angle = CLAMP(target_signed_angle(), -TurnAngle / 3, TurnAngle / 3);
 		//ターゲット方向を向く
-		transform_.rotate(0.0f, angle, 0.0f);*/
+		transform_.rotate(0.0f, angle, 0.0f);
 	}
 	else {
-		velocity = transform_.forward();
-		velocity.y = 0.0f;
+		velocity = GSvector3{ transform_.forward().x,0.0f,0.0f };
 		velocity_ = velocity;
 		/*GSquaternion rotation = GSquaternion::rotateTowards(transform_.rotation(), GSquaternion::lookRotation(velocity_), 12.0f * delta_time);
 		transform_.rotation(rotation);*/
 	}
 	//移動
-	transform_.translate(velocity_ * delta_time * Speed, GStransform::Space::World);
-	
+	transform_.translate(velocity_ * Speed, GStransform::Space::World);
+
 }
 
 //ターン
 void CarGhost::turn(float delta_time) {
-		if (state_timer_ >= mesh_.motion_end_time()) {
-			//振り向きモーションが終了したら移動中に遷移
-			change_state(State::Move, MotionRun);
-		}
-		else {
-			/*//振り向きモーションをしながらターゲット方向を向く
-			float angle = (target_signed_angle() >= 0.0f) ? TurnAngle : -TurnAngle;
-			transform_.rotate(0.0f, angle, 0.0f);*/
-			GSquaternion rotation = GSquaternion::rotateTowards(transform_.rotation(), GSquaternion::lookRotation(-velocity_), 5.0f * delta_time);
-			rotation.x = 0.0f;
-			rotation.z = 0.0f;
-			transform_.rotation(rotation);
-		}
+	if (state_timer_ >= mesh_.motion_end_time()) {
+		//振り向きモーションが終了したら移動中に遷移
+		change_state(State::Move, MotionRun);
+	}
+	else {
+		//振り向きモーションをしながらターゲット方向を向く
+		float angle = (target_signed_angle() >= 0.0f) ? TurnAngle : -TurnAngle;
+		transform_.rotate(0.0f, angle, 0.0f);
+		/*GSquaternion rotation = GSquaternion::rotateTowards(transform_.rotation(), GSquaternion::lookRotation(-velocity_), 5.0f * delta_time);
+		rotation.x = 0.0f;
+		rotation.z = 0.0f;
+		transform_.rotation(rotation);*/
+	}
 }
 
 //ダメージ
@@ -221,15 +223,12 @@ void CarGhost::damage(float delta_time) {
 	if (state_timer_ < mesh_.motion_end_time()) {
 		//ノックバック処理
 		transform_.translate(velocity_ * delta_time, GStransform::Space::World);
-		velocity_ -= GSvector3{ velocity_.x,velocity_.y,0.0f } *0.5f, delta_time;
+		velocity_ -= GSvector3{ velocity_.x,velocity_.y,0.0f } *0.5f * delta_time;
 	}
 	//モーションが終了したらアイドルへ
 	if (state_timer_ >= mesh_.motion_end_time()) {
 		change_state(State::Move, MotionRun);
 	}
-
-
-
 }
 
 //死亡
@@ -240,22 +239,28 @@ void CarGhost::died(float delta_time) {
 	}
 }
 
-//攻撃判定
-bool CarGhost::is_attack()const {
-	//攻撃距離内かつ前向き方向のベクトルとターゲット方向のベクトルの角度差が20.0度以下か？
-	return (target_distance() <= AttackDistance) && (target_angle() <= 20.0f);
-}
-
 //移動判定
 bool CarGhost::is_move()const {
 	//移動距離かつ前方向のベクトルとターゲット方向のベクトルの角度差が20.0度以下か？
-	return (target_distance_y() <= MoveDistance_y) && (target_angle() <= 20.0f);
+	return (target_distance() <= MoveDistance) && (target_angle() <= 20.0f);
 }
 
 //振り向き判定
 bool CarGhost::is_turn() const {
 	//振り向き距離内かつ前向き方向のベクトルとターゲット方向のベクトルの角度差が20度以下か？
 	return (target_distance() <= TurnDistance) && (target_angle() >= 90.0f);
+}
+
+//カメラの外側にいるか
+bool CarGhost::is_outside() const {
+	Camera* camera = world_->camera();
+	if (camera == nullptr) return false;
+	//画面内にいたら移動する
+	GSvector3 to_target = transform_.position() - camera->transform().position();
+	//カメラの前ベクトル
+	GSvector3 forward = camera->transform().forward();
+	float angle = abs(GSvector3::signed_angle(forward, to_target));
+	return (angle <= 45.0f);
 }
 
 //前向き方向のベクトルとターゲット方向のベクトルの角度差を求める(符号付き)
@@ -307,19 +312,34 @@ float CarGhost::target_distance_y() const {
 GSvector3 CarGhost::to_target() const {
 	//ターゲットがいなければ0を返す
 	if (player_ == nullptr)return GSvector3::zero();
-	GSvector3 player = player_->transform().position() - GSvector3{1.5f,1.5f,0.0f};
+	GSvector3 player = player_->transform().position();
 	return (player - transform_.position()).normalized();
 }
 
 //フィールドとの衝突処理
 void CarGhost::collide_field() {
 	//壁との衝突判定(球体との判定)
-	BoundingSphere sphere{ collider().radius,transform().position() };
 	GSvector3 center;//衝突後の球体の中心座標
-	if (world_->field()->collide(sphere,&center)) {
+	if (world_->field()->collide(collider(), &center)) {
+		center.y = transform_.position().y;
 		center.z = 0.0f;
 		//補正後の座標に変更する
 		transform_.position(center);
+	}
+	//地面との衝突判定(線分との交差判定)
+	GSvector3 position2 = transform_.position();
+	Line line2;
+	line2.start = position2 + collider_.center;
+	line2.end = position2 + GSvector3{ 0.0f,-FootOffset,0.0f };
+	GSvector3 intersect2;//地面との交点
+	if (world_->field()->collide(line2, &intersect2)) {
+		//交点した点からy座標のみ補正する
+		position2.y = intersect2.y;
+		position2.z = 0.0f;
+		//座標を変更する
+		transform_.position(position2);
+		//重力を加える
+		velocity_.y = 0.0f;
 	}
 	if (is_hit_) {
 		Line line;
@@ -331,6 +351,8 @@ void CarGhost::collide_field() {
 		if (world_->field()->collide(line, &intersect)) {
 			change_state(State::Turn, MotionIdle);
 			position.x += 0.1f;
+			position.y = transform_.position().y;
+			position.z = 0.0f;
 			transform_.position(position);
 		}
 		//右側を調べる
@@ -339,10 +361,12 @@ void CarGhost::collide_field() {
 		if (world_->field()->collide(line, &intersect)) {
 			change_state(State::Turn, MotionIdle);
 			position.x -= 0.1f;
+			position.y = transform_.position().y;
+			position.z = 0.0f;
 			transform_.position(position);
 		}
 	}
-	
+
 }
 
 //アクターとの衝突処理

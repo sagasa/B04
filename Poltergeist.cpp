@@ -5,6 +5,7 @@
 #include"Line.h"
 #include"Assets.h"
 #include"ActorProp.h"
+#include"Camera.h"
 #include<iostream>
 
 enum {
@@ -103,20 +104,14 @@ void Poltergeist::react(Actor& other) {
 	//ダメージ中または死亡中の場合は何もしない
 	if (state_ == State::Damage || state_ == State::Died) return;
 
-	if (other.tag() == "PlayerTag") { 
-		collide_actor(other);
-	}
-	else if (other.tag() == "EnemyTag") {
-		//またはエネミーに衝突したら
-		collide_actor(other);
-	}
 }
 
 void Poltergeist::on_hit(const Actor& other, float atk_power) {
 	//ダメージ中または死亡中の場合は何もしない
 	if (state_ == State::Damage || state_ == State::Died) return;
+
 	if (other.tag() == "PlayerAttack") {
-		hp_ -= atk_power_;
+		hp_ -= atk_power;
 		if (hp_ <= 0) {
 			//ダメージ状態に変更
 			change_state(State::Damage, MotionDamage, false);
@@ -236,6 +231,18 @@ bool Poltergeist::is_attack()const {
 	return (target_distance_x() <= MoveDistance) && (target_angle() <= 20.0f);
 }
 
+//カメラの外側にいるか？
+bool Poltergeist::is_outside() const {
+	Camera* camera = world_->camera();
+	if (camera == nullptr) return false;
+	//画面内にいたら移動する
+	GSvector3 to_target = transform_.position() - camera->transform().position();
+	//カメラの前ベクトル
+	GSvector3 forward = camera->transform().forward();
+	float angle = abs(GSvector3::signed_angle(forward, to_target));
+	return (angle <= 45.0f);
+}
+
 //前向き方向のベクトルとターゲット方向のベクトルの角度差を求める(符号付き)
 float Poltergeist::target_signed_angle()const {
 	//ターゲットがいなければ0を返す
@@ -352,5 +359,5 @@ void Poltergeist::generate_bullet() const {
 	//移動量の計算
 	GSvector3 velocity = to_target() * BulletSpeed;
 	//弾の生成
-	world_->add_actor(new PoltergeistBullet{ world_,position,velocity });
+	world_->add_actor(new PoltergeistBullet{ world_,position,velocity, atk_power_});
 }

@@ -27,7 +27,7 @@ public:
 	virtual void react(Actor& other) override;
 
 	//攻撃を受けた
-	void on_hit(const Actor& attacker, float atk_power) override;
+	virtual void on_hit(const Actor& attacker, float atk_power) override;
 
 private:
 	//状態の更新
@@ -50,12 +50,13 @@ private:
 	//アクターとの衝突処理
 	void collide_actor(Actor& other);
 
-	//攻撃判定
-	bool is_attack()const;
+
 	//移動判定
 	bool is_move()const;
 	//振り向き判定
 	bool is_turn() const;
+	//カメラの外側にいるか？
+	bool is_outside() const;
 
 	//ターゲット方向の角度を求める(符号付き)
 	float target_signed_angle()const;
@@ -79,8 +80,6 @@ private:
 	bool motion_loop_;
 	//プレイヤー
 	Actor* player_;
-	//タイマー
-	float moving_timer_;
 	//状態
 	State state_;
 	//状態タイマー

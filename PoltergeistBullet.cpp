@@ -22,8 +22,6 @@ PoltergeistBullet::PoltergeistBullet(IWorld* world, const GSvector3& position, c
 	velocity_ = velocity;
 	//ActorProp‚ğŒp³‚µ‚Ä‚¢‚é‚©H
 	hit_ = true;
-	//‘Ì—Í‚Ìİ’è
-	hp_ = 1.0f;
 	//UŒ‚—Í‚Ìİ’è
 	atk_power_ = atk_power;
 }

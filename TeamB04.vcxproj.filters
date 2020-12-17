@@ -37,10 +37,10 @@
     <Filter Include="ヘッダー ファイル\Scenes">
       <UniqueIdentifier>{46eedc51-8da8-4218-a0ba-96840a60f7a4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Player">
+    <Filter Include="ソース ファイル\Actors\Player">
       <UniqueIdentifier>{ccbdfccc-1743-4972-874c-5d621a4befe2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ヘッダー ファイル\Player">
+    <Filter Include="ヘッダー ファイル\Actors\Player">
       <UniqueIdentifier>{6541b4ac-e7f9-46e9-aa1b-1c7e75a71aba}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -73,9 +73,6 @@
       <Filter>ソース ファイル\Actors</Filter>
     </ClCompile>
     <ClCompile Include="Light.cpp">
-      <Filter>ソース ファイル\Actors</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
       <Filter>ソース ファイル\Actors</Filter>
     </ClCompile>
     <ClCompile Include="Poltergeist.cpp">
@@ -124,10 +121,10 @@
       <Filter>ソース ファイル\Actors</Filter>
     </ClCompile>
     <ClCompile Include="player_paladin.cpp">
-      <Filter>ソース ファイル\Player</Filter>
+      <Filter>ソース ファイル\Actors\Player</Filter>
     </ClCompile>
     <ClCompile Include="player_ghost.cpp">
-      <Filter>ソース ファイル\Player</Filter>
+      <Filter>ソース ファイル\Actors\Player</Filter>
     </ClCompile>
     <ClCompile Include="AttackCollider.cpp">
       <Filter>ソース ファイル\Actors</Filter>
@@ -137,6 +134,9 @@
     </ClCompile>
     <ClCompile Include="UI.cpp">
       <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>ソース ファイル\Actors\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -177,9 +177,6 @@
       <Filter>ヘッダー ファイル\Actors</Filter>
     </ClInclude>
     <ClInclude Include="Light.h">
-      <Filter>ヘッダー ファイル\Actors</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
       <Filter>ヘッダー ファイル\Actors</Filter>
     </ClInclude>
     <ClInclude Include="Poltergeist.h">
@@ -234,13 +231,13 @@
       <Filter>ヘッダー ファイル\Actors</Filter>
     </ClInclude>
     <ClInclude Include="player_paladin.h">
-      <Filter>ヘッダー ファイル\Player</Filter>
+      <Filter>ヘッダー ファイル\Actors\Player</Filter>
     </ClInclude>
     <ClInclude Include="player_info.h">
-      <Filter>ヘッダー ファイル\Player</Filter>
+      <Filter>ヘッダー ファイル\Actors\Player</Filter>
     </ClInclude>
     <ClInclude Include="player_ghost.h">
-      <Filter>ヘッダー ファイル\Player</Filter>
+      <Filter>ヘッダー ファイル\Actors\Player</Filter>
     </ClInclude>
     <ClInclude Include="AttackCollider.h">
       <Filter>ヘッダー ファイル\Actors</Filter>
@@ -256,9 +253,12 @@
     </ClInclude>
     <ClInclude Include="ChangeItem.h">
       <Filter>ヘッダー ファイル\Actors</Filter>
-      </ClInclude>
+    </ClInclude>
     <ClInclude Include="UI.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>ヘッダー ファイル\Actors\Player</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

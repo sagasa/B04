@@ -16,6 +16,7 @@
 #include"PlayerTestScene.h"
 #include "resource_loader.h"
 #include "thread_pool.h"
+#include"ActorProp.h"
 
 
 void glError()
@@ -132,7 +133,7 @@ class MyGame : public gslib::Game {
         world_.clear();
     }
 public:
-    MyGame() : Game(1920, 1080, true, 60) {
+    MyGame() : Game(1920, 1080, false, 60) {
 
     }
 

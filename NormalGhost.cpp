@@ -4,6 +4,7 @@
 #include"Line.h"
 #include"Assets.h"
 #include"Camera.h"
+#include"ActorProp.h"
 
 enum {
 	MotionIdle = 0,
@@ -44,8 +45,7 @@ NormalGhost::NormalGhost(IWorld* world, const GSvector3& position) :
 	motion_loop_{ true },
 	state_{ State::Idle },
 	state_timer_{ 0.0f },
-	player_{ nullptr },
-	hp_{ 1 } {
+	player_{ nullptr }{
 		//ワールドの設定
 		world_ = world;
 		//名前の設定
@@ -58,6 +58,8 @@ NormalGhost::NormalGhost(IWorld* world, const GSvector3& position) :
 		transform_.localRotation(GSquaternion::euler(0.0f, -90.0f, 0.0f));
 		//メッシュの変換行列を初期化
 		mesh_.transform(transform_.localToWorldMatrix());
+		hp_ = 1.0f;
+		atk_power_ = 1.0f;
 }
 
 //更新
@@ -100,9 +102,10 @@ void NormalGhost::react(Actor& other) {
 void NormalGhost::on_hit(const Actor& other, float atk_power) {
 	//ダメージ中または死亡中は何もしない
 	if (state_ == State::Damage || state_ == State::Died) return;
+
 	if (other.tag() == "PlayerTag" || other.tag() == "PlayerAttack") {
-		hp_-= atk_power_;
-		change_state(State::Damage, MotionDamage);
+		hp_-= atk_power;
+		change_state(State::Damage, MotionDamage, false);
 	}
 }
 

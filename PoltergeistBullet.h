@@ -4,7 +4,7 @@
 #include"Actor.h"
 #include"ActorProp.h"
 
-class PoltergeistBullet : public Actor,public ActorProp {
+class PoltergeistBullet : public Actor {
 public:
 
 	//コンストラクタ
