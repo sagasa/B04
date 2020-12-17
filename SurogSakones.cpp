@@ -143,20 +143,22 @@ void SurogSakones::react(Actor& other) {
 		collide_actor(other);
 	}
 }
-void SurogSakones::on_hit(const Actor& attacker, float atk_power)
+bool SurogSakones::on_hit(const Actor& attacker, float atk_power)
 {
-	if (state_ == State::Stun || state_ == State::Dying)return;
+	if (state_ == State::Stun || state_ == State::Dying)return false;	
 	if (attacker.tag() == "PlayerAttack")
 	{
-		hp_ -= atk_power;		
+		hp_ -= atk_power;
+		if (hp_ <= 0.0f)
+		{
+			change_state(State::Dying, MotionDying, false);
+		}
+		else {
+			change_state(State::Stun, MotionDamage1, false);
+		}
+		return true;
 	}
-	if (hp_ <= 0.0f)
-	{
-		change_state(State::Dying, MotionDying, false);
-	}
-	else {
-		change_state(State::Stun, MotionDamage1, false);
-	}
+	return false;
 }
 void SurogSakones::update_state(float delta_time) {
 	//ó‘Ô‚É‚æ‚Á‚ÄØ‚è‘Ö‚¦
