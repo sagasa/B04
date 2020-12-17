@@ -57,7 +57,7 @@ SurogSakones::SurogSakones(IWorld* world, const GSvector3& position) :
 	tag_ = "EnemyTag";
 	name_ = "SurogSakones";
 	transform_.position(position);
-	collider_ = BoundingSphere{ 1.0f,GSvector3::up() * 1.85f };
+	collider_ = BoundingSphere{ 0.85f,GSvector3::up() * 1.85f };
 	state_ = State::Idol;
 	hp_ = 15.0f;
 	transform_.rotation(GSquaternion::euler(GSvector3{ 0.0f,-90.0f,0.0f }));
@@ -73,9 +73,10 @@ void SurogSakones::update(float delta_time) {
 		player_ = world_->find_actor("Player");
 	}
 	//ˆê‰ž•ÛŒ¯‚ÅŽc‚·
-	//if (gsGetKeyTrigger(GKEY_1)) {
-	//	change_state(State::Idol, MotionIdol1);
-	//}
+	if (gsGetKeyTrigger(GKEY_1)) {
+		change_state(State::Attack, MotionScytheAttack,true);
+		generate_attackcollider();
+	}
 	//if (gsGetKeyTrigger(GKEY_2)) {
 	//	change_state(State::Idol, MotionIdol2);
 	//}
@@ -147,15 +148,14 @@ void SurogSakones::on_hit(const Actor& attacker, float atk_power)
 	if (state_ == State::Stun || state_ == State::Dying)return;
 	if (attacker.tag() == "PlayerAttack")
 	{
-		hp_ -= atk_power;
-
-		if (hp_ <= 0.0f)
-		{
-			change_state(State::Dying, MotionDying, false);
-		}
-		else {
-			change_state(State::Stun, MotionDamage1, false);
-		}
+		hp_ -= atk_power;		
+	}
+	if (hp_ <= 0.0f)
+	{
+		change_state(State::Dying, MotionDying, false);
+	}
+	else {
+		change_state(State::Stun, MotionDamage1, false);
 	}
 }
 void SurogSakones::update_state(float delta_time) {
@@ -437,17 +437,17 @@ void SurogSakones::generate_pshychokinesis(const GSvector3& position, GSvector3 
 }
 
 void SurogSakones::generate_attackcollider(){
-	const float AttackColliderDistance{ 1.25f };
-	const float AttackColliderRadius{ 0.6f };
+	const float AttackColliderDistance{ 1.4f };
+	const float AttackColliderRadius{ 0.5f };
 	const float AttackColliderHeight{ 1.85f };
 
 	const float AttackCollideDelay{ 60.0f };
-	const float AttackCollideLifeSpan{ 30.0f };
+	const float AttackCollideLifeSpan{ 60.0f };
 
 	GSvector3 position = transform_.position() + transform_.forward() * AttackColliderDistance;
 	position.y += AttackColliderHeight;
 	BoundingSphere collider{ AttackColliderRadius,position };
-	world_->add_actor(new AttackCollider{ world_,collider,"EnemyAttack","BossAttack",AttackCollideLifeSpan,0.0f });
+	world_->add_actor(new AttackCollider{ world_,collider,"EnemyAttack","BossAttack",AttackCollideLifeSpan,AttackCollideDelay });
 }
 
 void SurogSakones::move_attack(float delta_time) {
