@@ -94,21 +94,8 @@ void RushGhost::react(Actor& other) {
 	//ダメージ中または死亡中の場合は何もしない
 	if (state_ == State::Damage || state_ == State::Died) return;
 
-	if (other.tag() == "PlayerAttack") {
-		float atk = dynamic_cast<ActorProp*>(&other)->atk_power();
-		if (atk == NULL) return;
-		hp_ -= atk;
-		if (hp_ <= 0) {
-			//ダメージ状態に変更
-			change_state(State::Died, MotionDie, false);
-		}
-		else {
-			//攻撃の進行方向にノックバックする移動量を求める
-			velocity_ = other.velocity().getNormalized() * 0.5f;
-			//ダメージ状態に変更
-			change_state(State::Damage, MotionDamage, false);
-		}
-		return;
+	if (other.tag() == "PlayerTag") {
+		ActorProp::do_attack(other, *this, atk_power_);
 	}
 }
 
@@ -119,6 +106,7 @@ void RushGhost::on_hit(const Actor& other, float atk_power) {
 	if (other.tag() == "PlayerAttack") {
 		//float atk = dynamic_cast<ActorProp*>(&other)->atk_power();
 		//hp_ -= atk;
+		hp_ -= atk_power;
 		if (hp_ <= 0) {
 			//ダメージ状態に変更
 			change_state(State::Died, MotionDie, false);

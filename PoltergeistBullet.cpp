@@ -22,8 +22,6 @@ PoltergeistBullet::PoltergeistBullet(IWorld* world, const GSvector3& position, c
 	velocity_ = velocity;
 	//ActorPropを継承しているか？
 	hit_ = true;
-	//体力の設定
-	hp_ = 1.0f;
 	//攻撃力の設定
 	atk_power_ = atk_power;
 }
@@ -60,7 +58,7 @@ void PoltergeistBullet::draw() const {
 void PoltergeistBullet::react(Actor& other) {
 	//エネミー以外に当たったら死亡
 	if (other.tag() != "EnemyTag") {
-		//do_attack(other, *this, atk_power_);
+		ActorProp::do_attack(other, *this, atk_power_);
 		die();
 	}
 }
