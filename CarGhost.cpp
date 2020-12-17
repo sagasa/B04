@@ -75,6 +75,9 @@ CarGhost::CarGhost(IWorld* world, const GSvector3& position) :
 
 //更新
 void CarGhost::update(float delta_time) {
+	if (transform_.position().x <= 0.0f) {
+		change_state(State::Died, MotionDie, false);
+	}
 	//カメラの外側にいると何もしない
 	if (is_inside()) {
 		//プレイヤーを検索
@@ -99,12 +102,16 @@ void CarGhost::update(float delta_time) {
 //描画
 void CarGhost::draw() const {
 	mesh_.draw();
+
+#ifdef _DEBUG
 	collider().draw();
-	gsFontParameter(GS_FONT_BOLD, 16, "ＭＳ ゴシック");
+	/*gsFontParameter(GS_FONT_BOLD, 16, "ＭＳ ゴシック");
 	gsTextPos(0.0f, 20.0f);
 	gsDrawText("CarGhost:ベクトル(%f,%f,%f)", velocity_.x, velocity_.y, velocity_.z);
 	gsTextPos(0.0f, 40.0f);
-	gsDrawText("CarGhost:座標(%f,%f,%f)", transform_.position().x, transform_.position().y, transform_.position().z);
+	gsDrawText("CarGhost:座標(%f,%f,%f)", transform_.position().x, transform_.position().y, transform_.position().z);*/
+#endif
+
 }
 
 //衝突リアクション
@@ -186,9 +193,9 @@ void CarGhost::move(float delta_time) {
 		velocity = GSvector3{ to_target().x,0.0f,0.0f };
 		velocity_ = velocity;
 		//ターゲット方向の角度を求める
-		float angle = CLAMP(target_signed_angle(), -TurnAngle / 3, TurnAngle / 3);
+		//float angle = CLAMP(target_signed_angle(), -TurnAngle / 3, TurnAngle / 3);
 		//ターゲット方向を向く
-		transform_.rotate(0.0f, angle, 0.0f);
+		//transform_.rotate(0.0f, angle, 0.0f);
 	}
 	else {
 		velocity = GSvector3{ transform_.forward().x,0.0f,0.0f };
