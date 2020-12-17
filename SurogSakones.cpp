@@ -34,7 +34,7 @@ const float MinMoveDistance{ 3.5f };
 const float SarchMoveDistance{ 5.5f };
 const float MaxMoveDistance{ 10.0f };
 
-const float ScytheRange{ 1.25f };
+const float ScytheRange{ 2.0f };
 const float Psyco1Range{ 5.5f };
 
 //アタック時のフレーム数
@@ -57,7 +57,7 @@ SurogSakones::SurogSakones(IWorld* world, const GSvector3& position) :
 	tag_ = "EnemyTag";
 	name_ = "SurogSakones";
 	transform_.position(position);
-	collider_ = BoundingSphere{ 0.5f,GSvector3::up() * 1.0f };
+	collider_ = BoundingSphere{ 0.85f,GSvector3::up() * 1.85f };
 	state_ = State::Idol;
 	hp_ = 15.0f;
 	transform_.rotation(GSquaternion::euler(GSvector3{ 0.0f,-90.0f,0.0f }));
@@ -73,9 +73,10 @@ void SurogSakones::update(float delta_time) {
 		player_ = world_->find_actor("Player");
 	}
 	//一応保険で残す
-	//if (gsGetKeyTrigger(GKEY_1)) {
-	//	change_state(State::Idol, MotionIdol1);
-	//}
+	if (gsGetKeyTrigger(GKEY_1)) {
+		change_state(State::Attack, MotionScytheAttack,true);
+		generate_attackcollider();
+	}
 	//if (gsGetKeyTrigger(GKEY_2)) {
 	//	change_state(State::Idol, MotionIdol2);
 	//}
@@ -142,13 +143,12 @@ void SurogSakones::react(Actor& other) {
 		collide_actor(other);
 	}
 }
-void SurogSakones::on_hit(const Actor& attacker, float atk_power)
+bool SurogSakones::on_hit(const Actor& attacker, float atk_power)
 {
-	if (state_ == State::Stun || state_ == State::Dying)return;
+	if (state_ == State::Stun || state_ == State::Dying)return false;	
 	if (attacker.tag() == "PlayerAttack")
 	{
 		hp_ -= atk_power;
-
 		if (hp_ <= 0.0f)
 		{
 			change_state(State::Dying, MotionDying, false);
@@ -156,7 +156,9 @@ void SurogSakones::on_hit(const Actor& attacker, float atk_power)
 		else {
 			change_state(State::Stun, MotionDamage1, false);
 		}
+		return true;
 	}
+	return false;
 }
 void SurogSakones::update_state(float delta_time) {
 	//状態によって切り替え
@@ -268,7 +270,7 @@ void SurogSakones::turn(float delta_time) {
 void SurogSakones::move(float delta_time) {
 	if (is_turn(player_))
 	{
-		change_state(State::Turn, MotionScytheAttack);
+		change_state(State::Turn, MotionScytheAttack,true);
 		return;
 	}
 	if (is_scythe_attack(player_))
@@ -370,9 +372,11 @@ void SurogSakones::change_state(State state, GSuint motion, bool loop) {
 	attack_timer_ = 0.0f;
 }
 void SurogSakones::draw()const {
-	mesh_.draw();
-	collider().draw();
+	mesh_.draw();	
+#ifdef _DEBUG
 	debug_draw();
+	collider().draw();
+#endif
 }
 
 void SurogSakones::debug_draw()const {
@@ -393,7 +397,7 @@ void SurogSakones::debug_draw()const {
 	gsTextPos(0.0f, 140.0f);
 	gsDrawText("移動状態(%d)", move_way_);
 	gsTextPos(0.0f, 160.0f);
-	gsDrawText("移動状態(%f)", hp_);
+	gsDrawText("移動状態(%.2f)", hp_);
 }
 
 void SurogSakones::scythe_attack()
@@ -404,7 +408,7 @@ void SurogSakones::scythe_attack()
 
 void SurogSakones::psyco1_attack()
 {
-	generate_pshychokinesis(transform_.position() + GSvector3::up() * 2.0f, GSvector3::up() * 4.0f);
+	generate_pshychokinesis(transform_.position() + GSvector3::up() * 3.0f, GSvector3::up() * 4.0f);
 	change_state(State::Attack, MotionAttack2,false);
 }
 
@@ -435,17 +439,17 @@ void SurogSakones::generate_pshychokinesis(const GSvector3& position, GSvector3 
 }
 
 void SurogSakones::generate_attackcollider(){
-	const float AttackColliderDistance{ 0.5f };
-	const float AttackColliderRadius{ 0.3f };
-	const float AttackColliderHeight{ 1.0f };
+	const float AttackColliderDistance{ 1.4f };
+	const float AttackColliderRadius{ 0.5f };
+	const float AttackColliderHeight{ 1.85f };
 
 	const float AttackCollideDelay{ 60.0f };
-	const float AttackCollideLifeSpan{ 5.0f };
+	const float AttackCollideLifeSpan{ 60.0f };
 
 	GSvector3 position = transform_.position() + transform_.forward() * AttackColliderDistance;
 	position.y += AttackColliderHeight;
 	BoundingSphere collider{ AttackColliderRadius,position };
-	world_->add_actor(new AttackCollider{ world_,collider,"EnemyAttackTag","BossAttack",AttackCollideLifeSpan,AttackCollideDelay });
+	world_->add_actor(new AttackCollider{ world_,collider,"EnemyAttack","BossAttack",AttackCollideLifeSpan,AttackCollideDelay });
 }
 
 void SurogSakones::move_attack(float delta_time) {

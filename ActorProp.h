@@ -34,7 +34,7 @@ public:
 	}
 
 	//UŒ‚‚ğó‚¯‚½
-	virtual void on_hit(const Actor& attacker, float atk_power) = 0;
+	virtual bool on_hit(const Actor& attacker, float atk_power) = 0;
 
 	static bool do_attack(Actor& victim,const Actor& attacker, float value = 1)
 	{
@@ -42,8 +42,7 @@ public:
 		{
 			ActorProp& actor = dynamic_cast<ActorProp&>(victim);
 			//Œ¸‚ç‚·ˆ—
-			actor.on_hit(attacker,value);
-			return true;
+			return actor.on_hit(attacker, value);
 		}catch (std::bad_cast&)
 		{
 			return false;

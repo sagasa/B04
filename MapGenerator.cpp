@@ -38,7 +38,7 @@ void MapGenerator::generate(IWorld* world) {
 	else if (name == "CarGhost") {
 		world->add_actor(new CarGhost{ world,position });
 	}
-	else if (name == "Poletergeist") {
+	else if (name == "Poltergeist") {
 		world->add_actor(new Poltergeist{ world,position });
 	}
 	else if (name == "RushGhost") {

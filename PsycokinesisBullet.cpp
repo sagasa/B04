@@ -56,8 +56,8 @@ void PsycokinesisBullet::react(Actor& other) {
 	}
 }
 
-void PsycokinesisBullet::on_hit(const Actor& attacker, float atk_power)
+bool PsycokinesisBullet::on_hit(const Actor& attacker, float atk_power)
 {
-	return;
+	return false;
 }
 
