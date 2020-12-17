@@ -1,12 +1,8 @@
 ﻿#pragma once
-#include "player_info.h"
+#include "Player.h"
 
-struct player_ghost : public player_info
+struct player_ghost : public Player
 {
-	
-	player_ghost();
-	bool attack() override;
-	void draw() override;
-	bool hit() override;
-	void update(const Actor& player, float delta) override;
+	player_ghost(IWorld* world, const GSvector3& position);
+	void update(float delta) override;
 };

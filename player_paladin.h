@@ -1,12 +1,8 @@
 #pragma once
-#include "player_info.h"
+#include "Player.h"
 
-struct player_paladin : public player_info
+struct player_paladin : public Player
 {
-	player_paladin();
-	bool attack() override;
-	void draw() override;
-	bool hit() override;
-	void update(const Actor& player, float delta) override;
+	player_paladin(IWorld* world, const GSvector3& position);
+	void update(float delta) override;
 };
-
