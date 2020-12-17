@@ -48,7 +48,7 @@ void AttackCollider::draw() const
 //Õ“ËƒŠƒAƒNƒVƒ‡ƒ“
 void AttackCollider::react(Actor& other)
 {
-	ActorProp::do_attack(other,*this,atk_power_);
+	//ActorProp::do_attack(other,*this,atk_power_);
 	//Õ“Ë‚µ‚½‚ç€–S
 	die();
 }

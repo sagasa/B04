@@ -103,12 +103,21 @@ void Poltergeist::react(Actor& other) {
 	//ダメージ中または死亡中の場合は何もしない
 	if (state_ == State::Damage || state_ == State::Died) return;
 
-	if (other.tag() == "PlayerTag") { 
-		collide_actor(other);
-	}
-	else if (other.tag() == "EnemyTag") {
-		//またはエネミーに衝突したら
-		collide_actor(other);
+	if (other.tag() == "PlayerAttack") {//プレイヤーの攻撃を受けたら
+		float atk = dynamic_cast<ActorProp*>(&other)->atk_power();
+		if (atk == NULL) return;
+		hp_ -= atk;
+		if (hp_ <= 0) {
+			//ダメージ状態に変更
+			change_state(State::Damage, MotionDamage, false);
+		}
+		else {
+			//攻撃の進行方向にノックバックする移動量を求める
+			velocity_ = other.velocity().getNormalized() * 0.5f;
+			//ダメージ状態に変更
+			change_state(State::Damage, MotionDamage, false);
+		}
+		return;
 	}
 }
 
@@ -352,5 +361,5 @@ void Poltergeist::generate_bullet() const {
 	//移動量の計算
 	GSvector3 velocity = to_target() * BulletSpeed;
 	//弾の生成
-	world_->add_actor(new PoltergeistBullet{ world_,position,velocity });
+	world_->add_actor(new PoltergeistBullet{ world_,position,velocity, atk_power_});
 }

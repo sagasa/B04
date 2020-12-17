@@ -3,6 +3,7 @@
 #include"Field.h"
 #include"Line.h"
 #include"Assets.h"
+#include"ActorProp.h"
 
 enum {
 	MotionIdle = 0,
@@ -50,9 +51,12 @@ RushGhost::RushGhost(IWorld* world, const GSvector3& position) :
 	hp_ = 3.0f;
 	//攻撃力の設定
 	atk_power_ = 1.0f;
+	//衝突判定球の設定
 	collider_ = BoundingSphere{ EnemyRadius ,GSvector3{0.0f,EnemyHeight,0.0f} };
+	//座標の初期化
 	transform_.position(position);
 	transform_.localRotation(GSquaternion::euler(0.0f, -90.0f, 0.0f));
+	//メッシュの変換行列の初期化
 	mesh_.transform(transform_.localToWorldMatrix());
 
 }
@@ -89,16 +93,32 @@ void RushGhost::draw() const {
 void RushGhost::react(Actor& other) {
 	//ダメージ中または死亡中の場合は何もしない
 	if (state_ == State::Damage || state_ == State::Died) return;
-	if (other.tag() == "PlayerTag") {
-		ActorProp::do_attack(other, *this, atk_power_);
+
+	if (other.tag() == "PlayerAttack") {
+		float atk = dynamic_cast<ActorProp*>(&other)->atk_power();
+		if (atk == NULL) return;
+		hp_ -= atk;
+		if (hp_ <= 0) {
+			//ダメージ状態に変更
+			change_state(State::Died, MotionDie, false);
+		}
+		else {
+			//攻撃の進行方向にノックバックする移動量を求める
+			velocity_ = other.velocity().getNormalized() * 0.5f;
+			//ダメージ状態に変更
+			change_state(State::Damage, MotionDamage, false);
+		}
+		return;
 	}
 }
+
 
 void RushGhost::on_hit(const Actor& other, float atk_power) {
 	//ダメージ中または死亡中の場合は何もしない
 	if (state_ == State::Damage || state_ == State::Died) return;
 	if (other.tag() == "PlayerAttack") {
-		hp_ -= atk_power_;
+		//float atk = dynamic_cast<ActorProp*>(&other)->atk_power();
+		//hp_ -= atk;
 		if (hp_ <= 0) {
 			//ダメージ状態に変更
 			change_state(State::Died, MotionDie, false);
