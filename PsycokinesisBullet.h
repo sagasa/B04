@@ -12,6 +12,7 @@ public:
 	virtual void update(float delta_time)override;
 	virtual void draw()const override;
 	virtual void react(Actor& other) override;
+	virtual void on_hit(const Actor& attacker, float atk_power) override;
 
 private:
 	GSvector3 acceleration_;
