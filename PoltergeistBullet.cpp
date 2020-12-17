@@ -60,7 +60,7 @@ void PoltergeistBullet::draw() const {
 void PoltergeistBullet::react(Actor& other) {
 	//エネミー以外に当たったら死亡
 	if (other.tag() != "EnemyTag") {
-		ActorProp::do_attack(other, *this, atk_power_);
+		//do_attack(other, *this, atk_power_);
 		die();
 	}
 }
