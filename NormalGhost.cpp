@@ -64,9 +64,6 @@ NormalGhost::NormalGhost(IWorld* world, const GSvector3& position) :
 
 //更新
 void NormalGhost::update(float delta_time) {
-	if (transform_.position().x <= -10.0f) {
-		change_state(State::Died, MotionDie, false);
-	}
 	player_ = world_->find_actor("Player");
 	//状態の更新
 	update_state(delta_time);
@@ -145,6 +142,10 @@ void NormalGhost::idle(float delta_time) {
 
 //移動中
 void NormalGhost::move(float delta_time) {
+	if (transform_.position().x <= -10.0f) {
+		change_state(State::Died, MotionDie, false);
+		return;
+	}
 	GSvector3 velocity{-1.0f,0.0f,0.0f};
 	velocity.z = 0.0f;
 	velocity_ = velocity;

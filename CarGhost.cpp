@@ -75,9 +75,6 @@ CarGhost::CarGhost(IWorld* world, const GSvector3& position) :
 
 //更新
 void CarGhost::update(float delta_time) {
-	if (transform_.position().x <= 0.0f) {
-		change_state(State::Died, MotionDie, false);
-	}
 	//カメラの外側にいると何もしない
 	if (is_inside()) {
 		//プレイヤーを検索
@@ -185,6 +182,10 @@ void CarGhost::idle(float delta_time) {
 
 //移動
 void CarGhost::move(float delta_time) {
+	if (transform_.position().x <= 0.0f) {
+		change_state(State::Died, MotionDie, false);
+		return;
+	}
 	GSvector3 velocity = GSvector3::zero();
 	if (!is_hit_) {
 		if (is_turn()) {
