@@ -98,14 +98,16 @@ void NormalGhost::react(Actor& other) {
 	
 }
 
-void NormalGhost::on_hit(const Actor& other, float atk_power) {
+bool NormalGhost::on_hit(const Actor& other, float atk_power) {
 	//ダメージ中または死亡中は何もしない
-	if (state_ == State::Damage || state_ == State::Died) return;
+	if (state_ == State::Damage || state_ == State::Died) return false;
 
 	if (other.tag() == "PlayerTag" || other.tag() == "PlayerAttack") {
 		hp_-= atk_power;
 		change_state(State::Damage, MotionDamage, false);
+		return true;
 	}
+	return false;
 }
 
 //状態の更新
