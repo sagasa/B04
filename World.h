@@ -36,6 +36,12 @@ public:
     // メッセージの送信
     virtual void send_message(const std::string& message, void* param = nullptr) override;
 
+    virtual void game_clear() override;
+	virtual void game_over() override;
+
+    bool is_game_clear()const;
+    bool is_game_over()const;
+
     // カメラの取得
     //virtual Actor* camera() override;
     // カメラの取得
@@ -60,4 +66,7 @@ private:
     //Camera* camera_{ nullptr };
     // フィールド
     Field* field_{ nullptr };
+
+    bool is_game_clear_{ false };
+    bool is_game_over_{ false };
 };
