@@ -5,6 +5,7 @@
 #include"Camera.h"
 #include"Light.h"
 #include"Player.h"
+#include "player_ghost.h"
 #include "resource_loader.h"
 #include"SurogSakones.h"
 
@@ -47,7 +48,7 @@ void PlayerTestScene::start() {
     // ライトの追加
     world_.add_light(new Light{ &world_ });
     // プレーヤの追加
-    world_.add_actor(new Player{ &world_, GSvector3{ 0.0f, 0.0f, 0.0f } });
+    world_.add_actor(new player_ghost{ &world_, GSvector3{ 0.0f, 0.0f, 0.0f } });
 }
 
 //更新
