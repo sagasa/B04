@@ -34,7 +34,7 @@ const float MinMoveDistance{ 3.5f };
 const float SarchMoveDistance{ 5.5f };
 const float MaxMoveDistance{ 10.0f };
 
-const float ScytheRange{ 1.25f };
+const float ScytheRange{ 2.0f };
 const float Psyco1Range{ 5.5f };
 
 //アタック時のフレーム数
@@ -57,7 +57,7 @@ SurogSakones::SurogSakones(IWorld* world, const GSvector3& position) :
 	tag_ = "EnemyTag";
 	name_ = "SurogSakones";
 	transform_.position(position);
-	collider_ = BoundingSphere{ 0.5f,GSvector3::up() * 1.0f };
+	collider_ = BoundingSphere{ 1.0f,GSvector3::up() * 1.85f };
 	state_ = State::Idol;
 	hp_ = 15.0f;
 	transform_.rotation(GSquaternion::euler(GSvector3{ 0.0f,-90.0f,0.0f }));
@@ -268,7 +268,7 @@ void SurogSakones::turn(float delta_time) {
 void SurogSakones::move(float delta_time) {
 	if (is_turn(player_))
 	{
-		change_state(State::Turn, MotionScytheAttack);
+		change_state(State::Turn, MotionScytheAttack,true);
 		return;
 	}
 	if (is_scythe_attack(player_))
@@ -370,9 +370,11 @@ void SurogSakones::change_state(State state, GSuint motion, bool loop) {
 	attack_timer_ = 0.0f;
 }
 void SurogSakones::draw()const {
-	mesh_.draw();
-	collider().draw();
+	mesh_.draw();	
+#ifdef _DEBUG
 	debug_draw();
+	collider().draw();
+#endif
 }
 
 void SurogSakones::debug_draw()const {
@@ -393,7 +395,7 @@ void SurogSakones::debug_draw()const {
 	gsTextPos(0.0f, 140.0f);
 	gsDrawText("移動状態(%d)", move_way_);
 	gsTextPos(0.0f, 160.0f);
-	gsDrawText("移動状態(%f)", hp_);
+	gsDrawText("移動状態(%.2f)", hp_);
 }
 
 void SurogSakones::scythe_attack()
