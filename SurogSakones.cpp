@@ -406,7 +406,7 @@ void SurogSakones::scythe_attack()
 
 void SurogSakones::psyco1_attack()
 {
-	generate_pshychokinesis(transform_.position() + GSvector3::up() * 2.0f, GSvector3::up() * 4.0f);
+	generate_pshychokinesis(transform_.position() + GSvector3::up() * 3.0f, GSvector3::up() * 4.0f);
 	change_state(State::Attack, MotionAttack2,false);
 }
 
@@ -437,17 +437,17 @@ void SurogSakones::generate_pshychokinesis(const GSvector3& position, GSvector3 
 }
 
 void SurogSakones::generate_attackcollider(){
-	const float AttackColliderDistance{ 0.5f };
-	const float AttackColliderRadius{ 0.3f };
-	const float AttackColliderHeight{ 1.0f };
+	const float AttackColliderDistance{ 1.25f };
+	const float AttackColliderRadius{ 0.6f };
+	const float AttackColliderHeight{ 1.85f };
 
 	const float AttackCollideDelay{ 60.0f };
-	const float AttackCollideLifeSpan{ 5.0f };
+	const float AttackCollideLifeSpan{ 30.0f };
 
 	GSvector3 position = transform_.position() + transform_.forward() * AttackColliderDistance;
 	position.y += AttackColliderHeight;
 	BoundingSphere collider{ AttackColliderRadius,position };
-	world_->add_actor(new AttackCollider{ world_,collider,"EnemyAttackTag","BossAttack",AttackCollideLifeSpan,AttackCollideDelay });
+	world_->add_actor(new AttackCollider{ world_,collider,"EnemyAttack","BossAttack",AttackCollideLifeSpan,0.0f });
 }
 
 void SurogSakones::move_attack(float delta_time) {
