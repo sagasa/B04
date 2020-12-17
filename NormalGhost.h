@@ -26,7 +26,7 @@ public:
 	virtual void react(Actor& other) override;
 
 	//攻撃を受けた
-	void on_hit(const Actor& attacker, float atk_power) override;
+	virtual void on_hit(const Actor& attacker, float atk_power) override;
 
 private:
 
@@ -69,8 +69,6 @@ private:
 	bool motion_loop_;
 	//プレイヤー
 	Actor* player_;
-	//体力
-	float hp_{ 1.0f };
 	//タイマー
 	float moving_timer_{ 0.0f };
 	//状態
