@@ -5,6 +5,7 @@
 #include"Line.h"
 #include"Assets.h"
 #include"ActorProp.h"
+#include"Camera.h"
 #include<iostream>
 
 enum {
@@ -103,29 +104,14 @@ void Poltergeist::react(Actor& other) {
 	//ダメージ中または死亡中の場合は何もしない
 	if (state_ == State::Damage || state_ == State::Died) return;
 
-	if (other.tag() == "PlayerAttack") {//プレイヤーの攻撃を受けたら
-		float atk = dynamic_cast<ActorProp*>(&other)->atk_power();
-		if (atk == NULL) return;
-		hp_ -= atk;
-		if (hp_ <= 0) {
-			//ダメージ状態に変更
-			change_state(State::Damage, MotionDamage, false);
-		}
-		else {
-			//攻撃の進行方向にノックバックする移動量を求める
-			velocity_ = other.velocity().getNormalized() * 0.5f;
-			//ダメージ状態に変更
-			change_state(State::Damage, MotionDamage, false);
-		}
-		return;
-	}
 }
 
 void Poltergeist::on_hit(const Actor& other, float atk_power) {
 	//ダメージ中または死亡中の場合は何もしない
 	if (state_ == State::Damage || state_ == State::Died) return;
+
 	if (other.tag() == "PlayerAttack") {
-		hp_ -= atk_power_;
+		hp_ -= atk_power;
 		if (hp_ <= 0) {
 			//ダメージ状態に変更
 			change_state(State::Damage, MotionDamage, false);
@@ -243,6 +229,18 @@ bool Poltergeist::is_turn()const {
 bool Poltergeist::is_attack()const {
 	//攻撃距離内かつ前向き方向のベクトルとターゲット方向のベクトルの角度差が20.0度以下か？
 	return (target_distance_x() <= MoveDistance) && (target_angle() <= 20.0f);
+}
+
+//カメラの外側にいるか？
+bool Poltergeist::is_outside() const {
+	Camera* camera = world_->camera();
+	if (camera == nullptr) return false;
+	//画面内にいたら移動する
+	GSvector3 to_target = transform_.position() - camera->transform().position();
+	//カメラの前ベクトル
+	GSvector3 forward = camera->transform().forward();
+	float angle = abs(GSvector3::signed_angle(forward, to_target));
+	return (angle <= 45.0f);
 }
 
 //前向き方向のベクトルとターゲット方向のベクトルの角度差を求める(符号付き)

@@ -5,6 +5,7 @@
 #include"Assets.h"
 #include"AttackCollider.h"
 #include"ActorProp.h"
+#include"Camera.h"
 
 enum {
 	MotionIdle = 0,
@@ -38,6 +39,7 @@ const float LimitDistance_x{ 100.0f };
 const float LimitDistance_y{ 100.0f };
 //重力
 const float Gravity{ -0.0016f };
+
 
 //コンストラクタ
 CarGhost::CarGhost(IWorld* world, const GSvector3& position) :
@@ -73,26 +75,25 @@ CarGhost::CarGhost(IWorld* world, const GSvector3& position) :
 
 //更新
 void CarGhost::update(float delta_time) {
-	//x座標が-100を超えたら
-	if (transform_.position().x <= -LimitDistance_x) {
-		die();
+	//カメラの外側にいると何もしない
+	if (!is_outside()) {
+		//プレイヤーを検索
+		player_ = world_->find_actor("Player");
+		//状態の更新
+		update_state(delta_time);
+		//重力を更新
+		velocity_.y += Gravity * delta_time;
+		//重力を加える
+		transform_.translate(0.0f, velocity_.y, 0.0f);
+		//フィールドとの衝突判定
+		collide_field();
+		//モーション変更
+		mesh_.change_motion(motion_);
+		//メッシュの更新
+		mesh_.update(delta_time);
+		//行列を設定
+		mesh_.transform(transform_.localToWorldMatrix());
 	}
-	//プレイヤーを検索
-	player_ = world_->find_actor("Player");
-	//状態の更新
-	update_state(delta_time);
-	//重力を更新
-	velocity_.y += Gravity * delta_time;
-	//重力を加える
-	transform_.translate(0.0f, velocity_.y, 0.0f);
-	//フィールドとの衝突判定
-	collide_field();
-	//モーション変更
-	mesh_.change_motion(motion_);
-	//メッシュの更新
-	mesh_.update(delta_time);
-	//行列を設定
-	mesh_.transform(transform_.localToWorldMatrix());
 }
 
 //描画
@@ -111,24 +112,9 @@ void CarGhost::react(Actor& other) {
 	//ダメージ中または死亡中は何もしない
 	if (state_ == State::Damage || state_ == State::Died) return;
 
-	if (other.tag() == "PlayerAttack") { //プレイヤーの攻撃と衝突した場合
-		float atk = dynamic_cast<ActorProp*>(&other)->atk_power();
-		if (atk == NULL) return;
-		hp_ -= atk;
-		if (hp_ <= 0) {
-			//死亡状態に変更
-			change_state(State::Died, MotionDie, false);
-		}
-		else {
-			//攻撃の進行方向にノックバックする移動量を求める
-			velocity_ = other.velocity().getNormalized() * 0.5f;
-			//ダメージ状態に変更
-			change_state(State::Damage, MotionDamage, false);
-		}
-		return;
-	}
 	else if (other.tag() == "PlayerTag") {//プレイヤーと衝突した場合
 		is_hit_ = true;
+		ActorProp::do_attack(other, *this, atk_power_);
 	}
 }
 
@@ -138,7 +124,7 @@ void CarGhost::on_hit(const Actor& other, float atk_power) {
 	if (state_ == State::Damage || state_ == State::Died)return;
 
 	if (other.tag() == "PlayerAttack") { //プレイヤーの攻撃と衝突した場合
-		hp_ -= atk_power_;
+		hp_ -= atk_power;
 		if (hp_ <= 0) {
 			//死亡状態に変更
 			change_state(State::Died, MotionDie, false);
@@ -263,6 +249,18 @@ bool CarGhost::is_move()const {
 bool CarGhost::is_turn() const {
 	//振り向き距離内かつ前向き方向のベクトルとターゲット方向のベクトルの角度差が20度以下か？
 	return (target_distance() <= TurnDistance) && (target_angle() >= 90.0f);
+}
+
+//カメラの外側にいるか
+bool CarGhost::is_outside() const {
+	Camera* camera = world_->camera();
+	if (camera == nullptr) return false;
+	//画面内にいたら移動する
+	GSvector3 to_target = transform_.position() - camera->transform().position();
+	//カメラの前ベクトル
+	GSvector3 forward = camera->transform().forward();
+	float angle = abs(GSvector3::signed_angle(forward, to_target));
+	return (angle <= 45.0f);
 }
 
 //前向き方向のベクトルとターゲット方向のベクトルの角度差を求める(符号付き)
