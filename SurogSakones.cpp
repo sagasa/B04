@@ -253,6 +253,7 @@ void SurogSakones::stun(float delta_time) {
 void SurogSakones::dying(float delta_time) {
 	if (state_timer_ >= mesh_.motion_end_time()) {
 		die();
+		world_->game_clear();
 	}
 }
 void SurogSakones::turn(float delta_time) {
@@ -439,7 +440,7 @@ void SurogSakones::generate_pshychokinesis(const GSvector3& position, GSvector3 
 }
 
 void SurogSakones::generate_attackcollider(){
-	const float AttackColliderDistance{ 1.4f };
+	const float AttackColliderDistance{ 1.3f };
 	const float AttackColliderRadius{ 0.5f };
 	const float AttackColliderHeight{ 1.85f };
 

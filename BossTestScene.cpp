@@ -9,6 +9,7 @@
 #include"SurogSakones.h"
 #include "UI.h"
 #include "AttackCollider.h"
+#include "Actor.h"
 
 void BossTestScene::start() {
     // プレーヤー弾画像を読み込み
@@ -69,11 +70,11 @@ void BossTestScene::draw() const {
 }
 //終了しているか？
 bool BossTestScene::is_end() const {
-	return false;
+	return world_.is_game_clear()||world_.is_game_over();
 }
 //次のシーン名を返す
 std::string BossTestScene::next() const {
-	return "NullScene";
+	return "TitleScene";
 }
 //終了
 void BossTestScene::end() {
