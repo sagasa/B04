@@ -28,8 +28,6 @@ const float EnemyHeight{ 0.75f };
 const float EnemyRadius{ 0.5f };
 //足元のオフセット
 const float FootOffset{ 0.1f };
-//重力
-const float Gravity{ -0.016f };
 //射撃時間のインターバル
 const float Interval{240.0f};
 //x座標の死亡座標
@@ -77,10 +75,6 @@ void Poltergeist::update(float delta_time) {
 		player_ = world_->find_actor("Player");
 		//状態の更新
 		update_state(delta_time);
-		//重力を更新
-		velocity_.y += Gravity * delta_time;
-		//重力を加える
-		transform_.translate(0.0f, velocity_.y, 0.0f);
 		//フィールドとの衝突判定
 		collide_field();
 		//モーション変更
@@ -307,18 +301,6 @@ void Poltergeist::collide_field() {
 		center.y = transform_.position().y;
 		//補正後の座標に変更する
 		transform_.position();
-	}
-	//地面との衝突判定(線分との交差判定)
-	GSvector3 position = transform_.position();
-	Line line;
-	line.start = position + collider_.center;
-	line.end = position + GSvector3{ 0.0f,-FootOffset,0.0f };
-	GSvector3 intersect;//地面との交点
-	if (world_->field()->collide(line, &intersect)) {
-		//交差した点からy座標のみ補正する
-		position.y = intersect.y;
-		transform_.position(position);
-		velocity_.y = 0.0f;
 	}
 }
 
