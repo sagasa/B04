@@ -3,19 +3,31 @@
 #include "AttackCollider.h"
 
 
+void player_ghost::on_hit(const Actor& attacker, float atk_power)
+{
+}
+
 player_ghost::player_ghost(IWorld* world, const GSvector3& position):Player(world,position, AnimatedMesh{ Mesh_Player, Skeleton_Player, Animation_Player })
 {
     motion_ = 0;
+    mesh_.change_motion(motion_);
 }
 
 
 const float Velocity = 0.15f;
-const GSvector3 gravity{ 0.0f, 0.02f, 0.0f };
+const GSvector3 gravity{ 0.0f, 0.01f, 0.0f };
 
 void player_ghost::update(float delta_time)
 {
     //重力？
-    velocity_ -= gravity * delta_time;
+	if(gravity_timer_<=0)
+	{
+      
+	}else
+	{
+		gravity_timer_ -= delta_time;
+	}
+    velocity_ -= gravity * delta_time * (1-CLAMP(gravity_timer_, 0, 30) / 30);
     velocity_ *= 0.9f;
 
     GSvector2 inputVelocity = get_input();
@@ -25,15 +37,26 @@ void player_ghost::update(float delta_time)
     else if (inputVelocity.x > 0) {
         transform_.localRotation(GSquaternion::euler(0.0f, 90.0f, 0.0f));
     }
-    // 移動量を計算
-    inputVelocity.normalize();
-    float speed = 0.04f;    // 移動スピード
+    
+	if(0<inputVelocity.y)
+	{
+        //上に移動したなら
+        gravity_timer_ = 60;
+	}else if(inputVelocity.y<0)
+	{
+        //下入力で重力を適応
+        gravity_timer_ = 0;
+	}
+	
+    //地上で下入力を許可しない
+    if (on_ground_)
+    {
+        inputVelocity.y = MAX(inputVelocity.y, 0);
+    }
+	// 移動量を計算
+	float speed = 0.04f;    // 移動スピード
     velocity_ += inputVelocity * delta_time * speed;
     velocity_.x = CLAMP(velocity_.x, -Velocity, Velocity);
-
-    if (gsGetKeyTrigger(GKEY_SPACE) == GS_TRUE ) {
-        jump(5, 0.15f);
-    }
 
     if (gsGetKeyState(GKEY_F) == GS_TRUE) {
 
@@ -58,12 +81,14 @@ void player_ghost::update(float delta_time)
         // 衝突判定を出現させる
         world_->add_actor(new AttackCollider{ world_, collider,
             "PlayerAttackTag", "PlayerAttack", AttackCollideLifeSpan, AttackCollideDelay });
+
+        mesh_.change_motion(2,false);
     }
 
     update_physics(delta_time);
 	
     //モーション変更
-    mesh_.change_motion(motion_);
+    
     //メッシュの更新
     mesh_.update(delta_time);
     //行列を設定

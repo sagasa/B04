@@ -6,6 +6,10 @@ player_paladin::player_paladin(IWorld* world, const GSvector3& position) :Player
 	
 }
 
+void player_paladin::on_hit(const Actor& attacker, float atk_power)
+{
+}
+
 void player_paladin::update(float delta)
 {
     //ƒ‚[ƒVƒ‡ƒ“•ÏX
