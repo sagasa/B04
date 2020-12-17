@@ -17,6 +17,7 @@
 #include	"GSshader.h"
 #include	"GSrender_target.h"
 #include    "GSuniform_block.h"
+#include	"GSreflection_probe.h"
 #include	<stddef.h>
 #include	<GL/glu.h>
 
@@ -926,9 +927,10 @@ gsDrawOctreeEx
     if (s_bDefaultMeshShader == GS_TRUE) {
         gsBeginShader(s_ExecuteDefaultMeshShader);
         gsSetDefaultShaderParam();
+        gsBindEnvironmentReflectionTexture();
     }
 	/* オクツリーの描画 */
-	gsOctreeDrawEx(pOctree, pProjectionMatrix, pViewMatix);   
+	gsOctreeDrawEx(pOctree, &ProjectionMatrix, &ViewMatix);   
     /* デフォルトのシェーダーの解除 */
     if (s_bDefaultMeshShader == GS_TRUE) {
         gsEndShader();
@@ -2990,7 +2992,7 @@ gsBindDefaultSkinMeshShader
 
 /*=============================================================================
 *
-* Purpose :  デフォルトのスキンメッシュシェーダーのバインド．
+* Purpose :  デフォルトシェーダーパラメータの設定．
 *
 *
 * Return  : なし．
@@ -3002,7 +3004,6 @@ gsSetDefaultShaderParam
     void
 )
 {
-    /* ライトパラメータの取得 */
     GSvector4 LightAmbient;
     GSvector4 LightDiffuse;
     GSvector4 LightSpecular;
@@ -3018,6 +3019,15 @@ gsSetDefaultShaderParam
     GSmatrix4 ModelViewProjectionMatrix;
     GSmatrix4 ProjectionMatrix;
     GSmatrix4 NormalMatrix;
+	GSmatrix4 ViewMatrix;
+	GSmatrix4 ModelMatrix;
+	GSmatrix4 ModelNormalMatrix;
+	GSmatrix4 InvViewMatrix;
+	GSmatrix4 StackMatrix[32];
+	GLint MatrixStackDepth;
+	int i;
+	GSvector3 ViewPosition;
+    GSvector3 WorldtPosition;
 
     /* ライトパラメータの取得 */
     glGetLightfv(GL_LIGHT0, GL_AMBIENT, (GLfloat*)&LightAmbient);
@@ -3035,15 +3045,46 @@ gsSetDefaultShaderParam
 
     /* 透視変換行列の取得 */
     glGetFloatv(GL_PROJECTION_MATRIX, (GLfloat*)&ProjectionMatrix);
-    /* 視点変換行列の取得 */
-    glGetFloatv(GL_MODELVIEW_MATRIX, (GLfloat*)&ModelViewMatrix);
-    /* モデル・ビュー・プロジェクション変換行列の作成 */
+
+	/* 現在行列のスタックの深さを取得 */
+	glGetIntegerv(GL_MODELVIEW_STACK_DEPTH, &MatrixStackDepth);
+
+	/* 行列のスタックのモデルビューマトリクスをすべて取得 */
+	glGetFloatv(GL_MODELVIEW_MATRIX, (GLfloat*)&StackMatrix[0]);
+	for (i = 1; i < MatrixStackDepth; ++i) {
+		glPopMatrix();
+		glGetFloatv(GL_MODELVIEW_MATRIX, (GLfloat*)&StackMatrix[i]);
+	}
+	/* 行列のスタックのモデルビューマトリクスをすべて復帰 */
+	for (i = MatrixStackDepth - 1; i >= 1; --i) {
+		glLoadMatrixf((GLfloat*)&StackMatrix[i]);
+		glPushMatrix();
+	}
+	glLoadMatrixf((GLfloat*)&StackMatrix[0]);
+
+	/* モデルビューマトリクスの取得 */
+	ModelViewMatrix = StackMatrix[0];
+	/* 視野変換行列の取得 */
+	ViewMatrix = StackMatrix[MatrixStackDepth - 1];
+
+	/* モデル・ビュー・プロジェクション変換行列の作成 */
     gsMatrix4Multiply(&ModelViewProjectionMatrix, &ModelViewMatrix, &ProjectionMatrix);
     /* 法線ベクトル用の変換行列の作成 */
     NormalMatrix = ModelViewMatrix;
     NormalMatrix._41 = 0.0f; NormalMatrix._42 = 0.0f; NormalMatrix._43 = 0.0f;
     gsMatrix4Inverse(&NormalMatrix, &NormalMatrix);
     gsMatrix4Transpose(&NormalMatrix, &NormalMatrix);
+	/* 視野変換行列の逆行列を作成 */
+	gsMatrix4InverseFast(&InvViewMatrix, &ViewMatrix);
+	/* モデリング変換行列を作成 */
+	gsMatrix4Multiply(&ModelMatrix, &ModelViewMatrix, &InvViewMatrix);
+	/* 法線ベクトル用の変換行列の作成 */
+	ModelNormalMatrix = ModelMatrix;
+	ModelNormalMatrix._41 = 0.0f; ModelNormalMatrix._42 = 0.0f; ModelNormalMatrix._43 = 0.0f;
+	gsMatrix4Inverse(&ModelNormalMatrix, &ModelNormalMatrix);
+	gsMatrix4Transpose(&ModelNormalMatrix, &ModelNormalMatrix);
+	/* 視点の座標を取得*/
+	gsMatrix4InverseLookAtRH(&ViewMatrix, &ViewPosition, NULL, NULL);
 
     /* ライトパラメータの設定 */
     gsSetShaderParam4f("gs_LightAmbient", &LightAmbient);
@@ -3057,26 +3098,38 @@ gsSetDefaultShaderParam
     gsSetShaderParam1f("gs_LightConstantAttenuation", LightConstantAttenuation);
     gsSetShaderParam1f("gs_LightLinearAttenuation", LightLinearAttenuation);
     gsSetShaderParam1f("gs_LightQuadraticAttenuation", LightQuadraticAttenuation);
-
+	/* グローバルアンビエントの設定 */
     gsSetShaderParam4f("gs_LightModelAmbient", &LightModelAmbient);
 
     /* 変換行列の設定 */
-    gsSetShaderParamMatrix4("gs_ProjectionMatrix", &ProjectionMatrix);
+	gsSetShaderParamMatrix4("gs_ModelMatrix", &ModelMatrix);
+	gsSetShaderParamMatrix4("gs_ViewMatrix", &ViewMatrix);
+	gsSetShaderParamMatrix4("gs_ProjectionMatrix", &ProjectionMatrix);
     gsSetShaderParamMatrix4("gs_ModelViewMatrix", &ModelViewMatrix);
     gsSetShaderParamMatrix4("gs_ModelViewProjectionMatrix", &ModelViewProjectionMatrix);
-    gsSetShaderParamMatrix4("gs_NormalMatrix", &NormalMatrix);
+	gsSetShaderParamMatrix4("gs_NormalMatrix", &NormalMatrix);
+	gsSetShaderParamMatrix4("gs_ModelNormalMatrix", &ModelNormalMatrix);
+
+	/* 視点の座標の設定 */
+	gsSetShaderParam3f("gs_ViewPosition", &ViewPosition);
 
     /* テクスチャパラメータの設定 */
     gsSetShaderParamTexture("gs_DiffseTexture",   0);
     gsSetShaderParamTexture("gs_NormalTexture",   1);
     gsSetShaderParamTexture("gs_SpecularTexture", 2);
-    gsSetShaderParamTexture("gs_AmbientOcclusionTexture",  3);
+    gsSetShaderParamTexture("gs_AmbientOcclusionTexture", 3);
     gsSetShaderParamTexture("gs_EmissiveTexture", 4);
     gsSetShaderParamTexture("gs_HeightTexture",   5);
     gsSetShaderParamTexture("gs_DiffseTexture2",  6);
     gsSetShaderParamTexture("gs_NormalTexture2",  7);
     gsSetShaderParamTexture("gs_MaskTexture",     8);
     gsSetShaderParamTexture("gs_CubeTexture",     9);
+
+    /* リフレクションプローブの設定 */
+    WorldtPosition.x = ModelMatrix.m[3][0];
+    WorldtPosition.y = ModelMatrix.m[3][1];
+    WorldtPosition.z = ModelMatrix.m[3][2];
+    gsBindReflectionProbeTexture(&WorldtPosition);
 }
 
 /********** End of File ******************************************************/

@@ -22,7 +22,7 @@
     <ProjectGuid>{11F50589-5AC0-4D8C-8D16-7EADD1171B35}</ProjectGuid>
     <RootNamespace>gsinput</RootNamespace>
     <Keyword>Win32Proj</Keyword>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='gsinput_mdd|Win32'" Label="Configuration">

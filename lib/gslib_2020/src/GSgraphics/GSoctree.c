@@ -30,6 +30,8 @@ static GSboolean CollisionOctreeNodeAndRay( GSoctnode*, const GSvector3*, const 
 static GSboolean RayIsIntersectBox( const GSvector3*, const GSvector3*, const GSvector3*, const GSvector3* );
 static GSboolean IsIntersect( const GSvector3*, const GSvector3*, const GSvector3*, const GSvector3*, GSfloat, GSfloat );
 
+extern void gsBindReflectionProbeTextureEx(const GSvector3*, const GSvector3*);
+
 /*=============================================================================
 *
 * Purpose : オクツリーの生成．
@@ -689,6 +691,12 @@ DrawOctreeNodeEx
 	/* メッシュを持っているか？ */
 	if (pNode->pMesh != NULL)
 	{
+		/* リフレクションプローブのバインド */
+		GSvector3 center;
+		center.x = (pNode->PosMin.x + pNode->PosMax.x) / 2.0f;
+		center.x = (pNode->PosMin.y + pNode->PosMax.y) / 2.0f;
+		center.x = (pNode->PosMin.z + pNode->PosMax.z) / 2.0f;
+		gsBindReflectionProbeTextureEx(&center, NULL);
 		/* メッシュを描画する */
 		gsMeshDrawEx(pNode->pMesh);
 	}

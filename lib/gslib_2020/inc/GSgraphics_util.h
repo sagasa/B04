@@ -37,22 +37,22 @@ extern void gsDrawSprite3DEx(
 );
 
 // スカイボックスの描画
-extern void gsDrawSkyBox(
+extern void gsDrawSkybox(
 	GSuint meshID							// メッシュID
 );
 
 // スカイボックスの描画 (シェーダー用）
-extern void gsDrawSkyBoxEx(
-	GSuint cube_map							// テクスチャＩＤ（キューブマップ）
+extern void gsDrawSkyboxEx(
+	GSuint cubemap							// テクスチャＩＤ（キューブマップ）
 );
 
 // スカイボックスの描画
-extern void gsDrawSkyBoxCubeMap(
-	GSuint cube_map							// テクスチャＩＤ（キューブマップ）
+extern void gsDrawSkyboxCubemap(
+	GSuint cubemap							// テクスチャＩＤ（キューブマップ）
 );
 
 // キューブマップに描画
-extern void gsDrawCubeMap(
+extern void gsDrawCubemap(
 	GSuint cube_map,						// レンダーターゲットのID（キューブマップ）
 	const GSvector3* pViewPosition,			// 視点の座標
 	void(*draw_scene)(void*),				// コールバック関数
@@ -60,7 +60,7 @@ extern void gsDrawCubeMap(
 );
 
 // キューブマップに描画
-extern void gsDrawCubeMapEx(
+extern void gsDrawCubemapEx(
 	GSuint cube_map,						// レンダーターゲットのID（キューブマップ）
 	const GSvector3* pViewPosition,			// 視点の座標
 											// コールバック関数
