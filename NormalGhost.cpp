@@ -93,11 +93,8 @@ void NormalGhost::react(Actor& other) {
 	//ダメージ中または死亡中は何もしない
 	if (state_ == State::Damage || state_ == State::Died) return;
 
-	if (other.tag() == "PlayerTag" || other.tag() == "PlayerAttack") {
-		float atk = dynamic_cast<ActorProp*>(&other)->atk_power();
-		if (atk == NULL) return;
-		hp_ -= atk_power_;
-		change_state(State::Damage, MotionDamage);
+	if (other.tag() == "PlayerTag") {
+		ActorProp::do_attack(other, *this, atk_power_);
 	}
 	
 }
@@ -105,9 +102,10 @@ void NormalGhost::react(Actor& other) {
 void NormalGhost::on_hit(const Actor& other, float atk_power) {
 	//ダメージ中または死亡中は何もしない
 	if (state_ == State::Damage || state_ == State::Died) return;
+
 	if (other.tag() == "PlayerTag" || other.tag() == "PlayerAttack") {
-		hp_-= atk_power_;
-		change_state(State::Damage, MotionDamage);
+		hp_-= atk_power;
+		change_state(State::Damage, MotionDamage, false);
 	}
 }
 

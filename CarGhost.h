@@ -55,6 +55,8 @@ private:
 	bool is_move()const;
 	//振り向き判定
 	bool is_turn() const;
+	//カメラの内側にいるか？
+	bool is_inside() const;
 
 	//ターゲット方向の角度を求める(符号付き)
 	float target_signed_angle()const;
