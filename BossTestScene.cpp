@@ -57,7 +57,7 @@ void BossTestScene::start() {
 void BossTestScene::update(float delta_time) {
 	if(gsGetKeyTrigger(GKEY_RETURN))
 	{
-        BoundingSphere collider{ 0.5f,GSvector3{5.0f,-0.5f,0.0f} };
+        BoundingSphere collider{ 0.5f,GSvector3{5.0f,-1.0f,0.0f} };
         world_.add_actor(new AttackCollider{ &world_,collider,"PlayerAttack","PlayerAttackName",60.0f,0.0f,10.0f });
 	}
     world_.update(delta_time);

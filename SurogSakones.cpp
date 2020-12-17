@@ -59,7 +59,7 @@ SurogSakones::SurogSakones(IWorld* world, const GSvector3& position) :
 	transform_.position(position);
 	collider_ = BoundingSphere{ 0.5f,GSvector3::up() * 1.0f };
 	state_ = State::Idol;
-	hp_ = 100.0f;
+	hp_ = 15.0f;
 	transform_.rotation(GSquaternion::euler(GSvector3{ 0.0f,-90.0f,0.0f }));
 
 	mesh_.transform(transform_.localToWorldMatrix());
@@ -116,7 +116,27 @@ void SurogSakones::late_update(float delta_time) {
 	prev_flip_ = flip_;
 }
 void SurogSakones::react(Actor& other) {
-	
+	if (state_ == State::Stun)return;
+	//if (other.tag() == "PlayerAttack")
+	//{
+	//	//try
+	//	//{
+	//	//	ActorProp& ap = dynamic_cast<ActorProp&>(other);
+	//	//	set_hp(ap.atk_power());
+	//	//}
+	//	//catch(std::bad_cast& e)
+	//	//{
+	//	//	std::cout << e.what() << std::endl;
+	//	//}
+	//	/*if (hp_ <= 0.0f)
+	//	{
+	//		change_state(State::Dying, MotionDying, false);
+	//	}
+	//	else {
+	//		change_state(State::Stun, MotionDamage1, false);
+	//	}*/
+	//	
+	//}
 	if(other.tag()=="PlayerTag")
 	{
 		collide_actor(other);
@@ -124,6 +144,7 @@ void SurogSakones::react(Actor& other) {
 }
 void SurogSakones::on_hit(const Actor& attacker, float atk_power)
 {
+	if (state_ == State::Stun || state_ == State::Dying)return;
 	if (attacker.tag() == "PlayerAttack")
 	{
 		hp_ -= atk_power;
@@ -236,7 +257,7 @@ void SurogSakones::turn(float delta_time) {
 	if (!flip_)to_rotate_ = GSvector3{ 0.0f, 90.0f ,0.0f };
 	else to_rotate_ = { 0.0f, -90.0f ,0.0f };
 	if (GSquaternion::angle(transform_.rotation(), GSquaternion::euler(to_rotate_)) >= 5.0f) {
-		transform_.rotate(GSvector3{ 0.0f,1.0f,0.0f }, 5.0f / delta_time, GStransform::Space::World);
+		transform_.rotate(GSvector3{ 0.0f,1.0f,0.0f }, 3.0f * delta_time, GStransform::Space::World);
 	}
 	if (state_timer_ >= mesh_.motion_end_time()) {
 		transform_.rotation(GSquaternion::euler(to_rotate_));
