@@ -1,21 +1,20 @@
 #pragma once
 #include "Actor.h"
-#include "ActorProp.h"
+#include "DamageProp.h"
 #include "AnimatedMesh.h"
 
 // プレーヤ
-class Player : public Actor, public ActorProp {
-    int jump_count_;
-    float jump_force_;
+class Player : public Actor, public DamageProp {
+    
 
 protected:
+    int jump_count_;
+    float jump_force_;
+	
     bool on_ground_;
     //アニメーションメッシュ
     AnimatedMesh mesh_;
-    //モーション番号
-    GSuint motion_;
-    //モーションのループ指定
-    bool motion_loop_;
+  
 	//判定が硬いか
     bool is_soft_;
 	

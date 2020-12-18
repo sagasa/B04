@@ -77,7 +77,7 @@ void GamePlayScene::draw() const {
 
 //終了しているか？
 bool GamePlayScene::is_end() const {
-	return is_end_;
+	return world_.is_game_over()||world_.is_game_clear();
 }
 
 //次のシーンを返す

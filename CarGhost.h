@@ -2,12 +2,12 @@
 #define CAR_GHOST_H_
 
 #include"Actor.h"
-#include"ActorProp.h"
+#include"DamageProp.h"
 #include"AnimatedMesh.h"
 
 
 
-class CarGhost : public Actor, public ActorProp{
+class CarGhost : public Actor, public DamageProp{
 public:
 	//èÛë‘
 	enum class State {

@@ -2,7 +2,7 @@
 #define UI_H_
 
 #include"Actor.h"
-#include"ActorProp.h"
+#include"DamageProp.h"
 
 //UIƒNƒ‰ƒX
 class UI : public Actor {

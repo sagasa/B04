@@ -60,7 +60,7 @@ void UI::change_gui()
 	Actor* player = world_->find_actor("Player");
 	if (player == nullptr)return;
 
-	ActorProp& ap = dynamic_cast<ActorProp&>(*player);
+	DamageProp& ap = dynamic_cast<DamageProp&>(*player);
 	if (hp_ != (int)floorf(ap.hp()))
 	{
 		hp_ = (int)floorf(ap.hp());

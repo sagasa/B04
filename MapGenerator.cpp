@@ -45,6 +45,7 @@ void MapGenerator::generate(IWorld* world) {
 		world->add_actor(new RushGhost{ world,position });
 	}
 	else if (name == "Paladin") {
+		world->add_actor(new player_paladin{ world,position });
 	}
 	else if (name == "SurogSakones")
 	{

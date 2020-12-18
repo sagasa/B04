@@ -4,7 +4,7 @@
 #include"Line.h"
 #include"Assets.h"
 #include"AttackCollider.h"
-#include"ActorProp.h"
+#include"DamageProp.h"
 #include"Camera.h"
 
 enum {
@@ -39,7 +39,8 @@ const float LimitDistance_x{ 100.0f };
 const float LimitDistance_y{ 100.0f };
 //重力
 const float Gravity{ -0.0016f };
-
+//攻撃力の設定
+const float atk_power = 1.0f;
 
 //コンストラクタ
 CarGhost::CarGhost(IWorld* world, const GSvector3& position) :
@@ -61,8 +62,6 @@ CarGhost::CarGhost(IWorld* world, const GSvector3& position) :
 	hit_ = true;
 	//体力の設定
 	hp_ = 1.0f;
-	//攻撃力の設定
-	atk_power_ = 1.0f;
 	//transform_.position(GSvector3::zero());
 	//衝突判定球の設定
 	collider_ = BoundingSphere{ EnemyRadius ,GSvector3{0.0f,EnemyHeight,0.0f} };
@@ -118,7 +117,7 @@ void CarGhost::react(Actor& other) {
 
 	else if (other.tag() == "PlayerTag") {//プレイヤーと衝突した場合
 		is_hit_ = true;
-		ActorProp::do_attack(other, *this, atk_power_);
+		DamageProp::do_attack(other, *this, atk_power);
 	}
 }
 
