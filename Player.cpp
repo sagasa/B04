@@ -7,7 +7,7 @@
 void Player::update_physics(const float delta_time)
 {
     // 座標を更新
-    transform_.translate(velocity_ * delta_time, GStransform::Space::World);
+    transform_.translate(velocity_.xy * delta_time, GStransform::Space::World);
 	
     //地面との衝突判定(線分との交差判定)
     BoundingSphere sphere = collider();
