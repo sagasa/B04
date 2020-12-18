@@ -79,9 +79,12 @@ bool player_paladin::on_hit(const Actor& attacker, float atk_power)
         {
             stop();
             world_->add_actor(new player_ghost{ world_,transform_.position() });
+            std::cout << "Stop " << hp_ << "\n";
+        }else
+        {
+            change_state(Damage, 5, false);
+            std::cout << "Hit paladin " << hp_ << "\n";
         }
-        change_state(Damage, 5, false);
-        std::cout << "Hit " << hp_ << "\n";
         return true;
     }
     return false;
