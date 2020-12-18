@@ -22,6 +22,8 @@ const float TurnDistance{ 10.0f };
 const float MoveDistance{ 10.0f };
 //振り向く角度
 const float TurnAngle{ 5.0f };
+//攻撃する角度
+const float AttackAngle{ 90.0f };
 //エネミーの高さ
 const float EnemyHeight{ 0.75f };
 //エネミーの半径
@@ -223,7 +225,7 @@ bool Poltergeist::is_turn()const {
 //攻撃判定
 bool Poltergeist::is_attack()const {
 	//攻撃距離内かつ前向き方向のベクトルとターゲット方向のベクトルの角度差が20.0度以下か？
-	return (target_distance_x() <= MoveDistance) && (target_angle() <= 20.0f);
+	return (target_distance_x() <= MoveDistance) && (target_angle() <= AttackAngle);
 }
 
 //カメラの内側にいるか？
