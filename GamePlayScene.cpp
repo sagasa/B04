@@ -51,7 +51,7 @@ void GamePlayScene::start() {
     gsLoadMesh(Mesh_Book, "Assets/Model/Bullet/books.msh");
 	
     //スカイボックスの読み込み
-    gsLoadMesh(Mesh_Skybox, "Assets/Skybox/skydome.msh");
+    gsLoadMesh(Mesh_Skybox, "Assets/Skybox/DarkStorm4K.msh");
     //描画用オクツリーの読み込み
     gsLoadOctree(Octree_Stage, "Assets/Octree/stage1.oct");
     //衝突判定用オクツリーの読み込み

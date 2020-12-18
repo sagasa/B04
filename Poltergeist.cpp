@@ -334,7 +334,7 @@ void Poltergeist::generate_bullet() const {
 	//弾の生成位置の高さの補正値
 	const float GenerateHeight{ 1.0f };
 	//弾のスピード
-	const float BulletSpeed{ 0.025f };
+	const float BulletSpeed{ 0.1f };
 	//生成位置の計算
 	GSvector3 position = transform_.position() + transform_.forward() * GenerateDistance;
 	//y座標を補正する

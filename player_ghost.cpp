@@ -77,7 +77,7 @@ player_ghost::player_ghost(IWorld* world, const GSvector3& position):Player(worl
 }
 
 
-const float Velocity = 0.15f;
+const float Velocity = 0.1f;
 const GSvector3 gravity{ 0.0f, 0.01f, 0.0f };
 
 void player_ghost::update(float delta_time)
