@@ -31,10 +31,10 @@ const float FootOffset{ 0.1f };
 const float Gravity{ 0.2f };
 const float TurnDistance{ 2.0f };
 const float MinMoveDistance{ 3.5f };
-const float SarchMoveDistance{ 5.5f };
-const float MaxMoveDistance{ 10.0f };
+const float SarchMoveDistance{ 6.5f };
+const float MaxMoveDistance{ 12.0f };
 
-const float ScytheRange{ 2.0f };
+const float ScytheRange{ 2.5f };
 const float Psyco1Range{ 5.5f };
 
 //アタック時のフレーム数
@@ -68,10 +68,7 @@ SurogSakones::SurogSakones(IWorld* world, const GSvector3& position) :
 	move_pos_.push_back(transform().position() - GSvector3{ 5.0f,0.0f,0.0f });
 }
 void SurogSakones::update(float delta_time) {
-	if (player_ == nullptr)
-	{
-		player_ = world_->find_actor("Player");
-	}
+	player_ = world_->find_actor("Player");
 	//一応保険で残す
 	if (gsGetKeyTrigger(GKEY_1)) {
 		change_state(State::Attack, MotionScytheAttack,true);
