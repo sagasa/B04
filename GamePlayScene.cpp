@@ -47,6 +47,8 @@ void GamePlayScene::start() {
     gsLoadMesh(Mesh_Paladin, "Assets/Model/Paladin/Paladin.msh");
     gsLoadSkeleton(Skeleton_Paladin, "Assets/Model/Paladin/Paladin.skl");
     gsLoadAnimation(Animation_Paladin, "Assets/Model/Paladin/Paladin.anm");
+    //バレット(本)のメッシュの追加
+    gsLoadMesh(Mesh_Book, "Assets/Model/Bullet/books.msh");
 	
     //スカイボックスの読み込み
     gsLoadMesh(Mesh_Skybox, "Assets/Skybox/skydome.msh");
@@ -88,6 +90,30 @@ std::string GamePlayScene::next() const {
 void GamePlayScene::end() {
 	//ワールドを消去
 	world_.clear();
-	//テクスチャの削除
+    //メッシュの削除
+    gsDeleteMesh(Mesh_Player);
+    gsDeleteMesh(Mesh_Paladin);
+    gsDeleteMesh(Mesh_CarGhost);
+    gsDeleteMesh(Mesh_Poltergeist);
+    gsDeleteMesh(Mesh_RushGhost);
+    gsDeleteMesh(Mesh_Book);
+    gsDeleteMesh(Mesh_Skybox);
+    gsDeleteMesh(Mesh_SurogSakones);
+    //スケルトンの削除
+    gsDeleteSkeleton(Skeleton_CarGhost);
+    gsDeleteSkeleton(Skeleton_Paladin);
+    gsDeleteSkeleton(Skeleton_Poltergeist);
+    gsDeleteSkeleton(Skeleton_RushGhost);
+    gsDeleteSkeleton(Skeleton_SurogSakones);
+    //アニメーションの削除
+    gsDeleteAnimation(Animation_CarGhost);
+    gsDeleteAnimation(Animation_Paladin);
+    gsDeleteAnimation(Animation_Poltergeist);
+    gsDeleteAnimation(Animation_RushGhost);
+    gsDeleteAnimation(Animation_SurogSakones);
+    //オクツリーの削除
+    gsDeleteOctree(Octree_Collider);
+    gsDeleteOctree(Octree_Stage);
+	
 	
 }
