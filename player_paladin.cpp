@@ -38,7 +38,7 @@ void player_paladin::change_state(State state, GSuint motion, bool loop)
 void player_paladin::attack()
 {
     // 攻撃判定を出現させる場所の距離
-    const float AttackColliderDistance{ 0.8f };
+    const float AttackColliderDistance{ 1.2f };
     // 攻撃判定の半径
     const float AttackColliderRadius{ 1.0f };
     // 攻撃判定を出す場所の高さ
@@ -83,7 +83,7 @@ bool player_paladin::on_hit(const Actor& attacker, float atk_power)
         }else
         {
             change_state(Damage, 5, false);
-            std::cout << "Hit paladin " << hp_ << "\n";
+            std::cout << "Hit paladin " << hp_<<" "<<transform_.position().z << "\n";
         }
         return true;
     }
@@ -95,10 +95,10 @@ const GSvector3 gravity{ 0.0f, 0.01f, 0.0f };
 
 void player_paladin::update(float delta_time)
 {
+    //重力
+    velocity_ -= gravity * delta_time;
     //起動
     if (state_ != Stop) {
-        //重力
-        velocity_ -= gravity * delta_time;
 
         GSvector2 inputVelocity = get_input();
         inputVelocity.y = 0;
@@ -120,12 +120,6 @@ void player_paladin::update(float delta_time)
             velocity_.x *= 0.9f;
         }
 
-        if (gsGetKeyTrigger(GKEY_E))
-        {
-            stop();
-            world_->add_actor(new player_ghost{ world_,transform_.position() });
-        }
-
         if (state_ != Attack && state_ != Damage)
         {
             //攻撃開始
@@ -133,6 +127,12 @@ void player_paladin::update(float delta_time)
                 attack();
         }
 
+        if (state_ != Attack && gsGetKeyTrigger(GKEY_E))
+        {
+            stop();
+            world_->add_actor(new player_ghost{ world_,transform_.position() });
+        }
+    	
 
         //ジャンプキャンセル
         if (state_ == Jump && on_ground_ && jump_count_ <= 0)
@@ -183,11 +183,13 @@ void player_paladin::update(float delta_time)
         velocity_ += inputVelocity * delta_time * speed;
         velocity_.x = CLAMP(velocity_.x, -Velocity, Velocity);
         velocity_.y = CLAMP(velocity_.y, -Velocity, Velocity);
-
-
-        update_physics(delta_time);
+    	
+    }else
+    {
+        velocity_ *= 0.9;
     }
-
+    update_physics(delta_time);
+	
     //メッシュの更新
     mesh_.update(delta_time);
     //行列を設定
