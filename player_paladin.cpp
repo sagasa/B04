@@ -90,7 +90,7 @@ bool player_paladin::on_hit(const Actor& attacker, float atk_power)
     return false;
 }
 
-const float Velocity = 0.15f;
+const float Velocity = 0.07f;
 const GSvector3 gravity{ 0.0f, 0.01f, 0.0f };
 
 void player_paladin::update(float delta_time)
@@ -173,7 +173,7 @@ void player_paladin::update(float delta_time)
         {
             if (gsGetKeyState(GKEY_SPACE))
             {
-                jump(3, 0.2);
+                jump(3, 0.7);
                 change_state(Jump, 6, false);
             }
             inputVelocity.y = MAX(inputVelocity.y, 0);

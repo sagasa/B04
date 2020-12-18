@@ -2,6 +2,7 @@
 #include"IWorld.h"
 #include"Camera.h"
 #include"Assets.h"
+#include"Field.h"
 
 //€–S‚·‚é‚Ü‚Å‚ÌŠÔ
 const float Delay_time{3.0f};
@@ -43,6 +44,8 @@ void PoltergeistBullet::update(float delta_time) {
 	transform_.rotate(0.0f,1.0f,1.0f);
 	//ˆÚ“®‚·‚é
 	transform_.translate(velocity_, GStransform::Space::World);
+	//•Ç‚Æ‚ÌÕ“Ë”»’è
+	collide_field();
 }
 
 //•`‰æ
@@ -72,4 +75,13 @@ bool PoltergeistBullet::is_out_camera() const {
 	GSvector3 forward = camera->transform().forward();
 	float angle = abs(GSvector3::signed_angle(forward, to_target));
 	return (angle >= 45.0f);
+}
+
+//•Ç‚Æ‚ÌÕ“Ë”»’è
+void PoltergeistBullet::collide_field() {
+	//•Ç‚Æ‚ÌÕ“Ë”»’è(‹…‘Ì‚Æ‚Ì”»’è)
+	GSvector3 center;//Õ“ËŒã‚Ì‹…‘Ì‚Ì’†SÀ•W
+	if (world_->field()->collide(collider(),&center)) {
+		die();
+	}
 }

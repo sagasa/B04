@@ -32,7 +32,7 @@ const float EnemySideOffset{ 0.6f };
 //足元のオフセット
 const float FootOffset{ 0.1f };
 //スピード
-const float Speed{ 0.05f };
+const float Speed{ 0.1f };
 //x座標の死亡座標
 const float LimitDistance_x{ 100.0f };
 //y座標の死亡座標
