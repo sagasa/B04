@@ -79,6 +79,12 @@ GSvector3 Actor::velocity() const {
     return velocity_;
 }
 
+void Actor::velocity(const GSvector3& velocity)
+{
+    velocity_ = velocity;
+}
+
+
 // Õ“Ë”»’èƒf[ƒ^‚ğæ“¾
 BoundingSphere Actor::collider() const {
     return collider_.transform(transform_.localToWorldMatrix());

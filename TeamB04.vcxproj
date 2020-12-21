@@ -157,6 +157,7 @@
     <ClCompile Include="MapGenerator.cpp" />
     <ClCompile Include="EnemyTestScene.cpp" />
     <ClCompile Include="GamePlayScene.cpp" />
+    <ClCompile Include="Particle.cpp" />
     <ClCompile Include="player_ghost.cpp" />
     <ClCompile Include="player_paladin.cpp" />
     <ClCompile Include="NormalGhost.cpp" />
@@ -195,6 +196,7 @@
     <ClInclude Include="MapGenerator.h" />
     <ClInclude Include="EnemyTestScene.h" />
     <ClInclude Include="GamePlayScene.h" />
+    <ClInclude Include="Particle.h" />
     <ClInclude Include="player_ghost.h" />
     <ClInclude Include="player_paladin.h" />
     <ClInclude Include="player_info.h" />

@@ -1,5 +1,8 @@
 #include<gslib.h>
 #include"BossTestScene.h"
+
+#include <iostream>
+
 #include"Assets.h"
 #include"Field.h"
 #include"Camera.h"
@@ -10,6 +13,7 @@
 #include "UI.h"
 #include "AttackCollider.h"
 #include "Actor.h"
+#include "Particle.h"
 
 void BossTestScene::start() {
     // ƒvƒŒ[ƒ„[’e‰æ‘œ‚ð“Ç‚Ýž‚Ý
@@ -59,8 +63,17 @@ void BossTestScene::start() {
 void BossTestScene::update(float delta_time) {
 	if(gsGetKeyTrigger(GKEY_RETURN))
 	{
-        BoundingSphere collider{ 0.5f,GSvector3{5.0f,-1.0f,0.0f} };
-        world_.add_actor(new AttackCollider{ &world_,collider,"PlayerAttack","PlayerAttackName",60.0f,0.0f,10.0f });
+        Particle* p = new Particle{ &world_ };
+        p->transform().position(GSvector3{ 0.0f,0.0f,0.0f });
+        p->velocity(GSvector3{ 0.05f,0.05f,0.05f });
+        p->lifespan_= 30.0f ;
+        p->image_handle_ = Texture_EffectLazerCyan;
+        p->start_scale_ = GSvector2::zero();
+        p->end_scale_ = GSvector2::one();
+        p->damp_ = 1.0f;
+        p->OnUpdate = [] {std::cout<<"OnUpdate"<<std::endl; return; };
+
+        world_.add_actor(p);
 	}
     world_.update(delta_time);
 }
