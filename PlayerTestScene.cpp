@@ -5,6 +5,8 @@
 #include"Camera.h"
 #include"Light.h"
 #include"Player.h"
+#include "player_ghost.h"
+#include "player_paladin.h"
 #include "resource_loader.h"
 #include"SurogSakones.h"
 
@@ -47,7 +49,7 @@ void PlayerTestScene::start() {
     // ライトの追加
     world_.add_light(new Light{ &world_ });
     // プレーヤの追加
-    world_.add_actor(new Player{ &world_, GSvector3{ 0.0f, 0.0f, 0.0f } });
+    world_.add_actor(new player_paladin{ &world_, GSvector3{ 0.0f, 0.0f, 0.0f } });
 }
 
 //更新
@@ -74,7 +76,6 @@ void PlayerTestScene::end() {
     gsDeleteSkeleton(Skeleton_SurogSakones);
     gsDeleteAnimation(Animation_SurogSakones);
 	
-    gsDeleteTexture(Texture_BgTileNebulaGreen);
     gsDeleteTexture(Texture_EffectFlash);
     gsDeleteTexture(Texture_EffectLazerCyan);
     gsDeleteTexture(Texture_EffectLazerOrange);

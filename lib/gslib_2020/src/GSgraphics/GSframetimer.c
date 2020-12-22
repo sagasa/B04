@@ -20,22 +20,22 @@
 /****** グローバル変数宣言 ***************************************************/
 
 /* １秒間あたりのフレーム数 */
-static GSfloat	s_FPS = FPS;
+static GSdouble	s_FPS = FPS;
 
 /* １フレームの開始時間 */
-static GSfloat	s_StartTime = 0;
+static GSdouble	s_StartTime = 0;
 
 /* 前フレームの開始時間 */
-static GSfloat	s_PrevTime = 0;
+static GSdouble	s_PrevTime = 0;
 
 /* １フレームの経過時間 */
-static GSfloat	s_FrameTime = 0;
+static GSdouble	s_FrameTime = 0;
 
 /* 処理オーバー時間 */
-static GSfloat	s_OverTime = 0;
+static GSdouble	s_OverTime = 0;
 
 /* 最低ウェイトタイマ */
-static GSfloat	s_WaitTime = 0.25f;
+static GSdouble	s_WaitTime = 0.25;
 
 /* フレームスキップカウンタ */
 static GSuint	s_FrameSkipCount = 0;
@@ -57,9 +57,9 @@ gsFrameTimerReset
 	void
 )
 {
-	s_StartTime      = 0.0f;
-	s_FrameTime      = 0.0f;	
-	s_OverTime       = 0.0f;
+	s_StartTime      = 0.0;
+	s_FrameTime      = 0.0;	
+	s_OverTime       = 0.0;
 	s_FrameSkipCount = 0;
 	s_PrevTime       = gsTimeGetTime();
 }
@@ -179,9 +179,9 @@ gsFrameTimerWait
 	void
 )
 {
-	GSfloat		FrameTime;
-	GSfloat		StartTime;
-	GSfloat		WaitTime;
+	GSdouble	FrameTime;
+    GSdouble	StartTime;
+    GSdouble	WaitTime;
 
 	/* １フレームあたりの時間を求める */
 	FrameTime = ( gsTimeGetTime() - s_StartTime ) * s_FPS;
@@ -206,7 +206,7 @@ gsFrameTimerWait
 * Return  : なし．
 *
 *============================================================================*/
-extern GSfloat
+extern GSdouble
 gsFrameTimerGetTime
 (
 	void
@@ -225,7 +225,7 @@ gsFrameTimerGetTime
 extern void
 gsFrameTimerSetWaitTime
 (
-	GSfloat		WaitTime			/* 最低ウェイト時間 */
+	GSdouble	WaitTime			/* 最低ウェイト時間 */
 )
 {
 	s_WaitTime = WaitTime;
@@ -241,7 +241,7 @@ gsFrameTimerSetWaitTime
 extern void
 gsFrameTimerSetFPS
 (
-	GSfloat		fps					/* ＦＰＳの設定 */
+	GSdouble	fps					/* ＦＰＳの設定 */
 )
 {
 	s_FPS = fps;
@@ -254,7 +254,7 @@ gsFrameTimerSetFPS
 * Return  : 秒タイマを返す．
 *
 *============================================================================*/
-extern GSfloat
+extern GSdouble
 gsTimeGetTime
 (
 	void
@@ -270,7 +270,7 @@ gsTimeGetTime
 	QueryPerformanceFrequency( &Freq );
 
 	/* 秒単位に変換して返す */
-	return	(GSfloat)( (double)Time.QuadPart / (double)Freq.QuadPart );
+	return	(GSdouble)Time.QuadPart / (GSdouble)Freq.QuadPart;
 }
 
 /********** End of File ******************************************************/

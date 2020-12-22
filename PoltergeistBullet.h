@@ -2,13 +2,13 @@
 #define POLTERGEIST_BULLET_H_
 
 #include"Actor.h"
-#include"ActorProp.h"
+#include"DamageProp.h"
 
-class PoltergeistBullet : public Actor,public ActorProp {
+class PoltergeistBullet : public Actor {
 public:
 
 	//コンストラクタ
-	PoltergeistBullet(IWorld* world, const GSvector3& position,const GSvector3& velocity);
+	PoltergeistBullet(IWorld* world, const GSvector3& position,const GSvector3& velocity, float atk_power = 1.0f);
 	//更新
 	virtual void update(float delta_time) override;
 	//描画
@@ -19,10 +19,14 @@ public:
 private:
 	//画面外か？
 	bool is_out_camera() const;
+	//壁との衝突判定
+	void collide_field();
 
 private:
 	//死亡タイマー
 	float died_timer_;
+	//攻撃力
+	float atk_power_;
 };
 
 

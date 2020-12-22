@@ -3,6 +3,7 @@
 #include"Field.h"
 #include"Line.h"
 #include"Assets.h"
+#include"DamageProp.h"
 
 enum {
 	MotionIdle = 0,
@@ -15,10 +16,8 @@ enum {
 
 //振り向き判定の距離
 const float TurnDistance{ 1.5f };
-//攻撃判定の距離
-const float AttackDistance{ 1.5f };
-//移動判定の距離x
-const float MoveDistance{ 5.0f };
+//移動判定の距離
+const float MoveDistance{ 7.0f };
 //振り向く角度
 const float TurnAngle{ 5.0f };
 //エネミーの高さ
@@ -27,8 +26,6 @@ const float EnemyHeight{ 0.75f };
 const float EnemyRadius{ 0.5f };
 //足元のオフセット
 const float FootOffset{ 0.1f };
-//スピード
-const float Speed{ 0.025f };
 //円周率
 const float PI{ 3.141592654 };
 //半径
@@ -37,6 +34,10 @@ const float radius{ 5.0f };
 const float LimitDistance_x{ 100.0f };
 //y座標の死亡座標
 const float LimitDistance_y{ 100.0f };
+//攻撃力の設定
+const float atk_power = 1.0f;
+//移動中に遷移するまでのインターバル
+const float Interval{ 60.0f };
 
 //コンストラクタ
 RushGhost::RushGhost(IWorld* world, const GSvector3& position) :
@@ -48,25 +49,20 @@ RushGhost::RushGhost(IWorld* world, const GSvector3& position) :
 	world_ = world;
 	name_ = "RushGhost";
 	tag_ = "EnemyTag";
-	//ActorPropを継承しているか？
-	hit_ = true;
 	//体力の設定
 	hp_ = 3.0f;
-	//攻撃力の設定
-	atk_power_ = 1.0f;
+	//衝突判定球の設定
 	collider_ = BoundingSphere{ EnemyRadius ,GSvector3{0.0f,EnemyHeight,0.0f} };
+	//座標の初期化
 	transform_.position(position);
 	transform_.localRotation(GSquaternion::euler(0.0f, -90.0f, 0.0f));
+	//メッシュの変換行列の初期化
 	mesh_.transform(transform_.localToWorldMatrix());
 
 }
 
 //更新
 void RushGhost::update(float delta_time) {
-	//x座標が-100を超えたら
-	if (transform_.position().x <= -LimitDistance_x) {
-		die();
-	}
 	//プレイヤーを検索
 	player_ = world_->find_actor("Player");
 	//状態の更新
@@ -93,13 +89,21 @@ void RushGhost::draw() const {
 void RushGhost::react(Actor& other) {
 	//ダメージ中または死亡中の場合は何もしない
 	if (state_ == State::Damage || state_ == State::Died) return;
-	if (other.tag() == "PlayerAttackTag") {
-		//衝突した相手の攻撃力を取得
-		float atk = dynamic_cast<ActorProp*>(&other)->atk_power();
-		hp_ -= atk;
+
+	if (other.tag() == "PlayerTag") {
+		DamageProp::do_attack(other, *this, atk_power);
+	}
+}
+
+
+bool RushGhost::on_hit(const Actor& other, float atk_power) {
+	//ダメージ中または死亡中の場合は何もしない
+	if (state_ == State::Damage || state_ == State::Died) return false;
+	if (other.tag() == "PlayerAttack") {
+		hp_ -= atk_power;
 		if (hp_ <= 0) {
 			//ダメージ状態に変更
-			change_state(State::Damage, MotionDamage, false);
+			change_state(State::Died, MotionDie, false);
 		}
 		else {
 			//攻撃の進行方向にノックバックする移動量を求める
@@ -107,12 +111,9 @@ void RushGhost::react(Actor& other) {
 			//ダメージ状態に変更
 			change_state(State::Damage, MotionDamage, false);
 		}
-		return;
+		return true;
 	}
-	//プレイヤーまたはエネミーに衝突した
-	if (other.tag() == "PlayerTag" || other.tag() == "EnemyTag") {
-		//collide_actor(other);
-	}
+	return false;
 }
 
 //状態の更新
@@ -141,30 +142,40 @@ void RushGhost::change_state(State state, GSuint motion,bool loop) {
 
 //アイドル
 void RushGhost::idle(float delta_time) {
-	//プレイヤーを見つけたか？
-	if (is_move()) {
+	//プレイヤーを見つけてかつ移動タイマーが0になっているか？
+	if (is_move() && moving_timer_ <= 0.0f) {
 		change_state(State::Move, MotionIdle);
+		moving_timer_ = Interval;
 		point_ = 0;
 		angle_ = 0.0f;
 		to_targe_angle_ = (transform_.position().x < player_->transform().position().x) ? -1 : 1;
-		rotate_centrer_ = transform_.position() - to_targe_angle_* GSvector3{ radius,0.0f,0.0f};
+		rotate_center_ = transform_.position() - to_targe_angle_* GSvector3{ radius,0.0f,0.0f};
 		return;
 	}
+	//移動タイマーを更新
+	moving_timer_ -= delta_time;
 	change_state(State::Idle, MotionIdle);
 }
 
 //移動
 void RushGhost::move(float delta_time) {
-	if (point_ <= 180) {//回数
-		angle_ = PI * point_ / 180;
-		GSvector3 position{  rotate_centrer_.x + to_targe_angle_ *(float)cos(angle_) * radius,rotate_centrer_.y + -(float)sin(angle_) * radius,0.0f };
+	//マップ外にいたら死亡
+	if (transform_.position().x <= -10.0f) {
+		change_state(State::Died, MotionDie, false);
+		return;
+	}
+	//回数
+	const int NumOfTimes{ 90};//移動速度が変化
+	if (point_ <= NumOfTimes) {//回数
+		angle_ = PI * point_ / NumOfTimes;
+		GSvector3 position{  rotate_center_.x + to_targe_angle_ *(float)cos(angle_) * radius,rotate_center_.y + -(float)sin(angle_) * radius,0.0f };
 		GSvector3 velocity = (position - transform_.position());
 		velocity_ = velocity;
 		transform_.translate(velocity_, GStransform::Space::World);
 		point_ += delta_time;
 	}
 	else {
-		transform_.position(rotate_centrer_ - to_targe_angle_ * GSvector3{ radius,0.0f,0.0f });
+		transform_.position(rotate_center_ - to_targe_angle_ * GSvector3{ radius,0.0f,0.0f });
 		change_state(State::Idle, MotionIdle);
 	}
 }

@@ -4,6 +4,7 @@
 #include"Line.h"
 #include"Assets.h"
 #include"Camera.h"
+#include"DamageProp.h"
 
 enum {
 	MotionIdle = 0,
@@ -37,6 +38,8 @@ const float LimitDistance_x{ 100.0f };
 //y座標の死亡座標
 const float LimitDistance_y{ 100.0f };
 
+const float atk_power = 1.0f;
+
 //コンストラクタ
 NormalGhost::NormalGhost(IWorld* world, const GSvector3& position) :
 	mesh_{ Mesh_CarGhost,Skeleton_CarGhost,Animation_CarGhost,MotionIdle },
@@ -44,8 +47,7 @@ NormalGhost::NormalGhost(IWorld* world, const GSvector3& position) :
 	motion_loop_{ true },
 	state_{ State::Idle },
 	state_timer_{ 0.0f },
-	player_{ nullptr },
-	hp_{ 1 } {
+	player_{ nullptr }{
 		//ワールドの設定
 		world_ = world;
 		//名前の設定
@@ -58,14 +60,12 @@ NormalGhost::NormalGhost(IWorld* world, const GSvector3& position) :
 		transform_.localRotation(GSquaternion::euler(0.0f, -90.0f, 0.0f));
 		//メッシュの変換行列を初期化
 		mesh_.transform(transform_.localToWorldMatrix());
+		hp_ = 1.0f;
+		
 }
 
 //更新
 void NormalGhost::update(float delta_time) {
-	//x座標が-100を超えたら
-	if (transform_.position().x <= -LimitDistance_x) {
-		die();
-	}
 	player_ = world_->find_actor("Player");
 	//状態の更新
 	update_state(delta_time);
@@ -90,11 +90,23 @@ void NormalGhost::draw() const {
 void NormalGhost::react(Actor& other) {
 	//ダメージ中または死亡中は何もしない
 	if (state_ == State::Damage || state_ == State::Died) return;
+
 	if (other.tag() == "PlayerTag") {
-		hp_--;
-		change_state(State::Damage, MotionDamage);
+		DamageProp::do_attack(other, *this, atk_power);
 	}
 	
+}
+
+bool NormalGhost::on_hit(const Actor& other, float atk_power) {
+	//ダメージ中または死亡中は何もしない
+	if (state_ == State::Damage || state_ == State::Died) return false;
+
+	if (other.tag() == "PlayerTag" || other.tag() == "PlayerAttack") {
+		hp_-= atk_power;
+		change_state(State::Damage, MotionDamage, false);
+		return true;
+	}
+	return false;
 }
 
 //状態の更新
@@ -132,6 +144,10 @@ void NormalGhost::idle(float delta_time) {
 
 //移動中
 void NormalGhost::move(float delta_time) {
+	if (transform_.position().x <= -10.0f) {
+		change_state(State::Died, MotionDie, false);
+		return;
+	}
 	GSvector3 velocity{-1.0f,0.0f,0.0f};
 	velocity.z = 0.0f;
 	velocity_ = velocity;

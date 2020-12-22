@@ -78,7 +78,7 @@ gsFrameTimerWait
 * Return  : なし．
 *
 *============================================================================*/
-extern GSfloat
+extern GSdouble
 gsFrameTimerGetTime
 (
 	void
@@ -94,7 +94,7 @@ gsFrameTimerGetTime
 extern void
 gsFrameTimerSetWaitTime
 (
-	GSfloat		WaitTime			/* 最低ウェイト時間 */
+	GSdouble	WaitTime			/* 最低ウェイト時間 */
 );
 
 /*=============================================================================
@@ -107,7 +107,7 @@ gsFrameTimerSetWaitTime
 extern void
 gsFrameTimerSetFPS
 (
-	GSfloat		fps					/* ＦＰＳの設定 */
+	GSdouble	fps					/* ＦＰＳの設定 */
 );
 
 /*=============================================================================
@@ -117,7 +117,7 @@ gsFrameTimerSetFPS
 * Return  : 秒タイマを返す．
 *
 *============================================================================*/
-extern GSfloat
+extern GSdouble
 gsTimeGetTime
 (
 	void

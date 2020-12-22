@@ -73,6 +73,9 @@ void World::clear() {
     // フィールドを消去
     delete field_;
     field_ = nullptr;
+
+    is_game_clear_ = false;
+    is_game_over_ = false;
 }
 
 // アクターの追加
@@ -103,6 +106,26 @@ int World::count_actor_with_tag(const std::string& tag) const {
 // メッセージ送信
 void World::send_message(const std::string& message, void* param) {
     actors_.send_message(message, param);
+}
+
+void World::game_clear()
+{
+    is_game_clear_ = true;
+}
+
+void World::game_over()
+{
+    is_game_over_ = true;
+}
+
+bool World::is_game_clear() const
+{
+    return is_game_clear_;
+}
+
+bool World::is_game_over() const
+{
+    return is_game_over_;
 }
 
 // カメラの取得

@@ -11,7 +11,7 @@ const float kEpsilonNormalSqrt{ 1e-15f };
 
 // ベクトルの長さ
 float GSvector3::magnitude() const {
-	return std::sqrt(sqr_magnitude());
+	return std::sqrt(sqrMagnitude());
 }
 
 // magnitude を 1 としたベクトル
@@ -20,7 +20,7 @@ GSvector3 GSvector3::normalized() const {
 }
 
 // ベクトルの2乗の長さ
-float GSvector3::sqr_magnitude() const {
+float GSvector3::sqrMagnitude() const {
 	return dot(*this, *this);
 }
 
@@ -47,7 +47,7 @@ void GSvector3::set(float new_x, float new_y, float new_z) {
 // 2点間（from と to）の角度を返します
 float GSvector3::angle(const GSvector3& from, const GSvector3& to) {
 	// sqrt(a) * sqrt(b) = sqrt(a * b) -- valid for real numbers
-	float denominator = std::sqrt(from.sqr_magnitude() * to.sqr_magnitude());
+	float denominator = std::sqrt(from.sqrMagnitude() * to.sqrMagnitude());
 	if (denominator < kEpsilonNormalSqrt)
 		return 0.0f;
 	float cos = GSmathf::clamp(dot(from, to) / denominator, -1.0f, 1.0f);
@@ -56,7 +56,7 @@ float GSvector3::angle(const GSvector3& from, const GSvector3& to) {
 
 // 大きさをmax_lengthまでに制限した vector のコピーを返します
 GSvector3 GSvector3::clampMagnitude(const GSvector3& vector, float max_length) {
-	if (vector.sqr_magnitude() > max_length * max_length)
+	if (vector.sqrMagnitude() > max_length * max_length)
 		return vector.normalized() * max_length;
 	return vector;
 }
@@ -107,14 +107,14 @@ GSvector3 GSvector3::normalize(const GSvector3& value) {
 // ベクトルが正規化され他のベクトルと直交するようにします
 void GSvector3::orthoNormalize(GSvector3& normal, GSvector3& tangent, GSvector3& binormal) {
 	normal.normalize();
-	if (normal.sqr_magnitude() < (kEpsilon * kEpsilon)) {
+	if (normal.sqrMagnitude() < (kEpsilon * kEpsilon)) {
 		normal = GSvector3{ 1.0f, 0.0f, 0.0f };
 	}
 	GSvector3 bn = cross(normal, tangent);
-	if (binormal.sqr_magnitude() < (kEpsilon * kEpsilon)) {
+	if (binormal.sqrMagnitude() < (kEpsilon * kEpsilon)) {
 		tangent = cross(GSvector3{ 0.0f, 0.0f, 1.0f }, normal);
 	}
-	if (tangent.sqr_magnitude() < (kEpsilon * kEpsilon)) {
+	if (tangent.sqrMagnitude() < (kEpsilon * kEpsilon)) {
 		tangent = cross(GSvector3{ 1.0f, 0.0f, 0.0f }, normal);
 	}
 	bn = cross(normal, tangent);
@@ -130,7 +130,7 @@ GSvector3 GSvector3::scale(const GSvector3& a, const GSvector3& b) {
 
 // ベクトルを別のベクトルに投影します
 GSvector3 GSvector3::project(const GSvector3& vector, const GSvector3& on_normal) {
-	float sqr_mag = on_normal.sqr_magnitude();
+	float sqr_mag = on_normal.sqrMagnitude();
 	if (sqr_mag < kEpsilon)
 		return zero();
 	return on_normal * dot(vector, on_normal) / sqr_mag;
@@ -147,7 +147,7 @@ GSvector3 GSvector3::reflect(const GSvector3& inDirection, const GSvector3& inNo
 }
 
 // 現在の位置 current から target に向けてベクトルを回転します。
-GSvector3 GSvector3::rotate_towards(const GSvector3& current, const GSvector3& target, float max_radian_delta, float max_magnitude_delta) {
+GSvector3 GSvector3::rotateTowards(const GSvector3& current, const GSvector3& target, float max_radian_delta, float max_magnitude_delta) {
 	// 角度に変換
 	float max_degree_delta = max_radian_delta * GSmathf::rad_to_deg();
 	// ベクトルの長さを求める
@@ -161,9 +161,9 @@ GSvector3 GSvector3::rotate_towards(const GSvector3& current, const GSvector3& t
 	// 回転の軸を計算
 	GSvector3 axis = GSvector3::cross(current_normal, target_normal);
 	// 回転の軸ができなかった場合の補正
-	if (axis.sqr_magnitude() < (kEpsilon * kEpsilon)) {
+	if (axis.sqrMagnitude() < (kEpsilon * kEpsilon)) {
 		axis = GSvector3::cross(GSvector3{ 0.0f, 0.0f, 1.0f }, current);
-		if (axis.sqr_magnitude() < (kEpsilon * kEpsilon)) {
+		if (axis.sqrMagnitude() < (kEpsilon * kEpsilon)) {
 			axis = GSvector3::cross(GSvector3{ 1.0f, 0.0f, 0.0f }, current);
 		}
 	}
@@ -190,6 +190,13 @@ float GSvector3::signed_angle(const GSvector3& from, const GSvector3& to, const 
 	return unsigned_angle * sign;
 }
 
+// 2点間（from と to）の符号付き角度を返します
+float GSvector3::signedAngle(const GSvector3& from, const GSvector3& to, const GSvector3& axis) {
+	float unsigned_angle = angle(from, to);
+	float sign = GSmathf::sign(dot(axis, cross(from, to)));
+	return unsigned_angle * sign;
+}
+
 // 球状に 2 つのベクトル間を補間します
 GSvector3 GSvector3::slerp(const GSvector3& a, const GSvector3& b, float t) {
 	return slerpUnclamped(a, b, GSmathf::clamp01(t));
@@ -200,9 +207,9 @@ GSvector3 GSvector3::slerpUnclamped(const GSvector3& a, const GSvector3& b, floa
 	// 回転の軸を計算
 	GSvector3 axis = GSvector3::cross(a, b);
 	// 回転の軸ができなかった場合の補正
-	if (axis.sqr_magnitude() < (kEpsilon * kEpsilon)) {
+	if (axis.sqrMagnitude() < (kEpsilon * kEpsilon)) {
 		axis = GSvector3::cross(GSvector3{ 0.0f, 0.0f, 1.0f }, a);
-		if (axis.sqr_magnitude() < (kEpsilon * kEpsilon)) {
+		if (axis.sqrMagnitude() < (kEpsilon * kEpsilon)) {
 			axis = GSvector3::cross(GSvector3{ 1.0f, 0.0f, 0.0f }, a);
 		}
 	}

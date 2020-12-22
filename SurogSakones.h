@@ -4,12 +4,12 @@
 class IWorld;
 
 #include "Actor.h"
-#include "ActorProp.h"
+#include "DamageProp.h"
 #include<vector>
 #include"AnimatedMesh.h"
 
 class SurogSakones :
-	public Actor,public ActorProp
+	public Actor,public DamageProp
 {
 public:
 	enum class State {
@@ -35,6 +35,7 @@ public:
 	virtual void late_update(float delta_time)override;
 	virtual void draw()const override;
 	virtual void react(Actor& other)override;
+	virtual bool on_hit(const Actor& attacker, float atk_power) override;
 	void Damage();
 
 private:
@@ -86,6 +87,7 @@ private:
 	bool is_move(const Actor* other);
 
 	void collide_field();
+	void collide_actor(Actor& other);	
 
 
 private:

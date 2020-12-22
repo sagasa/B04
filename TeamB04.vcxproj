@@ -71,16 +71,16 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>.\lib\gslib_2020\inc;C:\Team4Production\lib\gslib_2020\inc;$(IncludePath)</IncludePath>
-    <LibraryPath>.\lib\gslib_2020\lib;C:\Team4Production\lib\gslib_2020\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>.\lib\gslib_2020\inc;$(IncludePath)</IncludePath>
+    <LibraryPath>.\lib\gslib_2020\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>.\lib\gslib_2020\inc;.\lib\gslib_2020\inc;$(IncludePath)</IncludePath>
-    <LibraryPath>.\lib\gslib_2020\lib;.\lib\gslib_2020\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>.\lib\gslib_2020\inc;$(IncludePath)</IncludePath>
+    <LibraryPath>.\lib\gslib_2020\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -117,6 +117,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -150,7 +151,9 @@
     <ClCompile Include="BoundingSphere.cpp" />
     <ClCompile Include="ByteBuf.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="ChangeItem.cpp" />
     <ClCompile Include="CSVReader.cpp" />
+    <ClCompile Include="interact_collider.cpp" />
     <ClCompile Include="MapGenerator.cpp" />
     <ClCompile Include="EnemyTestScene.cpp" />
     <ClCompile Include="GamePlayScene.cpp" />
@@ -170,12 +173,13 @@
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="SurogSakones.cpp" />
+    <ClCompile Include="UI.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h" />
     <ClInclude Include="ActorManager.h" />
-    <ClInclude Include="ActorProp.h" />
+    <ClInclude Include="DamageProp.h" />
     <ClInclude Include="AnimatedMesh.h" />
     <ClInclude Include="Assets.h" />
     <ClInclude Include="AttackCollider.h" />
@@ -183,7 +187,10 @@
     <ClInclude Include="BoundingSphere.h" />
     <ClInclude Include="ByteBuf.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="ChangeItem.h" />
     <ClInclude Include="CSVReader.h" />
+    <ClInclude Include="interact_collider.h" />
+    <ClInclude Include="interact_prop.h" />
     <ClInclude Include="Line.h" />
     <ClInclude Include="MapGenerator.h" />
     <ClInclude Include="EnemyTestScene.h" />
@@ -210,6 +217,7 @@
     <ClInclude Include="thread_pool.h" />
     <ClInclude Include="TitleScene.h" />
     <ClInclude Include="SurogSakones.h" />
+    <ClInclude Include="UI.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

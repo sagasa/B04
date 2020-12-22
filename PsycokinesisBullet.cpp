@@ -1,22 +1,24 @@
 #include "PsycokinesisBullet.h"
+#include "Assets.h"
 #include"IWorld.h"
 #include"Field.h"
-#include "Line.h"
 
-const float MaxAcceleration = 10.0f;
+const float MaxAcceleration = 3.0f;
 const GSvector3 PlayerOffset{ 0.0f,1.0f,0.0f };
 
-PsycokinesisBullet::PsycokinesisBullet(IWorld* world, const GSvector3& position, const GSvector3& velocity, float period)
+PsycokinesisBullet::PsycokinesisBullet(IWorld* world, const GSvector3& position, const GSvector3& velocity, float period, float power)
 	:acceleration_{ GSvector3(0.0f, 0.0f, 0.0f) },
 	period_{ period }
 {
 	world_ = world;
 	name_ = "PsycokinesisBullet";
-	tag_ = "EnemyAttackTag";
-	transform_.position(position);
+	tag_ = "EnemyAttackTag";	
 	velocity_ = velocity;
 	collider_ = BoundingSphere{ 0.3f };
-}
+	transform_.position(position);
+	damage_ = power;
+	set_hp(0.0f);
+ }
 
 void PsycokinesisBullet::update(float delta_time) {
 	Actor* player = world_->find_actor("Player");
@@ -29,33 +31,33 @@ void PsycokinesisBullet::update(float delta_time) {
 		acceleration_ = acceleration_.normalize() * MaxAcceleration;
 	}
 	period_ -= (delta_time / 60.0f);
-	if(period_<0.0f)
-	{
-		return;
-	}
 	velocity_ += acceleration_ * (delta_time / 60.0f);
-
-	Line line;
-	line.start = transform_.position();
-	line.end = transform_.position() + velocity_;
-	glBegin(GL_LINES);
-	glVertex3f(line.start.x, line.start.y, line.start.z);
-	glVertex3f(line.end.x, line.end.y, line.end.z);
-	glEnd();
+	
 	transform_.position(transform_.position() + velocity_ * (delta_time / 60.0f));
 
 	if (world_->field()->collide(collider()))die();
+	transform_.rotate(1.0f, 1.0f, 0.0f);
 }
 
 void PsycokinesisBullet::draw()const {
+	collider().draw();
 	glPushMatrix();
 	glMultMatrixf(transform_.localToWorldMatrix());
-	collider_.draw();
+	glPushMatrix();
+	glTranslated(0.0f, -0.25f, 0.0f);
+	gsDrawMesh(Mesh_Book);
 	glPopMatrix();
-
+	glPopMatrix();	
 }
 void PsycokinesisBullet::react(Actor& other) {
-	if (other.name() == "Player") {
+	if (other.tag() == "PlayerTag") {
+		do_attack(other, *this, damage_);
 		die();
 	}
 }
+
+bool PsycokinesisBullet::on_hit(const Actor& attacker, float atk_power)
+{
+	return false;
+}
+

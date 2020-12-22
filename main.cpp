@@ -9,12 +9,14 @@
 #include"SceneManager.h"
 #include"EnemyTestScene.h"
 #include"BossTestScene.h"
+#include"GamePlayScene.h"
 #include "CarGhost.h"
 #include "Player.h"
 #include"TitleScene.h"
 #include"PlayerTestScene.h"
 #include "resource_loader.h"
 #include "thread_pool.h"
+#include"DamageProp.h"
 
 
 void glError()
@@ -80,6 +82,7 @@ class MyGame : public gslib::Game {
         scene_.add("BossTestScene", new BossTestScene());
         scene_.add("PlayerTestScene", new PlayerTestScene());
         scene_.add("TitleScene", new TitleScene());
+        scene_.add("GamePlayScene", new GamePlayScene());
         scene_.change("TitleScene");
         glError();        
     }
@@ -130,10 +133,9 @@ class MyGame : public gslib::Game {
         world_.clear();
     }
 public:
-    MyGame() : Game(1920, 1080, false, 60) {
+    MyGame() : Game(1280, 720, false, 60) {
 
     }
-
 };
 
 // ÉÅÉCÉìä÷êî

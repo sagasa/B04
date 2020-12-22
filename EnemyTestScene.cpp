@@ -10,10 +10,16 @@
 #include"Assets.h"
 #include"SceneManager.h"
 #include"SurogSakones.h"
+#include<GSmusic.h>
+
+#include "player_ghost.h"
 
 
 //開始
 void EnemyTestScene::start() {
+    //BGMの読み込み
+    gsLoadMusic(Music_BackGround, "Assets/BGM/Horror-MusicBox.mp3",GS_TRUE);
+
     // Ghostのメッシュの読み込み
     gsLoadMesh(Mesh_Player, "Assets/Model/Enemy/Ghost.msh");
     gsLoadMesh(Mesh_Paladin, "Assets/Model/Paladin/Paladin.msh");
@@ -23,11 +29,13 @@ void EnemyTestScene::start() {
     //バレット(本)のメッシュの追加
     gsLoadMesh(Mesh_Book, "Assets/Model/Bullet/books.msh");
     //Ghostのスケルトンの読み込み
+    gsLoadSkeleton(Skeleton_Player,"Assets/Model/Enemy/Ghost.skl");
     gsLoadSkeleton(Skeleton_CarGhost, "Assets/Model/Enemy/Ghost.skl");
     gsLoadSkeleton(Skeleton_RushGhost, "Assets/Model/Enemy/Ghost.skl");
     gsLoadSkeleton(Skeleton_Poltergeist, "Assets/Model/Enemy/Ghost.skl");
     gsLoadSkeleton(Skeleton_Paladin, "Assets/Model/Paladin/Paladin.skl");
     //Ghostのアニメーションの読み込み
+    gsLoadAnimation(Animation_Player, "Assets/Model/Enemy/Ghost.anm");
     gsLoadAnimation(Animation_CarGhost, "Assets/Model/Enemy/Ghost.anm");
     gsLoadAnimation(Animation_RushGhost, "Assets/Model/Enemy/Ghost.anm");
     gsLoadAnimation(Animation_Poltergeist, "Assets/Model/Enemy/Ghost.anm");
@@ -55,7 +63,7 @@ void EnemyTestScene::start() {
     // ライトの追加
     world_.add_light(new Light{ &world_ });
     // プレーヤの追加
-    world_.add_actor(new Player{ &world_, GSvector3{ 0.0f, 0.0f, 0.0f } });
+    world_.add_actor(new player_ghost{ &world_, GSvector3{ 470.0f, 0.0f, 0.0f } });//x470
     //エネミー1
     world_.add_actor(new CarGhost{ &world_,GSvector3{10.0f,0.0f,0.0f} });
     //エネミー2
@@ -65,6 +73,13 @@ void EnemyTestScene::start() {
     //エネミー4
     world_.add_actor(new NormalGhost{ &world_,GSvector3{15.0f,0.0f,0.0f} });
     //world_.add_actor(new SurogSakones{ &world_,GSvector3{15.0f,0.0f,0.0f} });
+
+    //BGMのバインド
+    gsBindMusic(Music_BackGround);
+    gsSetMusicVolume(0.8f);
+    //BGMの再生
+    gsPlayMusic();
+    
 }
 
 //更新
@@ -92,6 +107,8 @@ std::string EnemyTestScene::next() const {
 
 //終了
 void EnemyTestScene::end() {
+    gsPauseMusic();
+    gsDeleteMusic(Music_BackGround);
     world_.clear();
     //メッシュの削除
     gsDeleteMesh(Mesh_Player);

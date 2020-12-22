@@ -24,6 +24,9 @@ public:
     // メッセージの送信
     virtual void send_message(const std::string& message, void* param = nullptr) = 0;
 
+    virtual void game_over() = 0;
+    virtual void game_clear() = 0;
+
     // フィールドの取得
     virtual Field* field() = 0;
     // カメラの取得
@@ -31,5 +34,5 @@ public:
     // カメラの取得
     virtual Camera* camera() = 0;
     // ライトの取得
-    virtual Actor* light() = 0;
+    virtual Actor* light() = 0;    
 };

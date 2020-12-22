@@ -2,10 +2,10 @@
 #define POLTER_GEIST_H_
 
 #include"Actor.h"
-#include"ActorProp.h"
+#include"DamageProp.h"
 #include"AnimatedMesh.h"
 
-class Poltergeist : public Actor,public ActorProp {
+class Poltergeist : public Actor,public DamageProp {
 public:
 	enum class State {
 		Idle,
@@ -23,6 +23,9 @@ public:
 	virtual void draw() const override;
 	//衝突リアクション
 	virtual void react(Actor& other) override;
+
+	//攻撃を受けた
+	virtual bool on_hit(const Actor& attacker, float atk_power) override;
 
 private:
 	//状態更新
@@ -51,6 +54,8 @@ private:
 	bool is_turn()const;
 	//攻撃判定
 	bool is_attack()const;
+	//カメラの内側にいるか？
+	bool is_inside() const;
 
 	//ターゲット方向の角度を求める(符号付き)
 	float target_signed_angle()const;

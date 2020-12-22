@@ -2,10 +2,10 @@
 #define RUSH_GHOST_H_
 
 #include"Actor.h"
-#include"ActorProp.h"
+#include"DamageProp.h"
 #include"AnimatedMesh.h"
 
-class RushGhost : public Actor ,public ActorProp{
+class RushGhost : public Actor ,public DamageProp{
 public:
 	//状態
 	enum class State {
@@ -22,6 +22,9 @@ public:
 	virtual void draw() const override;
 	//衝突リアクション
 	virtual void react(Actor& other) override;
+
+	//攻撃を受けた
+	virtual bool on_hit(const Actor& attacker, float atk_power) override;
 
 private:
 	//状態の更新
@@ -82,7 +85,7 @@ private:
 	//ポイント
 	float point_;
 	//回転の中心
-	GSvector3 rotate_centrer_;
+	GSvector3 rotate_center_;
 	//移動する向き
 	float to_targe_angle_;
 	
