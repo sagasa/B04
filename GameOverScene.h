@@ -1,11 +1,11 @@
-#ifndef GAME_PLAY_SCENE_H_
-#define GAME_PLAY_SCENE_H_
+#ifndef GAME_OVER_SCENE_H_
+#define GAME_OVER_SCENE_H_
 
 #include"IScene.h"
 #include"World.h"
 
-//ゲームプレイシーン
-class GamePlayScene :public IScene {
+class GameOverScene : public IScene
+{
 public:
 	//開始
 	virtual void start() override;
@@ -24,8 +24,9 @@ private:
 	World world_;
 	//終了フラグ
 	bool is_end_{ false };
-	//次のシーン
-	std::string next_scene_{"SceneNull"};
 };
 
-#endif
+#endif // !GAME_OVER_SCENE_H_
+
+
+

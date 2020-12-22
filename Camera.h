@@ -13,7 +13,6 @@ public:
     virtual void draw() const override;
 
 private:
-    void fixed_draw() const;
     //å©Ç¶ÇƒÇ¢ÇÈÇ©Ç«Ç§Ç©ÅH
     bool is_viewing(const BoundingSphere& sphere);
     
