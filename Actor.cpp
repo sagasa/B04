@@ -49,11 +49,6 @@ bool Actor::is_dead() const {
     return dead_;
 }
 
-//UŒ‚‚ª“–‚½‚é‚©H(ActorProp‚ğŒp³‚µ‚Ä‚¢‚é‚©?)
-bool Actor::is_hit() const {
-    return hit_;
-}
-
 // –¼‘O‚ğæ“¾
 const std::string& Actor::name() const {
     return name_;

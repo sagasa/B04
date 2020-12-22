@@ -32,7 +32,7 @@ const float EnemySideOffset{ 0.6f };
 //足元のオフセット
 const float FootOffset{ 0.1f };
 //スピード
-const float Speed{ 0.05f };
+const float Speed{ 0.1f };
 //x座標の死亡座標
 const float LimitDistance_x{ 100.0f };
 //y座標の死亡座標
@@ -58,8 +58,6 @@ CarGhost::CarGhost(IWorld* world, const GSvector3& position) :
 	name_ = "CarGhost";
 	//タグ名の設定
 	tag_ = "EnemyTag";
-	//ActorPropを継承しているか？
-	hit_ = true;
 	//体力の設定
 	hp_ = 1.0f;
 	//transform_.position(GSvector3::zero());
@@ -205,7 +203,7 @@ void CarGhost::move(float delta_time) {
 		transform_.rotation(rotation);*/
 	}
 	//移動
-	transform_.translate(velocity_ * Speed, GStransform::Space::World);
+	transform_.translate(velocity_ * Speed * delta_time, GStransform::Space::World);
 
 }
 

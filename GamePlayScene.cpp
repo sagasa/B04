@@ -51,7 +51,7 @@ void GamePlayScene::start() {
     gsLoadMesh(Mesh_Book, "Assets/Model/Bullet/books.msh");
 	
     //スカイボックスの読み込み
-    gsLoadMesh(Mesh_Skybox, "Assets/Skybox/skydome.msh");
+    gsLoadMesh(Mesh_Skybox, "Assets/Skybox/DarkStorm4K.msh");
     //描画用オクツリーの読み込み
     gsLoadOctree(Octree_Stage, "Assets/Octree/stage1.oct");
     //衝突判定用オクツリーの読み込み
@@ -70,6 +70,15 @@ void GamePlayScene::start() {
 //更新
 void GamePlayScene::update(float delta_time) {
 	world_.update(delta_time);
+    
+    if (world_.is_game_clear()) {//ボスが死んだか？
+        is_end_ = true;
+        next_scene_ = "ResultScene";
+    }
+    else if (world_.is_game_over()) {//プレイヤーが死んだか？
+        is_end_ = true;
+        next_scene_ = "GameOverScene";
+    }
 }
 
 //描画
@@ -79,12 +88,12 @@ void GamePlayScene::draw() const {
 
 //終了しているか？
 bool GamePlayScene::is_end() const {
-	return world_.is_game_over()||world_.is_game_clear();
+	return is_end_;
 }
 
 //次のシーンを返す
 std::string GamePlayScene::next() const {
-	return "TitleScene";
+	return next_scene_;
 }
 //終了
 void GamePlayScene::end() {

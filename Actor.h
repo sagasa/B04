@@ -73,7 +73,5 @@ protected:
     BoundingSphere  collider_;
     // €–Sƒtƒ‰ƒO
     bool            dead_{ false };
-    //UŒ‚‚ª“–‚½‚é‚©H(ActorProp‚ğŒp³‚µ‚Ä‚¢‚é‚©?)
-	bool hit_{ false };
 };
 

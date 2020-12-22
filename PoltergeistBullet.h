@@ -19,6 +19,8 @@ public:
 private:
 	//画面外か？
 	bool is_out_camera() const;
+	//壁との衝突判定
+	void collide_field();
 
 private:
 	//死亡タイマー

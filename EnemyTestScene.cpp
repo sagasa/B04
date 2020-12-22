@@ -63,7 +63,7 @@ void EnemyTestScene::start() {
     // ライトの追加
     world_.add_light(new Light{ &world_ });
     // プレーヤの追加
-    world_.add_actor(new player_ghost{ &world_, GSvector3{ 0.0f, 0.0f, 0.0f } });//x470
+    world_.add_actor(new player_ghost{ &world_, GSvector3{ 470.0f, 13.0f, 0.0f } });//x470
     //エネミー1
     world_.add_actor(new CarGhost{ &world_,GSvector3{10.0f,0.0f,0.0f} });
     //エネミー2
