@@ -70,6 +70,15 @@ void GamePlayScene::start() {
 //更新
 void GamePlayScene::update(float delta_time) {
 	world_.update(delta_time);
+    
+    if (world_.is_game_clear()) {//ボスが死んだか？
+        is_end_ = true;
+        next_scene_ = "ResultScene";
+    }
+    else if (world_.is_game_over()) {//プレイヤーが死んだか？
+        is_end_ = true;
+        next_scene_ = "GameOverScene";
+    }
 }
 
 //描画
@@ -79,12 +88,12 @@ void GamePlayScene::draw() const {
 
 //終了しているか？
 bool GamePlayScene::is_end() const {
-	return world_.is_game_over()||world_.is_game_clear();
+	return is_end_;
 }
 
 //次のシーンを返す
 std::string GamePlayScene::next() const {
-	return "TitleScene";
+	return next_scene_;
 }
 //終了
 void GamePlayScene::end() {
