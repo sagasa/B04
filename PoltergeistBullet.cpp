@@ -19,10 +19,8 @@ PoltergeistBullet::PoltergeistBullet(IWorld* world, const GSvector3& position, c
 	collider_ = BoundingSphere{0.4f};
 	//À•W‚Ì‰Šú‰»
 	transform_.position(position);
-	//
+	//ˆÚ“®—Ê‚Ìİ’è
 	velocity_ = velocity;
-	//ActorProp‚ğŒp³‚µ‚Ä‚¢‚é‚©H
-	hit_ = true;
 	//UŒ‚—Í‚Ìİ’è
 	atk_power_ = atk_power;
 }
@@ -43,7 +41,7 @@ void PoltergeistBullet::update(float delta_time) {
 	//‰ñ“]‚·‚é
 	transform_.rotate(0.0f,1.0f,1.0f);
 	//ˆÚ“®‚·‚é
-	transform_.translate(velocity_, GStransform::Space::World);
+	transform_.translate(velocity_ * delta_time, GStransform::Space::World);
 	//•Ç‚Æ‚ÌÕ“Ë”»’è
 	collide_field();
 }

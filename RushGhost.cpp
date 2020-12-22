@@ -36,6 +36,8 @@ const float LimitDistance_x{ 100.0f };
 const float LimitDistance_y{ 100.0f };
 //攻撃力の設定
 const float atk_power = 1.0f;
+//移動中に遷移するまでのインターバル
+const float Interval{ 60.0f };
 
 //コンストラクタ
 RushGhost::RushGhost(IWorld* world, const GSvector3& position) :
@@ -47,8 +49,6 @@ RushGhost::RushGhost(IWorld* world, const GSvector3& position) :
 	world_ = world;
 	name_ = "RushGhost";
 	tag_ = "EnemyTag";
-	//ActorPropを継承しているか？
-	hit_ = true;
 	//体力の設定
 	hp_ = 3.0f;
 	//衝突判定球の設定
@@ -100,8 +100,6 @@ bool RushGhost::on_hit(const Actor& other, float atk_power) {
 	//ダメージ中または死亡中の場合は何もしない
 	if (state_ == State::Damage || state_ == State::Died) return false;
 	if (other.tag() == "PlayerAttack") {
-		//float atk = dynamic_cast<DamageProp*>(&other)->atk_power();
-		//hp_ -= atk;
 		hp_ -= atk_power;
 		if (hp_ <= 0) {
 			//ダメージ状態に変更
@@ -144,20 +142,24 @@ void RushGhost::change_state(State state, GSuint motion,bool loop) {
 
 //アイドル
 void RushGhost::idle(float delta_time) {
-	//プレイヤーを見つけたか？
-	if (is_move()) {
+	//プレイヤーを見つけてかつ移動タイマーが0になっているか？
+	if (is_move() && moving_timer_ <= 0.0f) {
 		change_state(State::Move, MotionIdle);
+		moving_timer_ = Interval;
 		point_ = 0;
 		angle_ = 0.0f;
 		to_targe_angle_ = (transform_.position().x < player_->transform().position().x) ? -1 : 1;
-		rotate_centrer_ = transform_.position() - to_targe_angle_* GSvector3{ radius,0.0f,0.0f};
+		rotate_center_ = transform_.position() - to_targe_angle_* GSvector3{ radius,0.0f,0.0f};
 		return;
 	}
+	//移動タイマーを更新
+	moving_timer_ -= delta_time;
 	change_state(State::Idle, MotionIdle);
 }
 
 //移動
 void RushGhost::move(float delta_time) {
+	//マップ外にいたら死亡
 	if (transform_.position().x <= -10.0f) {
 		change_state(State::Died, MotionDie, false);
 		return;
@@ -166,14 +168,14 @@ void RushGhost::move(float delta_time) {
 	const int NumOfTimes{ 90};//移動速度が変化
 	if (point_ <= NumOfTimes) {//回数
 		angle_ = PI * point_ / NumOfTimes;
-		GSvector3 position{  rotate_centrer_.x + to_targe_angle_ *(float)cos(angle_) * radius,rotate_centrer_.y + -(float)sin(angle_) * radius,0.0f };
+		GSvector3 position{  rotate_center_.x + to_targe_angle_ *(float)cos(angle_) * radius,rotate_center_.y + -(float)sin(angle_) * radius,0.0f };
 		GSvector3 velocity = (position - transform_.position());
 		velocity_ = velocity;
 		transform_.translate(velocity_, GStransform::Space::World);
 		point_ += delta_time;
 	}
 	else {
-		transform_.position(rotate_centrer_ - to_targe_angle_ * GSvector3{ radius,0.0f,0.0f });
+		transform_.position(rotate_center_ - to_targe_angle_ * GSvector3{ radius,0.0f,0.0f });
 		change_state(State::Idle, MotionIdle);
 	}
 }

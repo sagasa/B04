@@ -85,7 +85,7 @@ private:
 	//ポイント
 	float point_;
 	//回転の中心
-	GSvector3 rotate_centrer_;
+	GSvector3 rotate_center_;
 	//移動する向き
 	float to_targe_angle_;
 	
