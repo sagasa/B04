@@ -1,6 +1,9 @@
-#pragma once
+#ifndef IWORLD_H_
+#define IWORLD_H_
+
 #include <string>
 #include <vector>
+class ParticleManager;
 class Actor;
 class Field;
 class Camera;
@@ -34,5 +37,8 @@ public:
     // ƒJƒƒ‰‚Ìæ“¾
     virtual Camera* camera() = 0;
     // ƒ‰ƒCƒg‚Ìæ“¾
-    virtual Actor* light() = 0;    
+    virtual Actor* light() = 0;
+    virtual ParticleManager* particle_manager() = 0;
 };
+
+#endif

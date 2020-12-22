@@ -47,6 +47,7 @@ public:
     GStransform& transform();
     // ˆÚ“®—Ê‚ğæ“¾
     GSvector3 velocity() const;
+    void velocity(const GSvector3& velocity);
     // Õ“Ë”»’èƒf[ƒ^‚ğæ“¾
     BoundingSphere collider() const;
     
