@@ -58,8 +58,6 @@ CarGhost::CarGhost(IWorld* world, const GSvector3& position) :
 	name_ = "CarGhost";
 	//ƒ^ƒO–¼‚Ìİ’è
 	tag_ = "EnemyTag";
-	//ActorProp‚ğŒp³‚µ‚Ä‚¢‚é‚©H
-	hit_ = true;
 	//‘Ì—Í‚Ìİ’è
 	hp_ = 1.0f;
 	//transform_.position(GSvector3::zero());
@@ -205,7 +203,7 @@ void CarGhost::move(float delta_time) {
 		transform_.rotation(rotation);*/
 	}
 	//ˆÚ“®
-	transform_.translate(velocity_ * Speed, GStransform::Space::World);
+	transform_.translate(velocity_ * Speed * delta_time, GStransform::Space::World);
 
 }
 

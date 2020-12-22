@@ -36,6 +36,7 @@ void Camera::update(float delta_time) {
 	}
 	else {
 		GSvector3 velocity = (GSvector3{ 520.0f,13.0f,20.0f } - transform_.position()).normalized();
+		velocity_ = velocity;
 		transform_.translate(velocity_ * delta_time,GStransform::Space::World);
 	}
 	

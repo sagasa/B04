@@ -54,8 +54,6 @@ Poltergeist::Poltergeist(IWorld* world, const GSvector3& position) :
 	name_ = "Poltergeist";
 	//タグ名の設定
 	tag_ = "EnemyTag";
-	//ActorPropを継承しているか？
-	hit_ = true;
 	//体力の設定
 	hp_ = 1.0f;
 	//衝突判定球の設定
@@ -334,7 +332,7 @@ void Poltergeist::generate_bullet() const {
 	//弾の生成位置の高さの補正値
 	const float GenerateHeight{ 1.0f };
 	//弾のスピード
-	const float BulletSpeed{ 0.1f };
+	const float BulletSpeed{ 0.05f };
 	//生成位置の計算
 	GSvector3 position = transform_.position() + transform_.forward() * GenerateDistance;
 	//y座標を補正する
