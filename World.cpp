@@ -2,6 +2,7 @@
 #include "Field.h"
 #include "Actor.h"
 #include"Camera.h"
+#include "ParticleManager.h"
 
 // デストラクタ
 World::~World() {
@@ -60,6 +61,13 @@ void World::add_light(Actor* light) {
     light_ = light;
 }
 
+void World::add_particle_manager(ParticleManager* particle_manager)
+{
+    delete particle_manager_;
+    particle_manager_ = particle_manager;
+}
+
+
 // 消去
 void World::clear() {
     // アクターを消去
@@ -73,6 +81,9 @@ void World::clear() {
     // フィールドを消去
     delete field_;
     field_ = nullptr;
+	//パーティクルマネージャーを消去
+    delete particle_manager_;
+    particle_manager_ = nullptr;
 
     is_game_clear_ = false;
     is_game_over_ = false;
@@ -145,4 +156,9 @@ Actor* World::light() {
 // フィールドの取得
 Field* World::field() {
     return field_;
+}
+
+ParticleManager* World::particle_manager()
+{
+    return particle_manager_;
 }

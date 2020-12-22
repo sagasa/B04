@@ -1,4 +1,5 @@
-#pragma once
+#ifndef WORLD_H_
+#define WORLD_H_
 
 #include "IWorld.h"
 #include "ActorManager.h"
@@ -22,6 +23,8 @@ public:
     void add_light(Actor* light);
     // フィールドの追加
     void add_field(Field* field);
+	//パーティクルマネージャーの追加
+    void add_particle_manager(ParticleManager* particle_manager);
 
     // アクターを追加
     virtual void add_actor(Actor* actor) override;
@@ -50,6 +53,7 @@ public:
     virtual Actor* light() override;
     // フィールドの取得
     virtual Field* field() override;
+    virtual ParticleManager* particle_manager() override;
 
     // コピー禁止
     World(const World& other) = delete;
@@ -58,6 +62,8 @@ public:
 private:
     // アクターマネージャー
     ActorManager  actors_;
+	//パーティクルマネージャー
+    ParticleManager* particle_manager_{nullptr};
     // ライト
     Actor* light_{ nullptr };
     // カメラ
@@ -70,3 +76,5 @@ private:
     bool is_game_clear_{ false };
     bool is_game_over_{ false };
 };
+
+#endif

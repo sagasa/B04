@@ -32,12 +32,14 @@ public:
 	GSvector3 force_{ GSvector3::zero() };
 	
 	//スケール
+	GSvector2 scale_{ GSvector2::one() };
 	GSvector2 start_scale_{ GSvector2::one() };
 	GSvector2 end_scale_{ GSvector2::one() };
 	
 	//カラー
-	GSvector3 start_color_{ 1.0f,1.0f,1.0f};
-	GSvector3 end_color_{ 1.0f,1.0f,1.0f };
+	GSvector3 color_{ GSvector3::one()};
+	GSvector3 start_color_{ GSvector3::one() };
+	GSvector3 end_color_{ GSvector3::one() };
 
 	//フェードイン、フェードアウトのタイマー
 	float fade_in_time{ 0.0f };
@@ -60,10 +62,10 @@ public:
 	//遅延時間
 	float delay_timer_{ 0.0f };
 
+	//void transform(const GSmatrix4& matrix);
+
 private:
 	State state_{ State::Sleep };
-	GSvector2 scale_{ GSvector2::one() };
-	GSvector3 color_{ 1.0f,1.0f,1.0f };
 	float alpha_{ 1.0f };
 };
 

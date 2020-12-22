@@ -24,11 +24,18 @@ void Particle::update(float delta_time)
 	}
 
 	//åoâﬂéûä‘Ç…ÇÊÇÈíBê¨ó¶
-	float progressRate = age_ / lifespan_;
+	const float progressRate = age_ / lifespan_;
 
 	//ê¸å`ï‚ä‘
-	scale_ = GSvector2::lerp(start_scale_, end_scale_, progressRate);
-	color_ = GSvector3::lerp(start_color_, end_color_, progressRate);
+	if(start_scale_!=end_scale_)
+	{
+		scale_ = GSvector2::lerp(start_scale_, end_scale_, progressRate);
+	}	
+	if(start_color_!=end_color_)
+	{
+		color_ = GSvector3::lerp(start_color_, end_color_, progressRate);
+	}
+	
 	alpha_ = MIN(MIN(progressRate / fade_in_time, (1.0f - progressRate) / fade_out_time), 1.0f) * alpha_;
 
 	//âÒì]ä÷åW
@@ -68,4 +75,11 @@ void Particle::draw_transparent() const
 	);
 	glPopAttrib();
 }
+
+//void Particle::transform(const GSmatrix4& matrix)
+//{
+//	glPushMatrix();
+//	glMultMatrixf(matrix);	
+//	glPopMatrix();
+//}
 
