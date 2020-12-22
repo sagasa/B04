@@ -144,11 +144,11 @@
     <ClCompile Include="interact_collider.cpp">
       <Filter>ソース ファイル\Actors\Player</Filter>
     </ClCompile>
-    <ClCompile Include="Particle.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="ParticleManager.cpp">
       <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Particle.cpp">
+      <Filter>ソース ファイル\Actors</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -278,11 +278,11 @@
     <ClInclude Include="interact_prop.h">
       <Filter>ヘッダー ファイル\Actors\Prop</Filter>
     </ClInclude>
-    <ClInclude Include="Particle.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="ParticleManager.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Particle.h">
+      <Filter>ヘッダー ファイル\Actors</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
