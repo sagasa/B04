@@ -12,11 +12,14 @@
 #include"SurogSakones.h"
 #include"MapGenerator.h"
 #include "player_ghost.h"
+#include"Fade.h"
+
+Fade fade;
 
 
 //開始
 void GamePlayScene::start() {
-    
+    fade.start(true,1);
     //生成
     MapGenerator generator{ &world_,"Assets/Map/Stage1.csv"};
 
@@ -69,26 +72,33 @@ void GamePlayScene::start() {
 
 //更新
 void GamePlayScene::update(float delta_time) {
+    fade.update(delta_time);
 	world_.update(delta_time);
     
     if (world_.is_game_clear()) {//ボスが死んだか？
         is_end_ = true;
         next_scene_ = "ResultScene";
+        fade.is_change_fade_flg(true);
     }
     else if (world_.is_game_over()) {//プレイヤーが死んだか？
         is_end_ = true;
         next_scene_ = "GameOverScene";
+        fade.is_change_fade_flg(true);
     }
 }
 
 //描画
 void GamePlayScene::draw() const {
 	world_.draw();
+    fade.draw();
 }
 
 //終了しているか？
 bool GamePlayScene::is_end() const {
-	return is_end_;
+    if (fade.is_end()) {
+        return is_end_;
+    }
+    else return false;//終了フラグを返す
 }
 
 //次のシーンを返す
