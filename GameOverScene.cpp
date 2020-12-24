@@ -9,14 +9,15 @@ void GameOverScene::start() {
 
 //更新
 void GameOverScene::update(float delta_time) {
+	//world_.update(delta_time);
 	if (gsGetKeyTrigger(GKEY_RETURN)) {
-
+		is_end_ = true;
 	}
 }
 
 //描画
 void GameOverScene::draw() const {
-
+	//world_.draw();
 }
 
 //終了しているか？
