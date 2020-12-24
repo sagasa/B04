@@ -13,7 +13,7 @@ void ResultScene::start() {
 //更新
 void ResultScene::update(float delta_time) {
 	//ワールドの更新
-	world_.update(delta_time);
+	//world_.update(delta_time);
 	//キーを押したらタイトルへ
 	if (gsGetKeyTrigger(GKEY_RETURN)) {
 		is_end_ = true;
@@ -23,7 +23,7 @@ void ResultScene::update(float delta_time) {
 //描画
 void ResultScene::draw() const {
 	//ワールドの描画
-	world_.draw();
+	//world_.draw();
 }
 
 //終了しているか？

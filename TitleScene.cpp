@@ -1,10 +1,13 @@
 #include"TitleScene.h"
+#include"Assets.h"
 
 //開始
 void TitleScene::start() {
 	//終了フラグの初期化
 	is_end_ = false;
 	nextScene_ = "";
+	gsLoadTexture(Texture_TitleLogo, "Assets/Image/title_logo.png");
+	gsLoadTexture(Texture_push_button, "Assets/Image/push_button.png");
 }
 
 void TitleScene::update(float delta_time) {
@@ -44,6 +47,8 @@ void TitleScene::draw() const {
 	gsTextPos(0.0f, 80.0f);
 	gsDrawText("4 to GamePlayScene");
 	glPopMatrix();
+	gsDrawSprite2D(Texture_TitleLogo, &GSvector2{ 300.0f,500.0f }, &GSrect{ 680.0f,160.0f }, &GSvector2{ 680.0f,160.0f }, NULL, NULL, 180.0f);
+	gsDrawSprite2D(Texture_push_button, &GSvector2{ 400,500 }, &GSrect{ 940,145 }, &GSvector2{ 940,145 }, NULL, &GSvector2{0.5,0.5}, 180);
 }
 
 //終了しているか？
