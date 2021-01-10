@@ -38,8 +38,15 @@ enum Texture {
     //UI
     Texture_Hp,                     //体力(ハート)
     Texture_Shield,                 //体力(盾)
+    //文字
     Texture_TitleLogo,              //タイトルロゴ
-    Texture_push_button,            //ボタン,
+    Texture_Push_Button,            //ボタン
+    Texture_Clear,                  //ゲームクリア
+    Texture_Game_Over,              //ゲームオーバー
+    Texture_Return_To_Title,        //タイトルへ戻る
+    Texture_One_More,               //もう一度
+    Texture_Next_Stage,             //次のステージへ
+    //フェード
     Texture_Fade,                   //黒いテクスチャ
     // 3Dスプライト
     Texture_EffectLazerCyan,        // レーザー（水色）
