@@ -2,6 +2,11 @@
 #include"Assets.h"
 #include<iostream>
 
+//α値の代入値
+const float Alpha_Value{ 0.008f };
+//ボタンが出るまでの時間
+const float Time{ 60.0f };
+
 //開始
 void TitleScene::start() {
 	fade_.start(true,3);
@@ -9,8 +14,10 @@ void TitleScene::start() {
 	is_end_ = false;
 	nextScene_ = "";
 	gsLoadTexture(Texture_TitleLogo, "Assets/Image/title_logo.dds");
-	gsLoadTexture(Texture_push_button, "Assets/Image/push_button.dds");
+	gsLoadTexture(Texture_Push_Button, "Assets/Image/push_button.dds");
 	gsLoadTexture(Texture_Fade, "Assets/Image/black.dds");
+	alpha_flg_ = false;
+	alpha_ = 0.0f;
 }
 
 void TitleScene::update(float delta_time) {
@@ -30,13 +37,22 @@ void TitleScene::update(float delta_time) {
 		is_end_ = true;
 		nextScene_ = "PlayerTestScene";
 	}
-	if (gsGetKeyTrigger(GKEY_4) && fade_.is_end()) {
-		is_end_ = true;
-		nextScene_ = "GamePlayScene";
-		fade_.is_change_fade_flg(true);
+	if (fade_.is_end()) {
+		if (gsGetKeyTrigger(GKEY_F)) {
+			is_end_ = true;
+			nextScene_ = "GamePlayScene";
+			fade_.change_fade_flg();
+		}
+		if (timer_ >= Time) {
+			//α値の更新
+			alpha_ += (alpha_flg_) ? -Alpha_Value * delta_time : Alpha_Value * delta_time;
+
+			if (alpha_ >= 1.1f || alpha_ <= 0.0f) {
+				alpha_flg_ = !alpha_flg_;
+			}
+		}else timer_ += delta_time;//タイマー更新
+		
 	}
-	//背景のスクロール値を更新
-	scroll_ += delta_time;
 }
 
 //描画
@@ -54,8 +70,8 @@ void TitleScene::draw() const {
 	glPopMatrix();
 	gsDrawSprite2D(Texture_TitleLogo, &GSvector2{ 300.0f,100.0f }, &GSrect{ 680.0f,160.0f }, &GSvector2{ 680.0f,160.0f }, NULL, NULL, 180.0f);
 
-	if (fade_.is_end()) {
-		gsDrawSprite2D(Texture_push_button, &GSvector2{ 400,500 }, &GSrect{ 940,145 }, &GSvector2{ 940,145 }, NULL, &GSvector2{ 0.5,0.5 }, 180);
+	if (timer_ >= Time) {
+		gsDrawSprite2D(Texture_Push_Button, &GSvector2{ 400,500 }, &GSrect{ 940,145 }, &GSvector2{ 940,145 }, &GScolor{1,1,1,alpha_}, &GSvector2{ 0.5,0.5 }, 180);
 	}
 	fade_.draw();
 }
@@ -74,7 +90,7 @@ std::string TitleScene::next() const {
 
 //終了
 void TitleScene::end() {
-
+	timer_ = 0.0f;
 }
 
 //背景の描画

@@ -7,6 +7,13 @@
 class ResultScene : public IScene
 {
 public:
+
+	enum class Select {
+		Next,
+		OneMore,
+		Title
+	};
+
 	//開始
 	virtual void start() override;
 	//更新
@@ -24,6 +31,7 @@ private:
 	World world_;
 	//終了フラグ
 	bool is_end_{ false };
+	Select select_;
 };
 
 #endif // !RESULT_SCENE_H_

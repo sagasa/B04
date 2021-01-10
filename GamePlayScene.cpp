@@ -78,12 +78,12 @@ void GamePlayScene::update(float delta_time) {
     if (world_.is_game_clear()) {//ボスが死んだか？
         is_end_ = true;
         next_scene_ = "ResultScene";
-        fade.is_change_fade_flg(true);
+        fade.change_fade_flg();
     }
     else if (world_.is_game_over()) {//プレイヤーが死んだか？
         is_end_ = true;
         next_scene_ = "GameOverScene";
-        fade.is_change_fade_flg(true);
+        fade.change_fade_flg();
     }
 }
 

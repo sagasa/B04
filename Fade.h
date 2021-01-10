@@ -10,7 +10,7 @@ public:
 	Fade() = default;
 	//デストラクタ
 	~Fade();
-	//開始(フェードインならtrue,フェードアウトならfalse),第二引数にフェードインorアウトしている時間
+	//開始(フェードインならtrue,フェードアウトならfalse),第二引数にフェードインorアウトが終わるまでの時間時間
 	void start(bool fade_in,float fade_time);
 	//更新
 	void update(float delta_time);
@@ -18,8 +18,8 @@ public:
 	void draw() const;
 	//フェードが終わったかを取得
 	bool is_end() const;
-	//ボタンが押されたか?
-	void is_change_fade_flg(bool push_button);
+	//フェードインまたはフェードアウトに切り替え
+	void change_fade_flg();
 
 private:
 	//α値

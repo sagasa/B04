@@ -28,12 +28,16 @@ private:
 
 	//終了フラグ
 	bool is_end_{ false };
-	//スクロール値
-	float scroll_{ 0.0f };
 	//次のシーン
 	std::string nextScene_;
 	//フェードクラス
 	Fade fade_;
+	//タイマー
+	float timer_ = 0.0f;
+	//α値
+	float alpha_;
+	//α値の増減フラグ
+	bool alpha_flg_;
 
 };
 
