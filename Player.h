@@ -17,6 +17,9 @@ protected:
   
 	//判定が硬いか
     bool is_soft_;
+
+	//上下の高さ拡張
+    float height_ext_ = 0;
 	
     //速度を適応 フィールドとの衝突処理
     void update_physics(const float delta_time);

@@ -11,10 +11,8 @@ void Player::update_physics(const float delta_time)
 	
     //地面との衝突判定(線分との交差判定)
     BoundingSphere sphere = collider();
-    //ジャンプ可能に
-    on_ground_ = world_->field()->collide(Line{ sphere.center,sphere.center + GSvector2{0,-sphere.radius} });
-	
-    if (world_->field()->collide(Line{ sphere.center,sphere.center + GSvector2{0,sphere.radius} })) {
+    
+    if (world_->field()->collide(Line{ sphere.center,sphere.center + GSvector2{0,sphere.radius+ height_ext_} })) {
         //ジャンプ停止
         jump_count_ = 0;
     }
@@ -34,9 +32,27 @@ void Player::update_physics(const float delta_time)
         }else
         {
             //押し戻し
-            transform_.position(center.xy);
+            // 交差した点からy座標のみ補正する
+            center.y = transform_.position().y;
+        	transform_.position(center.xy);
         }
     }
+    if (!is_soft_)
+    {
+        // 地面との衝突判定（レイとの交差判定）
+        GSvector3 position = transform_.position();
+        GSvector3 intersect;  // 地面との交点
+        //ジャンプ可能に
+    	if (on_ground_ =world_->field()->collide(Line{ sphere.center,sphere.center + GSvector2{0,-sphere.radius - height_ext_} }, &intersect)) {
+            // 交差した点からy座標のみ補正する
+            position.y = intersect.y+height_ext_-(collider_.center.y- sphere.radius);
+            // 座標を変更する
+            transform_.position(position);
+            velocity_.y = MAX(velocity_.y,0);
+        }
+    }
+  
+
 
 	//ジャンプ更新
     if (0 < jump_count_)
