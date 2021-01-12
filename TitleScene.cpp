@@ -68,10 +68,14 @@ void TitleScene::draw() const {
 	gsTextPos(0.0f, 80.0f);
 	gsDrawText("4 to GamePlayScene");
 	glPopMatrix();
-	gsDrawSprite2D(Texture_TitleLogo, &GSvector2{ 300.0f,100.0f }, &GSrect{ 680.0f,160.0f }, &GSvector2{ 680.0f,160.0f }, NULL, NULL, 180.0f);
+	GSvector2 position_titlelogo{300.0f,100.0f};
+	gsDrawSprite2D(Texture_TitleLogo, &position_titlelogo, NULL, NULL, NULL, NULL, NULL);
 
 	if (timer_ >= Time) {
-		gsDrawSprite2D(Texture_Push_Button, &GSvector2{ 400,500 }, &GSrect{ 940,145 }, &GSvector2{ 940,145 }, &GScolor{1,1,1,alpha_}, &GSvector2{ 0.5,0.5 }, 180);
+		GSvector2 position_push_to_button{400.0f,500.0f};
+		GSvector2 scale_push_to_button{0.5f,0.5f};
+		GScolor color{1,1,1,alpha_};
+		gsDrawSprite2D(Texture_Push_Button, &position_push_to_button,NULL, NULL, &color, &scale_push_to_button,NULL);
 	}
 	fade_.draw();
 }

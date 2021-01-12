@@ -30,10 +30,17 @@ void ResultScene::update(float delta_time) {
 void ResultScene::draw() const {
 	//ÉèÅ[ÉãÉhÇÃï`âÊ
 	//world_.draw();
-	gsDrawSprite2D(Texture_Clear, &GSvector2{ 500,50 }, NULL, NULL, NULL, NULL, NULL);
-	gsDrawSprite2D(Texture_Next_Stage, &GSvector2{ 350,250 }, NULL, NULL, NULL, &GSvector2{ 0.5,0.5 }, NULL);
-	gsDrawSprite2D(Texture_One_More, &GSvector2{ 450,400 }, NULL, NULL, NULL, &GSvector2{ 0.5,0.5 }, NULL);
-	gsDrawSprite2D(Texture_Return_To_Title, &GSvector2{ 450,550 }, NULL, NULL, NULL, &GSvector2{0.5,0.5}, NULL);
+	GSvector2 position_clear{500.0f,50.0f};
+	gsDrawSprite2D(Texture_Clear, &position_clear, NULL, NULL, NULL, NULL, NULL);
+	GSvector2 position_next_stage{350.0f,250.0f};
+	GSvector2 scale_next_stage{0.5f,0.5f};
+	gsDrawSprite2D(Texture_Next_Stage, &position_next_stage, NULL, NULL, NULL, &scale_next_stage, NULL);
+	GSvector2 position_one_more{450.0f,400.0f};
+	GSvector2 scale_one_more{0.5f,0.5f};
+	gsDrawSprite2D(Texture_One_More, &position_one_more, NULL, NULL, NULL, &scale_one_more, NULL);
+	GSvector2 position_return_to_title{450.0f,550.0f};
+	GSvector2 scale_return_to_title{0.5f,0.5f};
+	gsDrawSprite2D(Texture_Return_To_Title, &position_return_to_title, NULL, NULL, NULL, &scale_return_to_title, NULL);
 	
 }
 
