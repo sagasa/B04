@@ -29,7 +29,7 @@ void GameOverScene::draw() const {
 	gsDrawSprite2D(Texture_Game_Over, &position_game_over, NULL, NULL, NULL, NULL, NULL);
 	GSvector2 position_next_stage{ 350.0f,290.0f };
 	GSvector2 scale_next_stage{ 0.5f,0.5f };
-	gsDrawSprite2D(Texture_Next_Stage, &GSvector2{ 350,290 }, NULL, NULL, NULL, &scale_next_stage, NULL);
+	gsDrawSprite2D(Texture_Next_Stage, &position_next_stage, NULL, NULL, NULL, &scale_next_stage, NULL);
 	GSvector2 position_one_more{ 450.0f,400.0f };
 	GSvector2 scale_one_more{ 0.5f,0.5f };
 	gsDrawSprite2D(Texture_One_More, &position_one_more, NULL, NULL, NULL, &scale_one_more, NULL);
