@@ -11,7 +11,7 @@ void player_paladin::wake_up()
 {
     hp_ = 3;
     tag_ = "PlayerTag";
-    name_ = "Player";
+    name_ = "PlayerPaladin";
     change_state(Jump, 1,false);
 }
 
@@ -66,6 +66,8 @@ void player_paladin::attack()
 player_paladin::player_paladin(IWorld* world, const GSvector3& position) :Player(world, position, AnimatedMesh{ Mesh_Paladin, Skeleton_Paladin, Animation_Paladin })
 {
     is_soft_ = false;
+    height_ext_ = 0.5;
+    collider_ = BoundingSphere{ 0.8f,GSvector3{0.0f,1.4f,0.0f} };
     stop();
 }
 
@@ -173,7 +175,7 @@ void player_paladin::update(float delta_time)
         {
             if (gsGetKeyState(GKEY_SPACE))
             {
-                jump(3, 0.7);
+                jump(3, 0.08f);
                 change_state(Jump, 6, false);
             }
             inputVelocity.y = MAX(inputVelocity.y, 0);
@@ -182,7 +184,7 @@ void player_paladin::update(float delta_time)
         float speed = 0.04f;    // 移動スピード
         velocity_ += inputVelocity * delta_time * speed;
         velocity_.x = CLAMP(velocity_.x, -Velocity, Velocity);
-        velocity_.y = CLAMP(velocity_.y, -Velocity, Velocity);
+        //velocity_.y = CLAMP(velocity_.y, -Velocity, Velocity);
     	
     }else
     {
