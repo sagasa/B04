@@ -35,8 +35,9 @@ void Fade::update(float delta_time) {
 
 //描画
 void Fade::draw() const {
-
-	gsDrawSprite2D(Texture_Fade, &GSvector2{ 0,0 }, NULL, NULL, &GScolor{ 1,1,1,color_alpha_ }, &GSvector2{ 10,6 }, NULL);
+	GScolor color{ 1,1,1,color_alpha_ };
+	GSvector2 scale{ 10.0f,6.0f };
+	gsDrawSprite2D(Texture_Fade, NULL, NULL, NULL, &color, &scale, NULL);
 }
 
 //フェードが終わったかを取得
