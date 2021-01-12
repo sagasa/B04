@@ -35,6 +35,10 @@ void Particle::update(float delta_time)
 	{
 		color_ = GSvector3::lerp(start_color_, end_color_, progressRate);
 	}
+	if(fabsf(start_alpha_-end_alpha_)<FLT_EPSILON)
+	{
+		alpha_ = LERP(progressRate, start_alpha_, end_alpha_);
+	}
 	
 	alpha_ = MIN(MIN(progressRate / fade_in_time, (1.0f - progressRate) / fade_out_time), 1.0f) * alpha_;
 
@@ -48,7 +52,7 @@ void Particle::update(float delta_time)
 	velocity_ *= damp_;
 	transform_.translate(velocity_ * delta_time);
 
-	if (OnUpdate)OnUpdate();
+	if (OnUpdate)OnUpdate(delta_time);
 }
 
 void Particle::draw_transparent() const
@@ -64,12 +68,14 @@ void Particle::draw_transparent() const
 	glDisable(GL_LIGHTING);
 	glDepthMask(GL_FALSE);
 	glBlendFunc(sfactor, dfactor);
+	GSvector3 position = transform_.position();
+	GScolor color = GScolor{ color_,alpha_ };
 	gsDrawSprite3D(
 		image_handle_,
-		&transform_.position(),
+		&position,
 		&body,
 		NULL,
-		&GScolor{ color_,alpha_ },
+		&color,
 		&scale_,
 		angle_
 	);

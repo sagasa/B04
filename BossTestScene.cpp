@@ -9,6 +9,7 @@
 #include"Light.h"
 #include"Player.h"
 #include "player_ghost.h"
+#include "player_paladin.h"
 #include"SurogSakones.h"
 #include "UI.h"
 #include "AttackCollider.h"
@@ -23,11 +24,16 @@ void BossTestScene::start() {
     gsLoadTexture(Texture_EffectLazerCyan, "Assets/Effect/fx_lazer_cyan_dff.png");
     gsLoadTexture(Texture_Hp, "Assets/Image/outline_heart.png");
     gsLoadTexture(Texture_Shield, "Assets/Image/shield.png");
-    // プレーヤメッシュの読み込み
+    //gsLoadTexture(Texture_Distotion, "Assets/Effect/ShockWaveDistortion1.png");
+    gsLoadTexture(Texture_Smoke, "Assets/Effect/particle_smoke.png");
+    //Player
     gsLoadMesh(Mesh_Player, "Assets/Model/Enemy/Ghost.msh");
-    gsLoadMesh(Mesh_Poltergeist, "Assets/Model/Enemy/Ghost.msh");
-    gsLoadSkeleton(Mesh_CarGhost, "Assets/Model/Enemy/Ghost.skl");
-    gsLoadAnimation(Animation_CarGhost, "Assets/Model/Enemy/Ghost.anm");
+    gsLoadSkeleton(Skeleton_Player, "Assets/Model/Enemy/Ghost.skl");
+    gsLoadAnimation(Animation_Player, "Assets/Model/Enemy/Ghost.anm");
+
+    gsLoadMesh(Mesh_Paladin, "Assets/Model/Paladin/Paladin.msh");
+    gsLoadSkeleton(Skeleton_Paladin, "Assets/Model/Paladin/Paladin.skl");
+    gsLoadAnimation(Animation_Paladin, "Assets/Model/Paladin/Paladin.anm");
     
     //SurogSakonesのメッシュの読み込み
     gsLoadMesh(Mesh_SurogSakones, "Assets/Model/Enemy/Ghost_T-pose.msh");
@@ -35,10 +41,6 @@ void BossTestScene::start() {
     gsLoadSkeleton(Skeleton_SurogSakones, "Assets/Model/Enemy/Ghost_T-pose.skl");
     //SurogSakonesのアニメーションの読み込み
     gsLoadAnimation(Animation_SurogSakones, "Assets/Model/Enemy/Ghost_T-pose.anm");
-
-    gsLoadMesh(Mesh_Paladin, "Assets/Model/Paladin/Paladin.msh");
-    gsLoadSkeleton(Skeleton_Paladin, "Assets/Model/Paladin/Paladin.skl");
-    gsLoadAnimation(Animation_Paladin, "Assets/Model/Paladin/Paladin.anm");
 
     gsLoadOctree(Octree_Stage, "Assets/Octree/stage1.oct");
     gsLoadOctree(Octree_Collider, "Assets/Octree/stage1_collider.oct");
@@ -54,15 +56,25 @@ void BossTestScene::start() {
     // ライトの追加
     world_.add_light(new Light{ &world_ });
     // プレーヤの追加
-    world_.add_actor(new player_ghost{ &world_, GSvector3{ 0.0f, 0.0f, 0.0f } });
+    world_.add_actor(new player_paladin{ &world_, GSvector3{ 0.0f, 0.0f, 0.0f } });
     //ボス
-    world_.add_actor(new SurogSakones{ &world_,GSvector3{5.0f,0.0f,0.0f} });
+    //ボス
+    // プレーヤの追加
+    world_.add_actor(new player_ghost{ &world_, GSvector3{ 0.0f, 0.0f, 0.0f } });
     world_.add_particle_manager(new ParticleManager{ &world_ });
 	
 }
 
 //更新
 void BossTestScene::update(float delta_time) {
+	if(gsGetKeyState(GKEY_1))
+	{
+        world_.particle_manager()->smoke(GSvector3::zero());
+	}
+	if(gsGetKeyTrigger(GKEY_2))
+	{
+        world_.particle_manager()->distotion(GSvector3::zero());
+	}
 	if(gsGetKeyTrigger(GKEY_RETURN))
 	{
         world_.particle_manager()->spark(GSvector3::zero());
