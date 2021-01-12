@@ -35,7 +35,7 @@ void Fade::update(float delta_time) {
 
 //•`‰æ
 void Fade::draw() const {
-	GScolor color{ 1,1,1,color_alpha_ };
+	GScolor color{ 0,0,0,color_alpha_ };
 	GSvector2 scale{ 10.0f,6.0f };
 	gsDrawSprite2D(Texture_Fade, NULL, NULL, NULL, &color, &scale, NULL);
 }

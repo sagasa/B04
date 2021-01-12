@@ -3,6 +3,7 @@
 
 #include"IScene.h"
 #include"World.h"
+#include"Fade.h"
 
 //ゲームプレイシーン
 class GamePlayScene :public IScene {
@@ -26,6 +27,7 @@ private:
 	bool is_end_{ false };
 	//次のシーン
 	std::string next_scene_{"SceneNull"};
+	Fade fade_;
 };
 
 #endif
