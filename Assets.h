@@ -56,7 +56,10 @@ enum Texture {
 
 // ＢＧＭデータ
 enum Music {
-    Music_BackGround                // BGM
+    Music_Title,                    //タイトルBGM
+    Music_GamePlay,                 //ゲームプレイBGM
+    Music_GameOver,                 //ゲームオーバーBGM
+    Music_GameClear                 //ゲームクリアBGM
 };
 
 // ＳＥデータ

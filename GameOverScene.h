@@ -40,6 +40,8 @@ private:
 	std::string nextScene_;
 	//フェードクラス
 	Fade fade_;
+	//タイマー
+	float timer_;
 };
 
 #endif // !GAME_OVER_SCENE_H_

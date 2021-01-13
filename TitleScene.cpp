@@ -13,9 +13,13 @@ void TitleScene::start() {
 	//終了フラグの初期化
 	is_end_ = false;
 	nextScene_ = "";
+	timer_ = 0;
+	//テクスチャの読み込み
 	gsLoadTexture(Texture_TitleLogo, "Assets/Image/title_logo.dds");
 	gsLoadTexture(Texture_Push_Button, "Assets/Image/push_button.dds");
 	gsLoadTexture(Texture_Fade, "Assets/Image/black.dds");
+	//BGMの読み込み
+	//gsLoadBGM()
 	alpha_flg_ = false;
 	alpha_ = 0.0f;
 }

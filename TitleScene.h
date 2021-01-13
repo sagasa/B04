@@ -33,7 +33,7 @@ private:
 	//フェードクラス
 	Fade fade_;
 	//タイマー
-	float timer_ = 0.0f;
+	float timer_;
 	//α値
 	float alpha_;
 	//α値の増減フラグ
