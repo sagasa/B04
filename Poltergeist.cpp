@@ -72,6 +72,10 @@ void Poltergeist::update(float delta_time) {
 	if (is_inside()) {
 		//プレイヤーを検索
 		player_ = world_->find_actor("Player");
+		if (player_ == nullptr) {
+			player_ = world_->find_actor("PlayerPaladin");
+			if (player_ == nullptr) return;
+		}
 		//状態の更新
 		update_state(delta_time);
 		//フィールドとの衝突判定
@@ -332,7 +336,7 @@ void Poltergeist::generate_bullet() const {
 	//弾の生成位置の高さの補正値
 	const float GenerateHeight{ 1.0f };
 	//弾のスピード
-	const float BulletSpeed{ 0.05f };
+	const float BulletSpeed{ 0.075f };
 	//生成位置の計算
 	GSvector3 position = transform_.position() + transform_.forward() * GenerateDistance;
 	//y座標を補正する
