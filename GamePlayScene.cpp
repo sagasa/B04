@@ -12,6 +12,7 @@
 #include"SurogSakones.h"
 #include"MapGenerator.h"
 #include "player_ghost.h"
+#include"ParticleManager.h"
 
 
 
@@ -66,6 +67,8 @@ void GamePlayScene::start() {
     world_.add_light(new Light{ &world_ });
     // プレーヤの追加
     world_.add_actor(new player_ghost{ &world_, GSvector3{ 0.0f, 0.0f, 0.0f } });
+    //追加
+    world_.add_particle_manager(new ParticleManager{ &world_ });
 }
 
 //更新
