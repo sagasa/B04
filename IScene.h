@@ -2,6 +2,7 @@
 #define ISCENE_H_
 
 #include<string>
+#include<GSmusic.h>
 
 class resource_loader;
 

@@ -16,15 +16,22 @@ void TitleScene::start() {
 	timer_ = 0;
 	//テクスチャの読み込み
 	gsLoadTexture(Texture_TitleLogo, "Assets/Image/title_logo.dds");
-	gsLoadTexture(Texture_Push_Button, "Assets/Image/push_button.dds");
+	gsLoadTexture(Texture_PushButton, "Assets/Image/push_button.dds");
 	gsLoadTexture(Texture_Fade, "Assets/Image/black.dds");
 	//BGMの読み込み
-	//gsLoadBGM()
+	gsLoadMusic(Music_Title, "Assets/BGM/title.wav", GS_TRUE);
+	//SEの読み込み
+	gsLoadSE(SE_Push, "Assets/SE/push.wav", 1, GWAVE_DEFAULT);
+
 	alpha_flg_ = false;
 	alpha_ = 0.0f;
+
+	gsBindMusic(Music_Title);
+	gsPlayMusic();
 }
 
 void TitleScene::update(float delta_time) {
+	gsSetMusicVolume(0.6f);
 	fade_.update(delta_time);
 	//キーでシーンをチェンジ
 	if (gsGetKeyTrigger(GKEY_1)) {
@@ -43,6 +50,7 @@ void TitleScene::update(float delta_time) {
 	}
 	if (fade_.is_end()) {
 		if (gsGetKeyTrigger(GKEY_F)) {
+			gsPlaySE(SE_Push);
 			is_end_ = true;
 			nextScene_ = "GamePlayScene";
 			fade_.change_fade_flg();
@@ -79,7 +87,7 @@ void TitleScene::draw() const {
 		GSvector2 position_push_to_button{400.0f,500.0f};
 		GSvector2 scale_push_to_button{0.5f,0.5f};
 		GScolor color{1,1,1,alpha_};
-		gsDrawSprite2D(Texture_Push_Button, &position_push_to_button,NULL, NULL, &color, &scale_push_to_button,NULL);
+		gsDrawSprite2D(Texture_PushButton, &position_push_to_button,NULL, NULL, &color, &scale_push_to_button,NULL);
 	}
 	fade_.draw();
 }
@@ -98,6 +106,11 @@ std::string TitleScene::next() const {
 
 //終了
 void TitleScene::end() {
+	gsStopMusic();
+	gsDeleteMusic(Music_Title);
+	gsDeleteSE(SE_Push);
+	gsDeleteTexture(Texture_TitleLogo);
+	gsDeleteTexture(Texture_PushButton);
 	timer_ = 0.0f;
 }
 
