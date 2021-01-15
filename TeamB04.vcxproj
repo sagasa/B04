@@ -153,6 +153,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ChangeItem.cpp" />
     <ClCompile Include="CSVReader.cpp" />
+    <ClCompile Include="Fade.cpp" />
     <ClCompile Include="GameOverScene.cpp" />
     <ClCompile Include="interact_collider.cpp" />
     <ClCompile Include="MapGenerator.cpp" />
@@ -193,6 +194,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ChangeItem.h" />
     <ClInclude Include="CSVReader.h" />
+    <ClInclude Include="Fade.h" />
     <ClInclude Include="GameOverScene.h" />
     <ClInclude Include="interact_collider.h" />
     <ClInclude Include="interact_prop.h" />

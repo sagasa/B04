@@ -14,9 +14,10 @@
 #include "player_ghost.h"
 
 
+
 //開始
 void GamePlayScene::start() {
-    
+    fade_.start(true,1);
     //生成
     MapGenerator generator{ &world_,"Assets/Map/Stage1.csv"};
 
@@ -70,25 +71,32 @@ void GamePlayScene::start() {
 //更新
 void GamePlayScene::update(float delta_time) {
 	world_.update(delta_time);
-    
-    if (world_.is_game_clear()) {//ボスが死んだか？
+
+    if (world_.is_game_clear() && fade_.is_end()) {//ボスが死んだか？
         is_end_ = true;
         next_scene_ = "ResultScene";
+        fade_.change_fade_flg();
     }
-    else if (world_.is_game_over()) {//プレイヤーが死んだか？
+    else if (world_.is_game_over() && fade_.is_end()) {//プレイヤーが死んだか？
         is_end_ = true;
         next_scene_ = "GameOverScene";
+        fade_.change_fade_flg();
     }
+    fade_.update(delta_time);
 }
 
 //描画
 void GamePlayScene::draw() const {
 	world_.draw();
+    fade_.draw();
 }
 
 //終了しているか？
 bool GamePlayScene::is_end() const {
-	return is_end_;
+    if (fade_.is_end()) {
+        return is_end_;
+    }
+    else return false;//終了フラグを返す
 }
 
 //次のシーンを返す
