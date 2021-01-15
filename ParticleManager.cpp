@@ -162,13 +162,20 @@ void ParticleManager::possession_light(const GSvector3& position) const
 	auto p = new Particle{ world_ };
 
 	//原点から球体の形
-	p->transform().position(position + GSvector3{ gsRandf(-1.0f,1.0f),gsRandf(-1.0f,1.0f) ,gsRandf(-1.0f,1.0f) });
+	p->transform().position(position + GSvector3{ gsRandf(-0.8f,0.8f),gsRandf(-0.8f,0.8f) ,gsRandf(-0.8f,0.8f) });
 	GSvector3 direction = position - p->transform().position();
 	p->velocity(direction.normalize() * gsRandf(0.02f, 0.05f));
 	p->lifespan_ = gsRandf(30.0f, 45.0f);
 	p->image_handle_ = Texture_Circle;
-	p->start_alpha_ = 0.8f;
+	float scale = gsRandf(0.3f, 0.5f);
+	p->start_scale_ = GSvector2{ scale,scale };
+	p->end_scale_ = GSvector2{ 1.0f,1.0f };
+	p->start_alpha_ = 1.0f;
 	p->end_alpha_ = 0.0f;
+	
+	//色は下のパラメーターをいじってください！！
+	p->color_ = GSvector3{ gsRandf(0.3f,0.5f),0.0f,gsRandf(0.3f,0.5f) };
+
 	//ラムダ式の処理(お手本として残しておく)
 	p->OnUpdate = [&, p, position](float delta_time)
 	{
