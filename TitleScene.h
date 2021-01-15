@@ -4,6 +4,8 @@
 #include"IScene.h"
 #include<gslib.h>
 #include"World.h"
+#include"Fade.h"
+
 
 //タイトルシーン
 class TitleScene : public IScene {
@@ -26,11 +28,17 @@ private:
 
 	//終了フラグ
 	bool is_end_{ false };
-	//スクロール値
-	float scroll_{ 0.0f };
 	//次のシーン
 	std::string nextScene_;
-	World world_;
+	//フェードクラス
+	Fade fade_;
+	//タイマー
+	float timer_;
+	//α値
+	float alpha_;
+	//α値の増減フラグ
+	bool alpha_flg_;
+
 };
 
 #endif

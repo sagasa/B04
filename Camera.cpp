@@ -21,7 +21,10 @@ Camera::Camera(IWorld* world) {
 void Camera::update(float delta_time) {
 	//プレイヤーを検索
 	player_ = world_->find_actor("Player");
-	if (player_ == nullptr) return;
+	if (player_ == nullptr) {
+		player_ = world_->find_actor("PlayerPaladin");
+		if (player_ == nullptr) return;
+	}
 	//カメラの位置を求める
 	GSvector3 position = PlayerOffset + player_->transform().position();
 	position = GSvector3::smoothDamp(transform_.position(), position, velocity_, SmoothTime, MaxSpeed, delta_time);

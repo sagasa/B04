@@ -65,6 +65,10 @@ RushGhost::RushGhost(IWorld* world, const GSvector3& position) :
 void RushGhost::update(float delta_time) {
 	//プレイヤーを検索
 	player_ = world_->find_actor("Player");
+	if (player_ == nullptr) {
+		player_ = world_->find_actor("PlayerPaladin");
+		if (player_ == nullptr) return;
+	}
 	//状態の更新
 	update_state(delta_time);
 	//フィールドとの衝突判定
@@ -218,6 +222,8 @@ bool RushGhost::is_move()const {
 
 //前向き方向のベクトルとターゲット方向のベクトルの角度差を求める(符号付き)
 float RushGhost::target_signed_angle()const {
+	//ターゲットがいなければ0を返す
+	if (player_ == nullptr)return 0.0f;
 	//ターゲット方向のベクトルを求める
 	GSvector3 to_target = player_->transform().position() - transform_.position();
 	//前向き方向のベクトルを取得
@@ -233,6 +239,7 @@ float RushGhost::target_angle()const {
 
 //ターゲットとの距離を求める
 float RushGhost::target_distance()const {
+	if (player_ == nullptr)return FLT_MAX;
 	return (player_->transform().position() - transform_.position()).magnitude();
 }
 
@@ -245,6 +252,7 @@ GSvector3 RushGhost::to_target() const {
 
 //ターゲットとのxの距離を求める
 float RushGhost::target_distance_x() const {
+	if (player_ == nullptr)return FLT_MAX;
 	GSvector3 player = player_->transform().position();
 	player.y = 0.0f;
 	GSvector3 me = transform_.position();
@@ -254,6 +262,7 @@ float RushGhost::target_distance_x() const {
 
 //ターゲットとのyの距離を求める
 float RushGhost::target_distance_y() const {
+	if (player_ == nullptr)return FLT_MAX;
 	GSvector3 player = player_->transform().position();
 	player.x = 0.0f;
 	GSvector3 me = transform_.position();

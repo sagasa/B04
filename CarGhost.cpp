@@ -32,7 +32,7 @@ const float EnemySideOffset{ 0.6f };
 //足元のオフセット
 const float FootOffset{ 0.1f };
 //スピード
-const float Speed{ 0.1f };
+const float Speed{ 0.075f };
 //x座標の死亡座標
 const float LimitDistance_x{ 100.0f };
 //y座標の死亡座標
@@ -76,6 +76,10 @@ void CarGhost::update(float delta_time) {
 	if (is_inside()) {
 		//プレイヤーを検索
 		player_ = world_->find_actor("Player");
+		if (player_ == nullptr) {
+			player_ = world_->find_actor("PlayerPaladin");
+			if (player_ == nullptr) return;
+		}
 		//状態の更新
 		update_state(delta_time);
 		//重力を更新

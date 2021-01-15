@@ -8,7 +8,7 @@ Light::Light(IWorld* world) {
 
 // •`‰æ
 void Light::draw() const {
-    float ambient[4] = { 0.2f, 0.2f, 0.2f, 1.0f };
+    float ambient[4] = { 0.1f, 0.1f, 0.1f, 1.0f };
     float diffuse[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
     float specular[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
     float position[4] = { 100.0f, 100.f, 100.0f, 0.0f };
