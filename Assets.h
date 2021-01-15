@@ -43,7 +43,9 @@ enum Texture {
     Texture_EffectLazerOrange,      // レーザー（オレンジ色）
     Texture_EffectFlash,             // 爆発フラッシュ
     Texture_Smoke,
-	Texture_Distotion
+	Texture_Distotion,
+	Texture_Hit,
+	Texture_Circle
 };
 
 // ＢＧＭデータ

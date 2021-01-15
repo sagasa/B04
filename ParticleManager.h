@@ -9,9 +9,14 @@ class ParticleManager:public Actor
 {
 public:	
 	ParticleManager(IWorld* world);
-	void spark(const GSvector3& position);
-	void smoke(const GSvector3& position);
-	void distotion(const GSvector3& position);
+	void spark(const GSvector3& position)const;
+	void smoke(const GSvector3& position)const;
+	void distotion(const GSvector3& position)const;
+	void dust(const GSvector3& position)const;
+	void hit(const GSvector3& position)const;
+	void death_smoke(const GSvector3& position)const;
+	void boss_smoke(const GSvector3& position)const;
+	void possession_light(const GSvector3& position)const;
 };
 
 #endif

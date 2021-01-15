@@ -150,7 +150,7 @@
     <ClCompile Include="GameOverScene.cpp">
       <Filter>ソース ファイル\Scenes</Filter>
     </ClCompile>
-      <ClCompile Include="ParticleManager.cpp">
+    <ClCompile Include="ParticleManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Particle.cpp">
@@ -290,7 +290,7 @@
     <ClInclude Include="GameOverScene.h">
       <Filter>ヘッダー ファイル\Scenes</Filter>
     </ClInclude>
-      <ClInclude Include="ParticleManager.h">
+    <ClInclude Include="ParticleManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Particle.h">

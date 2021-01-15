@@ -26,6 +26,8 @@ void BossTestScene::start() {
     gsLoadTexture(Texture_Shield, "Assets/Image/shield.png");
     //gsLoadTexture(Texture_Distotion, "Assets/Effect/ShockWaveDistortion1.png");
     gsLoadTexture(Texture_Smoke, "Assets/Effect/particle_smoke.png");
+    gsLoadTexture(Texture_Hit, "Assets/Effect/particle_glitter_3.png");
+    gsLoadTexture(Texture_Circle, "Assets/Effect/particle_dot_1.png");
     //Player
     gsLoadMesh(Mesh_Player, "Assets/Model/Enemy/Ghost.msh");
     gsLoadSkeleton(Skeleton_Player, "Assets/Model/Enemy/Ghost.skl");
@@ -61,6 +63,7 @@ void BossTestScene::start() {
     //ボス
     // プレーヤの追加
     world_.add_actor(new player_ghost{ &world_, GSvector3{ 0.0f, 0.0f, 0.0f } });
+    //world_.add_actor(new SurogSakones{ &world_,GSvector3{0.0f,0.0f,0.0f} });
     world_.add_particle_manager(new ParticleManager{ &world_ });
 	
 }
@@ -71,10 +74,26 @@ void BossTestScene::update(float delta_time) {
 	{
         world_.particle_manager()->smoke(GSvector3::zero());
 	}
-	if(gsGetKeyTrigger(GKEY_2))
+	if(gsGetKeyState(GKEY_2))
 	{
-        world_.particle_manager()->distotion(GSvector3::zero());
+        world_.particle_manager()->possession_light(GSvector3::zero());
 	}
+	if(gsGetKeyTrigger(GKEY_3))
+	{
+        world_.particle_manager()->dust(GSvector3::zero());
+	}
+	if(gsGetKeyTrigger(GKEY_4))
+	{
+        world_.particle_manager()->hit(GSvector3::zero());
+	}
+    if (gsGetKeyState(GKEY_5))
+    {
+        world_.particle_manager()->death_smoke(GSvector3::zero());
+    }
+    if (gsGetKeyState(GKEY_6))
+    {
+        world_.particle_manager()->boss_smoke(GSvector3::zero());
+    }
 	if(gsGetKeyTrigger(GKEY_RETURN))
 	{
         world_.particle_manager()->spark(GSvector3::zero());
