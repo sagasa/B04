@@ -21,7 +21,7 @@ public:
 	virtual void update(float delta_time)override;
 	virtual void draw_transparent() const override;
 
-	std::function<void()> OnUpdate;
+	std::function<void(float)> OnUpdate;
 	std::function<void()> OnDeath;
 	
 public:
@@ -40,6 +40,9 @@ public:
 	GSvector3 color_{ GSvector3::one()};
 	GSvector3 start_color_{ GSvector3::one() };
 	GSvector3 end_color_{ GSvector3::one() };
+	float alpha_{ 1.0f };
+	float start_alpha_{ 1.0f };
+	float end_alpha_{ 1.0f };
 
 	//フェードイン、フェードアウトのタイマー
 	float fade_in_time{ 0.0f };
@@ -65,8 +68,7 @@ public:
 	//void transform(const GSmatrix4& matrix);
 
 private:
-	State state_{ State::Sleep };
-	float alpha_{ 1.0f };
+	State state_{ State::Sleep };	
 };
 
 #endif
