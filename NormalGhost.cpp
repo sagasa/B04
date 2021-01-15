@@ -164,7 +164,7 @@ void NormalGhost::damage(float delta_time) {
 //Ž€–S’†
 void NormalGhost::died(float delta_time) {
 	//ƒ‚[ƒVƒ‡ƒ“I—¹Œã‚ÉŽ€–S
-	if (state_timer_ >= mesh_.motion_end_time()) {
+	if (state_timer_ >= mesh_.motion_end_time() - 30.0f) {
 		die();
 	}
 }
