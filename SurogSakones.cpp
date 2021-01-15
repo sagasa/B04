@@ -12,6 +12,7 @@
 #include "PsycokinesisBullet.h"
 #include "AttackCollider.h"
 #include "Line.h"
+#include "ParticleManager.h"
 
 enum {
 	MotionIdol1 = 0,
@@ -47,6 +48,8 @@ const float ScytheAttackCoolTime{ 30.0f };
 const float Psyco1AttackCoolTime{ 120.0f };
 const float Psyco2AttackCoolTime{ 30.0f };
 
+const GSvector3 SmokePosition{ 0.0f,0.5f,0.0f };
+
 SurogSakones::SurogSakones(IWorld* world, const GSvector3& position) :
 	mesh_{ Mesh_SurogSakones, Skeleton_SurogSakones, Animation_SurogSakones, MotionIdol1 },
 	player_{ nullptr },
@@ -74,35 +77,12 @@ void SurogSakones::update(float delta_time) {
 		change_state(State::Attack, MotionScytheAttack,true);
 		generate_attackcollider();
 	}
-	//if (gsGetKeyTrigger(GKEY_2)) {
-	//	change_state(State::Idol, MotionIdol2);
-	//}
-	//if(gsGetKeyTrigger(GKEY_3))
-	//{
-	//	change_state(State::Turn, MotionScytheAttack);
-	//}
-	//if (gsGetKeyTrigger(GKEY_4)) {
-	//	change_state(State::Attack, MotionScytheAttack);
-	//}
-	//if (gsGetKeyTrigger(GKEY_5)) {
-	//	change_state(State::Attack, MotionAttack2);
-	//}
-	//if (gsGetKeyTrigger(GKEY_6)) {
-	//	change_state(State::Attack, MotionAttack3);
-	//}
-	//if (gsGetKeyTrigger(GKEY_7)) {
-	//	change_state(State::Stun, MotionDamage1);
-	//}
-	//if (gsGetKeyTrigger(GKEY_8)) {
-	//	change_state(State::Stun, MotionDamage2);
-	//}
-	//if (gsGetKeyTrigger(GKEY_9)) {
-	//	change_state(State::Dying, MotionDying);
-	//}
-	//if (gsGetKeyTrigger(GKEY_SPACE)) {
-	//	if (state_ != State::Stun)Damage();
-	//	if (hp_ <= 0)change_state(State::Dying, MotionDying, false);
-	//}
+
+	//À•W•ÏŠ·
+	GSvector3 position = SmokePosition * mesh_.bone_matrices(2);
+	world_->particle_manager()->boss_smoke(position);
+	//
+	
 	update_state(delta_time);
 	transform_.translate(GSvector3{ 0.0f,-Gravity,0.0f }*delta_time);
 	collide_field();
@@ -370,7 +350,7 @@ void SurogSakones::change_state(State state, GSuint motion, bool loop) {
 	attack_timer_ = 0.0f;
 }
 void SurogSakones::draw()const {
-	mesh_.draw();	
+	mesh_.draw();
 #ifdef _DEBUG
 	debug_draw();
 	collider().draw();
