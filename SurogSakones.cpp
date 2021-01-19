@@ -372,9 +372,10 @@ void SurogSakones::draw()const {
 
 void SurogSakones::draw_gui() const
 {
-	const GSvector2 position{ 500.0f,300.0f };
-	GSrect sourceRect{ 0.0f,0.0f,200.0f,60.0f };
-	//gsDrawSprite2D(Texture_BossHP, &position, &sourceRect, NULL, NULL, NULL, 0.0f);
+	const GSvector2 hp_position{ 500.0f,300.0f };
+	GSrect sourceRect{ 0.0f,0.0f,200.0f,50.0f };
+	static const GSvector2 scale{ 1.0f,0.5f };
+	gsDrawSprite2D(Texture_BossHP, &hp_position, &sourceRect, NULL, NULL, &scale, 0.0f);
 }
 
 
@@ -427,12 +428,9 @@ void SurogSakones::Damage() {
 }
 
 void SurogSakones::generate_pshychokinesis(const GSvector3& position, GSvector3 velocity) {
-	Actor* player = world_->find_actor("Player");
-	//プレイヤーが憑依中かしらべ、憑依中じゃなかったらreturnする処理を後々追加
-	//プレイヤーがヌルでないか
-	if (player != nullptr) {
+	if (player_ != nullptr) {
 		//プレイヤーのベクトルを求める
-		GSvector3 to_player = (player->transform().position() - transform().position()).normalized();
+		GSvector3 to_player = (player_->transform().position() - transform().position()).normalized();
 		//球を出す処理
 		world_->add_actor(new PsycokinesisBullet(world_, position, velocity));
 	}
