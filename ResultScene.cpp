@@ -18,13 +18,22 @@ void ResultScene::start() {
 	nextScene_ = "";
 	timer_ = 0;
 	//テクスチャの読み込み
-	gsLoadTexture(Texture_Clear, "Assets/Image/clear.dds");
-	gsLoadTexture(Texture_Return_To_Title, "Assets/Image/return_to_title.dds");
-	gsLoadTexture(Texture_One_More, "Assets/Image/one_more.dds");
+	gsLoadTexture(Texture_GameClear, "Assets/Image/clear.dds");
+	gsLoadTexture(Texture_ReturnToTitle, "Assets/Image/return_to_title.dds");
+	gsLoadTexture(Texture_OneMore, "Assets/Image/one_more.dds");
+
+	//BGMの読み込み
+	gsLoadMusic(Music_GameClear, "Assets/BGM/gameclear.wav", GS_TRUE);
+	gsBindMusic(Music_GameClear);
+	gsPlayMusic();
+	//SEの読み込み
+	gsLoadSE(SE_Select, "Assets/SE/select.wav", 1, GWAVE_DEFAULT);
+	gsLoadSE(SE_Push, "Assets/SE/push.wav", 1, GWAVE_DEFAULT);
 }
 
 //更新
 void ResultScene::update(float delta_time) {
+	gsSetMusicVolume(0.8f);
 	//フェードクラスの更新
 	fade_.update(delta_time);
 	//ワールドの更新
@@ -33,13 +42,16 @@ void ResultScene::update(float delta_time) {
 
 		//上下キーで選択移動
 		if (gsGetKeyTrigger(GKEY_UP)) {
+			gsPlaySE(SE_Select);
 			--num_;
 		}
 		else if (gsGetKeyTrigger(GKEY_DOWN)) {
+			gsPlaySE(SE_Select);
 			++num_;
 		}
 		//Fキーで決定
 		if (gsGetKeyTrigger(GKEY_F)) {
+			gsPlaySE(SE_Push);
 			is_end_ = true;
 			fade_.change_fade_flg();
 			switch (num_)
@@ -63,16 +75,16 @@ void ResultScene::draw() const {
 	//ワールドの描画
 	//world_.draw();
 	GSvector2 position_clear{ 500.0f,50.0f };
-	gsDrawSprite2D(Texture_Clear, &position_clear, NULL, NULL, NULL, NULL, NULL);
+	gsDrawSprite2D(Texture_GameClear, &position_clear, NULL, NULL, NULL, NULL, NULL);
 	if (timer_ >= Time) {
 		GSvector2 position_one_more{ 450.0f,400.0f };
 		GSvector2 scale_one_more{ 0.5f,0.5f };
 		GScolor color_one_more{ 1,1,1, alphas_[0] };
-		gsDrawSprite2D(Texture_One_More, &position_one_more, NULL, NULL, &color_one_more, &scale_one_more, NULL);
+		gsDrawSprite2D(Texture_OneMore, &position_one_more, NULL, NULL, &color_one_more, &scale_one_more, NULL);
 		GSvector2 position_return_to_title{ 450.0f,550.0f };
 		GSvector2 scale_return_to_title{ 0.5f,0.5f };
 		GScolor color_return_to_title{ 1,1,1, alphas_[1] };
-		gsDrawSprite2D(Texture_Return_To_Title, &position_return_to_title, NULL, NULL, &color_return_to_title, &scale_return_to_title, NULL);
+		gsDrawSprite2D(Texture_ReturnToTitle, &position_return_to_title, NULL, NULL, &color_return_to_title, &scale_return_to_title, NULL);
 	}
 
 	//フェードクラスの描画
@@ -94,10 +106,15 @@ std::string ResultScene::next() const {
 
 //終了
 void ResultScene::end() {
-	gsDeleteTexture(Texture_Clear);
-	gsDeleteTexture(Texture_Return_To_Title);
-	gsDeleteTexture(Texture_Next_Stage);
-	gsDeleteTexture(Texture_One_More);
+	gsDeleteTexture(Texture_GameClear);
+	gsDeleteTexture(Texture_ReturnToTitle);
+	gsDeleteTexture(Texture_NextStage);
+	gsDeleteTexture(Texture_OneMore);
+
+	gsStopMusic();
+	gsDeleteMusic(Music_Title);
+	gsDeleteSE(SE_Select);
+	gsDeleteSE(SE_Push);
 }
 
 //α値の更新

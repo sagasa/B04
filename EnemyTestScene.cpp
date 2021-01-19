@@ -18,7 +18,7 @@
 //開始
 void EnemyTestScene::start() {
     //BGMの読み込み
-    //gsLoadMusic(Music_BackGround, "Assets/BGM/Horror-MusicBox.mp3",GS_TRUE);
+    gsLoadMusic(Music_Title, "Assets/BGM/title.ogg",GS_TRUE);
 
     // Ghostのメッシュの読み込み
     gsLoadMesh(Mesh_Player, "Assets/Model/Enemy/Ghost.msh");
@@ -75,7 +75,7 @@ void EnemyTestScene::start() {
     //world_.add_actor(new SurogSakones{ &world_,GSvector3{15.0f,0.0f,0.0f} });
 
     //BGMのバインド
-    //gsBindMusic(Music_BackGround);
+    gsBindMusic(Music_Title);
     gsSetMusicVolume(0.8f);
     //BGMの再生
     gsPlayMusic();
@@ -108,7 +108,7 @@ std::string EnemyTestScene::next() const {
 //終了
 void EnemyTestScene::end() {
     gsPauseMusic();
-    //gsDeleteMusic(Music_BackGround);
+    gsDeleteMusic(Music_Title);
     world_.clear();
     //メッシュの削除
     gsDeleteMesh(Mesh_Player);
