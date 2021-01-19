@@ -18,9 +18,9 @@ void ResultScene::start() {
 	nextScene_ = "";
 	timer_ = 0;
 	//テクスチャの読み込み
-	gsLoadTexture(Texture_GameClear, "Assets/Image/clear.dds");
-	gsLoadTexture(Texture_ReturnToTitle, "Assets/Image/return_to_title.dds");
-	gsLoadTexture(Texture_OneMore, "Assets/Image/one_more.dds");
+	gsLoadTexture(Texture_GameClear, "Assets/Image/gameclear.dds");
+	gsLoadTexture(Texture_TitleButton, "Assets/Image/title_button.dds");
+	gsLoadTexture(Texture_RestartButton, "Assets/Image/restart_button.dds");
 
 	//BGMの読み込み
 	gsLoadMusic(Music_GameClear, "Assets/BGM/gameclear.wav", GS_TRUE);
@@ -74,17 +74,17 @@ void ResultScene::update(float delta_time) {
 void ResultScene::draw() const {
 	//ワールドの描画
 	//world_.draw();
-	GSvector2 position_clear{ 500.0f,50.0f };
+	GSvector2 position_clear{ 226.0f,50.0f };
 	gsDrawSprite2D(Texture_GameClear, &position_clear, NULL, NULL, NULL, NULL, NULL);
 	if (timer_ >= Time) {
-		GSvector2 position_one_more{ 450.0f,400.0f };
-		GSvector2 scale_one_more{ 0.5f,0.5f };
-		GScolor color_one_more{ 1,1,1, alphas_[0] };
-		gsDrawSprite2D(Texture_OneMore, &position_one_more, NULL, NULL, &color_one_more, &scale_one_more, NULL);
-		GSvector2 position_return_to_title{ 450.0f,550.0f };
-		GSvector2 scale_return_to_title{ 0.5f,0.5f };
+		GSvector2 position_restart_button{ 450.0f,300.0f };
+		GSvector2 scale_restart_button{ 0.7f,0.7f };
+		GScolor color_restart_button{ 1,1,1, alphas_[0] };
+		gsDrawSprite2D(Texture_RestartButton, &position_restart_button, NULL, NULL, &color_restart_button, &scale_restart_button, NULL);
+		GSvector2 position_return_to_title{ 480.0f,500.0f };
+		GSvector2 scale_return_to_title{ 0.7f,0.7f };
 		GScolor color_return_to_title{ 1,1,1, alphas_[1] };
-		gsDrawSprite2D(Texture_ReturnToTitle, &position_return_to_title, NULL, NULL, &color_return_to_title, &scale_return_to_title, NULL);
+		gsDrawSprite2D(Texture_TitleButton, &position_return_to_title, NULL, NULL, &color_return_to_title, &scale_return_to_title, NULL);
 	}
 
 	//フェードクラスの描画
@@ -107,9 +107,9 @@ std::string ResultScene::next() const {
 //終了
 void ResultScene::end() {
 	gsDeleteTexture(Texture_GameClear);
-	gsDeleteTexture(Texture_ReturnToTitle);
+	gsDeleteTexture(Texture_TitleButton);
 	gsDeleteTexture(Texture_NextStage);
-	gsDeleteTexture(Texture_OneMore);
+	gsDeleteTexture(Texture_RestartButton);
 
 	gsStopMusic();
 	gsDeleteMusic(Music_Title);
