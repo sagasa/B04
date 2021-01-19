@@ -374,7 +374,7 @@ void SurogSakones::draw_gui() const
 {
 	const GSvector2 position{ 500.0f,300.0f };
 	GSrect sourceRect{ 0.0f,0.0f,200.0f,60.0f };
-	gsDrawSprite2D(Texture_BossHP, &position, &sourceRect, NULL, NULL, NULL, 0.0f);
+	//gsDrawSprite2D(Texture_BossHP, &position, &sourceRect, NULL, NULL, NULL, 0.0f);
 }
 
 
