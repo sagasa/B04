@@ -31,7 +31,7 @@ void TitleScene::start() {
 }
 
 void TitleScene::update(float delta_time) {
-	gsSetMusicVolume(0.6f);
+	gsSetMusicVolume(0.8f);
 	fade_.update(delta_time);
 	//キーでシーンをチェンジ
 	if (gsGetKeyTrigger(GKEY_1)) {

@@ -59,6 +59,10 @@ void GamePlayScene::start() {
     //衝突判定用オクツリーの読み込み
     gsLoadOctree(Octree_Collider, "Assets/Octree/stage1_collider.oct");
 
+    gsLoadMusic(Music_GamePlay, "Assets/BGM/gameplay.wav", GS_TRUE);
+    gsBindMusic(Music_GamePlay);
+    gsPlayMusic();
+
     // フィールドの追加
     world_.add_field(new Field{ Octree_Stage,Octree_Collider,Mesh_Skybox });
     // カメラの追加
@@ -73,6 +77,7 @@ void GamePlayScene::start() {
 
 //更新
 void GamePlayScene::update(float delta_time) {
+    gsSetMusicVolume(0.8f);
 	world_.update(delta_time);
 
     if (world_.is_game_clear() && fade_.is_end()) {//ボスが死んだか？

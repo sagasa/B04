@@ -33,7 +33,7 @@ void GameOverScene::start() {
 
 //更新
 void GameOverScene::update(float delta_time) {
-	gsSetMusicVolume(0.6f);
+	gsSetMusicVolume(0.8f);
 	//フェードクラスの更新
 	fade_.update(delta_time);
 	//ワールドの更新
