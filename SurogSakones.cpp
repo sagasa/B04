@@ -72,6 +72,10 @@ SurogSakones::SurogSakones(IWorld* world, const GSvector3& position) :
 }
 void SurogSakones::update(float delta_time) {
 	player_ = world_->find_actor("Player");
+	if (player_ == nullptr) {
+		player_ = world_->find_actor("PlayerPaladin");
+		if (player_ == nullptr) return;
+	}
 	//一応保険で残す
 	if (gsGetKeyTrigger(GKEY_1)) {
 		change_state(State::Attack, MotionScytheAttack,true);
@@ -194,12 +198,12 @@ void SurogSakones::attack(float delta_time)
 		return;
 	}
 	//不要
-	//switch (motion_)
-	//{
-	//case MotionScytheAttack:scythe_attack(delta_time); break;
-	//case MotionAttack2:psyco1_attack(delta_time); break;
-	//case MotionAttack3:psyco2_attack(delta_time); break;
-	//}
+	switch (motion_)
+	{
+	case MotionScytheAttack:scythe_attack(delta_time); break;
+	case MotionAttack2:psyco1_attack(delta_time); break;
+	case MotionAttack3:psyco2_attack(delta_time); break;
+	}
 }
 void SurogSakones::scythe_attack(float delta_time) {
 	if (!scythe_attack_flag_ && attack_timer_ >= ScytheAttackFlame)
@@ -209,11 +213,20 @@ void SurogSakones::scythe_attack(float delta_time) {
 	}
 }
 void SurogSakones::psyco1_attack(float delta_time) {
+	if(!psyco1_attack_flag_)
+	{
+		world_->particle_manager()->death_smoke(
+			transform_.position() + GSvector3::up() * 3.0f
+		);
+	}
 	if (!psyco1_attack_flag_ && attack_timer_ >= ScytheAttackFlame)
 	{
 		psyco1_attack_flag_ = true;
-		generate_pshychokinesis(transform_.position() + GSvector3::up() * 2.0f, GSvector3::up() * 4.0f);
-	}
+		generate_pshychokinesis(
+			transform_.position() + GSvector3::up() * 3.0f,
+			GSvector3::up() * 4.0f
+		);
+	}	
 }
 void SurogSakones::psyco2_attack(float delta_time) {
 	if (!psyco2_attack_flag_ && attack_timer_ >= ScytheAttackFlame)
@@ -357,6 +370,15 @@ void SurogSakones::draw()const {
 #endif
 }
 
+void SurogSakones::draw_gui() const
+{
+	const GSvector2 position{ 500.0f,300.0f };
+	GSrect sourceRect{ 0.0f,0.0f,200.0f,60.0f };
+	//gsDrawSprite2D(Texture_BossHP, &position, &sourceRect, NULL, NULL, NULL, 0.0f);
+}
+
+
+
 void SurogSakones::debug_draw()const {
 	// デバッグ表示
 	gsFontParameter(GS_FONT_BOLD, 16, "ＭＳ ゴシック");
@@ -386,7 +408,7 @@ void SurogSakones::scythe_attack()
 
 void SurogSakones::psyco1_attack()
 {
-	generate_pshychokinesis(transform_.position() + GSvector3::up() * 3.0f, GSvector3::up() * 4.0f);
+	//generate_pshychokinesis(transform_.position() + GSvector3::up() * 3.0f, GSvector3::up() * 4.0f);
 	change_state(State::Attack, MotionAttack2,false);
 }
 

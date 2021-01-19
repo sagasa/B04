@@ -3,6 +3,7 @@
 Particle::Particle(IWorld* world)
 {
 	world_ = world;
+	enable_collider_ = false;
 }
 
 void Particle::update(float delta_time)
