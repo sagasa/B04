@@ -22,7 +22,11 @@ PsycokinesisBullet::PsycokinesisBullet(IWorld* world, const GSvector3& position,
 
 void PsycokinesisBullet::update(float delta_time) {
 	Actor* player = world_->find_actor("Player");
-	if (player == nullptr)return;
+	if(player==nullptr)
+	{
+		player = world_->find_actor("PlayerPaladin");
+		if (player == nullptr)return;
+	}	
 
 	acceleration_ = GSvector3::zero();
 	GSvector3 diff = player->transform().position() + PlayerOffset - transform_.position();
