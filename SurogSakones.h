@@ -34,6 +34,7 @@ public:
 	virtual void update(float delta_time)override;
 	virtual void late_update(float delta_time)override;
 	virtual void draw()const override;
+	virtual void draw_gui() const override;
 	virtual void react(Actor& other)override;
 	virtual bool on_hit(const Actor& attacker, float atk_power) override;
 	void Damage();
@@ -87,7 +88,7 @@ private:
 	bool is_move(const Actor* other);
 
 	void collide_field();
-	void collide_actor(Actor& other);	
+	void collide_actor(Actor& other);
 
 
 private:
