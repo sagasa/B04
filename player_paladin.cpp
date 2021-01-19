@@ -7,6 +7,70 @@
 #include "player_ghost.h"
 
 
+void player_paladin::draw() const
+{
+   
+    glPushMatrix();
+    glMultMatrixf(transform_.localToWorldMatrix());
+    //gsDrawMesh(Mesh_Player);
+    glPushAttrib(GL_ENABLE_BIT);
+    glDisable(GL_LIGHTING);
+    collider_.draw();
+    glPopAttrib();
+
+    
+	
+    // ワールド・ビュー・プロジェクション行列の作成
+    GSmatrix4 projection_mat, modelview_mat;
+    glGetFloatv(GL_PROJECTION_MATRIX, (GLfloat*)&projection_mat);
+    glGetFloatv(GL_MODELVIEW_MATRIX, (GLfloat*)&modelview_mat);
+    GSmatrix4 world_view_projection = modelview_mat * projection_mat;
+
+    // ライトのパラメータ
+    GSvector3 light_position{ 100.0f, 100.0f, 100.0f };    // ライトの位置（ワールド座標系）
+    GScolor light_ambient{ 0.2f, 0.2f, 0.2f, 1.0f };     // ライトの環境光カラー
+    GScolor light_diffuse{ 1.0f, 1.0f, 1.0f, 1.0f };     // ライトの拡散反射光カラー
+    GScolor light_specular{ 1.0f, 1.0f, 1.0f, 1.0f };    // ライトの鏡面反射光カラー
+
+    // マテリアルのパラメータ
+    GScolor material_ambient{ 1.0f, 1.0f, 1.0f, 1.0f };  // 環境光の反射率
+    GScolor material_diffuse{ 1.0f, 1.0f, 1.0f, 1.0f };  // 拡散反射光の反射率
+    GScolor material_spacular{ 1.0f, 1.0f, 1.0f, 1.0f }; // 鏡面反射光の反射率
+    GScolor material_emission{ 0.0f, 0.0f, 0.0f, 1.0f }; // 放射光カラー（RGBA)
+    float   material_shininess{ 10.0f };                 // 鏡面反射指数 （ハイライト）
+
+    // シェーダーを有効にする
+    gsBeginShader(0);
+    // ワールド・ビュー・プロジェクション行列をシェーダーに渡す
+    gsSetShaderParamMatrix4("u_WorldViewProjectionMatrix",
+        (GSmatrix4*)&world_view_projection);
+    // ワールド変換行列をシェーダーに渡す
+    gsSetShaderParamMatrix4("u_WorldMatrix", &transform_.localToWorldMatrix());
+    // カメラの座標をシェーダーに渡す
+    gsSetShaderParam3f("u_CameraPosition", (GSvector3*)&camera_pos_);
+    // ライトのパラメータをシェーダーに渡す
+    gsSetShaderParam3f("u_LightPosition", (GSvector3*)&light_position);
+    gsSetShaderParam4f("u_LightAmbient", &light_ambient);
+    gsSetShaderParam4f("u_LightDiffuse", &light_diffuse);
+    gsSetShaderParam4f("u_LightSpecular", &light_specular);
+    // マテリアルのパラメータをシェーダーに渡す
+    gsSetShaderParam4f("u_MaterialAmbient", &material_ambient);
+    gsSetShaderParam4f("u_MaterialDiffuse", &material_diffuse);
+    gsSetShaderParam4f("u_MaterialSpecular", &material_spacular);
+    gsSetShaderParam4f("u_MaterialEmission", &material_emission);
+    gsSetShaderParam1f("u_MaterialShininess", material_shininess);
+    // ベースカラーのテクスチャ
+    gsSetShaderParamTexture("u_BaseMap", 0);
+    // 法線マップのテクスチャ
+    gsSetShaderParamTexture("u_NormalMap", 1);
+    // メッシュの描画
+    mesh_.draw();
+    // シェーダーを無効にする
+    gsEndShader();
+
+    glPopMatrix();
+}
+
 void player_paladin::wake_up()
 {
     hp_ = 3;
@@ -97,6 +161,10 @@ const GSvector3 gravity{ 0.0f, 0.01f, 0.0f };
 
 void player_paladin::update(float delta_time)
 {
+    Actor* camera = world_->find_actor("Camera");
+	if(camera!=nullptr)
+		camera_pos_ = camera->transform().position();
+	
     //重力
     velocity_ -= gravity * delta_time;
     //起動
@@ -195,5 +263,7 @@ void player_paladin::update(float delta_time)
     //メッシュの更新
     mesh_.update(delta_time);
     //行列を設定
-    mesh_.transform(transform().localToWorldMatrix());
+    GSmatrix4 dummy;
+    dummy.identity();
+    mesh_.transform(dummy);
 }
