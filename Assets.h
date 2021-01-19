@@ -55,7 +55,8 @@ enum Texture {
     Texture_Smoke,
 	Texture_Distotion,
 	Texture_Hit,
-	Texture_Circle
+	Texture_Circle,
+	Texture_BossHP
 };
 
 // ‚a‚f‚lƒf[ƒ^
