@@ -19,7 +19,11 @@
 //開始
 void GamePlayScene::start() {
     fade_.start(true,1);
-    //生成
+
+    gsLoadShader(0, "Paladin.vert", "Paladin.frag");
+    // ぱっちぃメッシュの読み込み
+    gsLoadMeshEx(0, "Assets/Model/patti.msh");
+	//生成
     MapGenerator generator{ &world_,"Assets/Map/Stage1.csv"};
 
     is_end_ = false;
