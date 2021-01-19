@@ -40,12 +40,12 @@ enum Texture {
     Texture_Shield,                 //体力(盾)
     //文字
     Texture_TitleLogo,              //タイトルロゴ
-    Texture_Push_Button,            //ボタン
-    Texture_Clear,                  //ゲームクリア
-    Texture_Game_Over,              //ゲームオーバー
-    Texture_Return_To_Title,        //タイトルへ戻る
-    Texture_One_More,               //もう一度
-    Texture_Next_Stage,             //次のステージへ
+    Texture_PushButton,            //ボタン
+    Texture_GameClear,                  //ゲームクリア
+    Texture_GameOver,              //ゲームオーバー
+    Texture_ReturnToTitle,        //タイトルへ戻る
+    Texture_OneMore,               //もう一度
+    Texture_NextStage,             //次のステージへ
     //フェード
     Texture_Fade,                   //黒いテクスチャ
     // 3Dスプライト
@@ -69,11 +69,18 @@ enum Music {
 
 // ＳＥデータ
 enum Se {
-    Se_ExplosionPlayer,             // 爆発音（自機）
-    Se_ExplosionEnemy,              // 爆発音（敵）
-    Se_ExplosionAsteroid,           // 爆発音（隕石）
-    Se_WeaponPlayer,                // 発射音（自機）
-    Se_WeaponEnemy,                 // 爆発音（敵）
+    SE_GhostDamage,                 //幽霊のダメージSE
+    SE_GhostMove,                   //幽霊の移動SE
+    SE_ParadinMove,                 //憑依の移動SE
+    SE_ParadinDamage,               //憑依のダメージSE
+    SE_Attack,                      //攻撃SE
+    SE_Jump,                        //ジャンプSE
+    SE_Transfer,                    //憑依SE
+    SE_Slash,                       //斬撃SE
+    SE_Shoot,                       //発射SE
+    SE_Select,                      //選択移動SE
+    SE_Push                         //決定SE
+
 };
 
 enum Octree {

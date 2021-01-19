@@ -12,6 +12,7 @@
 #include"SurogSakones.h"
 #include"MapGenerator.h"
 #include "player_ghost.h"
+#include"ParticleManager.h"
 
 
 
@@ -58,6 +59,10 @@ void GamePlayScene::start() {
     //衝突判定用オクツリーの読み込み
     gsLoadOctree(Octree_Collider, "Assets/Octree/stage1_collider.oct");
 
+    gsLoadMusic(Music_GamePlay, "Assets/BGM/gameplay.wav", GS_TRUE);
+    gsBindMusic(Music_GamePlay);
+    gsPlayMusic();
+
     // フィールドの追加
     world_.add_field(new Field{ Octree_Stage,Octree_Collider,Mesh_Skybox });
     // カメラの追加
@@ -66,10 +71,13 @@ void GamePlayScene::start() {
     world_.add_light(new Light{ &world_ });
     // プレーヤの追加
     world_.add_actor(new player_ghost{ &world_, GSvector3{ 0.0f, 0.0f, 0.0f } });
+    //追加
+    world_.add_particle_manager(new ParticleManager{ &world_ });
 }
 
 //更新
 void GamePlayScene::update(float delta_time) {
+    gsSetMusicVolume(0.8f);
 	world_.update(delta_time);
 
     if (world_.is_game_clear() && fade_.is_end()) {//ボスが死んだか？
@@ -105,6 +113,8 @@ std::string GamePlayScene::next() const {
 }
 //終了
 void GamePlayScene::end() {
+    gsStopMusic();
+    gsDeleteMusic(Music_Title);
 	//ワールドを消去
 	world_.clear();
     //メッシュの削除
