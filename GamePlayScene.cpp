@@ -113,6 +113,8 @@ std::string GamePlayScene::next() const {
 }
 //終了
 void GamePlayScene::end() {
+    gsStopMusic();
+    gsDeleteMusic(Music_Title);
 	//ワールドを消去
 	world_.clear();
     //メッシュの削除
