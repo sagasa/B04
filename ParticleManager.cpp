@@ -191,3 +191,26 @@ void ParticleManager::possession_light(const GSvector3& position) const
 	world_->add_actor(p);
 }
 
+void ParticleManager::possession_release_light(const GSvector3& position) const
+{
+	const int GenerateCount{ 15 };	
+	for(int i=0;i<GenerateCount;++i)
+	{
+		auto p = new Particle{ world_ };
+		p->transform().position(position);
+		p->velocity(GSvector3{ gsRandf(-0.04f, 0.04f), gsRandf(0.05f, 0.1f), gsRandf(-0.04f, 0.04f) });
+		p->lifespan_ = gsRandf(15.0f,30.0f);
+		p->image_handle_ = Texture_Circle;
+		float startscale = gsRandf(0.8f, 1.0f);
+		float endscale = gsRandf(0.3f, 0.5f);
+		p->start_scale_ = GSvector2{ startscale, startscale};
+		p->end_scale_ = GSvector2{ endscale,endscale };
+		p->damp_ = gsRandf(0.97f,0.99f);
+		p->force_ = GSvector3{ 0.0f,-0.005f,0.0f };
+		p->color_ = GSvector3{ gsRandf(0.3f,0.5f),0.0f,gsRandf(0.3f,0.5f) };
+		p->start_alpha_ = 1.0f;
+		p->end_alpha_ = 0.0f;
+		world_->add_actor(p);
+	}	
+}
+

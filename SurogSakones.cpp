@@ -72,6 +72,10 @@ SurogSakones::SurogSakones(IWorld* world, const GSvector3& position) :
 }
 void SurogSakones::update(float delta_time) {
 	player_ = world_->find_actor("Player");
+	if (player_ == nullptr) {
+		player_ = world_->find_actor("PlayerPaladin");
+		if (player_ == nullptr) return;
+	}
 	//一応保険で残す
 	if (gsGetKeyTrigger(GKEY_1)) {
 		change_state(State::Attack, MotionScytheAttack,true);
@@ -194,12 +198,12 @@ void SurogSakones::attack(float delta_time)
 		return;
 	}
 	//不要
-	//switch (motion_)
-	//{
-	//case MotionScytheAttack:scythe_attack(delta_time); break;
-	//case MotionAttack2:psyco1_attack(delta_time); break;
-	//case MotionAttack3:psyco2_attack(delta_time); break;
-	//}
+	switch (motion_)
+	{
+	case MotionScytheAttack:scythe_attack(delta_time); break;
+	case MotionAttack2:psyco1_attack(delta_time); break;
+	case MotionAttack3:psyco2_attack(delta_time); break;
+	}
 }
 void SurogSakones::scythe_attack(float delta_time) {
 	if (!scythe_attack_flag_ && attack_timer_ >= ScytheAttackFlame)
@@ -209,11 +213,20 @@ void SurogSakones::scythe_attack(float delta_time) {
 	}
 }
 void SurogSakones::psyco1_attack(float delta_time) {
+	if(!psyco1_attack_flag_)
+	{
+		world_->particle_manager()->death_smoke(
+			transform_.position() + GSvector3::up() * 3.0f
+		);
+	}
 	if (!psyco1_attack_flag_ && attack_timer_ >= ScytheAttackFlame)
 	{
 		psyco1_attack_flag_ = true;
-		generate_pshychokinesis(transform_.position() + GSvector3::up() * 2.0f, GSvector3::up() * 4.0f);
-	}
+		generate_pshychokinesis(
+			transform_.position() + GSvector3::up() * 3.0f,
+			GSvector3::up() * 4.0f
+		);
+	}	
 }
 void SurogSakones::psyco2_attack(float delta_time) {
 	if (!psyco2_attack_flag_ && attack_timer_ >= ScytheAttackFlame)
@@ -357,6 +370,16 @@ void SurogSakones::draw()const {
 #endif
 }
 
+void SurogSakones::draw_gui() const
+{
+	const GSvector2 hp_position{ 500.0f,300.0f };
+	GSrect sourceRect{ 0.0f,0.0f,200.0f,50.0f };
+	static const GSvector2 scale{ 1.0f,0.5f };
+	gsDrawSprite2D(Texture_BossHP, &hp_position, &sourceRect, NULL, NULL, &scale, 0.0f);
+}
+
+
+
 void SurogSakones::debug_draw()const {
 	// デバッグ表示
 	gsFontParameter(GS_FONT_BOLD, 16, "ＭＳ ゴシック");
@@ -386,7 +409,7 @@ void SurogSakones::scythe_attack()
 
 void SurogSakones::psyco1_attack()
 {
-	generate_pshychokinesis(transform_.position() + GSvector3::up() * 3.0f, GSvector3::up() * 4.0f);
+	//generate_pshychokinesis(transform_.position() + GSvector3::up() * 3.0f, GSvector3::up() * 4.0f);
 	change_state(State::Attack, MotionAttack2,false);
 }
 
@@ -405,12 +428,9 @@ void SurogSakones::Damage() {
 }
 
 void SurogSakones::generate_pshychokinesis(const GSvector3& position, GSvector3 velocity) {
-	Actor* player = world_->find_actor("Player");
-	//プレイヤーが憑依中かしらべ、憑依中じゃなかったらreturnする処理を後々追加
-	//プレイヤーがヌルでないか
-	if (player != nullptr) {
+	if (player_ != nullptr) {
 		//プレイヤーのベクトルを求める
-		GSvector3 to_player = (player->transform().position() - transform().position()).normalized();
+		GSvector3 to_player = (player_->transform().position() - transform().position()).normalized();
 		//球を出す処理
 		world_->add_actor(new PsycokinesisBullet(world_, position, velocity));
 	}

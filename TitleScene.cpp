@@ -31,7 +31,7 @@ void TitleScene::start() {
 }
 
 void TitleScene::update(float delta_time) {
-	gsSetMusicVolume(0.6f);
+	gsSetMusicVolume(0.8f);
 	fade_.update(delta_time);
 	//キーでシーンをチェンジ
 	if (gsGetKeyTrigger(GKEY_1)) {
@@ -69,6 +69,7 @@ void TitleScene::update(float delta_time) {
 
 //描画
 void TitleScene::draw() const {
+#ifdef _DEBUG
 	glPushMatrix();
 	gsFontParameter(GS_FONT_BOLD, 16, "ＭＳ ゴシック");
 	gsTextPos(0.0f, 20.0f);
@@ -80,6 +81,7 @@ void TitleScene::draw() const {
 	gsTextPos(0.0f, 80.0f);
 	gsDrawText("4 to GamePlayScene");
 	glPopMatrix();
+#endif
 	GSvector2 position_titlelogo{300.0f,100.0f};
 	gsDrawSprite2D(Texture_TitleLogo, &position_titlelogo, NULL, NULL, NULL, NULL, NULL);
 
