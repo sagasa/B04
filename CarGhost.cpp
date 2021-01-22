@@ -6,6 +6,7 @@
 #include"AttackCollider.h"
 #include"DamageProp.h"
 #include"Camera.h"
+#include"ParticleManager.h"
 
 enum {
 	MotionIdle = 0,
@@ -60,7 +61,6 @@ CarGhost::CarGhost(IWorld* world, const GSvector3& position) :
 	tag_ = "EnemyTag";
 	//‘Ì—Í‚ÌÝ’è
 	hp_ = 1.0f;
-	//transform_.position(GSvector3::zero());
 	//Õ“Ë”»’è‹…‚ÌÝ’è
 	collider_ = BoundingSphere{ EnemyRadius ,GSvector3{0.0f,EnemyHeight,0.0f} };
 	//À•W‚Ì‰Šú‰»
@@ -111,6 +111,9 @@ void CarGhost::draw() const {
 	glMultMatrixf(transform_.localToWorldMatrix());
 	gsBeginShader(Shader_Ghost);
 	glPopMatrix();*/
+	if (state_ == State::Died) {
+		world_->particle_manager()->death_smoke(transform_.position());
+	}
 
 #ifdef _DEBUG
 	collider().draw();

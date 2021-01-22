@@ -4,6 +4,7 @@
 #include"Line.h"
 #include"Assets.h"
 #include"DamageProp.h"
+#include"ParticleManager.h"
 
 enum {
 	MotionIdle = 0,
@@ -87,6 +88,9 @@ void RushGhost::update(float delta_time) {
 void RushGhost::draw() const {
 	mesh_.draw();
 	collider().draw();
+	if (state_ == State::Died) {
+		world_->particle_manager()->death_smoke(transform_.position());
+	}
 }
 
 //Õ“ËƒŠƒAƒNƒVƒ‡ƒ“
