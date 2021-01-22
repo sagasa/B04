@@ -2,6 +2,7 @@
 #include"Assets.h"
 #include"SceneManager.h"
 #include<GSmusic.h>
+#include<iostream>
 
 
 //α値の代入値
@@ -33,24 +34,29 @@ void ResultScene::start() {
 
 //更新
 void ResultScene::update(float delta_time) {
+	//選択の最大数
+	const float Max_Select{ sizeof(alphas_) / sizeof(*alphas_) };
 	gsSetMusicVolume(0.8f);
 	//フェードクラスの更新
 	fade_.update(delta_time);
 	//ワールドの更新
 	//world_.update(delta_time);
 	if (fade_.is_end()) {
-
-		//上下キーで選択移動
-		if (gsGetKeyTrigger(GKEY_UP)) {
+		//左スティックのベクトル値
+		GSvector2 vector_stick = GSvector2::zero();
+		//左スティックの入力を取得
+		gsXBoxPadGetLeftAxis(0, &(vector_stick));
+		//上下キーまたはパッドの十字ボタンまたは左スティックで選択移動
+		if (num_ > 0 && (gsGetKeyTrigger(GKEY_UP) || gsXBoxPadButtonTrigger(0, GS_XBOX_PAD_UP) || vector_stick.y >= 0.5f)) {
 			gsPlaySE(SE_Select);
 			--num_;
 		}
-		else if (gsGetKeyTrigger(GKEY_DOWN)) {
+		else if (num_ < Max_Select - 1 && (gsGetKeyTrigger(GKEY_DOWN) || gsXBoxPadButtonTrigger(0, GS_XBOX_PAD_DOWN) || vector_stick.y <= -0.5f)) {
 			gsPlaySE(SE_Select);
 			++num_;
 		}
-		//Fキーで決定
-		if (gsGetKeyTrigger(GKEY_F)) {
+		//FキーまたはXボタンで決定
+		if (gsGetKeyTrigger(GKEY_F) || gsXBoxPadButtonTrigger(0, GS_XBOX_PAD_X)) {
 			gsPlaySE(SE_Push);
 			is_end_ = true;
 			fade_.change_fade_flg();
@@ -67,7 +73,6 @@ void ResultScene::update(float delta_time) {
 		timer_ += delta_time;
 
 	}
-
 }
 
 //描画
@@ -119,15 +124,13 @@ void ResultScene::end() {
 
 //α値の更新
 void ResultScene::update_alpha(int num, float delta_time) {
-	if (num_ == 0) {
-		//α値の更新
-		alphas_[0] += (alpha_flg_) ? -Alpha_Value * delta_time : Alpha_Value * delta_time;
-		alphas_[1] = 1.0f;
-	}
-	else if (num_ == 1) {
-		//α値の更新
-		alphas_[1] += (alpha_flg_) ? -Alpha_Value * delta_time : Alpha_Value * delta_time;
-		alphas_[0] = 1.0f;
+	//α値の更新処理
+	for (int i = 0; i < sizeof(alphas_) / sizeof(*alphas_); ++i) {
+		if (i == num) {
+			//α値の更新
+			alphas_[i] += (alpha_flg_) ? -Alpha_Value * delta_time : Alpha_Value * delta_time;
+		}
+		else alphas_[i] = 1.0f;
 	}
 
 	//増減フラグを制御

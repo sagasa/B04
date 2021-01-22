@@ -5,6 +5,7 @@
 #include"Assets.h"
 #include"Camera.h"
 #include"DamageProp.h"
+#include"ParticleManager.h"
 
 enum {
 	MotionIdle = 0,
@@ -84,6 +85,9 @@ void NormalGhost::draw() const {
 	mesh_.draw();
 	//衝突判定のデバッグ表示
 	collider().draw();
+	if (state_ == State::Died) {
+		world_->particle_manager()->death_smoke(transform_.position());
+	}
 }
 
 //衝突リアクション
