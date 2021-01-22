@@ -10,7 +10,8 @@ enum Mesh {
     Mesh_SurogSakones,               //SurogSakones
     Mesh_Skybox,
     Mesh_Paladin,
-    Mesh_Book
+    Mesh_Book,
+    Mesh_Ghost
 };
 
 //スケルトンデータ
@@ -31,6 +32,13 @@ enum  Animation {
     Animation_Poltergeist, //Poltergeist
     Animation_SurogSakones, //SurogSakones
     Animation_Paladin
+};
+
+//シェーダーデータ
+enum Shader {
+    Shader_Ghost,
+    Shader_Paladin,
+    Shader_Map
 };
 
 // テクスチャデータ
