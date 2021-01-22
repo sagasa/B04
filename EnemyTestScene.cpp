@@ -23,7 +23,7 @@ void EnemyTestScene::start() {
     // Ghostのメッシュの読み込み
     gsLoadMesh(Mesh_Player, "Assets/Model/Enemy/Ghost.msh");
     gsLoadMesh(Mesh_Paladin, "Assets/Model/Paladin/Paladin.msh");
-    gsLoadMesh(Mesh_CarGhost, "Assets/Model/Enemy/Ghost.msh");
+    //gsLoadMesh(Mesh_CarGhost, "Assets/Model/Enemy/Ghost.msh");
     gsLoadMesh(Mesh_RushGhost, "Assets/Model/Enemy/Ghost2.msh");
     gsLoadMesh(Mesh_Poltergeist, "Assets/Model/Enemy/Ghost3.msh");
     //バレット(本)のメッシュの追加
@@ -54,6 +54,10 @@ void EnemyTestScene::start() {
     gsLoadOctree(Octree_Stage, "Assets/Octree/stage1.oct");
     //衝突判定用オクツリーの読み込み
     gsLoadOctree(Octree_Collider, "Assets/Octree/stage1_collider.oct");
+
+    gsLoadMeshEx(Mesh_Ghost, "Assets/Model/Enemy/Ghost.msh");
+
+    gsLoadShader(Shader_Ghost, "Ghost.vert", "Ghost.frag");
     
 
     // フィールドの追加

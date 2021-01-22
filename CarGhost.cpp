@@ -95,17 +95,22 @@ void CarGhost::update(float delta_time) {
 		//行列を設定
 		mesh_.transform(transform_.localToWorldMatrix());
 	}
-	// ワールド・ビュー・プロジェクション行列の作成
+	/*// ワールド・ビュー・プロジェクション行列の作成
 	GSmatrix4 projection_mat, modelview_mat;
 	glGetFloatv(GL_PROJECTION_MATRIX, (GLfloat*)&projection_mat);
 	glGetFloatv(GL_MODELVIEW_MATRIX, (GLfloat*)&modelview_mat);
-	GSmatrix4 world_view_projection = modelview_mat * projection_mat;
+	GSmatrix4 world_view_projection = modelview_mat * projection_mat;*/
 
 }
 
 //描画
 void CarGhost::draw() const {
+
 	mesh_.draw();
+	/*glPushMatrix();
+	glMultMatrixf(transform_.localToWorldMatrix());
+	gsBeginShader(Shader_Ghost);
+	glPopMatrix();*/
 
 #ifdef _DEBUG
 	collider().draw();
