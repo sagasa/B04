@@ -103,8 +103,9 @@ void player_ghost::update(float delta_time)
         if (gsGetKeyState(GKEY_F) == GS_TRUE || gsXBoxPadButtonTrigger(0,GS_XBOX_PAD_X))
             attack();
 	}
-    //攻撃開始
-    if (gsGetKeyTrigger(GKEY_E)&&state_!=Attack || gsXBoxPadButtonTrigger(0,GS_XBOX_PAD_Y))
+	
+    //憑依
+    if ((gsGetKeyTrigger(GKEY_E) || gsXBoxPadButtonTrigger(0,GS_XBOX_PAD_Y)) && state_ != Attack)
         world_->add_actor(new interact_collider{world_,collider(),tag_,name_,[this](Actor& actor)
         {
             dynamic_cast<Player&>(actor).wake_up();

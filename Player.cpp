@@ -80,16 +80,16 @@ GSvector2 Player::get_input()
     gsXBoxPadGetLeftAxis(0, &vector_stick);
     // キーボードの入力から移動量を決める
     GSvector2 inputVelocity{0,0};
-    if (gsGetKeyState(GKEY_LEFT) == GS_TRUE || vector_stick.x <= -0.5f || gsXBoxPadButtonTrigger(0,GS_XBOX_PAD_LEFT)) {
+    if (gsGetKeyState(GKEY_LEFT) == GS_TRUE || vector_stick.x <= -0.5f || gsXBoxPadButtonState(0,GS_XBOX_PAD_LEFT)) {
         inputVelocity.x = -1.0f;
     }
-    if (gsGetKeyState(GKEY_RIGHT) == GS_TRUE || vector_stick.x >= 0.5f || gsXBoxPadButtonTrigger(0, GS_XBOX_PAD_RIGHT)) {
+    if (gsGetKeyState(GKEY_RIGHT) == GS_TRUE || vector_stick.x >= 0.5f || gsXBoxPadButtonState(0, GS_XBOX_PAD_RIGHT)) {
         inputVelocity.x = 1.0f;
     }
-    if (gsGetKeyState(GKEY_UP) == GS_TRUE || vector_stick.y >= 0.5f || gsXBoxPadButtonTrigger(0, GS_XBOX_PAD_UP)) {
+    if (gsGetKeyState(GKEY_UP) == GS_TRUE || vector_stick.y >= 0.5f || gsXBoxPadButtonState(0, GS_XBOX_PAD_UP)) {
         inputVelocity.y = 1.0f;
     }
-    if (gsGetKeyState(GKEY_DOWN) == GS_TRUE || vector_stick.y <= -0.5f || gsXBoxPadButtonTrigger(0, GS_XBOX_PAD_DOWN)) {
+    if (gsGetKeyState(GKEY_DOWN) == GS_TRUE || vector_stick.y <= -0.5f || gsXBoxPadButtonState(0, GS_XBOX_PAD_DOWN)) {
         inputVelocity.y = -1.0f;
     }
     return inputVelocity.normalized();
