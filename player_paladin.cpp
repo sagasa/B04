@@ -197,7 +197,7 @@ void player_paladin::update(float delta_time)
                 attack();
         }
 
-        if ((state_ != Attack || gsXBoxPadButtonTrigger(0, GS_XBOX_PAD_Y)) && gsGetKeyTrigger(GKEY_E))
+        if ((gsGetKeyTrigger(GKEY_E) || gsXBoxPadButtonTrigger(0, GS_XBOX_PAD_Y)) && state_ != Attack)
         {
             stop();
             world_->add_actor(new player_ghost{ world_,transform_.position() });
