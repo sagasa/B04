@@ -28,7 +28,9 @@ void BossTestScene::start() {
     gsLoadTexture(Texture_Smoke, "Assets/Effect/particle_smoke.png");
     gsLoadTexture(Texture_Hit, "Assets/Effect/particle_glitter_3.png");
     gsLoadTexture(Texture_Circle, "Assets/Effect/particle_dot_1.png");
-    gsLoadTexture(Texture_BossHP, "Assets/Image/BossHP.png");
+    gsLoadTexture(Texture_BossHP, "Assets/Image/BossHP.png");	
+    gsLoadTexture(Texture_BossHPFrame, "Assets/Image/BossHPFrame.png");	
+    gsLoadTexture(Texture_BossHPFrame_Lid, "Assets/Image/BossHPFrame_Lid.png");	
     //Player
     gsLoadMesh(Mesh_Player, "Assets/Model/Enemy/Ghost.msh");
     gsLoadSkeleton(Skeleton_Player, "Assets/Model/Enemy/Ghost.skl");
@@ -36,7 +38,14 @@ void BossTestScene::start() {
 
     gsLoadMesh(Mesh_Paladin, "Assets/Model/Paladin/Paladin.msh");
     gsLoadSkeleton(Skeleton_Paladin, "Assets/Model/Paladin/Paladin.skl");
-    gsLoadAnimation(Animation_Paladin, "Assets/Model/Paladin/Paladin.anm");	
+    gsLoadAnimation(Animation_Paladin, "Assets/Model/Paladin/Paladin.anm");
+
+	//SE
+    gsLoadSE(SE_GhostDamage, "Assets/SE/ghost_damage.wav",1, false);
+    gsLoadSE(SE_GhostAttack1, "Assets/SE/Ghost Attack_01.wav",1, false);
+    gsLoadSE(SE_GhostAttack2, "Assets/SE/Ghost Attack_02.wav", 1, false);
+    gsLoadSE(SE_BossGhostDamage, "Assets/SE/Ghost Damaged_01.wav", 1, false);
+    gsLoadSE(SE_GhostDeath, "Assets/SE/Ghost Death_02.wav", 1, false);
     
     //SurogSakonesÇÃÉÅÉbÉVÉÖÇÃì«Ç›çûÇ›
     gsLoadMesh(Mesh_SurogSakones, "Assets/Model/Enemy/Ghost_T-pose.msh");
