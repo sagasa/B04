@@ -131,7 +131,8 @@ bool SurogSakones::on_hit(const Actor& attacker, float atk_power)
 			change_state(State::Dying, MotionDying, false);
 		}
 		else {
-			gsPlaySE(SE_BossGhostDamage);			
+			gsPlaySE(SE_BossGhostDamage);
+			gsPlaySE(SE_GhostDamage);
 			change_state(State::Stun, MotionDamage1, false);
 		}		
 		
