@@ -62,8 +62,9 @@ bool player_ghost::on_hit(const Actor& attacker, float atk_power)
 		if(hp_<=0)
 		{
             world_->game_over();
-		}
-        change_state(Damage, 3,false);
+            change_state(Damage, 4, false);
+		}else
+			change_state(Damage, 3,false);
         std::cout << "Hit "<<hp_<<"\n";
         return true;
 	}
