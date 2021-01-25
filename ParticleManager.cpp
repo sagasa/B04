@@ -162,12 +162,12 @@ void ParticleManager::possession_light(const GSvector3& position) const
 	auto p = new Particle{ world_ };
 
 	//Œ´“_‚©‚ç‹…‘Ì‚ÌŒ`
-	p->transform().position(position + GSvector3{ gsRandf(-0.8f,0.8f),gsRandf(-0.8f,0.8f) ,gsRandf(-0.8f,0.8f) });
+	p->transform().position(position + GSvector3{ gsRandf(-1.0f,1.0f),gsRandf(-0.8f,0.8f) ,gsRandf(-0.8f,0.8f) });
 	GSvector3 direction = position - p->transform().position();
 	p->velocity(direction.normalize() * gsRandf(0.02f, 0.05f));
 	p->lifespan_ = gsRandf(30.0f, 45.0f);
 	p->image_handle_ = Texture_Circle;
-	float scale = gsRandf(0.3f, 0.5f);
+	float scale = gsRandf(0.6f, 1.0f);
 	p->start_scale_ = GSvector2{ scale,scale };
 	p->end_scale_ = GSvector2{ 1.0f,1.0f };
 	p->start_alpha_ = 1.0f;
@@ -193,7 +193,7 @@ void ParticleManager::possession_light(const GSvector3& position) const
 
 void ParticleManager::possession_release_light(const GSvector3& position) const
 {
-	const int GenerateCount{ 15 };	
+	const int GenerateCount{ 25 };	
 	for(int i=0;i<GenerateCount;++i)
 	{
 		auto p = new Particle{ world_ };

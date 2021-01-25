@@ -37,7 +37,6 @@ public:
 	virtual void draw_gui() const override;
 	virtual void react(Actor& other)override;
 	virtual bool on_hit(const Actor& attacker, float atk_power) override;
-	void Damage();
 
 private:
 	void update_state(float delta_time);
@@ -63,11 +62,11 @@ private:
 	//念動攻撃
 	void generate_pshychokinesis(const GSvector3& position,GSvector3 velocity=GSvector3::up());
 	//近接攻撃
-	void generate_attackcollider();
+	void generate_attackcollider(bool is_turn=false);
 	//移動しつつ攻撃
 	void move_attack(float delta_time);
 	//移動した後のターン
-	void turn(float delta_time, float slow_value, bool flip);
+	void turn();
 	void debug_draw()const;
 
 	void scythe_attack();
@@ -85,10 +84,13 @@ private:
 	bool is_psyco1_attack(const Actor* other);
 	bool is_psyco2_attack(const Actor* other);
 	bool is_turn(const Actor* other);
-	bool is_move(const Actor* other);
+	bool is_move(const Actor* other)const;
+	bool is_far();
 
 	void collide_field();
 	void collide_actor(Actor& other);
+
+	void draw_hp()const;
 
 
 private:
@@ -109,7 +111,7 @@ private:
 	bool loop_{ true };
 	//
 	GSvector3 to_rotate_;
-	//向いている方向
+	//向いている方向,falseなら←、trueなら→
 	bool flip_{ false };
 	bool prev_flip_{ false };
 
@@ -118,6 +120,11 @@ private:
 	bool psyco2_attack_flag_{ false };
 	float attack_timer_{ 0.0f };
 	float cool_timer_{ 0.0f };
+
+	//最大体力
+	float max_hp_{ 0.0f };
+	//SE用のフラグ
+	bool play_voice_se_{ false };
 
 	//プレイヤー用の入れ物
 	Actor* player_;
