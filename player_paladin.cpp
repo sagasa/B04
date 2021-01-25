@@ -2,7 +2,7 @@
 #include "IWorld.h"
 #include <iostream>
 
-
+#include "ParticleManager.h"
 #include "AttackCollider.h"
 #include "player_ghost.h"
 
@@ -171,7 +171,13 @@ void player_paladin::update(float delta_time)
     if (state_ != Stop) {
 
         GSvector2 inputVelocity = get_input();
-        inputVelocity.y = 0; 	
+        inputVelocity.y = 0;
+
+    	//エフェクト
+    	if(state_ == Wake)
+    	{
+            world_->particle_manager()->possession_light(collider().center);
+    	}
     	
         //起動時 攻撃中は入力を飛ばす
         if (state_ == Attack|| state_ == Wake)
@@ -200,6 +206,7 @@ void player_paladin::update(float delta_time)
         if ((gsGetKeyTrigger(GKEY_E) || gsXBoxPadButtonTrigger(0, GS_XBOX_PAD_Y)) && state_ != Attack)
         {
             stop();
+            world_->particle_manager()->possession_release_light(collider().center);
             world_->add_actor(new player_ghost{ world_,transform_.position() });
         }
     	
