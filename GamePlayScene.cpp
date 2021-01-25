@@ -63,6 +63,13 @@ void GamePlayScene::start() {
     //衝突判定用オクツリーの読み込み
     gsLoadOctree(Octree_Collider, "Assets/Octree/stage1_collider.oct");
 
+    gsLoadSE(SE_Attack, "Assets/SE/punch.wav", 1, false);
+    gsLoadSE(SE_Jump, "Assets/SE/Jump.wav",1,false);
+    gsLoadSE(SE_GhostDamage, "Assets/SE/ghost_damage.wav", 1, false);
+    gsLoadSE(SE_ParadinDamage, "Assets/SE/paradin_damage.wav", 1, false);
+    //gsLoadSE(SE_GhostDamage, "Assets/SE/punch.wav", 1, false);
+    //gsLoadSE(SE_ParadinDamage, "Assets/SE/Jump.wav", 1, false);
+	
     gsLoadMusic(Music_GamePlay, "Assets/BGM/gameplay.wav", GS_TRUE);
     gsBindMusic(Music_GamePlay);
     gsPlayMusic();
