@@ -106,7 +106,6 @@ void Player::draw() const {
     mesh_.draw();
 	glPushMatrix();
     glMultMatrixf(transform_.localToWorldMatrix());
-    //gsDrawMesh(Mesh_Player);
     glPushAttrib(GL_ENABLE_BIT);
     glDisable(GL_LIGHTING);
     collider_.draw();

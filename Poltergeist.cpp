@@ -7,6 +7,7 @@
 #include"DamageProp.h"
 #include"Camera.h"
 #include<iostream>
+#include"ParticleManager.h"
 
 enum {
 	MotionIdle = 0,
@@ -95,6 +96,9 @@ void Poltergeist::update(float delta_time) {
 void Poltergeist::draw() const {
 	mesh_.draw();
 	collider().draw();
+	if (state_ == State::Died) {
+		world_->particle_manager()->death_smoke(transform_.position());
+	}
 }
 
 //Õ“ËƒŠƒAƒNƒVƒ‡ƒ“

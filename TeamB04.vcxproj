@@ -230,6 +230,12 @@
     <ClInclude Include="UI.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Ghost.frag" />
+    <None Include="Ghost.vert" />
+    <None Include="Paladin.frag" />
+    <None Include="Paladin.vert" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -6,6 +6,7 @@
 #include"AttackCollider.h"
 #include"DamageProp.h"
 #include"Camera.h"
+#include"ParticleManager.h"
 
 enum {
 	MotionIdle = 0,
@@ -60,7 +61,6 @@ CarGhost::CarGhost(IWorld* world, const GSvector3& position) :
 	tag_ = "EnemyTag";
 	//体力の設定
 	hp_ = 1.0f;
-	//transform_.position(GSvector3::zero());
 	//衝突判定球の設定
 	collider_ = BoundingSphere{ EnemyRadius ,GSvector3{0.0f,EnemyHeight,0.0f} };
 	//座標の初期化
@@ -95,11 +95,25 @@ void CarGhost::update(float delta_time) {
 		//行列を設定
 		mesh_.transform(transform_.localToWorldMatrix());
 	}
+	/*// ワールド・ビュー・プロジェクション行列の作成
+	GSmatrix4 projection_mat, modelview_mat;
+	glGetFloatv(GL_PROJECTION_MATRIX, (GLfloat*)&projection_mat);
+	glGetFloatv(GL_MODELVIEW_MATRIX, (GLfloat*)&modelview_mat);
+	GSmatrix4 world_view_projection = modelview_mat * projection_mat;*/
+
 }
 
 //描画
 void CarGhost::draw() const {
+
 	mesh_.draw();
+	/*glPushMatrix();
+	glMultMatrixf(transform_.localToWorldMatrix());
+	gsBeginShader(Shader_Ghost);
+	glPopMatrix();*/
+	if (state_ == State::Died) {
+		world_->particle_manager()->death_smoke(transform_.position());
+	}
 
 #ifdef _DEBUG
 	collider().draw();

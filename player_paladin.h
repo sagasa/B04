@@ -13,6 +13,8 @@ struct player_paladin : public Player, public interact_prop
 		Attack,		// UŒ‚’†
 		Damage		// ƒ_ƒ[ƒW’†
 	};
+
+	GSvector3 camera_pos_;
 	
 	State state_{ Idle };
 
@@ -32,6 +34,7 @@ struct player_paladin : public Player, public interact_prop
 	bool on_hit(const Actor& attacker, float atk_power) override;
 	void update(float delta) override;
 public:
+	virtual void draw() const override;
 	void wake_up() override;
 	void stop() override;
 };

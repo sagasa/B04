@@ -1,6 +1,7 @@
 #include"TitleScene.h"
 #include"Assets.h"
 #include<iostream>
+#include<GSinput.h>
 
 //α値の代入値
 const float Alpha_Value{ 0.008f };
@@ -49,7 +50,7 @@ void TitleScene::update(float delta_time) {
 		nextScene_ = "PlayerTestScene";
 	}
 	if (fade_.is_end()) {
-		if (gsGetKeyTrigger(GKEY_F)) {
+		if (gsGetKeyTrigger(GKEY_F) || gsXBoxPadButtonTrigger(0, GS_XBOX_PAD_X)) {
 			gsPlaySE(SE_Push);
 			is_end_ = true;
 			nextScene_ = "GamePlayScene";
@@ -63,8 +64,8 @@ void TitleScene::update(float delta_time) {
 				alpha_flg_ = !alpha_flg_;
 			}
 		}else timer_ += delta_time;//タイマー更新
-		
 	}
+	
 }
 
 //描画

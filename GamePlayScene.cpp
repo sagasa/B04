@@ -19,7 +19,11 @@
 //開始
 void GamePlayScene::start() {
     fade_.start(true,1);
-    //生成
+
+    gsLoadShader(0, "Paladin.vert", "Paladin.frag");
+    // ぱっちぃメッシュの読み込み
+    gsLoadMeshEx(0, "Assets/Model/patti.msh");
+	//生成
     MapGenerator generator{ &world_,"Assets/Map/Stage1.csv"};
 
     is_end_ = false;
@@ -46,7 +50,7 @@ void GamePlayScene::start() {
     gsLoadSkeleton(Skeleton_Player, "Assets/Model/Enemy/Ghost.skl");
     gsLoadAnimation(Animation_Player, "Assets/Model/Enemy/Ghost.anm");
 
-    gsLoadMesh(Mesh_Paladin, "Assets/Model/Paladin/Paladin.msh");
+    gsLoadMesh(Mesh_Paladin, "Assets/Model/Paladin/Paladin1.msh");
     gsLoadSkeleton(Skeleton_Paladin, "Assets/Model/Paladin/Paladin.skl");
     gsLoadAnimation(Animation_Paladin, "Assets/Model/Paladin/Paladin.anm");
     //バレット(本)のメッシュの追加

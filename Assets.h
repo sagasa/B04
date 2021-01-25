@@ -10,7 +10,8 @@ enum Mesh {
     Mesh_SurogSakones,               //SurogSakones
     Mesh_Skybox,
     Mesh_Paladin,
-    Mesh_Book
+    Mesh_Book,
+    Mesh_Ghost
 };
 
 //スケルトンデータ
@@ -33,6 +34,13 @@ enum  Animation {
     Animation_Paladin
 };
 
+//シェーダーデータ
+enum Shader {
+    Shader_Ghost,
+    Shader_Paladin,
+    Shader_Map
+};
+
 // テクスチャデータ
 enum Texture {
     //UI
@@ -43,8 +51,8 @@ enum Texture {
     Texture_PushButton,            //ボタン
     Texture_GameClear,                  //ゲームクリア
     Texture_GameOver,              //ゲームオーバー
-    Texture_ReturnToTitle,        //タイトルへ戻る
-    Texture_OneMore,               //もう一度
+    Texture_TitleButton,        //タイトルへ戻る
+    Texture_RestartButton,               //もう一度
     Texture_NextStage,             //次のステージへ
     //フェード
     Texture_Fade,                   //黒いテクスチャ
