@@ -76,7 +76,7 @@ void player_paladin::wake_up()
     hp_ = 3;
     tag_ = "PlayerTag";
     name_ = "PlayerPaladin";
-    change_state(Jump, 1,false);
+    change_state(Wake, 1,false);
 }
 
 void player_paladin::stop()
@@ -171,10 +171,10 @@ void player_paladin::update(float delta_time)
     if (state_ != Stop) {
 
         GSvector2 inputVelocity = get_input();
-        inputVelocity.y = 0;
+        inputVelocity.y = 0; 	
     	
-        //攻撃中は入力を飛ばす
-        if (state_ == Attack)
+        //起動時 攻撃中は入力を飛ばす
+        if (state_ == Attack|| state_ == Wake)
         {
             inputVelocity.x = 0;
         }
@@ -197,7 +197,7 @@ void player_paladin::update(float delta_time)
                 attack();
         }
 
-        if ((state_ != Attack || gsXBoxPadButtonTrigger(0, GS_XBOX_PAD_Y)) && gsGetKeyTrigger(GKEY_E))
+        if ((gsGetKeyTrigger(GKEY_E) || gsXBoxPadButtonTrigger(0, GS_XBOX_PAD_Y)) && state_ != Attack)
         {
             stop();
             world_->add_actor(new player_ghost{ world_,transform_.position() });
@@ -210,6 +210,7 @@ void player_paladin::update(float delta_time)
         //デフォ以外なら
         if (state_ != Idle && state_ != Move)
         {
+            
             state_timer_ += delta_time;
             if (mesh_.motion_end_time() <= state_timer_)
             {
