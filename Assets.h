@@ -56,7 +56,9 @@ enum Texture {
 	Texture_Distotion,
 	Texture_Hit,
 	Texture_Circle,
-	Texture_BossHP
+	Texture_BossHP,
+	Texture_BossHPFrame,
+	Texture_BossHPFrame_Lid
 };
 
 // ＢＧＭデータ
@@ -79,8 +81,11 @@ enum Se {
     SE_Slash,                       //斬撃SE
     SE_Shoot,                       //発射SE
     SE_Select,                      //選択移動SE
-    SE_Push                         //決定SE
-
+    SE_Push,                         //決定SE
+    SE_GhostAttack1,                  //ボスの声(物理)
+	SE_GhostAttack2,                //ボスの声(魔法)
+	SE_BossGhostDamage,             //ボスの魔法攻撃の予定
+	SE_GhostDeath                   //ボスが死んでる時の声
 };
 
 enum Octree {

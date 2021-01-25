@@ -12,7 +12,7 @@ PsycokinesisBullet::PsycokinesisBullet(IWorld* world, const GSvector3& position,
 {
 	world_ = world;
 	name_ = "PsycokinesisBullet";
-	tag_ = "EnemyAttackTag";	
+	tag_ = "EnemyAttack";	
 	velocity_ = velocity;
 	collider_ = BoundingSphere{ 0.3f };
 	transform_.position(position);
