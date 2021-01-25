@@ -193,11 +193,11 @@ void player_paladin::update(float delta_time)
         if (state_ != Attack && state_ != Damage)
         {
             //攻撃開始
-            if (gsGetKeyState(GKEY_F))
+            if (gsGetKeyState(GKEY_F) || gsXBoxPadButtonTrigger(0,GS_XBOX_PAD_X))
                 attack();
         }
 
-        if (state_ != Attack && gsGetKeyTrigger(GKEY_E))
+        if (state_ != Attack && gsGetKeyTrigger(GKEY_E) || gsXBoxPadButtonTrigger(0, GS_XBOX_PAD_Y))
         {
             stop();
             world_->add_actor(new player_ghost{ world_,transform_.position() });
@@ -234,14 +234,14 @@ void player_paladin::update(float delta_time)
                 change_state(Move, 2);
             }
             //攻撃開始
-            if (gsGetKeyState(GKEY_F) == GS_TRUE)
+            if (gsGetKeyState(GKEY_F) == GS_TRUE || gsXBoxPadButtonTrigger(0, GS_XBOX_PAD_X))
                 attack();
         }
 
         //地上で下入力を許可しない
         if (on_ground_)
         {
-            if (gsGetKeyState(GKEY_SPACE))
+            if (gsGetKeyState(GKEY_SPACE) || gsXBoxPadButtonTrigger(0, GS_XBOX_PAD_A))
             {
                 jump(3, 0.08f);
                 change_state(Jump, 6, false);

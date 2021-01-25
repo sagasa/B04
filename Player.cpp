@@ -74,18 +74,22 @@ void Player::jump(const int count, const float force)
 
 GSvector2 Player::get_input()
 {
+    //左スティックのベクトル値
+    GSvector2 vector_stick = GSvector2::zero();
+    //左スティックの入力を取得
+    gsXBoxPadGetLeftAxis(0, &vector_stick);
     // キーボードの入力から移動量を決める
     GSvector2 inputVelocity{0,0};
-    if (gsGetKeyState(GKEY_LEFT) == GS_TRUE) {
+    if (gsGetKeyState(GKEY_LEFT) == GS_TRUE || vector_stick.x <= -0.5f || gsXBoxPadButtonTrigger(0,GS_XBOX_PAD_LEFT)) {
         inputVelocity.x = -1.0f;
     }
-    if (gsGetKeyState(GKEY_RIGHT) == GS_TRUE) {
+    if (gsGetKeyState(GKEY_RIGHT) == GS_TRUE || vector_stick.x >= 0.5f || gsXBoxPadButtonTrigger(0, GS_XBOX_PAD_RIGHT)) {
         inputVelocity.x = 1.0f;
     }
-    if (gsGetKeyState(GKEY_UP) == GS_TRUE) {
+    if (gsGetKeyState(GKEY_UP) == GS_TRUE || vector_stick.y >= 0.5f || gsXBoxPadButtonTrigger(0, GS_XBOX_PAD_UP)) {
         inputVelocity.y = 1.0f;
     }
-    if (gsGetKeyState(GKEY_DOWN) == GS_TRUE) {
+    if (gsGetKeyState(GKEY_DOWN) == GS_TRUE || vector_stick.y <= -0.5f || gsXBoxPadButtonTrigger(0, GS_XBOX_PAD_DOWN)) {
         inputVelocity.y = -1.0f;
     }
     return inputVelocity.normalized();
