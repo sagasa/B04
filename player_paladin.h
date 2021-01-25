@@ -6,6 +6,7 @@ struct player_paladin : public Player, public interact_prop
 {
 	// プレーヤーの状態
 	enum State {
+		Wake,		// 起動
 		Stop,		// 待機中
 		Idle,		// 通常
 		Move,
