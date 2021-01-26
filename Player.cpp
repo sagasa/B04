@@ -104,15 +104,7 @@ Player::Player(IWorld* world, const GSvector3& position, const AnimatedMesh& mes
     collider_ = BoundingSphere{ 0.8f,GSvector3{0.0f,0.8f,0.0f} };
     transform_.localRotation(GSquaternion::euler( 0.0f, 90.0f, 0.0f ));
 }
-void Player::show_HP()const
-{
-    GSvector2 pos{ 0,0 };
-    for (int i = 0; i < hp_; ++i)
-    {
-        gsDrawSprite2D(Texture_Hp, &pos, NULL, NULL, NULL, &GSvector2{ 0.03f, 0.03f }, NULL);
-        pos.x += 40;
-    }
-}
+
 
 // •`‰æ
 void Player::draw() const {
@@ -127,6 +119,12 @@ void Player::draw() const {
     glPopMatrix();
 
     mesh_.draw();
-
-    show_HP();
+    glPushMatrix();
+    GSvector2 pos{ 0,0 };
+    for (int i = 0; i < hp_; ++i)
+    {
+        gsDrawSprite2D(Texture_Hp, &pos, NULL, NULL, NULL, &GSvector2{ 0.03f, 0.03f }, NULL);
+        pos.x += 40;
+    }
+    glPopMatrix();
 }

@@ -80,7 +80,8 @@ void GamePlayScene::start() {
     //gsLoadSE(SE_ParadinDamage, "Assets/SE/Jump.wav", 1, false);
 
     gsLoadTexture(Texture_Hp, "Assets/Image/heart.dds");
-    gsLoadSE(SE_GhostDamage, "Assets/SE/ghost_damage.wav", 1, GWAVE_DEFAULT);
+    gsLoadTexture(Texture_Shield, "Assets/Image/shield.dds");
+    
     gsLoadSE(SE_GhostAttack1, "Assets/SE/Ghost Attack_01.wav", 1, GWAVE_DEFAULT);
     gsLoadSE(SE_GhostAttack2, "Assets/SE/Ghost Attack_02.wav", 1, GWAVE_DEFAULT);
     gsLoadSE(SE_BossGhostDamage, "Assets/SE/Ghost Damaged_01.wav", 1, GWAVE_DEFAULT);
