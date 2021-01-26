@@ -70,7 +70,17 @@ void player_paladin::draw() const
 
     glPopMatrix();
 
-    show_HP();
+	if(state_!=Stop)
+	{
+        glPushMatrix();
+        GSvector2 pos{ 0,0 };
+        for (int i = 0; i < hp_; ++i)
+        {
+            gsDrawSprite2D(Texture_Shield, &pos, NULL, NULL, NULL, &GSvector2{ 0.1f, 0.1f }, NULL);
+            pos.x += 40;
+        }
+        glPopMatrix();
+	}
 }
 
 void player_paladin::wake_up()
@@ -257,9 +267,10 @@ void player_paladin::update(float delta_time)
         {
             if (gsGetKeyState(GKEY_SPACE) || gsXBoxPadButtonTrigger(0, GS_XBOX_PAD_A))
             {
+                if (jump_count_ <= 0)
+                    gsPlaySE(SE_Jump);
                 jump(3, 0.08f);
                 change_state(Jump, 6, false);
-                gsPlaySE(SE_Jump);
             }
             inputVelocity.y = MAX(inputVelocity.y, 0);
         }
