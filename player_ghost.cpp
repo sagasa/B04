@@ -51,6 +51,8 @@ void player_ghost::attack()
 
     change_state(Attack, 2, false);
 
+	//SE
+    gsPlaySE(SE_Attack);
 }
 
 
@@ -66,6 +68,8 @@ bool player_ghost::on_hit(const Actor& attacker, float atk_power)
 		}else
 			change_state(Damage, 3,false);
         std::cout << "Hit "<<hp_<<"\n";
+        //SE
+        gsPlaySE(SE_GhostDamage);
         return true;
 	}
     return false;

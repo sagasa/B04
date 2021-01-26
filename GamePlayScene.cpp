@@ -69,6 +69,8 @@ void GamePlayScene::start() {
     gsLoadSE(SE_ParadinDamage, "Assets/SE/paradin_damage.wav", 1, false);
     //gsLoadSE(SE_GhostDamage, "Assets/SE/punch.wav", 1, false);
     //gsLoadSE(SE_ParadinDamage, "Assets/SE/Jump.wav", 1, false);
+
+    gsLoadTexture(Texture_Hp, "Assets/Image/heart.dds");
 	
     gsLoadMusic(Music_GamePlay, "Assets/BGM/gameplay.wav", GS_TRUE);
     gsBindMusic(Music_GamePlay);

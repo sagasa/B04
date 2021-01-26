@@ -69,6 +69,8 @@ void player_paladin::draw() const
     gsEndShader();
 
     glPopMatrix();
+
+    show_HP();
 }
 
 void player_paladin::wake_up()
@@ -124,6 +126,9 @@ void player_paladin::attack()
         "PlayerAttack", "PlayerAttack", AttackCollideLifeSpan, AttackCollideDelay ,3});
 
     change_state(Attack, 8, false);
+
+	//SE
+    gsPlaySE(SE_Attack);
 }
 
 
@@ -151,6 +156,7 @@ bool player_paladin::on_hit(const Actor& attacker, float atk_power)
             change_state(Damage, 5, false);
             std::cout << "Hit paladin " << hp_<<" "<<transform_.position().z << "\n";
         }
+        gsPlaySE(SE_ParadinDamage);
         return true;
     }
     return false;
@@ -253,6 +259,7 @@ void player_paladin::update(float delta_time)
             {
                 jump(3, 0.08f);
                 change_state(Jump, 6, false);
+                gsPlaySE(SE_Jump);
             }
             inputVelocity.y = MAX(inputVelocity.y, 0);
         }
