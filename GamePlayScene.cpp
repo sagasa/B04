@@ -22,7 +22,7 @@ void GamePlayScene::start() {
 
     gsLoadShader(0, "Paladin.vert", "Paladin.frag");
     // ÇœÇ¡ÇøÇ°ÉÅÉbÉVÉÖÇÃì«Ç›çûÇ›
-    gsLoadMeshEx(0, "Assets/Model/patti.msh");
+    //gsLoadMeshEx(0, "Assets/Model/patti.msh");
 	//ê∂ê¨
     MapGenerator generator{ &world_,"Assets/Map/Stage1.csv"};
 
@@ -78,6 +78,7 @@ void GamePlayScene::start() {
     gsLoadSE(SE_ParadinDamage, "Assets/SE/paradin_damage.wav", 1, false);
     //gsLoadSE(SE_GhostDamage, "Assets/SE/punch.wav", 1, false);
     //gsLoadSE(SE_ParadinDamage, "Assets/SE/Jump.wav", 1, false);
+    gsLoadSE(SE_P_Ghost_Attack, "Assets/SE/p_ghost_Attack.wav", 1, false);
 
     gsLoadTexture(Texture_Hp, "Assets/Image/heart.dds");
     gsLoadTexture(Texture_Shield, "Assets/Image/shield.dds");
