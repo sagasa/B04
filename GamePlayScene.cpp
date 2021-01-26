@@ -78,11 +78,15 @@ void GamePlayScene::start() {
     gsLoadSE(SE_ParadinDamage, "Assets/SE/paradin_damage.wav", 1, false);
     //gsLoadSE(SE_GhostDamage, "Assets/SE/punch.wav", 1, false);
     //gsLoadSE(SE_ParadinDamage, "Assets/SE/Jump.wav", 1, false);
+
+    gsLoadTexture(Texture_Hp, "Assets/Image/heart.dds");
     gsLoadSE(SE_GhostDamage, "Assets/SE/ghost_damage.wav", 1, GWAVE_DEFAULT);
     gsLoadSE(SE_GhostAttack1, "Assets/SE/Ghost Attack_01.wav", 1, GWAVE_DEFAULT);
     gsLoadSE(SE_GhostAttack2, "Assets/SE/Ghost Attack_02.wav", 1, GWAVE_DEFAULT);
     gsLoadSE(SE_BossGhostDamage, "Assets/SE/Ghost Damaged_01.wav", 1, GWAVE_DEFAULT);
     gsLoadSE(SE_GhostDeath, "Assets/SE/Ghost Death_02.wav", 1, GWAVE_DEFAULT);
+
+    gsLoadSE(SE_Slash, "Assets/SE/sword-drawn1.wav", 1, GWAVE_DEFAULT);
 	
     gsLoadMusic(Music_GamePlay, "Assets/BGM/gameplay.wav", GS_TRUE);
     gsBindMusic(Music_GamePlay);

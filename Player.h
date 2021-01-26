@@ -27,6 +27,8 @@ protected:
     //フィールドとの衝突処理
     void jump(const int count,const float force);
 
+	//HP表示
+    void show_HP()const;
     //入力をvec2として取得
     GSvector2 static get_input();
 public:	
