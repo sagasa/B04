@@ -63,7 +63,7 @@ Poltergeist::Poltergeist(IWorld* world, const GSvector3& position) :
 	transform_.localRotation(GSquaternion::euler(0.0f, -90.0f, 0.0f));
 	mesh_.transform(transform_.localToWorldMatrix());
 	//SEÇÃì«Ç›çûÇ›
-	gsLoadSE(SE_Shoot, "Assets/SE/push.wav", 1, GWAVE_DEFAULT);
+	gsLoadSE(SE_Shoot, "Assets/SE/shoot.wav", 1, GWAVE_DEFAULT);
 }
 
 //çXêV
