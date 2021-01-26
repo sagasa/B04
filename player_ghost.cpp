@@ -52,7 +52,7 @@ void player_ghost::attack()
     change_state(Attack, 2, false);
 
 	//SE
-    gsPlaySE(SE_Attack);
+    gsPlaySE(SE_P_Ghost_Attack);
 }
 
 

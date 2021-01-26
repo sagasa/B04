@@ -81,6 +81,7 @@ enum Music {
 enum Se {
     SE_GhostDamage,                 //幽霊のダメージSE
     SE_GhostMove,                   //幽霊の移動SE
+    SE_P_Ghost_Attack,
     SE_ParadinMove,                 //憑依の移動SE
     SE_ParadinDamage,               //憑依のダメージSE
     SE_Attack,                      //攻撃SE
