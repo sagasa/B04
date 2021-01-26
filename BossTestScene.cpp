@@ -18,6 +18,7 @@
 #include "ParticleManager.h"
 
 void BossTestScene::start() {
+    gsLoadShader(0, "Paladin.vert", "Paladin.frag");
     // プレーヤー弾画像を読み込み
     gsLoadTexture(Texture_EffectLazerOrange, "Assets/Effect/fx_lazer_orange_dff.png");
     // 敵弾画像を読み込み
@@ -41,11 +42,12 @@ void BossTestScene::start() {
     gsLoadAnimation(Animation_Paladin, "Assets/Model/Paladin/Paladin.anm");
 
 	//SE
-    gsLoadSE(SE_GhostDamage, "Assets/SE/ghost_damage.wav",1, false);
-    gsLoadSE(SE_GhostAttack1, "Assets/SE/Ghost Attack_01.wav",1, false);
-    gsLoadSE(SE_GhostAttack2, "Assets/SE/Ghost Attack_02.wav", 1, false);
-    gsLoadSE(SE_BossGhostDamage, "Assets/SE/Ghost Damaged_01.wav", 1, false);
-    gsLoadSE(SE_GhostDeath, "Assets/SE/Ghost Death_02.wav", 1, false);
+    gsLoadSE(SE_GhostDamage, "Assets/SE/ghost_damage.wav",1, GWAVE_DEFAULT);
+    gsLoadSE(SE_GhostAttack1, "Assets/SE/Ghost Attack_01.wav",1, GWAVE_DEFAULT);
+    gsLoadSE(SE_GhostAttack2, "Assets/SE/Ghost Attack_02.wav", 1, GWAVE_DEFAULT);
+    gsLoadSE(SE_BossGhostDamage, "Assets/SE/Ghost Damaged_01.wav", 1, GWAVE_DEFAULT);
+    gsLoadSE(SE_GhostDeath, "Assets/SE/Ghost Death_02.wav", 1, GWAVE_DEFAULT);
+    gsLoadSE(SE_Slash, "Assets/SE/sword-drawn1.wav", 1, GWAVE_DEFAULT);
     
     //SurogSakonesのメッシュの読み込み
     gsLoadMesh(Mesh_SurogSakones, "Assets/Model/Enemy/Ghost_T-pose.msh");

@@ -438,6 +438,7 @@ void SurogSakones::scythe_attack()
 {
 	generate_attackcollider();
 	gsPlaySE(SE_GhostAttack1);
+	gsPlaySE(SE_Slash);
 	change_state(State::Attack, MotionScytheAttack, true);
 }
 
@@ -454,6 +455,7 @@ void SurogSakones::psyco2_attack()
 
 void SurogSakones::turn()
 {
+	gsPlaySE(SE_Slash);
 	gsPlaySE(SE_GhostAttack1);
 	generate_attackcollider(true);
 	change_state(State::Turn, MotionScytheAttack, true);

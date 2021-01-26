@@ -62,6 +62,8 @@ Poltergeist::Poltergeist(IWorld* world, const GSvector3& position) :
 	transform_.position(position);
 	transform_.localRotation(GSquaternion::euler(0.0f, -90.0f, 0.0f));
 	mesh_.transform(transform_.localToWorldMatrix());
+	//SEÇÃì«Ç›çûÇ›
+	gsLoadSE(SE_Shoot, "Assets/SE/push.wav", 1, GWAVE_DEFAULT);
 }
 
 //çXêV
@@ -189,6 +191,7 @@ void Poltergeist::found(float delta_time) {
 	//çUåÇÇ∑ÇÈÇ©ÅH
 	if (is_attack() && shootiong_timer_ <= 0.0f) {
 		change_state(State::Attack, MotionAttack);
+		gsPlaySE(SE_Shoot);
 		return;
 	}
 }

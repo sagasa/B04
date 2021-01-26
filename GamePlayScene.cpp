@@ -63,6 +63,15 @@ void GamePlayScene::start() {
     //衝突判定用オクツリーの読み込み
     gsLoadOctree(Octree_Collider, "Assets/Octree/stage1_collider.oct");
 
+	//パーティクル用のテクスチャ
+    gsLoadTexture(Texture_Smoke, "Assets/Effect/particle_smoke.png");
+    gsLoadTexture(Texture_Hit, "Assets/Effect/particle_glitter_3.png");
+    gsLoadTexture(Texture_Circle, "Assets/Effect/particle_dot_1.png");
+    gsLoadTexture(Texture_BossHP, "Assets/Image/BossHP.png");
+    gsLoadTexture(Texture_BossHPFrame, "Assets/Image/BossHPFrame.png");
+    gsLoadTexture(Texture_BossHPFrame_Lid, "Assets/Image/BossHPFrame_Lid.png");
+
+	//SE
     gsLoadSE(SE_Attack, "Assets/SE/punch.wav", 1, false);
     gsLoadSE(SE_Jump, "Assets/SE/Jump.wav",1,false);
     gsLoadSE(SE_GhostDamage, "Assets/SE/ghost_damage.wav", 1, false);
@@ -71,6 +80,13 @@ void GamePlayScene::start() {
     //gsLoadSE(SE_ParadinDamage, "Assets/SE/Jump.wav", 1, false);
 
     gsLoadTexture(Texture_Hp, "Assets/Image/heart.dds");
+    gsLoadSE(SE_GhostDamage, "Assets/SE/ghost_damage.wav", 1, GWAVE_DEFAULT);
+    gsLoadSE(SE_GhostAttack1, "Assets/SE/Ghost Attack_01.wav", 1, GWAVE_DEFAULT);
+    gsLoadSE(SE_GhostAttack2, "Assets/SE/Ghost Attack_02.wav", 1, GWAVE_DEFAULT);
+    gsLoadSE(SE_BossGhostDamage, "Assets/SE/Ghost Damaged_01.wav", 1, GWAVE_DEFAULT);
+    gsLoadSE(SE_GhostDeath, "Assets/SE/Ghost Death_02.wav", 1, GWAVE_DEFAULT);
+
+    gsLoadSE(SE_Slash, "Assets/SE/sword-drawn1.wav", 1, GWAVE_DEFAULT);
 	
     gsLoadMusic(Music_GamePlay, "Assets/BGM/gameplay.wav", GS_TRUE);
     gsBindMusic(Music_GamePlay);
@@ -154,6 +170,16 @@ void GamePlayScene::end() {
     //オクツリーの削除
     gsDeleteOctree(Octree_Collider);
     gsDeleteOctree(Octree_Stage);
-	
-	
+
+    gsDeleteSE(SE_GhostDeath);
+    gsDeleteSE(SE_GhostDamage);
+    gsDeleteSE(SE_GhostAttack1);	
+    gsDeleteSE(SE_GhostAttack2);	
+    gsDeleteSE(SE_BossGhostDamage);
+    gsDeleteTexture(Texture_BossHPFrame);
+    gsDeleteTexture(Texture_BossHP);
+    gsDeleteTexture(Texture_BossHPFrame_Lid);
+    gsDeleteTexture(Texture_Circle);
+    gsDeleteTexture(Texture_Smoke);
+    gsDeleteTexture(Texture_Hit);	
 }
