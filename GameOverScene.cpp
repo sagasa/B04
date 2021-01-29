@@ -120,11 +120,11 @@ void GameOverScene::input() {
 	//左スティックの入力を取得
 	gsXBoxPadGetLeftAxis(0, &vector_stick);
 	//上下キーまたはパッドの十字ボタンまたは左スティックで選択移動
-	if (num_ > 0 && (gsGetKeyTrigger(GKEY_UP) || gsXBoxPadButtonTrigger(0, GS_XBOX_PAD_UP) || vector_stick.y >= 0.5f)) {
+	if (num_ > 0 && !gsIsPlaySE(SE_Select)&& (gsGetKeyState(GKEY_UP) || gsXBoxPadButtonState(0, GS_XBOX_PAD_UP) || vector_stick.y >= 0.5f)) {
 		gsPlaySE(SE_Select);
 		--num_;
 	}
-	else if (num_ < Alphas_Size - 1 && (gsGetKeyTrigger(GKEY_DOWN) || gsXBoxPadButtonTrigger(0, GS_XBOX_PAD_DOWN) || vector_stick.y <= -0.5f)) {
+	else if (num_ < Alphas_Size - 1&& !gsIsPlaySE(SE_Select) && (gsGetKeyState(GKEY_DOWN) || gsXBoxPadButtonState(0, GS_XBOX_PAD_DOWN) || vector_stick.y <= -0.5f)) {
 		gsPlaySE(SE_Select);
 		++num_;
 	}

@@ -67,18 +67,19 @@ void GamePlayScene::start(int number) {
     std::string csv_pass;
     csv_pass = "Assets/Map/Stage" + ss.str() + ".csv";
     //生成
-    MapGenerator generator{ &world_,csv_pass};
+    //MapGenerator generator{ &world_,csv_pass};
+    MapGenerator generator{ &world_,"Assets/Map/Stage3.csv" };
     //番号によってロードするマップを変える
     std::string octree_pass;
     octree_pass = "Assets/Octree/stage"+ ss.str() +"/stage"+ ss.str()+".oct";
     //描画用オクツリーの読み込み
-    gsLoadOctree(Octree_Stage, octree_pass.c_str());
+    /*gsLoadOctree(Octree_Stage, octree_pass.c_str());
     //衝突判定用オクツリーの読み込み
-    gsLoadOctree(Octree_Collider, octree_pass.c_str());
+    gsLoadOctree(Octree_Collider, octree_pass.c_str());*/
     //描画用オクツリーの読み込み
-    /*gsLoadOctree(Octree_Stage, "Assets/Octree/stage1/stage1.oct");
+    gsLoadOctree(Octree_Stage, "Assets/Octree/stage3/stage3.oct");
     //衝突判定用オクツリーの読み込み
-    gsLoadOctree(Octree_Collider, "Assets/Octree/stage1/stage1.oct");*/
+    gsLoadOctree(Octree_Collider, "Assets/Octree/stage3/stage3.oct");
 
 	//パーティクル用のテクスチャ
     gsLoadTexture(Texture_Smoke, "Assets/Effect/particle_smoke.png");
@@ -106,6 +107,8 @@ void GamePlayScene::start(int number) {
     gsLoadSE(SE_GhostDeath, "Assets/SE/Ghost Death_02.wav", 1, GWAVE_DEFAULT);
 
     gsLoadSE(SE_Slash, "Assets/SE/sword-drawn1.wav", 1, GWAVE_DEFAULT);
+
+    gsLoadSE(SE_Shoot, "Assets/SE/shoot.wav", 1, GWAVE_DEFAULT);
 	
     gsLoadMusic(Music_GamePlay, "Assets/BGM/gameplay.wav", GS_TRUE);
     gsBindMusic(Music_GamePlay);
@@ -196,11 +199,17 @@ void GamePlayScene::end() {
     gsDeleteOctree(Octree_Collider);
     gsDeleteOctree(Octree_Stage);
 
+    gsDeleteSE(SE_Attack);
+    gsDeleteSE(SE_Jump);
+    gsDeleteSE(SE_ParadinDamage);
     gsDeleteSE(SE_GhostDeath);
     gsDeleteSE(SE_GhostDamage);
     gsDeleteSE(SE_GhostAttack1);	
     gsDeleteSE(SE_GhostAttack2);	
     gsDeleteSE(SE_BossGhostDamage);
+    gsDeleteSE(SE_Shoot);
+    gsDeleteSE(SE_Slash);
+    gsDeleteSE(SE_P_Ghost_Attack);
     gsDeleteTexture(Texture_BossHPFrame);
     gsDeleteTexture(Texture_BossHP);
     gsDeleteTexture(Texture_BossHPFrame_Lid);
