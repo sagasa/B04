@@ -45,7 +45,8 @@ void player_paladin::draw() const
     gsSetShaderParamMatrix4("u_WorldViewProjectionMatrix",
         (GSmatrix4*)&world_view_projection);
     // ワールド変換行列をシェーダーに渡す
-    gsSetShaderParamMatrix4("u_WorldMatrix", &transform_.localToWorldMatrix());
+    GSmatrix4 world = transform_.localToWorldMatrix();
+    gsSetShaderParamMatrix4("u_WorldMatrix", &world);
     // カメラの座標をシェーダーに渡す
     gsSetShaderParam3f("u_CameraPosition", (GSvector3*)&camera_pos_);
     // ライトのパラメータをシェーダーに渡す
@@ -76,7 +77,8 @@ void player_paladin::draw() const
         GSvector2 pos{ 0,0 };
         for (int i = 0; i < hp_; ++i)
         {
-            gsDrawSprite2D(Texture_Shield, &pos, NULL, NULL, NULL, &GSvector2{ 0.1f, 0.1f }, NULL);
+            GSvector2 scale{ 0.1f, 0.1f };
+            gsDrawSprite2D(Texture_Shield, &pos, NULL, NULL, NULL, &scale, NULL);
             pos.x += 40;
         }
         glPopMatrix();

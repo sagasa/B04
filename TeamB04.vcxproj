@@ -153,6 +153,8 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ChangeItem.cpp" />
     <ClCompile Include="CSVReader.cpp" />
+    <ClCompile Include="EPsycokinesisBullet.cpp" />
+    <ClCompile Include="ESurogSakones.cpp" />
     <ClCompile Include="Fade.cpp" />
     <ClCompile Include="GameOverScene.cpp" />
     <ClCompile Include="interact_collider.cpp" />
@@ -194,6 +196,8 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ChangeItem.h" />
     <ClInclude Include="CSVReader.h" />
+    <ClInclude Include="EPsycokinesisBullet.h" />
+    <ClInclude Include="ESurogSakones.h" />
     <ClInclude Include="Fade.h" />
     <ClInclude Include="GameOverScene.h" />
     <ClInclude Include="interact_collider.h" />

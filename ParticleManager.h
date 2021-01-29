@@ -27,6 +27,8 @@ public:
 	void possession_light(const GSvector3& position)const;
 	//œßˆË‰ğœ‚ÌŒõ
 	void possession_release_light(const GSvector3& position)const;
+
+	void ring(const GSvector3 position, GSmatrix4* matrix)const;
 };
 
 #endif
