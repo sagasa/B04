@@ -33,6 +33,7 @@ void SceneManager::update(float delta_time) {
 
 	//シーンが終了しているか？
 	if (current_scene_->is_end()) {
+		stage_number_ = current_scene_->stage_number();
 		//シーンを変更する
 		change(current_scene_->next());
 	}

@@ -28,6 +28,10 @@ public:
 private:
 	//α値の更新
 	void update_alpha(int num, float detla_time);
+	//キー入力、パッドの入力処理
+	void input();
+	//ボタンの描画
+	void draw_button() const;
 
 private:
 	//ワールドクラス

@@ -27,8 +27,6 @@ void GamePlayScene::start(int number) {
     gsLoadShader(0, "Paladin.vert", "Paladin.frag");
     // ぱっちぃメッシュの読み込み
     //gsLoadMeshEx(0, "Assets/Model/patti.msh");
-	//生成
-    MapGenerator generator{ &world_,"Assets/Map/Stage1.csv"};
 
     is_end_ = false;
     // CarGhostのメッシュの読み込み
@@ -62,17 +60,25 @@ void GamePlayScene::start(int number) {
 	
     //スカイボックスの読み込み
     gsLoadMesh(Mesh_Skybox, "Assets/Skybox/DarkStorm4K.msh");
-    //番号によってロードするマップを変える
-    /*std::stringstream ss;
-    std::string file_pass;
+    //int型のステージ番号をstringstream型に変換
+    std::stringstream ss;
     ss << stage_number_;
-    file_pass += "Assets/Octree/stage"+ ss.str() +"/stage "+ ss.str()+".oct";
-    gsLoadOctree(Octree_Stage, file_pass.c_str());
-    gsLoadOctree(Octree_Collider, file_pass.c_str());*/
+    //ステージ番号によってロードするCSVファイルを変更する
+    std::string csv_pass;
+    csv_pass = "Assets/Map/Stage" + ss.str() + ".csv";
+    //生成
+    MapGenerator generator{ &world_,csv_pass};
+    //番号によってロードするマップを変える
+    std::string octree_pass;
+    octree_pass = "Assets/Octree/stage"+ ss.str() +"/stage"+ ss.str()+".oct";
     //描画用オクツリーの読み込み
-    gsLoadOctree(Octree_Stage, "Assets/Octree/stage1/stage1.oct");
+    gsLoadOctree(Octree_Stage, octree_pass.c_str());
     //衝突判定用オクツリーの読み込み
-    gsLoadOctree(Octree_Collider, "Assets/Octree/stage1/stage1.oct");
+    gsLoadOctree(Octree_Collider, octree_pass.c_str());
+    //描画用オクツリーの読み込み
+    /*gsLoadOctree(Octree_Stage, "Assets/Octree/stage1/stage1.oct");
+    //衝突判定用オクツリーの読み込み
+    gsLoadOctree(Octree_Collider, "Assets/Octree/stage1/stage1.oct");*/
 
 	//パーティクル用のテクスチャ
     gsLoadTexture(Texture_Smoke, "Assets/Effect/particle_smoke.png");
@@ -200,5 +206,5 @@ void GamePlayScene::end() {
     gsDeleteTexture(Texture_BossHPFrame_Lid);
     gsDeleteTexture(Texture_Circle);
     gsDeleteTexture(Texture_Smoke);
-    gsDeleteTexture(Texture_Hit);	
+    gsDeleteTexture(Texture_Hit);
 }
