@@ -13,6 +13,7 @@
 #include"MapGenerator.h"
 #include "player_ghost.h"
 #include"ParticleManager.h"
+#include"player_paladin.h"
 
 
 
@@ -59,9 +60,9 @@ void GamePlayScene::start() {
     //スカイボックスの読み込み
     gsLoadMesh(Mesh_Skybox, "Assets/Skybox/DarkStorm4K.msh");
     //描画用オクツリーの読み込み
-    gsLoadOctree(Octree_Stage, "Assets/Octree/stage1.oct");
+    gsLoadOctree(Octree_Stage, "Assets/Octree/stage1/stage1.oct");
     //衝突判定用オクツリーの読み込み
-    gsLoadOctree(Octree_Collider, "Assets/Octree/stage1_collider.oct");
+    gsLoadOctree(Octree_Collider, "Assets/Octree/stage1/stage1_collider.oct");
 
 	//パーティクル用のテクスチャ
     gsLoadTexture(Texture_Smoke, "Assets/Effect/particle_smoke.png");
