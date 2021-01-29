@@ -62,8 +62,7 @@ Poltergeist::Poltergeist(IWorld* world, const GSvector3& position) :
 	transform_.position(position);
 	transform_.localRotation(GSquaternion::euler(0.0f, -90.0f, 0.0f));
 	mesh_.transform(transform_.localToWorldMatrix());
-	//SEの読み込み
-	gsLoadSE(SE_Shoot, "Assets/SE/shoot.wav", 1, GWAVE_DEFAULT);
+	
 }
 
 //更新
@@ -118,7 +117,7 @@ bool Poltergeist::on_hit(const Actor& other, float atk_power) {
 		hp_ -= atk_power;
 		if (hp_ <= 0) {
 			//ダメージ状態に変更
-			change_state(State::Damage, MotionDamage, false);
+			change_state(State::Died, MotionDie, false);
 		}
 		else {
 			//攻撃の進行方向にノックバックする移動量を求める
