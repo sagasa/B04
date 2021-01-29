@@ -37,6 +37,8 @@ private:
 	resource_loader loader_;
 	IScene* next_scene_;
 	IScene* current_scene_;
+	//現在のステージ番号
+	int stage_number_ = 1;
 };
 
 #endif

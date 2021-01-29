@@ -11,7 +11,7 @@ SceneManager::SceneManager() :
 	current_scene_{ &scene_null } {
 	load_end_ = [this] {
 		//次のシーンを開始 戻るまでアップデートしないように
-		next_scene_->start();
+		next_scene_->start(stage_number_);
 		current_scene_ = next_scene_;
 		next_scene_ = nullptr;
 	};

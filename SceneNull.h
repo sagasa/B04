@@ -7,7 +7,7 @@
 class SceneNull : public IScene {
 public:
 	//開始
-	void start() override {}
+	void start(int number) override {}
 	//更新
 	void update(float delta_time)override {}
 	//描画
@@ -19,6 +19,10 @@ public:
 	//次のシーンを返す
 	std::string next() const override {
 		return "SceneNull";
+	}
+	//現在のステージ番号を返す
+	virtual int stage_number() const override {
+		return 1;
 	}
 	//終了
 	void end() override {}

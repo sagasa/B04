@@ -52,7 +52,7 @@ enum Texture {
     Texture_GameClear,                  //ゲームクリア
     Texture_GameOver,              //ゲームオーバー
     Texture_TitleButton,        //タイトルへ戻る
-    Texture_RestartButton,               //もう一度
+    Texture_ContinueButton,               //もう一度
     Texture_NextStage,             //次のステージへ
     //フェード
     Texture_Fade,                   //黒いテクスチャ

@@ -7,20 +7,24 @@
 const float Alpha_Value{ 0.016f };
 //ボタンが出るまでの時間
 const float Time{ 60.0f };
+//サイズ
+const int Alphas_Size{2};
 
 //開始
-void GameOverScene::start() {
+void GameOverScene::start(int number) {
 	fade_.start(true, 3);
 	is_end_ = false;
 	num_ = 0;
 	alpha_flg_ = false;
 	nextScene_ = "";
 	timer_ = 0.0f;
+	alphas_.resize(Alphas_Size, 1.0f);
+	stage_number_ = number;
 	//テクスチャの読み込み
 	gsLoadTexture(Texture_GameOver, "Assets/Image/gameover.dds");
 	gsLoadTexture(Texture_TitleButton, "Assets/Image/title_button.dds");
 	gsLoadTexture(Texture_NextStage, "Assets/Image/next_stage.dds");
-	gsLoadTexture(Texture_RestartButton, "Assets/Image/restart_button.dds");
+	gsLoadTexture(Texture_ContinueButton, "Assets/Image/continue_button.dds");
 
 	//BGMの読み込み
 	gsLoadMusic(Music_GameOver, "Assets/BGM/gameover.wav", GS_TRUE);
@@ -33,8 +37,6 @@ void GameOverScene::start() {
 
 //更新
 void GameOverScene::update(float delta_time) {
-	//選択の最大数
-	const float Max_Select{ sizeof(alphas_) / sizeof(*alphas_) };
 	gsSetMusicVolume(0.8f);
 	//フェードクラスの更新
 	fade_.update(delta_time);
@@ -50,7 +52,7 @@ void GameOverScene::update(float delta_time) {
 			gsPlaySE(SE_Select);
 			--num_;
 		}
-		else if (num_ < Max_Select - 1 && (gsGetKeyTrigger(GKEY_DOWN) || gsXBoxPadButtonTrigger(0, GS_XBOX_PAD_DOWN) || vector_stick.y <= -0.5f)) {
+		else if (num_ < Alphas_Size - 1 && (gsGetKeyTrigger(GKEY_DOWN) || gsXBoxPadButtonTrigger(0, GS_XBOX_PAD_DOWN) || vector_stick.y <= -0.5f)) {
 			gsPlaySE(SE_Select);
 			++num_;
 		}
@@ -85,7 +87,7 @@ void GameOverScene::draw() const {
 		GSvector2 position_restart_button{ 450.0f,300.0f };
 		GSvector2 scale_restart_button{ 0.7f,0.7f };
 		GScolor color_restart_button{ 1,1,1, alphas_[0] };
-		gsDrawSprite2D(Texture_RestartButton, &position_restart_button, NULL, NULL, &color_restart_button, &scale_restart_button, NULL);
+		gsDrawSprite2D(Texture_ContinueButton, &position_restart_button, NULL, NULL, &color_restart_button, &scale_restart_button, NULL);
 		GSvector2 position_return_to_title{ 480.0f,500.0f };
 		GSvector2 scale_return_to_title{ 0.7f,0.7f };
 		GScolor color_return_to_title{ 1,1,1, alphas_[1] };
@@ -109,12 +111,17 @@ std::string GameOverScene::next() const{
 	return nextScene_;
 }
 
+//現在のステージ番号を返す
+int GameOverScene::stage_number() const {
+	return stage_number_;
+}
+
 //終了
 void GameOverScene::end() {
 	gsDeleteTexture(Texture_GameOver);
 	gsDeleteTexture(Texture_TitleButton);
 	gsDeleteTexture(Texture_NextStage);
-	gsDeleteTexture(Texture_RestartButton);
+	gsDeleteTexture(Texture_ContinueButton);
 
 	gsStopMusic();
 	gsDeleteMusic(Music_Title);
@@ -124,7 +131,7 @@ void GameOverScene::end() {
 
 //α値の更新
 void GameOverScene::update_alpha(int num, float delta_time) {
-	for (int i = 0; i < sizeof(alphas_) / sizeof(*alphas_); ++i) {
+	for (int i = 0; i < Alphas_Size; ++i) {
 		if (i == num) {
 			//α値の更新
 			alphas_[i] += (alpha_flg_) ? -Alpha_Value * delta_time : Alpha_Value * delta_time;
