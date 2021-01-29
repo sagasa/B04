@@ -63,16 +63,16 @@ void GamePlayScene::start(int number) {
     //スカイボックスの読み込み
     gsLoadMesh(Mesh_Skybox, "Assets/Skybox/DarkStorm4K.msh");
     //番号によってロードするマップを変える
-    std::stringstream ss;
+    /*std::stringstream ss;
     std::string file_pass;
     ss << stage_number_;
     file_pass += "Assets/Octree/stage"+ ss.str() +"/stage "+ ss.str()+".oct";
-
-    //描画用オクツリーの読み込み
-    //gsLoadOctree(Octree_Stage, "Assets/Octree/stage1/stage1.oct");
     gsLoadOctree(Octree_Stage, file_pass.c_str());
+    gsLoadOctree(Octree_Collider, file_pass.c_str());*/
+    //描画用オクツリーの読み込み
+    gsLoadOctree(Octree_Stage, "Assets/Octree/stage1/stage1.oct");
     //衝突判定用オクツリーの読み込み
-    gsLoadOctree(Octree_Collider, file_pass.c_str());
+    gsLoadOctree(Octree_Collider, "Assets/Octree/stage1/stage1.oct");
 
 	//パーティクル用のテクスチャ
     gsLoadTexture(Texture_Smoke, "Assets/Effect/particle_smoke.png");
