@@ -16,7 +16,7 @@
 
 
 //開始
-void EnemyTestScene::start() {
+void EnemyTestScene::start(int number) {
     //BGMの読み込み
     gsLoadMusic(Music_Title, "Assets/BGM/title.ogg",GS_TRUE);
 
@@ -107,6 +107,11 @@ bool EnemyTestScene::is_end() const {
 std::string EnemyTestScene::next() const {
     return "scene_null";
 
+}
+
+//現在のステージ番号を返す
+int EnemyTestScene::stage_number() const {
+    return stage_number_;
 }
 
 //終了

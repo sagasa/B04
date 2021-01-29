@@ -9,12 +9,13 @@ const float Alpha_Value{ 0.008f };
 const float Time{ 60.0f };
 
 //開始
-void TitleScene::start() {
+void TitleScene::start(int number) {
 	fade_.start(true,3);
 	//終了フラグの初期化
 	is_end_ = false;
 	nextScene_ = "";
 	timer_ = 0;
+	stage_number_ = number;
 	//テクスチャの読み込み
 	gsLoadTexture(Texture_TitleLogo, "Assets/Image/title_logo.dds");
 	gsLoadTexture(Texture_PushButton, "Assets/Image/push_button.dds");
@@ -105,6 +106,11 @@ bool TitleScene::is_end() const {
 //次のシーンを返す
 std::string TitleScene::next() const {
 	return nextScene_;//次のシーン名を返す
+}
+
+//現在のステージ番号を返す
+int TitleScene::stage_number() const {
+	return stage_number_;
 }
 
 //終了

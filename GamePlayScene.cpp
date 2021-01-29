@@ -14,12 +14,15 @@
 #include "player_ghost.h"
 #include"ParticleManager.h"
 #include"player_paladin.h"
+#include<string>
+#include<sstream>
 
 
 
 //開始
-void GamePlayScene::start() {
+void GamePlayScene::start(int number) {
     fade_.start(true,1);
+    stage_number_ = number;
 
     gsLoadShader(0, "Paladin.vert", "Paladin.frag");
     // ぱっちぃメッシュの読み込み
@@ -59,10 +62,17 @@ void GamePlayScene::start() {
 	
     //スカイボックスの読み込み
     gsLoadMesh(Mesh_Skybox, "Assets/Skybox/DarkStorm4K.msh");
+    //番号によってロードするマップを変える
+    std::stringstream ss;
+    std::string file_pass;
+    ss << stage_number_;
+    file_pass += "Assets/Octree/stage"+ ss.str() +"/stage "+ ss.str()+".oct";
+
     //描画用オクツリーの読み込み
-    gsLoadOctree(Octree_Stage, "Assets/Octree/stage1/stage1.oct");
+    //gsLoadOctree(Octree_Stage, "Assets/Octree/stage1/stage1.oct");
+    gsLoadOctree(Octree_Stage, file_pass.c_str());
     //衝突判定用オクツリーの読み込み
-    gsLoadOctree(Octree_Collider, "Assets/Octree/stage1/stage1_collider.oct");
+    gsLoadOctree(Octree_Collider, file_pass.c_str());
 
 	//パーティクル用のテクスチャ
     gsLoadTexture(Texture_Smoke, "Assets/Effect/particle_smoke.png");
@@ -143,6 +153,12 @@ bool GamePlayScene::is_end() const {
 std::string GamePlayScene::next() const {
 	return next_scene_;
 }
+
+//現在のステージ番号を返す
+int GamePlayScene::stage_number() const {
+    return stage_number_;
+}
+
 //終了
 void GamePlayScene::end() {
     gsStopMusic();

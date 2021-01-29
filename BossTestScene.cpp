@@ -17,7 +17,7 @@
 #include "Particle.h"
 #include "ParticleManager.h"
 
-void BossTestScene::start() {
+void BossTestScene::start(int number) {
     gsLoadShader(0, "Paladin.vert", "Paladin.frag");
     // プレーヤー弾画像を読み込み
     gsLoadTexture(Texture_EffectLazerOrange, "Assets/Effect/fx_lazer_orange_dff.png");
@@ -137,6 +137,10 @@ bool BossTestScene::is_end() const {
 //次のシーン名を返す
 std::string BossTestScene::next() const {
 	return "TitleScene";
+}
+//現在のステージ番号を返す
+int BossTestScene::stage_number() const {
+    return stage_number_;
 }
 //終了
 void BossTestScene::end() {

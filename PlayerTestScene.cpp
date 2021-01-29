@@ -27,7 +27,7 @@ void PlayerTestScene::load(resource_loader& loader)
     //loader.load_mesh(Mesh_Skybox, "Assets/Skybox/skydome.msh");
 }
 
-void PlayerTestScene::start() {
+void PlayerTestScene::start(int number) {
     is_end_ = false;
 
     gsLoadMesh(Mesh_Player, "Assets/Model/Enemy/Ghost.msh");
@@ -67,6 +67,10 @@ bool PlayerTestScene::is_end() const {
 //次のシーン名を返す
 std::string PlayerTestScene::next() const {
     return "NullScene";
+}
+//現在のステージ番号を返す
+int PlayerTestScene::stage_number() const {
+    return stage_number_;
 }
 //終了
 void PlayerTestScene::end() {
