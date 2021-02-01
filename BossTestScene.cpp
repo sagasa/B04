@@ -118,9 +118,9 @@ void BossTestScene::update(float delta_time) {
 	}
 	if(gsGetKeyTrigger(GKEY_RETURN))
 	{
-        world_.add_actor(new EPsycokinesisBullet{ &world_,GSvector3{3.0f,0.0f,0.0f},BulletType::Small });
-        world_.add_actor(new EPsycokinesisBullet{ &world_,GSvector3{3.0f,0.0f,0.0f},BulletType::Small,60.0f });
-        world_.add_actor(new EPsycokinesisBullet{ &world_,GSvector3{3.0f,0.0f,0.0f},BulletType::Small,120.0f });
+        world_.add_actor(new EPsycokinesisBullet{ &world_,GSvector3{1.5f,0.0f,0.0f},BulletType::Small });
+        world_.add_actor(new EPsycokinesisBullet{ &world_,GSvector3{3.0f,1.5f,0.0f},BulletType::Small,60.0f });
+        world_.add_actor(new EPsycokinesisBullet{ &world_,GSvector3{4.5f,0.0f,0.0f},BulletType::Small,120.0f });
 	}
     world_.update(delta_time);
 }

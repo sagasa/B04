@@ -1,5 +1,7 @@
 #ifndef E_PSYCOKINESIS_BULLET_H_
 #define E_PSYCOKINESIS_BULLET_H_
+#include <functional>
+
 #include "Actor.h"
 
 class EPsycokinesisBullet :
@@ -11,6 +13,12 @@ public:
 		Small,
 		Big
 	};
+	enum class State
+	{
+		Appear,
+		Normal
+	};
+	
 	EPsycokinesisBullet(IWorld* world,const GSvector3& position,Type type,float delay=0.0f);
 	void react(Actor& other) override;
 	void update(float delta_time) override;
@@ -32,6 +40,7 @@ private:
 	
 	GSvector3 acceleration_{ GSvector3::zero() };
 	float period_{ 0.0f };
+	State state_{ State::Appear };
 };
 
 #endif

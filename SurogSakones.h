@@ -86,6 +86,7 @@ private:
 	bool is_turn(const Actor* other);
 	bool is_move(const Actor* other)const;
 	bool is_far();
+	bool is_collide_actor();
 
 	void collide_field();
 	void collide_actor(Actor& other);

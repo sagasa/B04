@@ -25,6 +25,7 @@ EPsycokinesisBullet::EPsycokinesisBullet(IWorld* world, const GSvector3& positio
 	transform_.position(position);
 	wait_timer_ = 0.0f;
 	delay_ = delay;
+	velocity_ = GSvector3::zero();
 
 	type_ = type;
 	switch (type_)
@@ -68,12 +69,13 @@ void EPsycokinesisBullet::draw() const
 {
 #ifdef _DEBUG
 	collider().draw();
-#endif	
+#endif
+	if(delay_)
 	switch (type_)
 	{
 	case Type::Small:
-		world_->particle_manager()->boss_smoke(transform_.position());
-		world_->particle_manager()->boss_smoke(transform_.position());
+		world_->particle_manager()->psyco_bullet_small(transform_.position(),velocity_);
+		world_->particle_manager()->psyco_bullet_small(transform_.position(),velocity_);
 		break;
 	case Type::Big:big_draw(); break;
 	}
@@ -96,7 +98,8 @@ void EPsycokinesisBullet::small_update(float delta_time)
 		return;
 	}
 	to_player_.normalize();
-	transform_.translate(to_player_ * SmallSpeed * delta_time);
+	velocity_ = to_player_ * SmallSpeed * delta_time;
+	transform_.translate(velocity_);
 }
 
 void EPsycokinesisBullet::big_draw() const

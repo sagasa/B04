@@ -47,6 +47,7 @@ const float Psyco2AttackFlame{ 20.0f };
 const float ScytheAttackCoolTime{ 30.0f };
 const float Psyco1AttackCoolTime{ 120.0f };
 const float Psyco2AttackCoolTime{ 30.0f };
+const float TurnAttackCoolTime{ 30.0f };
 
 const GSvector3 SmokePosition{ 0.0f,0.5f,0.0f };
 
@@ -102,10 +103,12 @@ void SurogSakones::late_update(float delta_time) {
 	prev_flip_ = flip_;
 }
 void SurogSakones::react(Actor& other) {
-	if (state_ == State::Stun)return;
 	if (other.tag() == "PlayerTag")
 	{
-		//collide_actor(other);
+		if(is_collide_actor())
+		{
+			collide_actor(other);
+		}
 	}
 }
 bool SurogSakones::on_hit(const Actor& attacker, float atk_power)
@@ -292,11 +295,11 @@ void SurogSakones::move(float delta_time) {
 	}
 	else if (target_distance(player_) > MinMoveDistance && target_distance(player_) <= SarchMoveDistance)
 	{
-		move_way_ = Move::Slowly;
+		move_way_ = Move::Normal;
 	}
 	else if (target_distance(player_) > SarchMoveDistance && target_distance(player_) <= MaxMoveDistance)
 	{
-		move_way_ = Move::Normal;
+		move_way_ = Move::Slowly;
 	}
 	if (cool_timer_ > 0.0f)move_way_ = Move::Slowly;
 	switch (move_way_)
@@ -457,6 +460,7 @@ void SurogSakones::turn()
 {
 	gsPlaySE(SE_Slash);
 	gsPlaySE(SE_GhostAttack1);
+	cool_timer_ = TurnAttackCoolTime;
 	generate_attackcollider(true);
 	change_state(State::Turn, MotionScytheAttack, true);
 }
@@ -552,6 +556,12 @@ bool SurogSakones::is_move(const Actor* other) const
 {
 	return (target_distance(other) <= MaxMoveDistance);
 }
+
+bool SurogSakones::is_collide_actor()
+{
+	return (state_ == State::Idol) || (state_ == State::Move) || (state_==State::Stun);
+}
+
 
 
 void SurogSakones::collide_field()

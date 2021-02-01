@@ -104,7 +104,7 @@ void ESurogSakones::react(Actor& other) {
 	if (state_ == State::Stun)return;
 	if (other.tag() == "PlayerTag")
 	{
-		//collide_actor(other);
+		collide_actor(other);
 	}
 }
 bool ESurogSakones::on_hit(const Actor& attacker, float atk_power)

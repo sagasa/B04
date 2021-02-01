@@ -87,7 +87,7 @@ class MyGame : public gslib::Game {
         scene_.add("GamePlayScene", new GamePlayScene());
         scene_.add("GameOverScene", new GameOverScene());
         scene_.add("ResultScene", new ResultScene());
-        scene_.change("BossTestScene");
+        scene_.change("TitleScene");
         glError();        
     }
 
