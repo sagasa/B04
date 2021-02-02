@@ -8,7 +8,7 @@ const float Alpha_Value{ 0.016f };
 //ボタンが出るまでの時間
 const float Time{ 60.0f };
 //サイズ
-const int Alphas_Size{3};
+const int Alphas_Size{2};
 
 //開始
 void GameOverScene::start(int number) {

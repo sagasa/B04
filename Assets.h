@@ -54,6 +54,8 @@ enum Texture {
     Texture_TitleButton,        //タイトルへ戻る
     Texture_ContinueButton,               //もう一度
     Texture_NextStage,             //次のステージへ
+    Texture_stageLogo,             //「ステージ」
+    Texture_Number,                //番号1,2,3
     //フェード
     Texture_Fade,                   //黒いテクスチャ
     // 3Dスプライト

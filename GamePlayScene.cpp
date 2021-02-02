@@ -27,8 +27,10 @@ void GamePlayScene::start(int number) {
     gsLoadShader(0, "Paladin.vert", "Paladin.frag");
     // ぱっちぃメッシュの読み込み
     //gsLoadMeshEx(0, "Assets/Model/patti.msh");
-
+    //終了フラグ初期化
     is_end_ = false;
+    //表示タイマーの初期化
+    draw_timer_ = 0.0f;
     // CarGhostのメッシュの読み込み
     gsLoadMesh(Mesh_CarGhost, "Assets/Model/Enemy/Ghost.msh");
     gsLoadMesh(Mesh_RushGhost, "Assets/Model/Enemy/Ghost2.msh");
@@ -128,25 +130,39 @@ void GamePlayScene::start(int number) {
 
 //更新
 void GamePlayScene::update(float delta_time) {
+    //音量調整
     gsSetMusicVolume(0.8f);
+    //ワールドの更新
 	world_.update(delta_time);
+    //フェードクラスの更新
+    fade_.update(delta_time);
+
+    if (fade_.is_end()) {
+        //表示タイマーの更新
+        draw_timer_ += delta_time;
+    }
 
     if (world_.is_game_clear() && fade_.is_end()) {//ボスが死んだか？
         is_end_ = true;
         next_scene_ = "ResultScene";
         fade_.change_fade_flg();
+        next_scene_ = (stage_number_ == 3) ? "ResultScene" : "StageClearScene";
     }
     else if (world_.is_game_over() && fade_.is_end()) {//プレイヤーが死んだか？
         is_end_ = true;
         next_scene_ = "GameOverScene";
         fade_.change_fade_flg();
     }
-    fade_.update(delta_time);
+    
 }
 
 //描画
 void GamePlayScene::draw() const {
+    //ワールドの描画
 	world_.draw();
+    //ステージ名を表示
+
+    //フェードクラスの描画
     fade_.draw();
 }
 

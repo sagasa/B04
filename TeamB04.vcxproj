@@ -176,6 +176,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="StageClearScene.cpp" />
     <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="SurogSakones.cpp" />
     <ClCompile Include="UI.cpp" />
@@ -224,6 +225,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SceneNull.h" />
+    <ClInclude Include="StageClearScene.h" />
     <ClInclude Include="thread_pool.h" />
     <ClInclude Include="TitleScene.h" />
     <ClInclude Include="SurogSakones.h" />
