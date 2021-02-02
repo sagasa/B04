@@ -68,7 +68,8 @@ enum Texture {
 	Texture_Circle,
 	Texture_BossHP,
 	Texture_BossHPFrame,
-	Texture_BossHPFrame_Lid
+	Texture_BossHPFrame_Lid,
+	Texture_Ring
 };
 
 // ‚a‚f‚lƒf[ƒ^

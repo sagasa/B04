@@ -124,7 +124,8 @@ void Player::draw() const {
     GSvector2 pos{ 0,0 };
     for (int i = 0; i < hp_; ++i)
     {
-        gsDrawSprite2D(Texture_Hp, &pos, NULL, NULL, NULL, &GSvector2{ 0.03f, 0.03f }, NULL);
+        GSvector2 scale{ 0.03f, 0.03f };
+        gsDrawSprite2D(Texture_Hp, &pos, NULL, NULL, NULL, &scale, NULL);
         pos.x += 40;
     }
     glPopMatrix();

@@ -20,13 +20,18 @@ public:
 	//UŒ‚‚É“–‚½‚Á‚½
 	void hit(const GSvector3& position)const;
 	//”Z‚ä‚¢‡F‚Ì‰Œ
-	void death_smoke(const GSvector3& position)const;
+	void death_smoke(const GSvector3& position,const GSvector3& velocity=GSvector3::zero())const;
 	//×‚¢‡F‚Ì‰Œ
-	void boss_smoke(const GSvector3& position)const;
+	void boss_smoke(const GSvector3& position, const GSvector3& velocity = GSvector3::zero())const;
 	//œßˆË‚ÌŒõ
 	void possession_light(const GSvector3& position)const;
 	//œßˆË‰ğœ‚ÌŒõ
 	void possession_release_light(const GSvector3& position)const;
+
+	void ring(const GSvector3 position, GSmatrix4* matrix)const;
+
+	void psyco_bullet_small(const GSvector3& position, const GSvector3& velocity = GSvector3::zero())const;
+	void psyco_bullet_big(const GSvector3& position, const GSvector3& velocity = GSvector3::zero())const;
 };
 
 #endif

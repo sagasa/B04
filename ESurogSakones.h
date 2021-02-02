@@ -1,5 +1,5 @@
-#ifndef SUROG_SAKONES
-#define SUROG_SAKONES
+#ifndef E_SUROG_SAKONES
+#define E_SUROG_SAKONES
 
 class IWorld;
 
@@ -8,8 +8,8 @@ class IWorld;
 #include<vector>
 #include"AnimatedMesh.h"
 
-class SurogSakones :
-	public Actor,public DamageProp
+class ESurogSakones :
+	public Actor, public DamageProp
 {
 public:
 	enum class State {
@@ -30,7 +30,7 @@ private:
 		Fast,
 	};
 public:
-	SurogSakones(IWorld* world, const GSvector3& position);	
+	ESurogSakones(IWorld* world, const GSvector3& position);
 	virtual void update(float delta_time)override;
 	virtual void late_update(float delta_time)override;
 	virtual void draw()const override;
@@ -49,7 +49,7 @@ private:
 	void stun(float delta_time);
 	void dying(float delta_time);
 	void turn(float delta_time);
-	
+
 	void move(float delta_time);
 	//•’Ê‚É‹ß‚Ã‚­
 	void move_normal(float delta_time);
@@ -58,11 +58,12 @@ private:
 	//‘‚­‹ß‚Ã‚«UŒ‚
 	void move_fast(float delta_time);
 	//ó‘Ô•Ï‰»
-	void change_state(State state, GSuint motion,bool loop=true);
-	//”O“®UŒ‚
-	void generate_pshychokinesis(const GSvector3& position,GSvector3 velocity=GSvector3::up());
+	void change_state(State state, GSuint motion, bool loop = true);
+	//”O“®UŒ‚‚P
+	void generate_pshychokinesis(const GSvector3& position,float delay = 0.0f);
+	void generate_pshychokinesis(const GSvector3& position, const GSvector3& velocity,float delay = 0.0f);
 	//‹ßÚUŒ‚
-	void generate_attackcollider(bool is_turn=false);
+	void generate_attackcollider(bool is_turn = false);
 	//ˆÚ“®‚µ‚Â‚ÂUŒ‚
 	void move_attack(float delta_time);
 	//ˆÚ“®‚µ‚½Œã‚Ìƒ^[ƒ“
@@ -78,14 +79,13 @@ private:
 	float target_signed_angle(const Actor* other)const;
 	float target_angle(const Actor* other)const;
 	bool target_posrelation(const Actor* other)const;
-	
+
 	//”»’f
 	bool is_scythe_attack(const Actor* other);
 	bool is_psyco1_attack(const Actor* other);
 	bool is_psyco2_attack(const Actor* other);
 	bool is_turn(const Actor* other);
 	bool is_move(const Actor* other)const;
-	bool is_collide_actor();
 
 	void collide_field();
 	void collide_actor(Actor& other);
@@ -99,7 +99,7 @@ private:
 	float state_timer_{ 0.0f };
 	//ƒXƒ^ƒ“’l
 	float stun_{ 0.0f };
-	
+
 	std::vector<GSvector3> move_pos_;
 	GSvector3 destination_;
 	Move move_way_;
