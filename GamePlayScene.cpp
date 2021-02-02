@@ -54,9 +54,9 @@ void GamePlayScene::start(int number) {
     gsLoadSkeleton(Skeleton_Player, "Assets/Model/Enemy/Ghost.skl");
     gsLoadAnimation(Animation_Player, "Assets/Model/Enemy/Ghost.anm");
 
-    gsLoadMesh(Mesh_Paladin, "Assets/Model/Paladin/Paladin.msh");
-    gsLoadSkeleton(Skeleton_Paladin, "Assets/Model/Paladin/Paladin.skl");
-    gsLoadAnimation(Animation_Paladin, "Assets/Model/Paladin/Paladin.anm");
+    gsLoadMesh(Mesh_Paladin, "Assets/Model/Paladin_j_nordstrom/paladin_j_nordstrom.msh");
+    gsLoadSkeleton(Skeleton_Paladin, "Assets/Model/Paladin_j_nordstrom/paladin_j_nordstrom.skl");
+    gsLoadAnimation(Animation_Paladin, "Assets/Model/Paladin_j_nordstrom/paladin_j_nordstrom.anm");
     //バレット(本)のメッシュの追加
     gsLoadMesh(Mesh_Book, "Assets/Model/Bullet/books.msh");
 	
@@ -69,19 +69,19 @@ void GamePlayScene::start(int number) {
     std::string csv_pass;
     csv_pass = "Assets/Map/Stage" + ss.str() + ".csv";
     //生成
-    //MapGenerator generator{ &world_,csv_pass};
-    MapGenerator generator{ &world_,"Assets/Map/Stage3.csv" };
+    MapGenerator generator{ &world_,csv_pass};
+    //MapGenerator generator{ &world_,"Assets/Map/Stage3.csv" };
     //番号によってロードするマップを変える
     std::string octree_pass;
     octree_pass = "Assets/Octree/stage"+ ss.str() +"/stage"+ ss.str()+".oct";
     //描画用オクツリーの読み込み
-    /*gsLoadOctree(Octree_Stage, octree_pass.c_str());
+    gsLoadOctree(Octree_Stage, octree_pass.c_str());
     //衝突判定用オクツリーの読み込み
-    gsLoadOctree(Octree_Collider, octree_pass.c_str());*/
+    gsLoadOctree(Octree_Collider, octree_pass.c_str());
     //描画用オクツリーの読み込み
-    gsLoadOctree(Octree_Stage, "Assets/Octree/stage3/stage3.oct");
+    /*gsLoadOctree(Octree_Stage, "Assets/Octree/stage3/stage3.oct");
     //衝突判定用オクツリーの読み込み
-    gsLoadOctree(Octree_Collider, "Assets/Octree/stage3/stage3.oct");
+    gsLoadOctree(Octree_Collider, "Assets/Octree/stage3/stage3.oct");*/
 
 	//パーティクル用のテクスチャ
     gsLoadTexture(Texture_Smoke, "Assets/Effect/particle_smoke.png");
@@ -142,13 +142,13 @@ void GamePlayScene::update(float delta_time) {
         draw_timer_ += delta_time;
     }
 
-    if (world_.is_game_clear() && fade_.is_end()) {//ボスが死んだか？
+    if (!is_end_ && world_.is_game_clear() && fade_.is_end()) {//ボスが死んだか？
         is_end_ = true;
         next_scene_ = "ResultScene";
         fade_.change_fade_flg();
         next_scene_ = (stage_number_ == 3) ? "ResultScene" : "StageClearScene";
     }
-    else if (world_.is_game_over() && fade_.is_end()) {//プレイヤーが死んだか？
+    else if (!is_end_ && world_.is_game_over() && fade_.is_end()) {//プレイヤーが死んだか？
         is_end_ = true;
         next_scene_ = "GameOverScene";
         fade_.change_fade_flg();
