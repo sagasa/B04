@@ -18,8 +18,21 @@ public:
 		Appear,
 		Normal
 	};
-	
-	EPsycokinesisBullet(IWorld* world,const GSvector3& position,Type type,float delay=0.0f);
+
+	/// <summary>
+	/// Small_EPsycokinesis
+	/// </summary>
+	/// <param name="world"></param>
+	/// <param name="position"></param>
+	/// <param name="delay"></param>
+	EPsycokinesisBullet(IWorld* world, Actor* player,const GSvector3& position,float delay=0.0f);
+	/// <summary>
+	/// Big_EPsycokinesis
+	/// </summary>
+	/// <param name="world">ワールド</param>
+	/// <param name="position">位置</param>
+	/// <param name="velocity">速度</param>
+	EPsycokinesisBullet(IWorld* world, const GSvector3& position, const GSvector3& velocity=GSvector3::zero(), float delay=0.0f);
 	void react(Actor& other) override;
 	void update(float delta_time) override;
 	void draw() const override;
@@ -41,6 +54,8 @@ private:
 	GSvector3 acceleration_{ GSvector3::zero() };
 	float period_{ 0.0f };
 	State state_{ State::Appear };
+
+	float life_timer_{ 0.0f };
 };
 
 #endif

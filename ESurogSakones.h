@@ -60,7 +60,8 @@ private:
 	//ó‘Ô•Ï‰»
 	void change_state(State state, GSuint motion, bool loop = true);
 	//”O“®UŒ‚‚P
-	void generate_pshychokinesis(const GSvector3& position, GSvector3 velocity = GSvector3::up());
+	void generate_pshychokinesis(const GSvector3& position,float delay = 0.0f);
+	void generate_pshychokinesis(const GSvector3& position, const GSvector3& velocity,float delay = 0.0f);
 	//‹ßÚUŒ‚
 	void generate_attackcollider(bool is_turn = false);
 	//ˆÚ“®‚µ‚Â‚ÂUŒ‚
@@ -85,7 +86,6 @@ private:
 	bool is_psyco2_attack(const Actor* other);
 	bool is_turn(const Actor* other);
 	bool is_move(const Actor* other)const;
-	bool is_far();
 
 	void collide_field();
 	void collide_actor(Actor& other);

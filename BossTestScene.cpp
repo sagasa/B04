@@ -79,7 +79,7 @@ void BossTestScene::start() {
     // ÉvÉåÅ[ÉÑÇÃí«â¡
     world_.add_actor(new player_ghost{ &world_, GSvector3{ 0.0f, 0.0f, 0.0f } });
     //world_.add_actor(new SurogSakones{ &world_,GSvector3{0.0f,0.0f,0.0f} });
-    //world_.add_actor(new ESurogSakones{ &world_,GSvector3{0.0f,0.0f,0.0f} });
+    world_.add_actor(new ESurogSakones{ &world_,GSvector3{0.0f,0.0f,0.0f} });
     //world_.add_actor(new EPsycokinesisBullet{ &world_,GSvector3{3.0f,0.0f,0.0f},BulletType::Small });
     //world_.add_actor(new EPsycokinesisBullet{ &world_,GSvector3{5.0f,0.0f,0.0f},BulletType::Big });
     world_.add_particle_manager(new ParticleManager{ &world_ });
@@ -114,13 +114,14 @@ void BossTestScene::update(float delta_time) {
     }
 	if(gsGetKeyTrigger(GKEY_7))
 	{
-        world_.add_actor(new EPsycokinesisBullet{ &world_,GSvector3{5.0f,0.0f,0.0f},BulletType::Big });
+        world_.add_actor(new EPsycokinesisBullet{ &world_,GSvector3{5.0f,0.0f,0.0f},GSvector3{gsRandf(3.0f,-3.0f),gsRandf(3.0f,5.0f),0.0f} });
 	}
 	if(gsGetKeyTrigger(GKEY_RETURN))
 	{
-        world_.add_actor(new EPsycokinesisBullet{ &world_,GSvector3{1.5f,0.0f,0.0f},BulletType::Small });
-        world_.add_actor(new EPsycokinesisBullet{ &world_,GSvector3{3.0f,1.5f,0.0f},BulletType::Small,60.0f });
-        world_.add_actor(new EPsycokinesisBullet{ &world_,GSvector3{4.5f,0.0f,0.0f},BulletType::Small,120.0f });
+        Actor* player=world_.find_actor("Player");
+        world_.add_actor(new EPsycokinesisBullet{ &world_,player,GSvector3{1.5f,0.0f,0.0f},0.0f });
+        world_.add_actor(new EPsycokinesisBullet{ &world_,player,GSvector3{3.0f,1.5f,0.0f},60.0f });
+        world_.add_actor(new EPsycokinesisBullet{ &world_,player,GSvector3{4.5f,0.0f,0.0f},120.0f });
 	}
     world_.update(delta_time);
 }

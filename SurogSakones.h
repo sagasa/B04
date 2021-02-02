@@ -85,7 +85,6 @@ private:
 	bool is_psyco2_attack(const Actor* other);
 	bool is_turn(const Actor* other);
 	bool is_move(const Actor* other)const;
-	bool is_far();
 	bool is_collide_actor();
 
 	void collide_field();

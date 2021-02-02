@@ -247,8 +247,8 @@ void ParticleManager::psyco_bullet_big(const GSvector3& position, const GSvector
 	p->velocity(vel);
 	p->lifespan_ = 20.0f;
 	p->image_handle_ = Texture_Smoke;
-	p->start_scale_ = GSvector2{ 0.8f,0.8f };
-	p->end_scale_ = GSvector2{ 1.5f,1.5f };
+	p->start_scale_ = GSvector2{ 0.5f,0.5f };
+	p->end_scale_ = GSvector2{ 1.2f,1.2f };
 	p->angle_ = gsRandf(-45.0f, 45.0f);
 	p->angular_velocity_ = gsRandf(-5.0f, 5.0f);
 	p->color_ = GSvector3{ gsRandf(0.3f,0.5f),0.0f,gsRandf(0.3f,0.5f) };

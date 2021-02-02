@@ -17,41 +17,47 @@ const float SmallSpeed{ 0.075f };
 const float MaxAcceleration{ 3.0f };
 const float Period{ 3.0f };
 
-EPsycokinesisBullet::EPsycokinesisBullet(IWorld* world, const GSvector3& position, Type type, float delay)
+EPsycokinesisBullet::EPsycokinesisBullet(IWorld* world,Actor* player, const GSvector3& position, float delay)
+	:delay_{delay},type_{ Type::Small },life_timer_{7.0f}
 {
 	name_ = "EPsycokinesisBullet";
 	tag_ = "EnemyAttack";
 	world_ = world;
 	transform_.position(position);
-	wait_timer_ = 0.0f;
-	delay_ = delay;
 	velocity_ = GSvector3::zero();
-
-	type_ = type;
-	switch (type_)
-	{
-	case Type::Small:collider_ = BoundingSphere{ 0.25f }; break;
-	case Type::Big:big_intialize(); break;
-	}
+	collider_ = BoundingSphere{ 0.1f };
+	to_player_ = (player->transform().position() + PlayerOffset) - (transform_.position() + offset);
 }
-void EPsycokinesisBullet::big_intialize()
+EPsycokinesisBullet::EPsycokinesisBullet(IWorld* world, const GSvector3& position, const GSvector3& velocity,float delay)
+	:type_{ Type::Big }, life_timer_{ 7.0f }, period_{Period}, delay_{delay}
 {
-	collider_ = BoundingSphere{ 0.35f };
-	period_ = Period;
-	velocity_ = GSvector3{ gsRandf(-3.0f,3.0f),gsRandf(3.0f,5.0f),0.0f };
+	name_ = "EPsycokinesisBullet";
+	tag_ = "EnemyAttack";
+	world_ = world;
+	transform_.position(position);
+	velocity_ = velocity;
+	life_timer_ = 7.0f;
+	collider_ = BoundingSphere{ 0.25f };
 }
-
 
 void EPsycokinesisBullet::update(float delta_time)
 {
-	delay_ -= delta_time;
-	if (delay_ >= 0.0f)return;
 	player_ = world_->find_actor("Player");
 	if (player_ == nullptr)
 	{
 		player_ = world_->find_actor("PlayerPaladin");
 		if (player_ == nullptr)return;
 	}
+	
+	delay_ -= delta_time;	
+	if (delay_ >= 0.0f) {
+		to_player_ = (player_->transform().position() + PlayerOffset) - (transform_.position() + offset);
+		return;
+	}
+	
+	life_timer_ -= delta_time / 60.0f;
+	if (life_timer_ <= 0.0f)die();	
+	
 	if (world_->field()->collide(collider()))
 	{
 		die();
@@ -70,12 +76,11 @@ void EPsycokinesisBullet::draw() const
 #ifdef _DEBUG
 	collider().draw();
 #endif
-	if(delay_)
 	switch (type_)
 	{
 	case Type::Small:
-		world_->particle_manager()->psyco_bullet_small(transform_.position(),velocity_);
-		world_->particle_manager()->psyco_bullet_small(transform_.position(),velocity_);
+		world_->particle_manager()->psyco_bullet_small(transform_.position(), velocity_);
+		world_->particle_manager()->psyco_bullet_small(transform_.position(), velocity_);
 		break;
 	case Type::Big:big_draw(); break;
 	}
@@ -92,11 +97,6 @@ void EPsycokinesisBullet::react(Actor& other)
 
 void EPsycokinesisBullet::small_update(float delta_time)
 {
-	if (wait_timer_ <= SmallAppearTime)
-	{
-		to_player_ = (player_->transform().position() + PlayerOffset) - (transform_.position() + offset);
-		return;
-	}
 	to_player_.normalize();
 	velocity_ = to_player_ * SmallSpeed * delta_time;
 	transform_.translate(velocity_);
