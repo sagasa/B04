@@ -20,6 +20,8 @@ struct player_paladin : public Player, public interact_prop
 	State state_{ Idle };
 
 	bool can_interact(const Actor& from) override;
+
+	bool attack_se_{false};
 	
 	// ó‘Ôƒ^ƒCƒ}
 	float state_timer_{ 0 };

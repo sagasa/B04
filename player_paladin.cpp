@@ -6,6 +6,7 @@
 #include "AttackCollider.h"
 #include "player_ghost.h"
 
+GLubyte mask[128];
 
 void player_paladin::draw() const
 {
@@ -18,7 +19,9 @@ void player_paladin::draw() const
     collider_.draw();
     glPopAttrib();
 
-    
+	
+    glPolygonStipple(mask);
+    //glEnable(GL_POLYGON_STIPPLE);
 	
     // ワールド・ビュー・プロジェクション行列の作成
     GSmatrix4 projection_mat, modelview_mat;
@@ -68,6 +71,8 @@ void player_paladin::draw() const
     // シェーダーを無効にする
     gsEndShader();
 
+    glDisable(GL_POLYGON_STIPPLE);
+	
     glPopMatrix();
 
 	if(state_!=Stop)
@@ -134,11 +139,9 @@ void player_paladin::attack()
     // 衝突判定を出現させる
     world_->add_actor(new AttackCollider{ world_, collider,
         "PlayerAttack", "PlayerAttack", AttackCollideLifeSpan, AttackCollideDelay ,3});
-
-    change_state(Attack, 8, false);
-
 	//SE
-    gsPlaySE(SE_Attack);
+    attack_se_ = true;
+    change_state(Attack, 8, false);
 }
 
 
@@ -148,6 +151,11 @@ player_paladin::player_paladin(IWorld* world, const GSvector3& position) :Player
     height_ext_ = 0.5;
     collider_ = BoundingSphere{ 0.8f,GSvector3{0.0f,1.4f,0.0f} };
     stop();
+
+    for (int i = 0; i < 128; i+=2)
+    {
+        mask[i] = 0xFF;
+    }
 }
 
 bool player_paladin::on_hit(const Actor& attacker, float atk_power)
@@ -189,6 +197,19 @@ void player_paladin::update(float delta_time)
         GSvector2 inputVelocity = get_input();
         inputVelocity.y = 0;
 
+    	//SE
+
+        if(state_ == Attack)
+        {
+            std::cout << "Attack Progress " <<state_timer_<<"\n";
+            if (30 <= state_timer_&&attack_se_)
+            {
+                //SE
+                gsPlaySE(SE_Attack);
+                attack_se_ = false;
+            }
+        }
+    	
     	//エフェクト
     	if(state_ == Wake)
     	{

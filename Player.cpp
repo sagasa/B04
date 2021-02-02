@@ -47,6 +47,7 @@ void Player::update_physics(const float delta_time)
             // 交差した点からy座標のみ補正する
             position.y = intersect.y+height_ext_-(collider_.center.y- sphere.radius);
             // 座標を変更する
+            position.z = transform_.position().z;
             transform_.position(position);
             velocity_.y = MAX(velocity_.y,0);
         }

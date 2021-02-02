@@ -123,34 +123,40 @@ void player_ghost::update(float delta_time)
     velocity_ -= gravity * delta_time * (1-CLAMP(gravity_timer_, 0, 30) / 30);
     velocity_ *= 0.9f;
 
-    GSvector2 inputVelocity = get_input();
-    if (inputVelocity.x < 0) {
-        transform_.localRotation(GSquaternion::euler(0.0f, -90.0f, 0.0f));
-    }
-    else if (inputVelocity.x > 0) {
-        transform_.localRotation(GSquaternion::euler(0.0f, 90.0f, 0.0f));
-    }
-    
-	if(0<inputVelocity.y)
+	//生きている間
+	if(0<hp_)
 	{
-        //上に移動したなら
-        gravity_timer_ = 60;
-	}else if(inputVelocity.y<0)
-	{
-        //下入力で重力を適応
-        gravity_timer_ = 0;
+        GSvector2 inputVelocity = get_input();
+        if (inputVelocity.x < 0) {
+            transform_.localRotation(GSquaternion::euler(0.0f, -90.0f, 0.0f));
+        }
+        else if (inputVelocity.x > 0) {
+            transform_.localRotation(GSquaternion::euler(0.0f, 90.0f, 0.0f));
+        }
+
+        if (0 < inputVelocity.y)
+        {
+            //上に移動したなら
+            gravity_timer_ = 60;
+        }
+        else if (inputVelocity.y < 0)
+        {
+            //下入力で重力を適応
+            gravity_timer_ = 0;
+        }
+
+        //地上で下入力を許可しない
+        if (on_ground_)
+        {
+            inputVelocity.y = MAX(inputVelocity.y, 0);
+        }
+        // 移動量を計算
+        float speed = 0.04f;    // 移動スピード
+        velocity_ += inputVelocity * delta_time * speed;
+        velocity_.x = CLAMP(velocity_.x, -Velocity, Velocity);
+        velocity_.y = CLAMP(velocity_.y, -Velocity, Velocity);
 	}
-	
-    //地上で下入力を許可しない
-    if (on_ground_)
-    {
-        inputVelocity.y = MAX(inputVelocity.y, 0);
-    }
-	// 移動量を計算
-	float speed = 0.04f;    // 移動スピード
-    velocity_ += inputVelocity * delta_time * speed;
-    velocity_.x = CLAMP(velocity_.x, -Velocity, Velocity);
-    velocity_.y = CLAMP(velocity_.y, -Velocity, Velocity);
+    
 
     update_physics(delta_time);
     
