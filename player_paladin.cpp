@@ -8,6 +8,15 @@
 
 GLubyte mask[128];
 
+enum {
+    MotionSleep = 0,	// 歩き
+    MotionIdle = 2,	// アイドル
+    MotionWalk = 10,	// 歩き
+    MotionAttack = 9,	// ガード
+    MotionDamage = 5,	// ダウン
+    MotionWakeUp = 1,	// 起動
+};
+
 void player_paladin::draw() const
 {
    
@@ -95,14 +104,14 @@ void player_paladin::wake_up()
     hp_ = 3;
     tag_ = "PlayerTag";
     name_ = "PlayerPaladin";
-    change_state(Wake, 1,false);
+    change_state(Wake, MotionWakeUp,false);
 }
 
 void player_paladin::stop()
 {
     tag_ = "PlayerEquip";
 	name_ = "Equip";
-    change_state(Stop, 0);
+    change_state(Stop, MotionSleep);
 }
 
 bool player_paladin::can_interact(const Actor& from)
@@ -143,7 +152,7 @@ void player_paladin::attack()
         "PlayerAttack", "PlayerAttack", AttackCollideLifeSpan, AttackCollideDelay ,3});
 	//SE
     attack_se_ = true;
-    change_state(Attack, 8, false);
+    change_state(Attack, MotionAttack, false);
 }
 
 
@@ -173,7 +182,7 @@ bool player_paladin::on_hit(const Actor& attacker, float atk_power)
             std::cout << "Stop " << hp_ << "\n";
         }else
         {
-            change_state(Damage, 5, false);
+            change_state(Damage, MotionDamage, false);
             std::cout << "Hit paladin " << hp_<<" "<<transform_.position().z << "\n";
         }
         gsPlaySE(SE_ParadinDamage);
@@ -252,7 +261,7 @@ void player_paladin::update(float delta_time)
 
         //ジャンプキャンセル
         if (state_ == Jump && on_ground_ && jump_count_ <= 0)
-            change_state(Idle, 2);
+            change_state(Idle, MotionIdle);
         //デフォ以外なら
         if (state_ != Idle && state_ != Move)
         {
@@ -264,7 +273,7 @@ void player_paladin::update(float delta_time)
                     state_timer_ = 0;
                 else
                 {
-                    change_state(Idle, 2);
+                    change_state(Idle, MotionIdle);
                 }
             }
 
@@ -274,11 +283,11 @@ void player_paladin::update(float delta_time)
             //速度でアニメーション変更
             if (inputVelocity.x != 0)
             {
-                change_state(Move, 9);
+                change_state(Move, MotionWalk);
             }
             else
             {
-                change_state(Move, 2);
+                change_state(Move, MotionIdle);
             }
             //攻撃開始
             if (gsGetKeyState(GKEY_F) == GS_TRUE || gsXBoxPadButtonTrigger(0, GS_XBOX_PAD_X))
