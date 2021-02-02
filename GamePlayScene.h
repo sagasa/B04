@@ -29,7 +29,10 @@ private:
 	bool is_end_{ false };
 	//次のシーン
 	std::string next_scene_{"SceneNull"};
+	//フェードクラス
 	Fade fade_;
+	//ステージ名を出すためのタイマー
+	float draw_timer_;
 };
 
 #endif

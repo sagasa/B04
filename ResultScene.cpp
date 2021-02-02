@@ -3,7 +3,6 @@
 #include"SceneManager.h"
 #include<GSmusic.h>
 #include<iostream>
-#include<fstream>
 
 
 //α値の代入値
@@ -11,7 +10,7 @@ const float Alpha_Value{ 0.016f };
 //ボタンが出るまでの時間
 const float Time{ 60.0f };
 //配列の大きさ
-const int Alphas_Size{3};
+const int Alphas_Size{1};
 
 //開始
 void ResultScene::start(int number) {
@@ -28,6 +27,7 @@ void ResultScene::start(int number) {
 	gsLoadTexture(Texture_TitleButton, "Assets/Image/title_button.dds");
 	gsLoadTexture(Texture_ContinueButton, "Assets/Image/continue_button.dds");
 	gsLoadTexture(Texture_NextStage, "Assets/Image/next_stage.dds");
+	gsLoadTexture(Texture_PushButton, "Assets/Image/push_button.dds");
 
 	//BGMの読み込み
 	gsLoadMusic(Music_GameClear, "Assets/BGM/gameclear.wav", GS_TRUE);
@@ -126,7 +126,7 @@ void ResultScene::input() {
 	GSvector2 vector_stick = GSvector2::zero();
 	//左スティックの入力を取得
 	gsXBoxPadGetLeftAxis(0, &(vector_stick));
-	//上下キーまたはパッドの十字ボタンまたは左スティックで選択移動
+	/*//上下キーまたはパッドの十字ボタンまたは左スティックで選択移動
 	if (num_ > 0 && !gsIsPlaySE(SE_Select) && (gsGetKeyState(GKEY_UP) || gsXBoxPadButtonState(0, GS_XBOX_PAD_UP) || vector_stick.y >= 0.5f)) {
 		gsPlaySE(SE_Select);
 		--num_;
@@ -134,7 +134,7 @@ void ResultScene::input() {
 	else if (num_ < Alphas_Size - 1&& !gsIsPlaySE(SE_Select) && (gsGetKeyState(GKEY_DOWN) || gsXBoxPadButtonState(0, GS_XBOX_PAD_DOWN) || vector_stick.y <= -0.5f)) {
 		gsPlaySE(SE_Select);
 		++num_;
-	}
+	}*/
 	//FキーまたはXボタンで決定
 	if (gsGetKeyTrigger(GKEY_F) || gsXBoxPadButtonTrigger(0, GS_XBOX_PAD_X)) {
 		gsPlaySE(SE_Push);
@@ -143,11 +143,9 @@ void ResultScene::input() {
 		switch (num_)
 		{
 		case 0:
-			nextScene_ = "GamePlayScene";
-			stage_number_++;
+			stage_number_ = 1;
+			nextScene_ = "TitleScene";
 			break;
-		case 1: nextScene_ = "GamePlayScene"; break;
-		case 2: nextScene_ = "TitleScene"; break;
 		}
 	}
 	//クランプする
@@ -158,7 +156,7 @@ void ResultScene::input() {
 void ResultScene::draw_button() const {
 	
 	if (timer_ >= Time) {
-		GSvector2 position_nextstage_button{ 400.0f,250.0f };
+		/*GSvector2 position_nextstage_button{ 400.0f,250.0f };
 		GSvector2 scale_nextstage_button{ 0.6f,0.6f };
 		GScolor color_nextstage_button{ 1,1,1, alphas_[0] };
 		gsDrawSprite2D(Texture_NextStage, &position_nextstage_button, NULL, NULL, &color_nextstage_button, &scale_nextstage_button, NULL);
@@ -169,6 +167,10 @@ void ResultScene::draw_button() const {
 		GSvector2 position_title_button{ 500.0f,550.0f };
 		GSvector2 scale_title_button{ 0.6f,0.6f };
 		GScolor color_title_button{ 1,1,1, alphas_[2] };
-		gsDrawSprite2D(Texture_TitleButton, &position_title_button, NULL, NULL, &color_title_button, &scale_title_button, NULL);
+		gsDrawSprite2D(Texture_TitleButton, &position_title_button, NULL, NULL, &color_title_button, &scale_title_button, NULL);*/
+		GSvector2 position_push_to_button{ 400.0f,500.0f };
+		GSvector2 scale_push_to_button{ 0.5f,0.5f };
+		GScolor color{ 1,1,1,alphas_[0]};
+		gsDrawSprite2D(Texture_PushButton, &position_push_to_button, NULL, NULL, &color, &scale_push_to_button, NULL);
 	}
 }

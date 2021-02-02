@@ -12,6 +12,7 @@
 #include"GamePlayScene.h"
 #include"GameOverScene.h"
 #include"ResultScene.h"
+#include"StageClearScene.h"
 #include "CarGhost.h"
 #include "Player.h"
 #include"TitleScene.h"
@@ -87,6 +88,7 @@ class MyGame : public gslib::Game {
         scene_.add("GamePlayScene", new GamePlayScene());
         scene_.add("GameOverScene", new GameOverScene());
         scene_.add("ResultScene", new ResultScene());
+        scene_.add("StageClearScene", new StageClearScene());
         scene_.change("TitleScene");
         glError();        
     }
