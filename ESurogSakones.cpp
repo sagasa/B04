@@ -416,7 +416,7 @@ void ESurogSakones::scythe_attack()
 void ESurogSakones::psyco1_attack()
 {
 	gsPlaySE(SE_GhostAttack2);
-	GSvector3 position = transform_.position()+GSvector3{0.0f,2.0f,0.0f};
+	GSvector3 position = transform_.position()+GSvector3{0.0f,4.0f,0.0f};
 	generate_pshychokinesis(position+GSvector3{-1.5f,0.0f,0.0f},10.0f);
 	generate_pshychokinesis(position+GSvector3{0.0f,1.0f,0.0f},70.0f);
 	generate_pshychokinesis(position+GSvector3{1.5f,0.0f,0.0f}, 130.0f);
