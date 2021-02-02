@@ -23,8 +23,11 @@ void Fade::start(bool fade_in,float fade_time) {
 
 //更新
 void Fade::update(float delta_time) {
-	//α値の更新
-	color_alpha_ += (fade_in_) ? -alpha_value_ * delta_time : alpha_value_ * delta_time;
+	if (!end_) {
+		//α値の更新
+		color_alpha_ += (fade_in_) ? -alpha_value_ * delta_time : alpha_value_ * delta_time;
+	}
+	
 	//クランプする
 	color_alpha_ = CLAMP(color_alpha_, 0.0f, 1.1f);
 	//α値が最大値または最小値に達したら終了フラグをtrue
