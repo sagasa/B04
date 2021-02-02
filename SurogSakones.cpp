@@ -32,7 +32,7 @@ const float FootOffset{ 0.1f };
 const float Gravity{ 0.2f };
 const float TurnDistance{ 2.0f };
 const float MinMoveDistance{ 4.0f };
-const float SarchMoveDistance{ 6.5f };
+const float SarchMoveDistance{ 6.0f };
 const float MaxMoveDistance{ 12.0f };
 
 const float ScytheRange{ 2.5f };
@@ -128,13 +128,10 @@ bool SurogSakones::on_hit(const Actor& attacker, float atk_power)
 		}
 		
 		hp_ -= atk_power;
-		if (hp_ <= 0.0f)
+		
+		gsPlaySE(SE_BossGhostDamage);
+		if(state_==State::Attack)
 		{
-			gsPlaySE(SE_GhostDeath);
-			change_state(State::Dying, MotionDying, false);
-		}
-		else {
-			gsPlaySE(SE_BossGhostDamage);
 			gsPlaySE(SE_GhostDamage);
 			change_state(State::Stun, MotionDamage1, false);
 		}		
@@ -242,6 +239,11 @@ void SurogSakones::psyco2_attack(float delta_time) {
 }
 void SurogSakones::stun(float delta_time) {
 	if (state_timer_ >= mesh_.motion_end_time()) {
+		if(hp_ <= 0.0f)
+		{
+			change_state(State::Dying, MotionAttack3, false);
+			return;
+		}
 		if(is_turn(player_))
 		{
 			turn();
@@ -251,6 +253,7 @@ void SurogSakones::stun(float delta_time) {
 	}
 }
 void SurogSakones::dying(float delta_time) {
+	world_->particle_manager()->boss_retreat(transform_.position()+GSvector3{0.0f,0.0f,0.3f});
 	if (state_timer_ >= mesh_.motion_end_time()) {
 		die();
 		world_->game_clear();
@@ -498,8 +501,7 @@ void SurogSakones::generate_attackcollider(bool is_turn) {
 		position.y += AttackColliderHeight;
 		BoundingSphere collider{ AttackColliderRadius,position };
 		world_->add_actor(new AttackCollider{ world_,collider,"EnemyAttack","BossAttack",AttackCollideLifeSpan,AttackCollideDelay });
-	}
-	
+	}	
 }
 
 void SurogSakones::move_attack(float delta_time) {

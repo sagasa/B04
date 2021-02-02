@@ -32,6 +32,7 @@ public:
 
 	void psyco_bullet_small(const GSvector3& position, const GSvector3& velocity = GSvector3::zero())const;
 	void psyco_bullet_big(const GSvector3& position, const GSvector3& velocity = GSvector3::zero())const;
+	void boss_retreat(const GSvector3& position)const;
 };
 
 #endif

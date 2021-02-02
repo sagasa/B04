@@ -58,8 +58,8 @@ void BossTestScene::start(int number) {
     //SurogSakonesのアニメーションの読み込み
     gsLoadAnimation(Animation_SurogSakones, "Assets/Model/Enemy/Ghost_T-pose.anm");
 
-    gsLoadOctree(Octree_Stage, "Assets/Octree/stage1.oct");
-    gsLoadOctree(Octree_Collider, "Assets/Octree/stage1_collider.oct");
+    gsLoadOctree(Octree_Stage, "Assets/Octree/stage1/stage1.oct");
+    gsLoadOctree(Octree_Collider, "Assets/Octree/stage1/stage1_collider.oct");
     gsLoadMesh(Mesh_Skybox, "Assets/Skybox/skydome.msh");
 
     //バレット(本)のメッシュの追加
@@ -77,8 +77,8 @@ void BossTestScene::start(int number) {
     //ボス
     // プレーヤの追加
     world_.add_actor(new player_ghost{ &world_, GSvector3{ 0.0f, 0.0f, 0.0f } });
-    //world_.add_actor(new SurogSakones{ &world_,GSvector3{0.0f,0.0f,0.0f} });
-    world_.add_actor(new ESurogSakones{ &world_,GSvector3{0.0f,0.0f,0.0f} });
+    world_.add_actor(new SurogSakones{ &world_,GSvector3{0.0f,0.0f,0.0f} });
+    //world_.add_actor(new ESurogSakones{ &world_,GSvector3{0.0f,0.0f,0.0f} });
     //world_.add_actor(new EPsycokinesisBullet{ &world_,GSvector3{3.0f,0.0f,0.0f},BulletType::Small });
     //world_.add_actor(new EPsycokinesisBullet{ &world_,GSvector3{5.0f,0.0f,0.0f},BulletType::Big });
     world_.add_particle_manager(new ParticleManager{ &world_ });
@@ -95,9 +95,9 @@ void BossTestScene::update(float delta_time) {
 	{
         world_.particle_manager()->possession_light(GSvector3::zero());
 	}
-	if(gsGetKeyTrigger(GKEY_3))
+	if(gsGetKeyState(GKEY_3))
 	{
-        world_.particle_manager()->dust(GSvector3::zero());
+        world_.particle_manager()->boss_retreat(GSvector3::zero());
 	}
 	if(gsGetKeyTrigger(GKEY_4))
 	{

@@ -65,7 +65,7 @@ ESurogSakones::ESurogSakones(IWorld* world, const GSvector3& position) :
 	transform_.position(position);
 	collider_ = BoundingSphere{ 0.85f,GSvector3::up() * 1.85f };
 	state_ = State::Idol;
-	hp_ = 15.0f;
+	hp_ = 15.0f*2.5f;
 	max_hp_ = hp_;
 	transform_.rotation(GSquaternion::euler(GSvector3{ 0.0f,-90.0f,0.0f }));
 
@@ -128,14 +128,16 @@ bool ESurogSakones::on_hit(const Actor& attacker, float atk_power)
 		if (hp_ <= 0.0f)
 		{
 			gsPlaySE(SE_GhostDeath);
-			change_state(State::Dying, MotionDying, false);
+			change_state(State::Dying, MotionDying, false);			
 		}
-		else {
-			gsPlaySE(SE_BossGhostDamage);
+		else {			
 			gsPlaySE(SE_GhostDamage);
-			change_state(State::Stun, MotionDamage1, false);
+			if (state_ != State::Attack)
+			{
+				gsPlaySE(SE_BossGhostDamage);
+				change_state(State::Stun, MotionDamage1, false);
+			}			
 		}
-
 		psyco1_attack_flag_ = false;
 		psyco2_attack_flag_ = false;
 		scythe_attack_flag_ = false;
