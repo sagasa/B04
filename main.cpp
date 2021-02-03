@@ -89,7 +89,7 @@ class MyGame : public gslib::Game {
         scene_.add("GameOverScene", new GameOverScene());
         scene_.add("ResultScene", new ResultScene());
         scene_.add("StageClearScene", new StageClearScene());
-        scene_.change("TitleScene");
+        scene_.change("StageClearScene");
         glError();        
     }
 
