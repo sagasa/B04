@@ -90,7 +90,11 @@ private:
 	void collide_field();
 	void collide_actor(Actor& other);
 
-	void draw_hp()const;
+	void draw_hp_2D()const;
+	void draw_hp_3D()const;
+	void draw_hp_lid_lr(const GSvector3& position)const;
+	void draw_hp_gage(const GSvector3& position)const;
+	void draw_hp_lid_ud(const GSvector3& position)const;
 
 
 private:
