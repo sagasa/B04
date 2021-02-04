@@ -6,6 +6,7 @@
 #include"Camera.h"
 #include"DamageProp.h"
 #include"ParticleManager.h"
+#include"Camera.h"
 
 enum {
 	MotionIdle = 0,
@@ -67,7 +68,13 @@ NormalGhost::NormalGhost(IWorld* world, const GSvector3& position) :
 
 //更新
 void NormalGhost::update(float delta_time) {
+	//プレイヤーを検索
 	player_ = world_->find_actor("Player");
+	if (player_ == nullptr) {
+		player_ = world_->find_actor("PlayerPaladin");
+		if (player_ == nullptr) return;
+	}
+
 	//状態の更新
 	update_state(delta_time);
 	//フィールドとの衝突判定
@@ -77,16 +84,23 @@ void NormalGhost::update(float delta_time) {
 	mesh_.update(delta_time);
 	//行列を設定
 	mesh_.transform(transform_.localToWorldMatrix());
+
+	//重さ軽減のためプレイヤーの座標から-40離れたら死亡
+	if (transform_.position().x <= player_->transform().position().x - 20.0f) {
+		die();
+	}
 }
 
 //描画
 void NormalGhost::draw() const {
-	//メッシュの描画
-	mesh_.draw();
-	//衝突判定のデバッグ表示
-	collider().draw();
-	if (state_ == State::Died) {
-		world_->particle_manager()->death_smoke(transform_.position());
+	if (is_inside()) {
+		//メッシュの描画
+		mesh_.draw();
+		//衝突判定のデバッグ表示
+		collider().draw();
+		if (state_ == State::Died) {
+			world_->particle_manager()->death_smoke(transform_.position());
+		}
 	}
 }
 
@@ -175,6 +189,18 @@ void NormalGhost::died(float delta_time) {
 
 //移動判定
 bool NormalGhost::is_move() const {
+	Camera* camera = world_->camera();
+	if (camera == nullptr) return false;
+	//画面内にいたら移動する
+	GSvector3 to_target = transform_.position() - camera->transform().position();
+	//カメラの前ベクトル
+	GSvector3 forward = camera->transform().forward();
+	float angle = abs(GSvector3::signed_angle(forward, to_target));
+	return (angle <= 45.0f);
+}
+
+//カメラの内側にいるか？
+bool NormalGhost::is_inside() const {
 	Camera* camera = world_->camera();
 	if (camera == nullptr) return false;
 	//画面内にいたら移動する

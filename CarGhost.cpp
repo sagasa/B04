@@ -72,14 +72,16 @@ CarGhost::CarGhost(IWorld* world, const GSvector3& position) :
 
 //更新
 void CarGhost::update(float delta_time) {
+
+	//プレイヤーを検索
+	player_ = world_->find_actor("Player");
+	if (player_ == nullptr) {
+		player_ = world_->find_actor("PlayerPaladin");
+		if (player_ == nullptr) return;
+	}
+
 	//カメラの外側にいると何もしない
 	if (is_inside()) {
-		//プレイヤーを検索
-		player_ = world_->find_actor("Player");
-		if (player_ == nullptr) {
-			player_ = world_->find_actor("PlayerPaladin");
-			if (player_ == nullptr) return;
-		}
 		//状態の更新
 		update_state(delta_time);
 		//重力を更新
@@ -101,19 +103,26 @@ void CarGhost::update(float delta_time) {
 	glGetFloatv(GL_MODELVIEW_MATRIX, (GLfloat*)&modelview_mat);
 	GSmatrix4 world_view_projection = modelview_mat * projection_mat;*/
 
+	//重さ軽減のためプレイヤーの座標から-40離れたら死亡
+	if (transform_.position().x <= player_->transform().position().x - 20.0f) {
+		die();
+	}
+
 }
 
 //描画
 void CarGhost::draw() const {
-
-	mesh_.draw();
-	/*glPushMatrix();
-	glMultMatrixf(transform_.localToWorldMatrix());
-	gsBeginShader(Shader_Ghost);
-	glPopMatrix();*/
-	if (state_ == State::Died) {
-		world_->particle_manager()->death_smoke(transform_.position());
+	if (is_inside()) {
+		mesh_.draw();
+		/*glPushMatrix();
+		glMultMatrixf(transform_.localToWorldMatrix());
+		gsBeginShader(Shader_Ghost);
+		glPopMatrix();*/
+		if (state_ == State::Died) {
+			world_->particle_manager()->death_smoke(transform_.position());
+		}
 	}
+	
 
 #ifdef _DEBUG
 	collider().draw();
