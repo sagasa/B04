@@ -21,7 +21,7 @@ void StageClearScene::start(int number) {
 	is_end_ = false;
 	//ステージ番号を初期化
 	stage_number_ = number;
-	static_stage_number_ = 2;
+	static_stage_number_ = number;
 	nextScene_ = "";
 	//フェードクラスの開始
 	fade_.start(true, 3);

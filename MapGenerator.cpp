@@ -34,24 +34,28 @@ MapGenerator::MapGenerator(IWorld* world, const std::string& file_name) {
 
 //更新
 void MapGenerator::update(float delta_time) {
-	//プレイヤーを検索
-	player_ = world_->find_actor("Player");
-	if (player_ == nullptr) {
-		player_ = world_->find_actor("PlayerPaladin");
-		if (player_ == nullptr) return;
-	}
 
-	//座標を取得
-	GSvector3 position{
-		csv_.getf(current_row_,size_ + 0),
-		csv_.getf(current_row_,size_ + 1),
-		csv_.getf(current_row_,size_ + 2)
-	};
+	if (current_row_ < csv_.rows()) {
+		//プレイヤーを検索
+		player_ = world_->find_actor("Player");
+		if (player_ == nullptr) {
+			player_ = world_->find_actor("PlayerPaladin");
+			if (player_ == nullptr) return;
+		}
 
-	if (current_row_ < csv_.rows() - 1 && player_->transform().position().x + 20.0f >= position.x) {
-		generate(world_, position);
-		current_row_++;
+		//座標を取得
+		GSvector3 position{
+			csv_.getf(current_row_,size_ + 0),
+			csv_.getf(current_row_,size_ + 1),
+			csv_.getf(current_row_,size_ + 2)
+		};
+
+		if (player_->transform().position().x + 20.0f >= position.x) {
+			generate(world_, position);
+			current_row_++;
+		}
 	}
+	
 }
 
 //生成
