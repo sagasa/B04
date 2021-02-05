@@ -5,6 +5,7 @@
 #include "DamageProp.h"
 #include "IWorld.h"
 #include "Field.h"
+#include <iomanip>
 
 const GSvector3 offset{ 0.0f,0.5f,0.0f };
 const GSvector3 PlayerOffset{ 0.0f,1.0f,0.0f };
@@ -69,6 +70,9 @@ void EPsycokinesisBullet::update(float delta_time)
 	case Type::Big:big_update(delta_time); break;
 	}
 	wait_timer_ += delta_time;
+
+	generate_effect_ += delta_time / 60.0f;
+	float tmp = std::fmod(generate_effect_, 0.2f);
 }
 
 void EPsycokinesisBullet::draw() const
@@ -82,8 +86,14 @@ void EPsycokinesisBullet::draw() const
 		world_->particle_manager()->psyco_bullet_small(transform_.position(), velocity_);
 		world_->particle_manager()->psyco_bullet_small(transform_.position(), velocity_);
 		break;
-	case Type::Big:big_draw(); break;
+	case Type::Big:
+		if (std::fmod(generate_effect_, 0.1f) <= 0.05f)
+		{
+			big_draw();
+		}		
+		break;
 	}
+	
 }
 
 void EPsycokinesisBullet::react(Actor& other)

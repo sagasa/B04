@@ -263,5 +263,29 @@ void ParticleManager::psyco_bullet_big(const GSvector3& position, const GSvector
 	world_->add_actor(p);
 }
 
+void ParticleManager::boss_retreat(const GSvector3& position) const
+{
+	auto p = new Particle{ world_ };
+	p->transform().position(position);
+	p->velocity(GSvector3{ gsRandf(-0.04f,0.04f),gsRandf(-0.01f,-0.005f),0.0f });
+	p->lifespan_ = gsRandf(20.0f,35.0f);
+	p->image_handle_ = Texture_Smoke;
+	float startscale = gsRandf(2.0f, 3.0f);
+	p->start_scale_ = GSvector2{ startscale,startscale };
+	float endscale = gsRandf(3.5f, 4.0f);
+	p->end_scale_ = GSvector2{ endscale,endscale };
+	p->angle_ = gsRandf(-45.0f, 45.0f);
+	p->angular_velocity_ = gsRandf(-5.0f, 5.0f);
+	p->color_ = GSvector3{ gsRandf(0.3f,0.5f),0.0f,gsRandf(0.3f,0.5f) };
+	p->start_alpha_ = 0.5f;
+	p->end_alpha_ = 0.0f;
+	p->fade_in_time = 0.1f;
+	p->fade_out_time = 0.5f;
+	p->sfactor = GL_SRC_ALPHA;
+	p->dfactor = GL_ONE_MINUS_SRC_ALPHA;
+	p->damp_ = gsRandf(0.95f, 0.98f);
+	p->force_ = GSvector3{ 0.0f,0.02f,0.0f };
+	world_->add_actor(p);
+}
 
 
