@@ -115,12 +115,12 @@ void ParticleManager::death_smoke(const GSvector3& position,const GSvector3& vel
 {
 	auto p = new Particle{ world_ };
 	p->transform().position(position);
-	p->velocity(GSvector3{ gsRandf(-0.025f,0.025f),gsRandf(-0.01f,-0.005f),0.0f });
-	p->lifespan_ = 20.0f;
+	p->velocity(GSvector3{ gsRandf(-0.025f,0.03f),gsRandf(-0.01f,-0.005f),0.0f });
+	p->lifespan_ = 30.0f;
 	p->image_handle_ = Texture_Smoke;
-	p->start_scale_ = GSvector2{ 0.8f,0.8f };
-	p->end_scale_ = GSvector2{ 1.5f,1.5f };
-	p->angle_ = gsRandf(-45.0f, 45.0f);
+	p->start_scale_ = GSvector2{ 1.2f,1.2f };
+	p->end_scale_ = GSvector2{ 4.0f,4.0f };
+	p->angle_ = gsRandf(-90.0f, 90.0f);
 	p->angular_velocity_ = gsRandf(-5.0f, 5.0f);
 	p->color_ = GSvector3{ gsRandf(0.3f,0.5f),0.0f,gsRandf(0.3f,0.5f) };
 	p->start_alpha_ = 0.5f;
@@ -129,7 +129,7 @@ void ParticleManager::death_smoke(const GSvector3& position,const GSvector3& vel
 	p->fade_out_time = 0.5f;
 	p->sfactor = GL_SRC_ALPHA;
 	p->dfactor = GL_ONE_MINUS_SRC_ALPHA;
-	p->damp_ = gsRandf(0.95f, 0.98f);
+	p->damp_ = gsRandf(0.1f, 0.2f);
 	p->force_ = GSvector3{ 0.0f,0.005f,0.0f };
 	world_->add_actor(p);
 }
