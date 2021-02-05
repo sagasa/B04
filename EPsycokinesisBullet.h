@@ -56,6 +56,7 @@ private:
 	State state_{ State::Appear };
 
 	float life_timer_{ 0.0f };
+	float generate_effect_{ 0.0f };
 };
 
 #endif

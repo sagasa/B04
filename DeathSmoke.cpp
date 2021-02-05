@@ -48,10 +48,10 @@ void DeathSmoke::update(float delta_time)
 	left_position.x -= Radius / 2;
 
 	world_->particle_manager()->death_smoke(center_position);
-	world_->particle_manager()->death_smoke(top_position);
+	/*world_->particle_manager()->death_smoke(top_position);
 	world_->particle_manager()->death_smoke(under_position);
 	world_->particle_manager()->death_smoke(right_position);
-	world_->particle_manager()->death_smoke(left_position);
+	world_->particle_manager()->death_smoke(left_position);*/
 
 }
 void DeathSmoke::draw() const

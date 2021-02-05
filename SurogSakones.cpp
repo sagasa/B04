@@ -32,7 +32,7 @@ const float FootOffset{ 0.1f };
 const float Gravity{ 0.2f };
 const float TurnDistance{ 2.0f };
 const float MinMoveDistance{ 4.0f };
-const float SarchMoveDistance{ 6.5f };
+const float SarchMoveDistance{ 6.0f };
 const float MaxMoveDistance{ 12.0f };
 
 const float ScytheRange{ 2.5f };
@@ -53,6 +53,7 @@ const GSvector3 SmokePosition{ 0.0f,0.5f,0.0f };
 
 const GSvector2 hp_position{ 800.0f,30.0f };
 const float HP_Length{ 300.0f };
+const float HP_3DLength{ 10.0f };
 
 SurogSakones::SurogSakones(IWorld* world, const GSvector3& position) :
 	mesh_{ Mesh_SurogSakones, Skeleton_SurogSakones, Animation_SurogSakones, MotionIdol1 },
@@ -71,26 +72,17 @@ SurogSakones::SurogSakones(IWorld* world, const GSvector3& position) :
 	transform_.rotation(GSquaternion::euler(GSvector3{ 0.0f,-90.0f,0.0f }));
 
 	mesh_.transform(transform_.localToWorldMatrix());
-
-	move_pos_.push_back(transform().position());
-	move_pos_.push_back(transform().position() - GSvector3{ 5.0f,0.0f,0.0f });
 }
 void SurogSakones::update(float delta_time) {
+#ifdef _DEBUG
+	debug_input();
+#endif
+	
 	player_ = world_->find_actor("Player");
 	if (player_ == nullptr) {
 		player_ = world_->find_actor("PlayerPaladin");
 		if (player_ == nullptr) return;
-	}
-	//一応保険で残す
-	if (gsGetKeyTrigger(GKEY_1)) {
-		change_state(State::Attack, MotionScytheAttack, true);
-		generate_attackcollider();
-	}
-
-	//座標変換
-	GSvector3 position = SmokePosition * mesh_.bone_matrices(2);
-	world_->particle_manager()->boss_smoke(position);
-	//
+	}	
 
 	update_state(delta_time);
 	transform_.translate(GSvector3{ 0.0f,-Gravity,0.0f }*delta_time);
@@ -115,34 +107,30 @@ bool SurogSakones::on_hit(const Actor& attacker, float atk_power)
 {
 	if (state_ == State::Stun || state_ == State::Dying)return false;
 	if (attacker.tag() == "PlayerAttack")
-	{
-		if(target_posrelation(player_))
-		{
-			transform_.rotation(GSquaternion::euler(GSvector3{ 0.0f,90.0f,0.0f }));
-			flip_ = true;
-		}
-		else
-		{
-			transform_.rotation(GSquaternion::euler(GSvector3{ 0.0f,-90.0f,0.0f }));
-			flip_ = false;
-		}
-		
+	{		
 		hp_ -= atk_power;
-		if (hp_ <= 0.0f)
+
+		gsPlaySE(SE_GhostDamage);
+		if (motion_ != MotionScytheAttack|| hp_ <= 0.0f)
 		{
-			gsPlaySE(SE_GhostDeath);
-			change_state(State::Dying, MotionDying, false);
-		}
-		else {
 			gsPlaySE(SE_BossGhostDamage);
-			gsPlaySE(SE_GhostDamage);
 			change_state(State::Stun, MotionDamage1, false);
-		}		
+			if (target_posrelation(player_))
+			{
+				transform_.rotation(GSquaternion::euler(GSvector3{ 0.0f,90.0f,0.0f }));
+				flip_ = true;
+			}
+			else
+			{
+				transform_.rotation(GSquaternion::euler(GSvector3{ 0.0f,-90.0f,0.0f }));
+				flip_ = false;
+			}			
+		}
 		
 		psyco1_attack_flag_ = false;
 		psyco2_attack_flag_ = false;
 		scythe_attack_flag_ = false;
-		
+
 		return true;
 	}
 	return false;
@@ -242,6 +230,11 @@ void SurogSakones::psyco2_attack(float delta_time) {
 }
 void SurogSakones::stun(float delta_time) {
 	if (state_timer_ >= mesh_.motion_end_time()) {
+		if(hp_ <= 0.0f)
+		{
+			change_state(State::Dying, MotionAttack3, false);
+			return;
+		}
 		if(is_turn(player_))
 		{
 			turn();
@@ -251,6 +244,7 @@ void SurogSakones::stun(float delta_time) {
 	}
 }
 void SurogSakones::dying(float delta_time) {
+	world_->particle_manager()->boss_retreat(transform_.position()+GSvector3{0.0f,0.0f,0.3f});
 	if (state_timer_ >= mesh_.motion_end_time()) {
 		die();
 		world_->game_clear();
@@ -384,18 +378,18 @@ void SurogSakones::draw_gui() const
 {
 	if(is_move(player_))
 	{
-		draw_hp();
+		draw_hp_3D();
 	}	
 }
 
-void SurogSakones::draw_hp() const
+void SurogSakones::draw_hp_2D() const
 {
 	//HPゲージ
 	float percent = hp_ / max_hp_;
 	GSrect sourceRect{ 0.0f,0.0f,HP_Length * percent,50.0f };
 	static const GSvector2 scale{ 1.0f,0.5f };
 	GScolor color{ 1.0f,0.0f,0.0f,1.0f };
-	gsDrawSprite2D(Texture_BossHP, &hp_position, &sourceRect, NULL, &color, &scale, 0.0f);
+	if (hp_ >= 0.0f)gsDrawSprite2D(Texture_BossHP, &hp_position, &sourceRect, NULL, &color, &scale, 0.0f);
 
 	//上下の蓋
 	GSrect frame_rect{ 0.0f,0.0f,50.0f,52.0f };
@@ -413,7 +407,35 @@ void SurogSakones::draw_hp() const
 	gsDrawSprite2D(Texture_BossHPFrame_Lid, &framelid_right_position, &frame_lid_rect, NULL, NULL, &frame_lid_scale, 0.0f);
 }
 
+void SurogSakones::draw_hp_3D() const
+{
+	//HPゲージ
+	float percent = hp_ / max_hp_;
+	
+	//表示
+	glPushAttrib(GL_ENABLE_BIT | GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glDisable(GL_LIGHTING);
+	glDepthMask(GL_FALSE);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	GSvector3 position{ transform_.position() + GSvector3{ -0.75f,3.5f,0.0f } };
+	GSrect gage_sprite_rect{ 0.0f,0.0f,1.5f * percent,0.1f };
+	GSvector3 gage_position{position};
+	GScolor color = GScolor{ 1.0f,0.0f,0.0f,1.0f };
+	
+	if(hp_ >= 0.0f)gsDrawSprite3D(Texture_BossHP,&gage_position,&gage_sprite_rect,NULL,&color,NULL,0.0f);
 
+	GSvector3 lid_lpos{ position + GSvector3{-0.025f / 2.0f,0.0f,0.0f} };
+	GSvector3 lid_rpos{ position + GSvector3{1.5f,0.0f,0.0f} };
+	static const GSrect lid_lr_spriterect{ 0.0f,0.0f,0.025f,0.1f };
+	gsDrawSprite3D(Texture_BossHPFrame_Lid, &lid_lpos, &lid_lr_spriterect, NULL, &color, NULL,0.0f);	
+	gsDrawSprite3D(Texture_BossHPFrame_Lid,&lid_rpos,&lid_lr_spriterect,NULL,&color,NULL,0.0f);
+
+	static const GSrect lid_spriterect{ 0.0f,0.0f,1.5f,0.115f };
+	GSvector3 lid_pos{ position + GSvector3{0.0f,-0.01f,0.0f} };
+	gsDrawSprite3D(Texture_BossHPFrame,&lid_pos,&lid_spriterect,NULL,NULL,NULL,0.0f);
+
+	glPopAttrib();
+}
 
 
 void SurogSakones::debug_draw()const {
@@ -435,6 +457,19 @@ void SurogSakones::debug_draw()const {
 	gsDrawText("移動状態(%d)", move_way_);
 	gsTextPos(0.0f, 160.0f);
 	gsDrawText("向いている方向：%d", flip_);
+}
+void SurogSakones::debug_input()
+{
+	if (gsGetKeyTrigger(GKEY_1))
+	{
+		gsPlaySE(SE_GhostDeath);
+		change_state(State::Stun, MotionDamage1, false);
+		hp_ = -10.0f;
+	}
+	if (gsGetKeyTrigger(GKEY_2))
+	{
+		hp_ -= 10.0f;
+	}
 }
 
 void SurogSakones::scythe_attack()
@@ -481,7 +516,7 @@ void SurogSakones::generate_attackcollider(bool is_turn) {
 	const float AttackColliderHeight{ 1.85f };
 
 	const float AttackCollideDelay{ 60.0f };
-	const float AttackCollideLifeSpan{ 30.0f };
+	const float AttackCollideLifeSpan{ 20.0f };
 	if(!is_turn)
 	{
 		GSvector3 position = transform_.position() + transform_.forward() * AttackColliderDistance;
@@ -498,8 +533,7 @@ void SurogSakones::generate_attackcollider(bool is_turn) {
 		position.y += AttackColliderHeight;
 		BoundingSphere collider{ AttackColliderRadius,position };
 		world_->add_actor(new AttackCollider{ world_,collider,"EnemyAttack","BossAttack",AttackCollideLifeSpan,AttackCollideDelay });
-	}
-	
+	}	
 }
 
 void SurogSakones::move_attack(float delta_time) {
