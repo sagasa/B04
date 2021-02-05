@@ -72,26 +72,17 @@ SurogSakones::SurogSakones(IWorld* world, const GSvector3& position) :
 	transform_.rotation(GSquaternion::euler(GSvector3{ 0.0f,-90.0f,0.0f }));
 
 	mesh_.transform(transform_.localToWorldMatrix());
-
-	move_pos_.push_back(transform().position());
-	move_pos_.push_back(transform().position() - GSvector3{ 5.0f,0.0f,0.0f });
 }
 void SurogSakones::update(float delta_time) {
+#ifdef _DEBUG
+	debug_input();
+#endif
+	
 	player_ = world_->find_actor("Player");
 	if (player_ == nullptr) {
 		player_ = world_->find_actor("PlayerPaladin");
 		if (player_ == nullptr) return;
-	}
-	//一応保険で残す
-	if (gsGetKeyTrigger(GKEY_1)) {
-		change_state(State::Attack, MotionScytheAttack, true);
-		generate_attackcollider();
-	}
-
-	//座標変換
-	GSvector3 position = SmokePosition * mesh_.bone_matrices(2);
-	world_->particle_manager()->boss_smoke(position);
-	//
+	}	
 
 	update_state(delta_time);
 	transform_.translate(GSvector3{ 0.0f,-Gravity,0.0f }*delta_time);
@@ -116,18 +107,7 @@ bool SurogSakones::on_hit(const Actor& attacker, float atk_power)
 {
 	if (state_ == State::Stun || state_ == State::Dying)return false;
 	if (attacker.tag() == "PlayerAttack")
-	{
-		if (target_posrelation(player_))
-		{
-			transform_.rotation(GSquaternion::euler(GSvector3{ 0.0f,90.0f,0.0f }));
-			flip_ = true;
-		}
-		else
-		{
-			transform_.rotation(GSquaternion::euler(GSvector3{ 0.0f,-90.0f,0.0f }));
-			flip_ = false;
-		}
-
+	{		
 		hp_ -= atk_power;
 
 		gsPlaySE(SE_GhostDamage);
@@ -135,6 +115,16 @@ bool SurogSakones::on_hit(const Actor& attacker, float atk_power)
 		{
 			gsPlaySE(SE_BossGhostDamage);
 			change_state(State::Stun, MotionDamage1, false);
+			if (target_posrelation(player_))
+			{
+				transform_.rotation(GSquaternion::euler(GSvector3{ 0.0f,90.0f,0.0f }));
+				flip_ = true;
+			}
+			else
+			{
+				transform_.rotation(GSquaternion::euler(GSvector3{ 0.0f,-90.0f,0.0f }));
+				flip_ = false;
+			}			
 		}
 		
 		psyco1_attack_flag_ = false;
@@ -388,7 +378,6 @@ void SurogSakones::draw_gui() const
 {
 	if(is_move(player_))
 	{
-		draw_hp_2D();
 		draw_hp_3D();
 	}	
 }
@@ -400,7 +389,7 @@ void SurogSakones::draw_hp_2D() const
 	GSrect sourceRect{ 0.0f,0.0f,HP_Length * percent,50.0f };
 	static const GSvector2 scale{ 1.0f,0.5f };
 	GScolor color{ 1.0f,0.0f,0.0f,1.0f };
-	gsDrawSprite2D(Texture_BossHP, &hp_position, &sourceRect, NULL, &color, &scale, 0.0f);
+	if (hp_ >= 0.0f)gsDrawSprite2D(Texture_BossHP, &hp_position, &sourceRect, NULL, &color, &scale, 0.0f);
 
 	//上下の蓋
 	GSrect frame_rect{ 0.0f,0.0f,50.0f,52.0f };
@@ -422,33 +411,29 @@ void SurogSakones::draw_hp_3D() const
 {
 	//HPゲージ
 	float percent = hp_ / max_hp_;
-	GSrect sprite_rect{ 0.0f,0.0f,1.5f*percent,0.1f };
-	GSrect sprite_rect_lid{ 0.0f,0.0f,0.025f,0.1f };
+	
 	//表示
 	glPushAttrib(GL_ENABLE_BIT | GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glDisable(GL_LIGHTING);
 	glDepthMask(GL_FALSE);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	GSvector3 position{transform_.position()+GSvector3{-0.75f,3.5f,0.0f}};
+	GSvector3 position{ transform_.position() + GSvector3{ -0.75f,3.5f,0.0f } };
+	GSrect gage_sprite_rect{ 0.0f,0.0f,1.5f * percent,0.1f };
+	GSvector3 gage_position{position};
 	GScolor color = GScolor{ 1.0f,0.0f,0.0f,1.0f };
-	gsDrawSprite3D(
-	    Texture_BossHP,
-	    &position,
-	    &sprite_rect,
-		NULL,
-	    &color,
-	    NULL,
-	    0.0f
-	);
-	gsDrawSprite3D(
-		Texture_BossHPFrame_Lid,
-		&position,
-		&sprite_rect_lid,
-		NULL,
-		&color,
-		NULL,
-		0.0f
-	);
+	
+	if(hp_ >= 0.0f)gsDrawSprite3D(Texture_BossHP,&gage_position,&gage_sprite_rect,NULL,&color,NULL,0.0f);
+
+	GSvector3 lid_lpos{ position + GSvector3{-0.025f / 2.0f,0.0f,0.0f} };
+	GSvector3 lid_rpos{ position + GSvector3{1.5f,0.0f,0.0f} };
+	static const GSrect lid_lr_spriterect{ 0.0f,0.0f,0.025f,0.1f };
+	gsDrawSprite3D(Texture_BossHPFrame_Lid, &lid_lpos, &lid_lr_spriterect, NULL, &color, NULL,0.0f);	
+	gsDrawSprite3D(Texture_BossHPFrame_Lid,&lid_rpos,&lid_lr_spriterect,NULL,&color,NULL,0.0f);
+
+	static const GSrect lid_spriterect{ 0.0f,0.0f,1.5f,0.115f };
+	GSvector3 lid_pos{ position + GSvector3{0.0f,-0.01f,0.0f} };
+	gsDrawSprite3D(Texture_BossHPFrame,&lid_pos,&lid_spriterect,NULL,NULL,NULL,0.0f);
+
 	glPopAttrib();
 }
 
@@ -472,6 +457,19 @@ void SurogSakones::debug_draw()const {
 	gsDrawText("移動状態(%d)", move_way_);
 	gsTextPos(0.0f, 160.0f);
 	gsDrawText("向いている方向：%d", flip_);
+}
+void SurogSakones::debug_input()
+{
+	if (gsGetKeyTrigger(GKEY_1))
+	{
+		gsPlaySE(SE_GhostDeath);
+		change_state(State::Stun, MotionDamage1, false);
+		hp_ = -10.0f;
+	}
+	if (gsGetKeyTrigger(GKEY_2))
+	{
+		hp_ -= 10.0f;
+	}
 }
 
 void SurogSakones::scythe_attack()

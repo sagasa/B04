@@ -68,6 +68,7 @@ private:
 	//移動した後のターン
 	void turn();
 	void debug_draw()const;
+	void debug_input();
 
 	void scythe_attack();
 	void psyco1_attack();
@@ -103,9 +104,10 @@ private:
 	float state_timer_{ 0.0f };
 	//スタン値
 	float stun_{ 0.0f };
+	int se_counter_{ 0 };
+
+	GSvector3 destination_{ GSvector3::zero() };
 	
-	std::vector<GSvector3> move_pos_;
-	GSvector3 destination_;
 	Move move_way_;
 	//アニメーション制御
 	AnimatedMesh mesh_;
@@ -131,7 +133,7 @@ private:
 	bool play_voice_se_{ false };
 
 	//プレイヤー用の入れ物
-	Actor* player_;
+	Actor* player_;	
 };
 
 #endif
