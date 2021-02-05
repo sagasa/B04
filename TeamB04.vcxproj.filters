@@ -46,6 +46,9 @@
     <Filter Include="ヘッダー ファイル\Actors\Prop">
       <UniqueIdentifier>{184c4d0c-6f0e-49b3-885a-c52142fb405d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Shade">
+      <UniqueIdentifier>{d81b6013-c2e8-4bdb-9d86-f31eaaaf133a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -162,7 +165,7 @@
     <ClCompile Include="StageClearScene.cpp">
       <Filter>ソース ファイル\Scenes</Filter>
     </ClCompile>
-      <ClCompile Include="ESurogSakones.cpp">
+    <ClCompile Include="ESurogSakones.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="EPsycokinesisBullet.cpp">
@@ -314,7 +317,7 @@
     <ClInclude Include="StageClearScene.h">
       <Filter>ヘッダー ファイル\Scenes</Filter>
     </ClInclude>
-      <ClInclude Include="ESurogSakones.h">
+    <ClInclude Include="ESurogSakones.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="EPsycokinesisBullet.h">
@@ -322,17 +325,17 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Paladin.frag">
-      <Filter>リソース ファイル</Filter>
-    </None>
     <None Include="Paladin.vert">
-      <Filter>リソース ファイル</Filter>
-    </None>
-    <None Include="Ghost.vert">
-      <Filter>リソース ファイル</Filter>
+      <Filter>ソース ファイル\Shade</Filter>
     </None>
     <None Include="Ghost.frag">
-      <Filter>リソース ファイル</Filter>
+      <Filter>ソース ファイル\Shade</Filter>
+    </None>
+    <None Include="Ghost.vert">
+      <Filter>ソース ファイル\Shade</Filter>
+    </None>
+    <None Include="Paladin.frag">
+      <Filter>ソース ファイル\Shade</Filter>
     </None>
   </ItemGroup>
 </Project>
