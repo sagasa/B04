@@ -15,8 +15,14 @@ enum {
     MotionAttack = 9,	// ガード
     MotionDamage = 5,	// ダウン
     MotionWakeUp = 1,	// 起動
-};
+    MotionExit = 3,	// 起動
 
+};
+std::ostream& operator<<(std::ostream& os, const GSvector3& dt)
+{
+    os << dt.x << ',' << dt.y << ',' << dt.z;
+    return os;
+}
 void player_paladin::draw() const
 {
    
@@ -40,7 +46,7 @@ void player_paladin::draw() const
 
     // ライトのパラメータ
     GSvector3 light_position{ 100.0f, 100.0f, 100.0f };    // ライトの位置（ワールド座標系）
-    GScolor light_ambient{ 0.2f, 0.2f, 0.2f, 1.0f };     // ライトの環境光カラー
+    GScolor light_ambient{ 2.0f, 2.0f, 2.0f, 1.0f };     // ライトの環境光カラー
     GScolor light_diffuse{ 1.0f, 1.0f, 1.0f, 1.0f };     // ライトの拡散反射光カラー
     GScolor light_specular{ 1.0f, 1.0f, 1.0f, 1.0f };    // ライトの鏡面反射光カラー
 
@@ -158,6 +164,7 @@ void player_paladin::attack()
 
 player_paladin::player_paladin(IWorld* world, const GSvector3& position) :Player(world, position, AnimatedMesh{ Mesh_Paladin, Skeleton_Paladin, Animation_Paladin })
 {
+    std::cout << " init " << position << "\n";
     is_soft_ = false;
     height_ext_ = 0.5;
     collider_ = BoundingSphere{ 0.8f,GSvector3{0.0f,1.4f,0.0f} };
@@ -178,6 +185,7 @@ bool player_paladin::on_hit(const Actor& attacker, float atk_power)
         if (hp_ <= 0)
         {
             stop();
+            change_state(Stop, MotionExit, false);
             world_->add_actor(new player_ghost{ world_,transform_.position() });
             std::cout << "Stop " << hp_ << "\n";
         }else
@@ -193,6 +201,8 @@ bool player_paladin::on_hit(const Actor& attacker, float atk_power)
 
 const float Velocity = 0.07f;
 const GSvector3 gravity{ 0.0f, 0.01f, 0.0f };
+
+
 
 void player_paladin::update(float delta_time)
 {
@@ -217,14 +227,16 @@ void player_paladin::update(float delta_time)
             {
                 //SE
                 gsPlaySE(SE_Attack);
-                attack_se_ = false;
+                attack_se_ = false; //今のPaladinモデルのVertexFormatの左から3桁目の数字を3にするとSkiningMeshのシェーダーできれいに映ります。
+
             }
         }
     	
     	//エフェクト
     	if(state_ == Wake)
     	{
-            world_->particle_manager()->possession_light(collider().center);
+            std::cout << "pos " << mesh_.bone_matrices(1).position()<<"\n";
+            world_->particle_manager()->possession_light(mesh_.bone_matrices(0).position()+transform_.position());
     	}
     	
         //起動時 攻撃中は入力を飛ばす
@@ -254,6 +266,7 @@ void player_paladin::update(float delta_time)
         if ((gsGetKeyTrigger(GKEY_E) || gsXBoxPadButtonTrigger(0, GS_XBOX_PAD_Y)) && state_ != Attack)
         {
             stop();
+            change_state(Stop, MotionExit, false);
             world_->particle_manager()->possession_release_light(collider().center);
             world_->add_actor(new player_ghost{ world_,transform_.position() });
         }

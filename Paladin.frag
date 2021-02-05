@@ -89,10 +89,6 @@ void main(void) {
     // 環境光・拡散反射光・鏡面反射光・放射光を合成
     vec4 finalColor = ambientColor + diffuseColor + specularColor + emissionColor;
 
-    // アンビエントオクルージョンマップのカラーを取得
-    vec4 ambientOcclusionMapColor = texture(u_AmbientOcclusionMap, v_TexCoord);
-    // アンビエントオクルージョンの効果を加える
-    finalColor *= ambientOcclusionMapColor;
 
     // 最終的なカラーを出力
     out_FragColor = vec4(finalColor.rgb, baseMapColor.a);
