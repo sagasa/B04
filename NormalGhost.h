@@ -50,6 +50,8 @@ private:
 
 	//移動判定
 	bool is_move()const;
+	//カメラの内側にいるか？
+	bool is_inside() const;
 
 	//ターゲット方向の角度を求める(符号付き)
 	float target_signed_angle()const;

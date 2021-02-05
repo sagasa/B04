@@ -10,7 +10,7 @@ const float Alpha_Value{ 0.016f };
 //ボタンが出るまでの時間
 const float Time{ 60.0f };
 //配列の大きさ
-const int Alphas_Size{ 3 };
+const int Alphas_Size{ 2 };
 
 
 //開始
@@ -30,7 +30,7 @@ void StageClearScene::start(int number) {
 	gsLoadTexture(Texture_TitleButton, "Assets/Image/title_button.dds");
 	gsLoadTexture(Texture_ContinueButton, "Assets/Image/continue_button.dds");
 	gsLoadTexture(Texture_NextStage, "Assets/Image/next_stage.dds");
-	gsLoadTexture(Texture_stageLogo, "Assets/Image/stage.dds");
+	gsLoadTexture(Texture_stageLogo, "Assets/Image/stagelogo.dds");
 	gsLoadTexture(Texture_Number, "Assets/Image/number.dds");
 
 	//BGMの読み込み
@@ -62,11 +62,11 @@ void StageClearScene::update(float delta_time) {
 //描画
 void StageClearScene::draw() const {
 	//「ステージ」の描画
-	GSvector2 position_stage{ 200.0f,30.0f };
+	GSvector2 position_stage{ 150.0f,30.0f };
 	GSvector2 scale_stage{ 0.9f,0.9f };
 	gsDrawSprite2D(Texture_stageLogo, &position_stage, NULL, NULL, NULL, &scale_stage, NULL);
 	//ゲームクリアの描画
-	GSvector2 position_clear{ 700.0f,30.0f };
+	GSvector2 position_clear{ 750.0f,30.0f };
 	GSvector2 scale_clear{ 0.9f,0.9f };
 	GSrect rect_clear{ 426,0, 852,200};
 	gsDrawSprite2D(Texture_GameClear, &position_clear, &rect_clear, NULL, NULL, &scale_clear, NULL);
@@ -151,8 +151,7 @@ void StageClearScene::input() {
 			nextScene_ = "GamePlayScene";
 			stage_number_++;
 			break;
-		case 1: nextScene_ = "GamePlayScene"; break;
-		case 2: nextScene_ = "TitleScene"; break;
+		case 1: nextScene_ = "TitleScene"; break;
 		}
 	}
 	//クランプする
@@ -163,24 +162,20 @@ void StageClearScene::input() {
 void StageClearScene::draw_button() const {
 
 	if (timer_ >= Time) {
-		GSvector2 position_nextstage_button{ 400.0f,250.0f };
+		GSvector2 position_nextstage_button{ 400.0f,300.0f };
 		GSvector2 scale_nextstage_button{ 0.6f,0.6f };
 		GScolor color_nextstage_button{ 1,1,1, alphas_[0] };
 		gsDrawSprite2D(Texture_NextStage, &position_nextstage_button, NULL, NULL, &color_nextstage_button, &scale_nextstage_button, NULL);
-		GSvector2 position_continue_button{ 430.0f,420.0f };
-		GSvector2 scale_continue_button{ 0.6f,0.6f };
-		GScolor color_continue_button{ 1,1,1, alphas_[1] };
-		gsDrawSprite2D(Texture_ContinueButton, &position_continue_button, NULL, NULL, &color_continue_button, &scale_continue_button, NULL);
-		GSvector2 position_title_button{ 500.0f,550.0f };
+		GSvector2 position_title_button{ 500.0f,500.0f };
 		GSvector2 scale_title_button{ 0.6f,0.6f };
-		GScolor color_title_button{ 1,1,1, alphas_[2] };
+		GScolor color_title_button{ 1,1,1, alphas_[1] };
 		gsDrawSprite2D(Texture_TitleButton, &position_title_button, NULL, NULL, &color_title_button, &scale_title_button, NULL);
 	}
 }
 
 //番号の描画
 void StageClearScene::draw_number() const {
-	const GSvector2 position_number{570,40 };
-	const GSrect rect_number{ 138 * (float)(static_stage_number_ - 1),0,138 * (float)static_stage_number_,130};
+	const GSvector2 position_number{520,30 };
+	const GSrect rect_number{ 138 * (float)(static_stage_number_ - 1),0,138 * (float)static_stage_number_,200};
 	gsDrawSprite2D(Texture_Number, &position_number, &rect_number, NULL, NULL, NULL, 0.0f);
 }

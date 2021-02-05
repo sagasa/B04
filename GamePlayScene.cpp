@@ -69,15 +69,16 @@ void GamePlayScene::start(int number) {
     std::string csv_pass;
     csv_pass = "Assets/Map/Stage" + ss.str() + ".csv";
     //生成
-    MapGenerator generator{ &world_,csv_pass};
+    //MapGenerator generator{ &world_,csv_pass};
     //MapGenerator generator{ &world_,"Assets/Map/Stage3.csv" };
     //番号によってロードするマップを変える
     std::string octree_pass;
     octree_pass = "Assets/Octree/stage"+ ss.str() +"/stage"+ ss.str()+".oct";
+    std::string collide_pass = "Assets/Octree/stage" + ss.str() + "/stage" + ss.str() + "_collide.oct";
     //描画用オクツリーの読み込み
     gsLoadOctree(Octree_Stage, octree_pass.c_str());
     //衝突判定用オクツリーの読み込み
-    gsLoadOctree(Octree_Collider, octree_pass.c_str());
+    gsLoadOctree(Octree_Collider, collide_pass.c_str());
     //描画用オクツリーの読み込み
     /*gsLoadOctree(Octree_Stage, "Assets/Octree/stage3/stage3.oct");
     //衝突判定用オクツリーの読み込み
@@ -111,8 +112,10 @@ void GamePlayScene::start(int number) {
     gsLoadSE(SE_Slash, "Assets/SE/sword-drawn1.wav", 1, GWAVE_DEFAULT);
 
     gsLoadSE(SE_Shoot, "Assets/SE/shoot.wav", 1, GWAVE_DEFAULT);
-	
-    gsLoadMusic(Music_GamePlay, "Assets/BGM/gameplay.wav", GS_TRUE);
+	//ステージ番号によってロードするBGMを変更
+    std::string bgm_pass = "Assets/BGM/play_stage" + ss.str() + ".wav";
+    //BGMの読み込み
+    gsLoadMusic(Music_GamePlay, bgm_pass.c_str(), GS_TRUE);
     gsBindMusic(Music_GamePlay);
     gsPlayMusic();
 
@@ -126,6 +129,8 @@ void GamePlayScene::start(int number) {
     world_.add_actor(new player_ghost{ &world_, GSvector3{ 0.0f, 0.0f, 0.0f } });
     //追加
     world_.add_particle_manager(new ParticleManager{ &world_ });
+    //MapGeneratorの追加
+    world_.add_actor(new MapGenerator{ &world_,csv_pass });
 }
 
 //更新
