@@ -112,8 +112,10 @@ void GamePlayScene::start(int number) {
     gsLoadSE(SE_Slash, "Assets/SE/sword-drawn1.wav", 1, GWAVE_DEFAULT);
 
     gsLoadSE(SE_Shoot, "Assets/SE/shoot.wav", 1, GWAVE_DEFAULT);
-	
-    gsLoadMusic(Music_GamePlay, "Assets/BGM/gameplay.wav", GS_TRUE);
+	//ステージ番号によってロードするBGMを変更
+    std::string bgm_pass = "Assets/BGM/play_stage" + ss.str() + ".wav";
+    //BGMの読み込み
+    gsLoadMusic(Music_GamePlay, bgm_pass.c_str(), GS_TRUE);
     gsBindMusic(Music_GamePlay);
     gsPlayMusic();
 
