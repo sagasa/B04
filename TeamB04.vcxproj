@@ -153,6 +153,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ChangeItem.cpp" />
     <ClCompile Include="CSVReader.cpp" />
+    <ClCompile Include="DeathSmoke.cpp" />
     <ClCompile Include="EPsycokinesisBullet.cpp" />
     <ClCompile Include="ESurogSakones.cpp" />
     <ClCompile Include="Fade.cpp" />
@@ -197,6 +198,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ChangeItem.h" />
     <ClInclude Include="CSVReader.h" />
+    <ClInclude Include="DeathSmoke.h" />
     <ClInclude Include="EPsycokinesisBullet.h" />
     <ClInclude Include="ESurogSakones.h" />
     <ClInclude Include="Fade.h" />
