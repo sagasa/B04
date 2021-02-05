@@ -5,6 +5,7 @@
 #include"Assets.h"
 #include"DamageProp.h"
 #include"ParticleManager.h"
+#include"Camera.h"
 
 enum {
 	MotionIdle = 0,
@@ -82,14 +83,21 @@ void RushGhost::update(float delta_time) {
 	turn(delta_time);
 	//行列を設定
 	mesh_.transform(transform_.localToWorldMatrix());
+
+	//重さ軽減のためプレイヤーの座標から-40離れたら死亡
+	if (transform_.position().x <= player_->transform().position().x - 20.0f) {
+		die();
+	}
 }
 
 //描画
 void RushGhost::draw() const {
-	mesh_.draw();
-	collider().draw();
-	if (state_ == State::Died) {
-		world_->particle_manager()->death_smoke(transform_.position());
+	if (is_inside()) {
+		mesh_.draw();
+		collider().draw();
+		if (state_ == State::Died) {
+			world_->particle_manager()->death_smoke(transform_.position());
+		}
 	}
 }
 
@@ -222,6 +230,18 @@ bool RushGhost::is_turn()const {
 bool RushGhost::is_move()const {
 	//移動距離?
 	return (target_distance() <= MoveDistance);
+}
+
+//カメラの内側にいるか？
+bool RushGhost::is_inside() const {
+	Camera* camera = world_->camera();
+	if (camera == nullptr) return false;
+	//画面内にいたら移動する
+	GSvector3 to_target = transform_.position() - camera->transform().position();
+	//カメラの前ベクトル
+	GSvector3 forward = camera->transform().forward();
+	float angle = abs(GSvector3::signed_angle(forward, to_target));
+	return (angle <= 45.0f);
 }
 
 //前向き方向のベクトルとターゲット方向のベクトルの角度差を求める(符号付き)

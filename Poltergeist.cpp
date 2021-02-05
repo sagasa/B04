@@ -67,17 +67,14 @@ Poltergeist::Poltergeist(IWorld* world, const GSvector3& position) :
 
 //更新
 void Poltergeist::update(float delta_time) {
-	if (transform_.position().x <= 0.0f) {
-		change_state(State::Died, MotionDie, false);
+	//プレイヤーを検索
+	player_ = world_->find_actor("Player");
+	if (player_ == nullptr) {
+		player_ = world_->find_actor("PlayerPaladin");
+		if (player_ == nullptr) return;
 	}
 	//カメラの外側にいると何もしない
 	if (is_inside()) {
-		//プレイヤーを検索
-		player_ = world_->find_actor("Player");
-		if (player_ == nullptr) {
-			player_ = world_->find_actor("PlayerPaladin");
-			if (player_ == nullptr) return;
-		}
 		//状態の更新
 		update_state(delta_time);
 		//フィールドとの衝突判定
@@ -91,14 +88,21 @@ void Poltergeist::update(float delta_time) {
 		//射撃タイマー更新
 		shootiong_timer_ -= delta_time;
 	}
+
+	//重さ軽減のためプレイヤーの座標から-40離れたら死亡
+	if (transform_.position().x <= player_->transform().position().x - 20.0f) {
+		die();
+	}
 }
 
 //描画
 void Poltergeist::draw() const {
-	mesh_.draw();
-	collider().draw();
-	if (state_ == State::Died) {
-		world_->particle_manager()->death_smoke(transform_.position());
+	if (is_inside()) {
+		mesh_.draw();
+		collider().draw();
+		if (state_ == State::Died) {
+			world_->particle_manager()->death_smoke(transform_.position());
+		}
 	}
 }
 
