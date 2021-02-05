@@ -19,12 +19,21 @@ MapGenerator::MapGenerator(IWorld* world, const std::string& file_name) {
 	name_ = "MapGenerator";
 	tag_ = "generatorTag";
 	enable_collider_ = false;
-	current_row_++;
+	while (current_row_ < csv_.rows() - 1) {
+		current_row_++;
+		//座標を取得
+		GSvector3 position{
+			csv_.getf(current_row_,size_ + 0),
+			csv_.getf(current_row_,size_ + 1),
+			csv_.getf(current_row_,size_ + 2)
+		};
+		generate(world_, position);
+	}
 }
 
 //更新
 void MapGenerator::update(float delta_time) {
-	//プレイヤーを検索
+	/*//プレイヤーを検索
 	player_ = world_->find_actor("Player");
 	if (player_ == nullptr) {
 		player_ = world_->find_actor("PlayerPaladin");
@@ -41,7 +50,7 @@ void MapGenerator::update(float delta_time) {
 	if (current_row_ < csv_.rows() - 1 && player_->transform().position().x + 20.0f <= position.x) {
 		generate(world_, position);
 		current_row_++;
-	}
+	}*/
 }
 
 //生成
@@ -49,7 +58,7 @@ void MapGenerator::generate(IWorld* world,const GSvector3& position) {
 	
 	//文字を取得
 	std::string name = csv_.get(current_row_,0);
-	
+	current_row_;
 	//生成処理
 	if (name == "NormalGhost") {
 		world->add_actor(new NormalGhost{ world,position });
