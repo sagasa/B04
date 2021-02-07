@@ -34,7 +34,7 @@ uniform vec4 u_MaterialSpecular;
 //マテリアルの放射光カラー
 uniform vec4 u_MaterialEmission;
 //マテリアルの鏡面反射光指数
-uniforn float u_MaterialShininess;
+uniform float u_MaterialShininess;
 
 //ベースカラーテクスチャ
 uniform sampler2D u_BaseMap;

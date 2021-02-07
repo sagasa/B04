@@ -1,4 +1,5 @@
 #pragma once
+#include "HPBar.h"
 #include "interact_prop.h"
 #include "Player.h"
 
@@ -12,8 +13,14 @@ struct player_paladin : public Player, public interact_prop
 		Move,
 		Jump,
 		Attack,		// 攻撃中
-		Damage		// ダメージ中
+		Damage,		// ダメージ中
+		Dead		// 消滅待ち
 	};
+
+	int base_hp_;//本体HP保存
+
+	HPBar base_bar_{ 3,120,GScolor{1,0,0,1},GScolor{1,0,0,0.5f} };
+	HPBar bar_{ 3,120,GScolor{0,0,1,1},GScolor{0,0,1,0.5f} };
 
 	GSvector3 camera_pos_;
 	
@@ -29,15 +36,17 @@ struct player_paladin : public Player, public interact_prop
 	bool motion_loop_{ false };
 
 	// 状態の変更
-	void change_state(State state, GSuint motion, bool loop = true);
+	void change_state(State state, GSuint motion, bool loop = true) ;
 	
 	void attack();
+
+	bool is_active()const;
 	
 	player_paladin(IWorld* world, const GSvector3& position);
 	bool on_hit(const Actor& attacker, float atk_power) override;
 	void update(float delta) override;
 public:
 	virtual void draw() const override;
-	void wake_up() override;
+	void wake_up(const int base_hp) override;
 	void stop() override;
 };

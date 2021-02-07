@@ -43,7 +43,7 @@ const float Interval{ 60.0f };
 
 //コンストラクタ
 RushGhost::RushGhost(IWorld* world, const GSvector3& position) :
-	mesh_{ Mesh_RushGhost,Skeleton_RushGhost,Animation_RushGhost, MotionIdle },
+	mesh_{ Mesh_Ghost,Skeleton_Ghost,Animation_Ghost, MotionIdle },
 	motion_{ MotionIdle },
 	state_{ State::Idle },
 	angle_{0.0f},
@@ -93,7 +93,9 @@ void RushGhost::update(float delta_time) {
 //描画
 void RushGhost::draw() const {
 	if (is_inside()) {
+		glColor3f(1.0f,0.3f,0.3f);
 		mesh_.draw();
+		glColor3f(1.0f, 1.0f, 1.0f);
 		collider().draw();
 		if (state_ == State::Died) {
 			world_->particle_manager()->death_smoke(transform_.position());
