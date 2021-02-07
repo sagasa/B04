@@ -56,6 +56,12 @@ enum Texture {
     Texture_NextStage,             //次のステージへ
     Texture_stageLogo,             //「ステージ」
     Texture_Number,                //番号1,2,3
+    Texture_Game_Start,
+    Texture_tutorial,
+    Texture_How_To_Play1,
+    Texture_How_To_Play2,
+    Texture_Arrow,
+    Texture_Back,
     //フェード
     Texture_Fade,                   //黒いテクスチャ
     // 3Dスプライト
