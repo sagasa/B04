@@ -223,12 +223,14 @@ void ParticleManager::psyco_bullet_small(const GSvector3& position, const GSvect
 	if(velocity_==GSvector3::zero())p->lifespan_ = gsRandf(10.0f, 20.0f);
 	else p->lifespan_ = gsRandf(5.0f, 115.0f);
 	p->image_handle_ = Texture_Smoke;
-	p->start_scale_ = GSvector2{ 0.3f,0.3f };
-	p->end_scale_ = GSvector2{ 0.8f,0.8f };
+	float start_scale_{ gsRandf(0.3f,0.5f) };
+	float end_scale_{ gsRandf(0.6f,1.0f) };
+	p->start_scale_ = GSvector2{ start_scale_,start_scale_ };
+	p->end_scale_ = GSvector2{ end_scale_,end_scale_ };
 	p->angle_ = gsRandf(-45.0f, 45.0f);
 	p->angular_velocity_ = gsRandf(-5.0f, 5.0f);
 	p->color_ = GSvector3{ gsRandf(0.3f,0.5f),0.0f,gsRandf(0.3f,0.5f) };
-	p->start_alpha_ = 0.5f;
+	p->start_alpha_ = 0.7f;
 	p->end_alpha_ = 0.0f;
 	p->fade_in_time = 0.1f;
 	p->fade_out_time = 0.5f;
