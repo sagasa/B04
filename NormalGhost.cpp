@@ -44,7 +44,7 @@ const float atk_power = 1.0f;
 
 //コンストラクタ
 NormalGhost::NormalGhost(IWorld* world, const GSvector3& position) :
-	mesh_{ Mesh_CarGhost,Skeleton_CarGhost,Animation_CarGhost,MotionIdle },
+	mesh_{ Mesh_Ghost,Skeleton_Ghost,Animation_Ghost,MotionIdle },
 	motion_{ MotionIdle },
 	motion_loop_{ true },
 	state_{ State::Idle },
@@ -175,7 +175,7 @@ void NormalGhost::move(float delta_time) {
 	GSvector3 velocity{-1.0f,0.0f,0.0f};
 	velocity.z = 0.0f;
 	velocity_ = velocity;
-	//transform_.translate(velocity_ * delta_time * Speed, GStransform::Space::World);
+	transform_.translate(velocity_ * delta_time * Speed, GStransform::Space::World);
 }
 
 //ダメージ中
