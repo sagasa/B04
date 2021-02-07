@@ -47,7 +47,7 @@ void DeathSmoke::update(float delta_time)
 	GSvector3 left_position{ center_position };//¶
 	left_position.x -= Radius / 2;
 
-	world_->particle_manager()->death_smoke(center_position);
+	world_->particle_manager()->death_smoke2(center_position);
 	/*world_->particle_manager()->death_smoke(top_position);
 	world_->particle_manager()->death_smoke(under_position);
 	world_->particle_manager()->death_smoke(right_position);
