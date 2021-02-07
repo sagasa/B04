@@ -5,11 +5,20 @@
 #include<gslib.h>
 #include"World.h"
 #include"Fade.h"
+#include<vector>
 
 
 //タイトルシーン
 class TitleScene : public IScene {
 public:
+
+	//状態
+	enum class State {
+		Push_Button,
+		Select,
+		Tutorial
+	};
+
 	//開始
 	virtual void start(int number) override;
 	//更新
@@ -24,9 +33,15 @@ public:
 	virtual int stage_number() const override;
 	//終了
 	virtual void end() override;
+
 private:
-	//背景の描画
-	void draw_background(GSuint id, float scroll)const;
+	void update_push_button(float delta_time);
+	void update_select(float delta_time);
+	void update_tutorial(float delta_time);
+	//α値の更新
+	void update_alpha(int num, float detla_time);
+
+private:
 
 	//終了フラグ
 	bool is_end_{ false };
@@ -34,12 +49,19 @@ private:
 	std::string nextScene_;
 	//フェードクラス
 	Fade fade_;
-	//タイマー
-	float timer_;
-	//α値
-	float alpha_;
+	//ボタン表示用タイマー
+	float button_timer_;
+	//状態
+	State state_;
 	//α値の増減フラグ
 	bool alpha_flg_;
+	std::vector<float> alphas_;
+	int select_;
+	std::vector<float>pos_x_;
+	int num_;
+	bool is_move_;
+	float move_timer_;
+	float alpha_;
 
 };
 

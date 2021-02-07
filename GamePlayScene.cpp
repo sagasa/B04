@@ -64,7 +64,7 @@ void GamePlayScene::start(int number) {
     gsLoadMesh(Mesh_Skybox, "Assets/Skybox/DarkStorm4K.msh");
     //int型のステージ番号をstringstream型に変換
     std::stringstream ss;
-    ss << stage_number_;
+    ss << 2;
     //ステージ番号によってロードするCSVファイルを変更する
     std::string csv_pass;
     csv_pass = "Assets/Map/Stage" + ss.str() + ".csv";
