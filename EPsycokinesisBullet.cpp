@@ -30,7 +30,7 @@ EPsycokinesisBullet::EPsycokinesisBullet(IWorld* world,Actor* player, const GSve
 	to_player_ = (player->transform().position() + PlayerOffset) - (transform_.position() + offset);
 }
 EPsycokinesisBullet::EPsycokinesisBullet(IWorld* world, const GSvector3& position, const GSvector3& velocity,float delay)
-	:type_{ Type::Big }, life_timer_{ 7.0f }, period_{Period}, delay_{delay}
+	:type_{ Type::Big }, life_timer_{ 7.0f }, period_{gsRandf(2.0f,4.0f)}, delay_{delay}
 {
 	name_ = "EPsycokinesisBullet";
 	tag_ = "EnemyAttack";
@@ -83,7 +83,6 @@ void EPsycokinesisBullet::draw() const
 	switch (type_)
 	{
 	case Type::Small:
-		world_->particle_manager()->psyco_bullet_small(transform_.position(), velocity_);
 		world_->particle_manager()->psyco_bullet_small(transform_.position(), velocity_);
 		break;
 	case Type::Big:

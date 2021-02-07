@@ -19,7 +19,8 @@
 using BulletType = EPsycokinesisBullet::Type;
 
 void BossTestScene::start(int number) {
-    gsLoadShader(0, "Paladin.vert", "Paladin.frag");
+    gsLoadShader(0, "SkinnedMesh.vert", "SkinnedMesh.frag");
+    //gsLoadShader(0, "PhongAmbientDiffuseSpecular.vert", "PhongAmbientDiffuseSpecular.frag");
     // ƒvƒŒ[ƒ„[’e‰æ‘œ‚ð“Ç‚Ýž‚Ý
     gsLoadTexture(Texture_EffectLazerOrange, "Assets/Effect/fx_lazer_orange_dff.png");
     // “G’e‰æ‘œ‚ð“Ç‚Ýž‚Ý
@@ -39,9 +40,15 @@ void BossTestScene::start(int number) {
     gsLoadSkeleton(Skeleton_Player, "Assets/Model/Enemy/Ghost.skl");
     gsLoadAnimation(Animation_Player, "Assets/Model/Enemy/Ghost.anm");
 
-    gsLoadMesh(Mesh_Paladin, "Assets/Model/Paladin/Paladin.msh");
-    gsLoadSkeleton(Skeleton_Paladin, "Assets/Model/Paladin/Paladin.skl");
-    gsLoadAnimation(Animation_Paladin, "Assets/Model/Paladin/Paladin.anm");
+    gsLoadMesh(Mesh_Paladin, "Assets/Model/Paladin_j_nordstrom/paladin_j_nordstrom.msh");
+    gsLoadSkeleton(Skeleton_Paladin, "Assets/Model/Paladin_j_nordstrom/paladin_j_nordstrom.skl");
+    gsLoadAnimation(Animation_Paladin, "Assets/Model/Paladin_j_nordstrom/paladin_j_nordstrom.anm");
+
+	/*gsLoadMesh(Mesh_Paladin, "Assets/Model/Paladin_j_nordstrom - Base/paladin_j_nordstrom.msh");
+    gsLoadSkeleton(Skeleton_Paladin, "Assets/Model/Paladin_j_nordstrom/paladin_j_nordstrom.skl");
+    gsLoadAnimation(Animation_Paladin, "Assets/Model/Paladin_j_nordstrom/paladin_j_nordstrom.anm");*/
+
+    
 
 	//SE
     gsLoadSE(SE_GhostDamage, "Assets/SE/ghost_damage.wav",1, GWAVE_DEFAULT);
@@ -49,7 +56,8 @@ void BossTestScene::start(int number) {
     gsLoadSE(SE_GhostAttack2, "Assets/SE/Ghost Attack_02.wav", 1, GWAVE_DEFAULT);
     gsLoadSE(SE_BossGhostDamage, "Assets/SE/Ghost Damaged_01.wav", 1, GWAVE_DEFAULT);
     gsLoadSE(SE_GhostDeath, "Assets/SE/Ghost Death_02.wav", 1, GWAVE_DEFAULT);
-    gsLoadSE(SE_Slash, "Assets/SE/sword-drawn1.wav", 1, GWAVE_DEFAULT);
+    gsLoadSE(SE_Slash, "Assets/SE/sword-drawn1.wav", 2, GWAVE_DEFAULT);
+    gsLoadSE(SE_FireBolt, "Assets/SE/Fire bolt 19_edit.wav", 2, GWAVE_DEFAULT);
     
     //SurogSakones‚ÌƒƒbƒVƒ…‚Ì“Ç‚Ýž‚Ý
     gsLoadMesh(Mesh_SurogSakones, "Assets/Model/Enemy/Ghost_T-pose.msh");
@@ -102,11 +110,11 @@ void BossTestScene::update(float delta_time) {
 	}
 	if(gsGetKeyTrigger(GKEY_4))
 	{
-        world_.particle_manager()->hit(GSvector3::zero());
+        gsPlaySE(SE_Slash);
 	}
     if (gsGetKeyState(GKEY_5))
     {
-        world_.particle_manager()->death_smoke(GSvector3::zero());
+        gsStopSE(SE_Slash);
     }
     if (gsGetKeyState(GKEY_6))
     {

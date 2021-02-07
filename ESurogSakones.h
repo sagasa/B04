@@ -96,13 +96,18 @@ private:
 	void draw_hp()const;
 	void draw_hp_3D()const;
 
+	void flip();
+	void play_se_attack(GSuint se);
+	void play_se_damage(bool flag = false);
+
 private:
 	State state_ = State::Unkown;
 	State prev_state_;
 	float state_timer_{ 0.0f };
 	//ƒXƒ^ƒ“’l
 	int stun_counter_{ 0 };
-	int attack_counter_{ 0 };
+	int se_damage_counter_{ 0 };
+	int se_attack_counter_{ 0 };
 	
 	GSvector3 destination_;
 	Move move_way_;
