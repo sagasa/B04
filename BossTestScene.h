@@ -23,6 +23,7 @@ class BossTestScene :
 
 private:
 	World world_;
+	bool load_{ false };
 };
 
 #endif
