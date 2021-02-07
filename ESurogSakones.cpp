@@ -107,31 +107,23 @@ bool ESurogSakones::on_hit(const Actor& attacker, float atk_power)
 {
 	if (state_ == State::Stun || state_ == State::Dying)return false;
 	if (attacker.tag() == "PlayerAttack")
-	{
-		if (target_posrelation(player_))
-		{
-			transform_.rotation(GSquaternion::euler(GSvector3{ 0.0f,90.0f,0.0f }));
-			flip_ = true;
-		}
-		else
-		{
-			transform_.rotation(GSquaternion::euler(GSvector3{ 0.0f,-90.0f,0.0f }));
-			flip_ = false;
-		}
-
+	{		
 		++stun_counter_;
 		hp_ -= atk_power;
-		gsPlaySE(SE_GhostDamage);
 		
+		play_se_damage();
 		if (hp_ <= 0.0f)
 		{
-			gsPlaySE(SE_GhostDeath);
-			change_state(State::Dying, MotionDying, false);			
+			play_se_damage(true);
+			change_state(State::Dying, MotionDying, false);
+			flip();
+			return true;
 		}
-		else if(stun_counter_ >= 3&&motion_==MotionScytheAttack){
-			gsPlaySE(SE_BossGhostDamage);
-			change_state(State::Stun, MotionDamage1, false);
+		if (stun_counter_ >= 5 && motion_ != MotionScytheAttack)
+		{
 			stun_counter_ = 0;
+			change_state(State::Stun, MotionDamage1, false);
+			flip();
 		}
 		psyco1_attack_flag_ = false;
 		psyco2_attack_flag_ = false;
@@ -140,6 +132,20 @@ bool ESurogSakones::on_hit(const Actor& attacker, float atk_power)
 		return true;
 	}
 	return false;
+}
+
+void ESurogSakones::flip()
+{
+	if (target_posrelation(player_))
+	{
+		transform_.rotation(GSquaternion::euler(GSvector3{ 0.0f,90.0f,0.0f }));
+		flip_ = true;
+	}
+	else
+	{
+		transform_.rotation(GSquaternion::euler(GSvector3{ 0.0f,-90.0f,0.0f }));
+		flip_ = false;
+	}
 }
 void ESurogSakones::update_state(float delta_time) {
 	//èÛë‘Ç…ÇÊÇ¡ÇƒêÿÇËë÷Ç¶
@@ -447,14 +453,15 @@ void ESurogSakones::debug_input()
 void ESurogSakones::scythe_attack()
 {
 	generate_attackcollider();
-	gsPlaySE(SE_GhostAttack1);
+	play_se_attack(SE_GhostAttack1);
 	gsPlaySE(SE_Slash);
 	change_state(State::Attack, MotionScytheAttack, true);
 }
 
 void ESurogSakones::psyco1_attack()
 {
-	gsPlaySE(SE_GhostAttack2);
+	gsPlaySE(SE_FireBolt);
+	play_se_attack(SE_GhostAttack1);
 	GSvector3 position = transform_.position()+GSvector3{0.0f,4.0f,0.0f};
 	generate_pshychokinesis(position+GSvector3{-1.5f,0.0f,0.0f},30.0f);
 	generate_pshychokinesis(position+GSvector3{0.0f,1.0f,0.0f},90.0f);
@@ -464,6 +471,8 @@ void ESurogSakones::psyco1_attack()
 
 void ESurogSakones::psyco2_attack()
 {
+	gsPlaySE(SE_FireBolt);
+	play_se_attack(SE_GhostAttack2);
 	GSvector3 position = transform_.position() + GSvector3{ 0.0f,2.0f,0.0f };
 	const int GenerateCount{ 3 };
 	for (int i = 0; i < GenerateCount; ++i) {
@@ -475,7 +484,7 @@ void ESurogSakones::psyco2_attack()
 void ESurogSakones::turn()
 {
 	gsPlaySE(SE_Slash);
-	gsPlaySE(SE_GhostAttack1);
+	play_se_attack(SE_GhostAttack1);
 	generate_attackcollider(true);
 	change_state(State::Turn, MotionScytheAttack, true);
 }
@@ -529,6 +538,32 @@ void ESurogSakones::generate_aura(float delta_time)
 		//ç¿ïWïœä∑
 		GSvector3 position = SmokePosition * mesh_.bone_matrices(2);
 		if (std::fmod(effect_timer_, 0.05f) <= 0.025f)world_->particle_manager()->boss_smoke(position);
+	}
+}
+
+void ESurogSakones::play_se_attack(GSuint se)
+{
+	++se_attack_counter_;
+	if (se_attack_counter_ >= 3) {
+		gsPlaySE(se);
+		se_attack_counter_ = 0;
+	}
+}
+
+void ESurogSakones::play_se_damage(bool flag)
+{
+	gsPlaySE(SE_GhostDamage);
+	if (!flag)
+	{
+		++se_attack_counter_;
+		if (se_attack_counter_ >= 3) {
+			gsPlaySE(SE_BossGhostDamage);
+			se_attack_counter_ = 0;
+		}
+	}
+	else
+	{
+		gsPlaySE(SE_BossGhostDamage);
 	}
 }
 

@@ -67,6 +67,7 @@ private:
 	void move_attack(float delta_time);
 	//移動した後のターン
 	void turn();
+	void flip();
 	void debug_draw()const;
 	void debug_input();
 
@@ -93,9 +94,9 @@ private:
 
 	void draw_hp_2D()const;
 	void draw_hp_3D()const;
-	void draw_hp_lid_lr(const GSvector3& position)const;
-	void draw_hp_gage(const GSvector3& position)const;
-	void draw_hp_lid_ud(const GSvector3& position)const;
+
+	void play_se_attack(GSuint se);
+	void play_se_damage(bool flag=false);
 
 
 private:
@@ -103,8 +104,9 @@ private:
 	State prev_state_;
 	float state_timer_{ 0.0f };
 	//スタン値
-	float stun_{ 0.0f };
-	int se_counter_{ 0 };
+	float stun_counter_{ 0.0f };
+	int se_damage_counter_{ 0 };
+	int se_attack_counter_{ 0 };
 
 	GSvector3 destination_{ GSvector3::zero() };
 	

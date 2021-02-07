@@ -33,6 +33,10 @@ void PoltergeistBullet::update(float delta_time) {
 		return;
 	}
 	else died_timer_ += delta_time;*/
+	Actor* camera = world_->find_actor("Camera");
+	if (camera != nullptr)
+		camera_pos = camera->transform().position();
+
 	//画面外に出たら死亡
 	if (is_out_camera()) {
 		die();
@@ -48,11 +52,52 @@ void PoltergeistBullet::update(float delta_time) {
 
 //描画
 void PoltergeistBullet::draw() const {
+	
 	glPushMatrix();
 	glMultMatrixf(transform_.localToWorldMatrix());
+	//GSmatrix4 projection = GSmatrix4::perspective(45.0f, 640.0f / 480.0f, 0.3f, 1000.0f);
+	
+	GSmatrix4 projection_mat, modelview_mat;
+	glGetFloatv(GL_PROJECTION_MATRIX, (GLfloat*)&projection_mat);
+	glGetFloatv(GL_MODELVIEW_MATRIX, (GLfloat*)&modelview_mat);
+	GSmatrix4 world_view_projection = modelview_mat * projection_mat;
+
+	//
+	GSvector3 light_position{ 100.0f,100.0f,100.0f };
+	GScolor light_ambient{ 0.2f,0.2f,0.2f,1.0f };
+	GScolor light_diffuse{ 1.0f,1.0f,1.0f,1.0f };
+	GScolor light_specular{ 1.0f,1.0f,1.0f,1.0f };
+
+	GScolor material_ambient{ 1.0f,1.0f,1.0f,1.0f };
+	GScolor material_diffuse{ 1.0f,1.0f,1.0f,1.0f };
+	GScolor material_spacular{ 1.0f,1.0f,1.0f,1.0f };
+	GScolor material_emission{ 0.0f,0.0f,0.0f,1.0f };
+	float material_shininess{ 10.0f };
+
+	gsBeginShader(0);
+
+	gsSetShaderParamMatrix4("u_WorldViewProjectionMatrix", (GSmatrix4*)&world_view_projection);
+	gsSetShaderParam3f("u_CameraPosition", (GSvector3*)&camera_pos);
+	//ライトの座標をシェーダーに渡す
+	gsSetShaderParam3f("u_LightPosition", (GSvector3*)&light_position);
+	gsSetShaderParam4f("u_LightAmbient", &light_ambient);
+	gsSetShaderParam4f("u_LightDiffuse", &light_diffuse);
+	gsSetShaderParam4f("u_LightSpecular", &light_specular);
+
+	//
+	gsSetShaderParam4f("u_MaterialAmbient", &material_ambient);
+	gsSetShaderParam4f("u_MaterialDiffuse", &material_diffuse);
+	gsSetShaderParam4f("u_MaterialSpecular", &material_spacular);
+	gsSetShaderParam4f("u_MaterialEmission", &material_emission);
+	gsSetShaderParam1f("u_MaterialShininess", material_shininess);
+
+	//ベースカラーのテクスチャ
+	gsSetShaderParamTexture("u_BaseMap", 0);
+	gsSetShaderParamTexture("u_NormalMap", 1);
+
 	gsDrawMesh(Mesh_Book);
 	glPopMatrix();
-	collider().draw();
+	//collider().draw();
 }
 
 //衝突リアクション
@@ -71,7 +116,7 @@ bool PoltergeistBullet::is_out_camera() const {
 	GSvector3 to_target = transform_.position() - camera->transform().position();
 	//カメラの前ベクトル
 	GSvector3 forward = camera->transform().forward();
-	float angle = abs(GSvector3::signed_angle(forward, to_target));
+	float angle = abs(GSvector3::signed_angle(forward, to_target)); 
 	return (angle >= 45.0f);
 }
 

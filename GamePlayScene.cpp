@@ -25,6 +25,9 @@ void GamePlayScene::start(int number) {
     stage_number_ = number;
 
     gsLoadShader(0, "Paladin.vert", "Paladin.frag");
+
+    gsLoadShader(0, "PoltergeistBullet.vert", "PoltergeistBullet.frag");
+
     // ぱっちぃメッシュの読み込み
     //gsLoadMeshEx(0, "Assets/Model/patti.msh");
     //終了フラグ初期化
