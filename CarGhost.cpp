@@ -45,7 +45,7 @@ const float atk_power = 1.0f;
 
 //コンストラクタ
 CarGhost::CarGhost(IWorld* world, const GSvector3& position) :
-	mesh_{ Mesh_Poltergeist,Skeleton_CarGhost,Animation_CarGhost,MotionIdle },
+	mesh_{ Mesh_Ghost,Skeleton_Ghost,Animation_Ghost,MotionIdle },
 	motion_{ MotionIdle },
 	motion_loop_{ true },
 	state_{ State::Idle },
@@ -113,7 +113,9 @@ void CarGhost::update(float delta_time) {
 //描画
 void CarGhost::draw() const {
 	if (is_inside()) {
+		glColor3f(1.0f,0.425f,0.0f);
 		mesh_.draw();
+		glColor3f(1.0f,1.0f,1.0f);
 		/*glPushMatrix();
 		glMultMatrixf(transform_.localToWorldMatrix());
 		gsBeginShader(Shader_Ghost);

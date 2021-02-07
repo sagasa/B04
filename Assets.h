@@ -21,7 +21,8 @@ enum Skeleton {
     Skeleton_RushGhost,    //RushGhost
     Skeleton_Poltergeist,  //Poltergeist
     Skeleton_SurogSakones, //SurogSakones
-    Skeleton_Paladin
+    Skeleton_Paladin,
+	Skeleton_Ghost
 };
 
 //アニメーションデータ
@@ -31,7 +32,8 @@ enum  Animation {
     Animation_RushGhost,   //RushGhost
     Animation_Poltergeist, //Poltergeist
     Animation_SurogSakones, //SurogSakones
-    Animation_Paladin
+    Animation_Paladin,
+	Animation_Ghost
 };
 
 //シェーダーデータ

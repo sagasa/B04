@@ -14,9 +14,12 @@
 #include"ESurogSakones.h"
 #include "EPsycokinesisBullet.h"
 #include "Actor.h"
+#include "CarGhost.h"
 #include "NormalGhost.h"
 #include "Particle.h"
 #include "ParticleManager.h"
+#include "Poltergeist.h"
+#include "RushGhost.h"
 using BulletType = EPsycokinesisBullet::Type;
 
 void BossTestScene::start(int number) {
@@ -24,14 +27,23 @@ void BossTestScene::start(int number) {
     //gsLoadShader(0, "PhongAmbientDiffuseSpecular.vert", "PhongAmbientDiffuseSpecular.frag");
 	/*gsLoadMesh(Mesh_Paladin, "Assets/Model/Paladin_j_nordstrom - Base/paladin_j_nordstrom.msh");
     gsLoadSkeleton(Skeleton_Paladin, "Assets/Model/Paladin_j_nordstrom/paladin_j_nordstrom.skl");
-    gsLoadAnimation(Animation_Paladin, "Assets/Model/Paladin_j_nordstrom/paladin_j_nordstrom.anm");*/    	
+    gsLoadAnimation(Animation_Paladin, "Assets/Model/Paladin_j_nordstrom/paladin_j_nordstrom.anm");*/
+
+    //Player
+    gsLoadMesh(Mesh_Ghost, "Assets/Model/Enemy/Ghost.msh");
+    gsLoadSkeleton(Skeleton_Ghost, "Assets/Model/Enemy/Ghost.skl");
+    gsLoadAnimation(Animation_Ghost, "Assets/Model/Enemy/Ghost.anm");
+
+    //Player
+    gsLoadMesh(Mesh_Player, "Assets/Model/Enemy/Ghost.msh");
+    gsLoadSkeleton(Skeleton_Player, "Assets/Model/Enemy/Ghost.skl");
+    gsLoadAnimation(Animation_Player, "Assets/Model/Enemy/Ghost.anm");
+
+    gsLoadMesh(Mesh_Paladin, "Assets/Model/Paladin_j_nordstrom/paladin_j_nordstrom.msh");
+    gsLoadSkeleton(Skeleton_Paladin, "Assets/Model/Paladin_j_nordstrom/paladin_j_nordstrom.skl");
+    gsLoadAnimation(Animation_Paladin, "Assets/Model/Paladin_j_nordstrom/paladin_j_nordstrom.anm");
     
-    //SurogSakonesのメッシュの読み込み
-    gsLoadMesh(Mesh_SurogSakones, "Assets/Model/Enemy/Ghost_T-pose.msh");
-    //SurogSakonesのスケルトンの読み込み
-    gsLoadSkeleton(Skeleton_SurogSakones, "Assets/Model/Enemy/Ghost_T-pose.skl");
-    //SurogSakonesのアニメーションの読み込み
-    gsLoadAnimation(Animation_SurogSakones, "Assets/Model/Enemy/Ghost_T-pose.anm");
+    
 
     gsLoadOctree(Octree_Stage, "Assets/Octree/stage1/stage1.oct");
     gsLoadOctree(Octree_Collider, "Assets/Octree/stage1/stage1_collider.oct");
@@ -55,8 +67,10 @@ void BossTestScene::start(int number) {
     //world_.add_actor(new SurogSakones{ &world_,GSvector3{0.0f,0.0f,0.0f} });
     //world_.add_actor(new ESurogSakones{ &world_,GSvector3{0.0f,0.0f,0.0f} });
     world_.add_particle_manager(new ParticleManager{ &world_ });
-    world_.add_actor(new NormalGhost{ &world_,GSvector3::right()*2.0f });
-	
+    /*world_.add_actor(new Poltergeist{ &world_,GSvector3::right()*2.0f });	
+    world_.add_actor(new RushGhost{ &world_,GSvector3::right()*2.0f });	
+    world_.add_actor(new NormalGhost{ &world_,GSvector3::right()*2.0f });	*/
+    world_.add_actor(new CarGhost{ &world_,GSvector3::left()*5.0f });	
 }
 
 //更新
@@ -64,26 +78,13 @@ void BossTestScene::update(float delta_time) {
 	if(!load_)
 	{
         load_ = true;
-        // CarGhostのメッシュの読み込み
-        gsLoadMesh(Mesh_CarGhost, "Assets/Model/Enemy/Ghost.msh");
-        gsLoadMesh(Mesh_RushGhost, "Assets/Model/Enemy/Ghost2.msh");
-        gsLoadMesh(Mesh_Poltergeist, "Assets/Model/Enemy/Ghost3.msh");
-        gsLoadSkeleton(Skeleton_CarGhost, "Assets/Model/Enemy/Ghost.skl");
-        gsLoadSkeleton(Skeleton_RushGhost, "Assets/Model/Enemy/Ghost.skl");
-        gsLoadSkeleton(Skeleton_Poltergeist, "Assets/Model/Enemy/Ghost.skl");
-        gsLoadAnimation(Animation_CarGhost, "Assets/Model/Enemy/Ghost.anm");
-        gsLoadAnimation(Animation_RushGhost, "Assets/Model/Enemy/Ghost.anm");
-        gsLoadAnimation(Animation_Poltergeist, "Assets/Model/Enemy/Ghost.anm");
-
-        //Player
-        gsLoadMesh(Mesh_Player, "Assets/Model/Enemy/Ghost.msh");
-        gsLoadSkeleton(Skeleton_Player, "Assets/Model/Enemy/Ghost.skl");
-        gsLoadAnimation(Animation_Player, "Assets/Model/Enemy/Ghost.anm");
-
-        gsLoadMesh(Mesh_Paladin, "Assets/Model/Paladin_j_nordstrom/paladin_j_nordstrom.msh");
-        gsLoadSkeleton(Skeleton_Paladin, "Assets/Model/Paladin_j_nordstrom/paladin_j_nordstrom.skl");
-        gsLoadAnimation(Animation_Paladin, "Assets/Model/Paladin_j_nordstrom/paladin_j_nordstrom.anm");
-
+        
+        //SurogSakonesのメッシュの読み込み
+        gsLoadMesh(Mesh_SurogSakones, "Assets/Model/Enemy/Ghost_T-pose.msh");
+        //SurogSakonesのスケルトンの読み込み
+        gsLoadSkeleton(Skeleton_SurogSakones, "Assets/Model/Enemy/Ghost_T-pose.skl");
+        //SurogSakonesのアニメーションの読み込み
+        gsLoadAnimation(Animation_SurogSakones, "Assets/Model/Enemy/Ghost_T-pose.anm");
         //SE
         gsLoadSE(SE_GhostDamage, "Assets/SE/ghost_damage.wav", 1, GWAVE_DEFAULT);
         gsLoadSE(SE_GhostAttack1, "Assets/SE/Ghost Attack_01.wav", 1, GWAVE_DEFAULT);
