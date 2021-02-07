@@ -8,7 +8,7 @@
 const float Delay_time{3.0f};
 
 PoltergeistBullet::PoltergeistBullet(IWorld* world, const GSvector3& position, const GSvector3& velocity, float atk_power) :
-	died_timer_{0.0f} {
+	died_timer_{ 0.0f } {
 	//ワールドの設定
 	world_ = world;
 	//名前の設定
@@ -33,15 +33,16 @@ void PoltergeistBullet::update(float delta_time) {
 		return;
 	}
 	else died_timer_ += delta_time;*/
-	Actor* camera = world_->find_actor("Camera");
-	if (camera != nullptr)
-		camera_pos = camera->transform().position();
+	
 
 	//画面外に出たら死亡
 	if (is_out_camera()) {
 		die();
 		return;
 	}
+	Actor* camera = world_->find_actor("Camera");
+	if (camera != nullptr)
+		camera_pos = camera->transform().position();
 	//回転する
 	transform_.rotate(0.0f,1.0f,1.0f);
 	//移動する
@@ -53,8 +54,16 @@ void PoltergeistBullet::update(float delta_time) {
 //描画
 void PoltergeistBullet::draw() const {
 	
+
 	glPushMatrix();
 	glMultMatrixf(transform_.localToWorldMatrix());
+	//gsDrawMesh(Mesh_Player);
+	glPushAttrib(GL_ENABLE_BIT);
+	glDisable(GL_LIGHTING);
+	collider_.draw();
+	glPopAttrib();
+
+
 	//GSmatrix4 projection = GSmatrix4::perspective(45.0f, 640.0f / 480.0f, 0.3f, 1000.0f);
 	
 	GSmatrix4 projection_mat, modelview_mat;
@@ -63,10 +72,10 @@ void PoltergeistBullet::draw() const {
 	GSmatrix4 world_view_projection = modelview_mat * projection_mat;
 
 	//
-	GSvector3 light_position{ 100.0f,100.0f,100.0f };
-	GScolor light_ambient{ 0.2f,0.2f,0.2f,1.0f };
-	GScolor light_diffuse{ 1.0f,1.0f,1.0f,1.0f };
-	GScolor light_specular{ 1.0f,1.0f,1.0f,1.0f };
+	GSvector3 light_position{ 100.0f,100.0f,100.0f };//ライトの位置
+	GScolor light_ambient{ 0.2f,0.2f,0.2f,1.0f };//ライトの環境光
+	GScolor light_diffuse{ 1.0f,1.0f,1.0f,1.0f };//ライトの拡散反射光
+	GScolor light_specular{ 1.0f,1.0f,1.0f,1.0f };//ライトの鏡面反射光
 
 	GScolor material_ambient{ 1.0f,1.0f,1.0f,1.0f };
 	GScolor material_diffuse{ 1.0f,1.0f,1.0f,1.0f };
@@ -75,8 +84,10 @@ void PoltergeistBullet::draw() const {
 	float material_shininess{ 10.0f };
 
 	gsBeginShader(0);
+	GSmatrix4 world = transform_.localToWorldMatrix();
 
 	gsSetShaderParamMatrix4("u_WorldViewProjectionMatrix", (GSmatrix4*)&world_view_projection);
+	gsSetShaderParamMatrix4("u_WorldMatrix", (GSmatrix4*)&world);
 	gsSetShaderParam3f("u_CameraPosition", (GSvector3*)&camera_pos);
 	//ライトの座標をシェーダーに渡す
 	gsSetShaderParam3f("u_LightPosition", (GSvector3*)&light_position);
@@ -94,8 +105,12 @@ void PoltergeistBullet::draw() const {
 	//ベースカラーのテクスチャ
 	gsSetShaderParamTexture("u_BaseMap", 0);
 	gsSetShaderParamTexture("u_NormalMap", 1);
+	
+	gsDrawMeshEx(Mesh_Book);
+	gsEndShader();
+	glDisable(GL_POLYGON_STIPPLE);
 
-	gsDrawMesh(Mesh_Book);
+
 	glPopMatrix();
 	//collider().draw();
 }

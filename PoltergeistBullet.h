@@ -3,6 +3,7 @@
 
 #include"Actor.h"
 #include"DamageProp.h"
+#include "AnimatedMesh.h"
 
 class PoltergeistBullet : public Actor {
 public:
@@ -28,8 +29,9 @@ private:
 	//çUåÇóÕ
 	float atk_power_;
 
-	GSvector3 camera_pos;
+	GSvector3 camera_pos{ 0,0,0 };
+
+	
+
 };
-
-
 #endif
