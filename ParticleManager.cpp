@@ -115,11 +115,11 @@ void ParticleManager::death_smoke(const GSvector3& position,const GSvector3& vel
 {
 	auto p = new Particle{ world_ };
 	p->transform().position(position);
-	p->velocity(GSvector3{ gsRandf(-0.025f,0.025f),gsRandf(-0.01f,-0.005f),0.0f });
+	p->velocity(GSvector3{ gsRandf(-0.025f,0.03f),gsRandf(-0.01f,-0.005f),0.0f });
 	p->lifespan_ = 20.0f;
 	p->image_handle_ = Texture_Smoke;
-	p->start_scale_ = GSvector2{ 0.8f,0.8f };
-	p->end_scale_ = GSvector2{ 1.5f,1.5f };
+	p->start_scale_ = GSvector2{ 0.5f,0.5f };
+	p->end_scale_ = GSvector2{ 1.2f,1.2f };
 	p->angle_ = gsRandf(-45.0f, 45.0f);
 	p->angular_velocity_ = gsRandf(-5.0f, 5.0f);
 	p->color_ = GSvector3{ gsRandf(0.3f,0.5f),0.0f,gsRandf(0.3f,0.5f) };
@@ -130,6 +130,29 @@ void ParticleManager::death_smoke(const GSvector3& position,const GSvector3& vel
 	p->sfactor = GL_SRC_ALPHA;
 	p->dfactor = GL_ONE_MINUS_SRC_ALPHA;
 	p->damp_ = gsRandf(0.95f, 0.98f);
+	p->force_ = GSvector3{ 0.0f,0.005f,0.0f };
+	world_->add_actor(p);
+}
+
+void ParticleManager::death_smoke2(const GSvector3& position, const GSvector3& velocity) const
+{
+	auto p = new Particle{ world_ };
+	p->transform().position(position);
+	p->velocity(GSvector3{ gsRandf(-0.025f,0.03f),gsRandf(-0.01f,-0.005f),0.0f });
+	p->lifespan_ = 30.0f;
+	p->image_handle_ = Texture_Smoke;
+	p->start_scale_ = GSvector2{ 1.2f,1.2f };
+	p->end_scale_ = GSvector2{ 4.0f,4.0f };
+	p->angle_ = gsRandf(-90.0f, 90.0f);
+	p->angular_velocity_ = gsRandf(-5.0f, 5.0f);
+	p->color_ = GSvector3{ gsRandf(0.3f,0.5f),0.0f,gsRandf(0.3f,0.5f) };
+	p->start_alpha_ = 0.5f;
+	p->end_alpha_ = 0.0f;
+	p->fade_in_time = 0.1f;
+	p->fade_out_time = 0.5f;
+	p->sfactor = GL_SRC_ALPHA;
+	p->dfactor = GL_ONE_MINUS_SRC_ALPHA;
+	p->damp_ = gsRandf(0.1f, 0.2f);
 	p->force_ = GSvector3{ 0.0f,0.005f,0.0f };
 	world_->add_actor(p);
 }
@@ -223,12 +246,14 @@ void ParticleManager::psyco_bullet_small(const GSvector3& position, const GSvect
 	if(velocity_==GSvector3::zero())p->lifespan_ = gsRandf(10.0f, 20.0f);
 	else p->lifespan_ = gsRandf(5.0f, 115.0f);
 	p->image_handle_ = Texture_Smoke;
-	p->start_scale_ = GSvector2{ 0.3f,0.3f };
-	p->end_scale_ = GSvector2{ 0.8f,0.8f };
+	float start_scale_{ gsRandf(0.3f,0.5f) };
+	float end_scale_{ gsRandf(0.6f,1.0f) };
+	p->start_scale_ = GSvector2{ start_scale_,start_scale_ };
+	p->end_scale_ = GSvector2{ end_scale_,end_scale_ };
 	p->angle_ = gsRandf(-45.0f, 45.0f);
 	p->angular_velocity_ = gsRandf(-5.0f, 5.0f);
 	p->color_ = GSvector3{ gsRandf(0.3f,0.5f),0.0f,gsRandf(0.3f,0.5f) };
-	p->start_alpha_ = 0.5f;
+	p->start_alpha_ = 0.7f;
 	p->end_alpha_ = 0.0f;
 	p->fade_in_time = 0.1f;
 	p->fade_out_time = 0.5f;
@@ -263,5 +288,29 @@ void ParticleManager::psyco_bullet_big(const GSvector3& position, const GSvector
 	world_->add_actor(p);
 }
 
+void ParticleManager::boss_retreat(const GSvector3& position) const
+{
+	auto p = new Particle{ world_ };
+	p->transform().position(position);
+	p->velocity(GSvector3{ gsRandf(-0.04f,0.04f),gsRandf(-0.01f,-0.005f),0.0f });
+	p->lifespan_ = gsRandf(20.0f,35.0f);
+	p->image_handle_ = Texture_Smoke;
+	float startscale = gsRandf(2.0f, 3.0f);
+	p->start_scale_ = GSvector2{ startscale,startscale };
+	float endscale = gsRandf(3.5f, 4.0f);
+	p->end_scale_ = GSvector2{ endscale,endscale };
+	p->angle_ = gsRandf(-45.0f, 45.0f);
+	p->angular_velocity_ = gsRandf(-5.0f, 5.0f);
+	p->color_ = GSvector3{ gsRandf(0.3f,0.5f),0.0f,gsRandf(0.3f,0.5f) };
+	p->start_alpha_ = 0.5f;
+	p->end_alpha_ = 0.0f;
+	p->fade_in_time = 0.1f;
+	p->fade_out_time = 0.5f;
+	p->sfactor = GL_SRC_ALPHA;
+	p->dfactor = GL_ONE_MINUS_SRC_ALPHA;
+	p->damp_ = gsRandf(0.95f, 0.98f);
+	p->force_ = GSvector3{ 0.0f,0.02f,0.0f };
+	world_->add_actor(p);
+}
 
 

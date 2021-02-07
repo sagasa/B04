@@ -21,6 +21,7 @@ public:
 	void hit(const GSvector3& position)const;
 	//”Z‚ä‚¢‡F‚Ì‰Œ
 	void death_smoke(const GSvector3& position,const GSvector3& velocity=GSvector3::zero())const;
+	void death_smoke2(const GSvector3& position, const GSvector3& velocity = GSvector3::zero())const;
 	//×‚¢‡F‚Ì‰Œ
 	void boss_smoke(const GSvector3& position, const GSvector3& velocity = GSvector3::zero())const;
 	//œßˆË‚ÌŒõ
@@ -32,6 +33,7 @@ public:
 
 	void psyco_bullet_small(const GSvector3& position, const GSvector3& velocity = GSvector3::zero())const;
 	void psyco_bullet_big(const GSvector3& position, const GSvector3& velocity = GSvector3::zero())const;
+	void boss_retreat(const GSvector3& position)const;
 };
 
 #endif

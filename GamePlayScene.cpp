@@ -25,6 +25,9 @@ void GamePlayScene::start(int number) {
     stage_number_ = number;
 
     gsLoadShader(0, "Paladin.vert", "Paladin.frag");
+
+    gsLoadShader(0, "PoltergeistBullet.vert", "PoltergeistBullet.frag");
+
     // ぱっちぃメッシュの読み込み
     //gsLoadMeshEx(0, "Assets/Model/patti.msh");
     //終了フラグ初期化
@@ -64,7 +67,7 @@ void GamePlayScene::start(int number) {
     gsLoadMesh(Mesh_Skybox, "Assets/Skybox/DarkStorm4K.msh");
     //int型のステージ番号をstringstream型に変換
     std::stringstream ss;
-    ss << stage_number_;
+    ss << 2;
     //ステージ番号によってロードするCSVファイルを変更する
     std::string csv_pass;
     csv_pass = "Assets/Map/Stage" + ss.str() + ".csv";

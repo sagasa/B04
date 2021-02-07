@@ -6,7 +6,9 @@
 #include"Poltergeist.h"
 #include"NormalGhost.h"
 #include"SurogSakones.h"
+#include"DeathSmoke.h"
 #include"player_paladin.h"
+#include"ESurogSakones.h"
 
 const float size_{ 1 };
 
@@ -83,5 +85,12 @@ void MapGenerator::generate(IWorld* world,const GSvector3& position) {
 	else if (name == "SurogSakones")
 	{
 		world->add_actor(new SurogSakones{ world,position });
+	}
+	else if (name == "DeathSmoke")
+	{
+		world->add_actor(new DeathSmoke{ world,position });
+	}
+	else if (name == "ESurogSakones") {
+		world->add_actor(new ESurogSakones{ world,position });
 	}
 }

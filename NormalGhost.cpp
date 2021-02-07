@@ -94,10 +94,16 @@ void NormalGhost::update(float delta_time) {
 //描画
 void NormalGhost::draw() const {
 	if (is_inside()) {
+		glPushMatrix();
+		glColor3f(0.0f, 1.0f, 0.8f);
 		//メッシュの描画
 		mesh_.draw();
+		glColor3f(1.0f, 1.0f, 1.0f);
+		glPopMatrix();
 		//衝突判定のデバッグ表示
+#ifdef _DEBUG
 		collider().draw();
+#endif
 		if (state_ == State::Died) {
 			world_->particle_manager()->death_smoke(transform_.position());
 		}
@@ -169,7 +175,7 @@ void NormalGhost::move(float delta_time) {
 	GSvector3 velocity{-1.0f,0.0f,0.0f};
 	velocity.z = 0.0f;
 	velocity_ = velocity;
-	transform_.translate(velocity_ * delta_time * Speed, GStransform::Space::World);
+	//transform_.translate(velocity_ * delta_time * Speed, GStransform::Space::World);
 }
 
 //ダメージ中

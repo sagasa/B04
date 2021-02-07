@@ -165,14 +165,14 @@
     <ClCompile Include="StageClearScene.cpp">
       <Filter>ソース ファイル\Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="ESurogSakones.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="EPsycokinesisBullet.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="DeathSmoke.cpp">
       <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="ESurogSakones.cpp">
+      <Filter>ソース ファイル\Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="EPsycokinesisBullet.cpp">
+      <Filter>ソース ファイル\Actors</Filter>
     </ClCompile>
     <ClCompile Include="HPBar.cpp">
       <Filter>ソース ファイル</Filter>
@@ -323,14 +323,14 @@
     <ClInclude Include="StageClearScene.h">
       <Filter>ヘッダー ファイル\Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="ESurogSakones.h">
+    <ClInclude Include="DeathSmoke.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="EPsycokinesisBullet.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\Actors</Filter>
     </ClInclude>
-    <ClInclude Include="DeathSmoke.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="ESurogSakones.h">
+      <Filter>ヘッダー ファイル\Actors</Filter>
     </ClInclude>
     <ClInclude Include="HPBar.h">
       <Filter>ヘッダー ファイル</Filter>
@@ -349,5 +349,7 @@
     <None Include="Paladin.frag">
       <Filter>ソース ファイル\Shade</Filter>
     </None>
+    <None Include="PoltergeistBullet.frag" />
+    <None Include="PoltergeistBullet.vert" />
   </ItemGroup>
 </Project>

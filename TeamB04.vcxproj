@@ -245,6 +245,8 @@
     <None Include="Ghost.vert" />
     <None Include="Paladin.frag" />
     <None Include="Paladin.vert" />
+    <None Include="PoltergeistBullet.frag" />
+    <None Include="PoltergeistBullet.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

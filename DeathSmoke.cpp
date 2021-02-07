@@ -25,7 +25,7 @@ DeathSmoke::DeathSmoke(IWorld* world, const GSvector3& position)
 	//–¼‘O‚ÌÝ’è
 	name_ = "DeathSmoke";
 	//ƒ^ƒO–¼‚ÌÝ’è
-	tag_ = "EnemyTag";
+	tag_ = "FieldDamage";
 	//‘Ì—Í–³‚µ
 	//Õ“Ë”»’è‹…‚ÌÝ’è
 	collider_ = BoundingSphere{ Radius,Center };
@@ -47,11 +47,11 @@ void DeathSmoke::update(float delta_time)
 	GSvector3 left_position{ center_position };//¶
 	left_position.x -= Radius / 2;
 
-	world_->particle_manager()->death_smoke(center_position);
-	world_->particle_manager()->death_smoke(top_position);
+	world_->particle_manager()->death_smoke2(center_position);
+	/*world_->particle_manager()->death_smoke(top_position);
 	world_->particle_manager()->death_smoke(under_position);
 	world_->particle_manager()->death_smoke(right_position);
-	world_->particle_manager()->death_smoke(left_position);
+	world_->particle_manager()->death_smoke(left_position);*/
 
 }
 void DeathSmoke::draw() const

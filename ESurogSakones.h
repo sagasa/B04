@@ -64,8 +64,8 @@ private:
 	void generate_pshychokinesis(const GSvector3& position, const GSvector3& velocity,float delay = 0.0f);
 	//近接攻撃
 	void generate_attackcollider(bool is_turn = false);
-	//移動しつつ攻撃
-	void move_attack(float delta_time);
+	//オーラ生成
+	void generate_aura(float delta_time);
 	//移動した後のターン
 	void turn();
 	void debug_draw()const;
@@ -86,21 +86,29 @@ private:
 	bool is_psyco2_attack(const Actor* other);
 	bool is_turn(const Actor* other);
 	bool is_move(const Actor* other)const;
+	bool is_close()const;
+
+	void debug_input();
 
 	void collide_field();
 	void collide_actor(Actor& other);
 
 	void draw_hp()const;
+	void draw_hp_3D()const;
 
+	void flip();
+	void play_se_attack(GSuint se);
+	void play_se_damage(bool flag = false);
 
 private:
 	State state_ = State::Unkown;
 	State prev_state_;
 	float state_timer_{ 0.0f };
 	//スタン値
-	float stun_{ 0.0f };
-
-	std::vector<GSvector3> move_pos_;
+	int stun_counter_{ 0 };
+	int se_damage_counter_{ 0 };
+	int se_attack_counter_{ 0 };
+	
 	GSvector3 destination_;
 	Move move_way_;
 	//アニメーション制御
@@ -128,6 +136,8 @@ private:
 
 	//プレイヤー用の入れ物
 	Actor* player_;
+
+	float effect_timer_{ 0.0f };
 };
 
 #endif
