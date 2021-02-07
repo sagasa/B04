@@ -27,6 +27,8 @@ private:
 	float died_timer_;
 	//UŒ‚—Í
 	float atk_power_;
+
+	GSvector3 camera_pos;
 };
 
 

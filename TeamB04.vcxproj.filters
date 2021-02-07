@@ -343,5 +343,7 @@
     <None Include="Paladin.frag">
       <Filter>ソース ファイル\Shade</Filter>
     </None>
+    <None Include="PoltergeistBullet.frag" />
+    <None Include="PoltergeistBullet.vert" />
   </ItemGroup>
 </Project>
