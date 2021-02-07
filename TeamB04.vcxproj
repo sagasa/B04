@@ -158,6 +158,7 @@
     <ClCompile Include="ESurogSakones.cpp" />
     <ClCompile Include="Fade.cpp" />
     <ClCompile Include="GameOverScene.cpp" />
+    <ClCompile Include="HPBar.cpp" />
     <ClCompile Include="interact_collider.cpp" />
     <ClCompile Include="MapGenerator.cpp" />
     <ClCompile Include="EnemyTestScene.cpp" />
@@ -203,6 +204,7 @@
     <ClInclude Include="ESurogSakones.h" />
     <ClInclude Include="Fade.h" />
     <ClInclude Include="GameOverScene.h" />
+    <ClInclude Include="HPBar.h" />
     <ClInclude Include="interact_collider.h" />
     <ClInclude Include="interact_prop.h" />
     <ClInclude Include="Line.h" />

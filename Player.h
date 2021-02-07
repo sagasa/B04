@@ -32,10 +32,8 @@ protected:
 public:	
     // コンストラクタ
     Player(IWorld* world, const GSvector3& position,const AnimatedMesh& mesh);
-    // 描画
-    void draw() const override;
 
-    virtual void wake_up() = 0;
+    virtual void wake_up(const int base_hp) = 0;
 
     virtual void stop() = 0;
 };
