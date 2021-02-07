@@ -6,7 +6,7 @@
 #include"Actor.h"
 #include "interact_prop.h"
 
-//攻撃判定クラス
+//操作判定クラス
 class interact_collider : public Actor {
 public:
 	//コンストラクタ

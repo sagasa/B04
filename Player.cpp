@@ -107,26 +107,3 @@ Player::Player(IWorld* world, const GSvector3& position, const AnimatedMesh& mes
 }
 
 
-// •`‰æ
-void Player::draw() const {
-    mesh_.draw();
-	glPushMatrix();
-    glMultMatrixf(transform_.localToWorldMatrix());
-    glPushAttrib(GL_ENABLE_BIT);
-    glDisable(GL_LIGHTING);
-    collider_.draw();
-    glPopAttrib();
-
-    glPopMatrix();
-
-    mesh_.draw();
-    glPushMatrix();
-    GSvector2 pos{ 0,0 };
-    for (int i = 0; i < hp_; ++i)
-    {
-        GSvector2 scale{ 0.03f, 0.03f };
-        gsDrawSprite2D(Texture_Hp, &pos, NULL, NULL, NULL, &scale, NULL);
-        pos.x += 40;
-    }
-    glPopMatrix();
-}

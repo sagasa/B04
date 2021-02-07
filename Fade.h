@@ -16,7 +16,7 @@ public:
 	void update(float delta_time);
 	//描画
 	void draw() const;
-	//フェードが終わったかを取得
+	//終了フラグを取得
 	bool is_end() const;
 	//フェードインまたはフェードアウトに切り替え
 	void change_fade_flg();
@@ -28,10 +28,8 @@ private:
 	float alpha_value_;
 	//フェードインかフェードアウトか？
 	bool fade_in_;
-	//フェードが終わったか？
+	//終了フラグ
 	bool end_;
-	//クリックされたか？
-	bool change_fade_flg_;
 
 };
 

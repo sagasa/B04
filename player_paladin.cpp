@@ -4,6 +4,7 @@
 
 #include "ParticleManager.h"
 #include "AttackCollider.h"
+#include "HPBar.h"
 #include "player_ghost.h"
 
 GLubyte mask[128];
@@ -15,7 +16,7 @@ enum {
     MotionAttack = 9,	// ガード
     MotionDamage = 5,	// ダウン
     MotionWakeUp = 1,	// 起動
-    MotionExit = 3,	// 起動
+    MotionExit = 3,	// 消滅
 
 };
 std::ostream& operator<<(std::ostream& os, const GSvector3& dt)
@@ -23,17 +24,30 @@ std::ostream& operator<<(std::ostream& os, const GSvector3& dt)
     os << dt.x << ',' << dt.y << ',' << dt.z;
     return os;
 }
+
+const GSvector2 baseHpOffset{ 5,5 };
+const GSvector2 hpOffset{ 5,35 };
+
 void player_paladin::draw() const
 {
    
     glPushMatrix();
     glMultMatrixf(transform_.localToWorldMatrix());
+    //沈む
+    if (state_ == Dead && mesh_.motion_end_time() <= state_timer_)
+    {
+        float down = state_timer_ - mesh_.motion_end_time();
+        down /= -200;
+        std::cout << down << "\n";
+        glTranslatef(0, down, 0);
+    }
     //gsDrawMesh(Mesh_Player);
     glPushAttrib(GL_ENABLE_BIT);
     glDisable(GL_LIGHTING);
     collider_.draw();
     glPopAttrib();
 
+	
 	
     glPolygonStipple(mask);
     //glEnable(GL_POLYGON_STIPPLE);
@@ -78,12 +92,21 @@ void player_paladin::draw() const
     gsSetShaderParam4f("u_MaterialSpecular", &material_spacular);
     gsSetShaderParam4f("u_MaterialEmission", &material_emission);
     gsSetShaderParam1f("u_MaterialShininess", material_shininess);
+    gsSetShaderParamArrayMatrix4("gs_BoneMatrices",128, &mesh_.bone_matrices(0));
     // ベースカラーのテクスチャ
     gsSetShaderParamTexture("u_BaseMap", 0);
     // 法線マップのテクスチャ
     gsSetShaderParamTexture("u_NormalMap", 1);
     // メッシュの描画
-    mesh_.draw();
+    //mesh_.draw();
+
+    gsDisable(GS_CALC_SKELETON);
+    gsBindSkeleton(Skeleton_Paladin);
+    gsSetMatrixSkeleton(&mesh_.bone_matrices(0));
+	gsDrawMesh(Mesh_Paladin);
+    gsEnable(GS_CALC_SKELETON);
+	
+   
     // シェーダーを無効にする
     gsEndShader();
 
@@ -91,23 +114,35 @@ void player_paladin::draw() const
 	
     glPopMatrix();
 
-	if(state_!=Stop)
+	if(is_active())
 	{
+     
         glPushMatrix();
-        GSvector2 pos{ 0,0 };
-        for (int i = 0; i < hp_; ++i)
+        GSvector2 pos{ 20,20};
+		
+		base_bar_.draw(baseHpOffset);
+        bar_.draw(hpOffset);
+        
+        /*
+		for (int i = 0; i < hp_; ++i)
         {
+            
+
+        	
             GSvector2 scale{ 0.1f, 0.1f };
-            gsDrawSprite2D(Texture_Shield, &pos, NULL, NULL, NULL, &scale, NULL);
+            gsDrawSprite2D(Texture_Shield, &pos, nullptr, NULL, NULL, &scale, NULL);
             pos.x += 40;
-        }
+        }*/
         glPopMatrix();
 	}
 }
 
-void player_paladin::wake_up()
+void player_paladin::wake_up(const int base_hp)
 {
+    base_hp_ = base_hp;
+    base_bar_.set_HP_NoAnim(base_hp);
     hp_ = 3;
+    bar_.set_HP(3);
     tag_ = "PlayerTag";
     name_ = "PlayerPaladin";
     change_state(Wake, MotionWakeUp,false);
@@ -122,7 +157,7 @@ void player_paladin::stop()
 
 bool player_paladin::can_interact(const Actor& from)
 {
-    return true;
+    return state_!=Dead;
 }
 
 void player_paladin::change_state(State state, GSuint motion, bool loop)
@@ -161,13 +196,18 @@ void player_paladin::attack()
     change_state(Attack, MotionAttack, false);
 }
 
+bool player_paladin::is_active()const
+{
+    return state_ != Stop && state_ != Dead;
+}
+
 
 player_paladin::player_paladin(IWorld* world, const GSvector3& position) :Player(world, position, AnimatedMesh{ Mesh_Paladin, Skeleton_Paladin, Animation_Paladin })
 {
     std::cout << " init " << position << "\n";
     is_soft_ = false;
     height_ext_ = 0.5;
-    collider_ = BoundingSphere{ 0.8f,GSvector3{0.0f,1.4f,0.0f} };
+    collider_ = BoundingSphere{ 0.8f,GSvector3{0.0f,1.2f,0.0f} };
     stop();
 
     for (int i = 0; i < 128; i+=2)
@@ -179,13 +219,28 @@ player_paladin::player_paladin(IWorld* world, const GSvector3& position) :Player
 bool player_paladin::on_hit(const Actor& attacker, float atk_power)
 {
     if (state_ == Stop) return false;
-    if ((attacker.tag() == "EnemyAttack" || attacker.tag() == "EnemyTag") && state_ != Damage)
+	//地形ダメージ
+    if (attacker.tag() == "FieldDamage")
     {
         hp_ -= atk_power;
+        bar_.set_HP(hp_);
         if (hp_ <= 0)
         {
             stop();
-            change_state(Stop, MotionExit, false);
+            change_state(Dead, MotionExit, false);
+            world_->game_over();
+        }
+        gsPlaySE(SE_ParadinDamage);
+        return true;
+    }
+    if ((attacker.tag() == "EnemyAttack" || attacker.tag() == "EnemyTag") && state_ != Damage)
+    {
+        hp_ -= atk_power;
+        bar_.set_HP(hp_);
+        if (hp_ <= 0)
+        {
+            stop();
+            change_state(Dead, MotionExit, false);
             world_->add_actor(new player_ghost{ world_,transform_.position() });
             std::cout << "Stop " << hp_ << "\n";
         }else
@@ -203,17 +258,21 @@ const float Velocity = 0.07f;
 const GSvector3 gravity{ 0.0f, 0.01f, 0.0f };
 
 
-
 void player_paladin::update(float delta_time)
 {
+    bar_.update(delta_time);
+    base_bar_.update(delta_time);
     Actor* camera = world_->find_actor("Camera");
 	if(camera!=nullptr)
 		camera_pos_ = camera->transform().position();
-	
+
     //重力
     velocity_ -= gravity * delta_time;
+	//死亡後の消滅処理
+    if (state_ == Dead && mesh_.motion_end_time() + 180 <= state_timer_)
+        dead_=true;
     //起動
-    if (state_ != Stop) {
+    if (is_active()) {
 
         GSvector2 inputVelocity = get_input();
         inputVelocity.y = 0;
@@ -266,9 +325,9 @@ void player_paladin::update(float delta_time)
         if ((gsGetKeyTrigger(GKEY_E) || gsXBoxPadButtonTrigger(0, GS_XBOX_PAD_Y)) && state_ != Attack)
         {
             stop();
-            change_state(Stop, MotionExit, false);
+            change_state(Dead, MotionExit, false);
             world_->particle_manager()->possession_release_light(collider().center);
-            world_->add_actor(new player_ghost{ world_,transform_.position() });
+            world_->add_actor(new player_ghost{ world_,transform_.position() ,base_hp_});
         }
     	
 
@@ -278,8 +337,6 @@ void player_paladin::update(float delta_time)
         //デフォ以外なら
         if (state_ != Idle && state_ != Move)
         {
-            
-            state_timer_ += delta_time;
             if (mesh_.motion_end_time() <= state_timer_)
             {
                 if (motion_loop_)
@@ -330,7 +387,8 @@ void player_paladin::update(float delta_time)
         velocity_ *= 0.9;
     }
     update_physics(delta_time);
-	
+    //タイマー加算
+    state_timer_ += delta_time;
     //メッシュの更新
     mesh_.update(delta_time);
     //行列を設定

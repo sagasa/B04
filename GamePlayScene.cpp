@@ -35,15 +35,9 @@ void GamePlayScene::start(int number) {
     //表示タイマーの初期化
     draw_timer_ = 0.0f;
     // CarGhostのメッシュの読み込み
-    gsLoadMesh(Mesh_CarGhost, "Assets/Model/Enemy/Ghost.msh");
-    gsLoadMesh(Mesh_RushGhost, "Assets/Model/Enemy/Ghost2.msh");
-    gsLoadMesh(Mesh_Poltergeist, "Assets/Model/Enemy/Ghost3.msh");
-    gsLoadSkeleton(Skeleton_CarGhost, "Assets/Model/Enemy/Ghost.skl");
-    gsLoadSkeleton(Skeleton_RushGhost, "Assets/Model/Enemy/Ghost.skl");
-    gsLoadSkeleton(Skeleton_Poltergeist, "Assets/Model/Enemy/Ghost.skl");
-    gsLoadAnimation(Animation_CarGhost, "Assets/Model/Enemy/Ghost.anm");
-    gsLoadAnimation(Animation_RushGhost, "Assets/Model/Enemy/Ghost.anm");
-    gsLoadAnimation(Animation_Poltergeist, "Assets/Model/Enemy/Ghost.anm");
+    gsLoadMesh(Mesh_Ghost, "Assets/Model/Enemy/Ghost.msh");
+    gsLoadSkeleton(Skeleton_Ghost, "Assets/Model/Enemy/Ghost.skl");
+    gsLoadAnimation(Animation_Ghost, "Assets/Model/Enemy/Ghost.anm");
 
     //SurogSakonesのメッシュの読み込み
     gsLoadMesh(Mesh_SurogSakones, "Assets/Model/Enemy/Ghost_T-pose.msh");
@@ -67,7 +61,7 @@ void GamePlayScene::start(int number) {
     gsLoadMesh(Mesh_Skybox, "Assets/Skybox/DarkStorm4K.msh");
     //int型のステージ番号をstringstream型に変換
     std::stringstream ss;
-    ss << stage_number_;
+    ss << number;
     //ステージ番号によってロードするCSVファイルを変更する
     std::string csv_pass;
     csv_pass = "Assets/Map/Stage" + ss.str() + ".csv";

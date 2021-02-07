@@ -42,7 +42,7 @@ const float atk_power = 1.0f;
 
 //コンストラクタ
 Poltergeist::Poltergeist(IWorld* world, const GSvector3& position) :
-	mesh_{Mesh_Poltergeist,Skeleton_Poltergeist,Animation_Poltergeist,MotionIdle},
+	mesh_{Mesh_Ghost,Skeleton_Ghost,Animation_Ghost,MotionIdle},
 	motion_{MotionIdle} ,
 	motion_loop_{true},
 	state_{ State::Idle },
@@ -98,7 +98,9 @@ void Poltergeist::update(float delta_time) {
 //描画
 void Poltergeist::draw() const {
 	if (is_inside()) {
+		glColor3f(1.0f, 0.3f, 0.7f);
 		mesh_.draw();
+		glColor3f(1.0f, 1.0f, 1.0f);
 		collider().draw();
 		if (state_ == State::Died) {
 			world_->particle_manager()->death_smoke(transform_.position());

@@ -28,6 +28,7 @@ void ResultScene::start(int number) {
 	gsLoadTexture(Texture_ContinueButton, "Assets/Image/continue_button.dds");
 	gsLoadTexture(Texture_NextStage, "Assets/Image/next_stage.dds");
 	gsLoadTexture(Texture_PushButton, "Assets/Image/push_button.dds");
+	gsLoadTexture(Texture_PushButton, "Assets/Image/push_button.dds");
 
 	//BGMÇÃì«Ç›çûÇ›
 	gsLoadMusic(Music_GameClear, "Assets/BGM/gameclear.wav", GS_TRUE);

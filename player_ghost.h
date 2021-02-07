@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "HPBar.h"
 #include "Player.h"
 
 struct player_ghost : public Player
@@ -9,7 +10,7 @@ struct player_ghost : public Player
 		Attack,		// 攻撃中
 		Damage		// ダメージ中
 	};
-
+	HPBar bar_{ 3,120,GScolor{1,0,0,1},GScolor{1,0,0,0.5f} };
 	State state_{Idle};
 	// 状態タイマ
 	float state_timer_{ 0 };
@@ -23,9 +24,11 @@ struct player_ghost : public Player
 	
 	float gravity_timer_{0};
 	bool on_hit(const Actor& attacker, float atk_power) override;
-	player_ghost(IWorld* world, const GSvector3& position);
+	player_ghost(IWorld* world, const GSvector3& position,const int hp = 3);
 	void update(float delta) override;
+	
+	void wake_up(const int base_hp) override;
 public:
-	void wake_up() override;
+	virtual void draw() const override;
 	void stop() override;
 };
