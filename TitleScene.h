@@ -61,7 +61,6 @@ private:
 	int num_;
 	bool is_move_;
 	float move_timer_;
-	float alpha_;
 
 };
 
