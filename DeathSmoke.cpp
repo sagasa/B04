@@ -25,7 +25,7 @@ DeathSmoke::DeathSmoke(IWorld* world, const GSvector3& position)
 	//–¼‘O‚Ìİ’è
 	name_ = "DeathSmoke";
 	//ƒ^ƒO–¼‚Ìİ’è
-	tag_ = "EnemyTag";
+	tag_ = "FieldDamage";
 	//‘Ì—Í–³‚µ
 	//Õ“Ë”»’è‹…‚Ìİ’è
 	collider_ = BoundingSphere{ Radius,Center };
