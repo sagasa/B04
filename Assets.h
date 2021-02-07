@@ -97,7 +97,9 @@ enum Se {
     SE_GhostAttack1,                  //ボスの声(物理)
 	SE_GhostAttack2,                //ボスの声(魔法)
 	SE_BossGhostDamage,             //ボスの魔法攻撃の予定
-	SE_GhostDeath                   //ボスが死んでる時の声
+	SE_GhostDeath,                   //ボスが死んでる時の声
+    SE_Fire,
+	SE_FireBolt
 };
 
 enum Octree {
