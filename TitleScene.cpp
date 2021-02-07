@@ -10,7 +10,7 @@ const float Time{ 60.0f };
 //配列の大きさ
 const int Alphas_Size{ 3 };
 
-const int Pos_Size{ 2 };
+const int Pos_Size{ 3 };
 
 const GSvector2 pos_x_in{ 0.0f,0.0f };
 const GSvector2 pos_x_out{ -1280.0f,0.0f };
@@ -33,7 +33,6 @@ void TitleScene::start(int number) {
 	num_ = 0;
 	is_move_ = false;
 	move_timer_ = 0;
-	alpha_ = 1.0f;
 	//テクスチャの読み込み
 	gsLoadTexture(Texture_TitleLogo, "Assets/Image/title_logo.dds");
 	gsLoadTexture(Texture_PushButton, "Assets/Image/push_button.dds");
@@ -105,20 +104,23 @@ void TitleScene::draw() const {
 		const GSvector2 position_2{pos_x_[1],0.0f };
 		gsDrawSprite2D(Texture_How_To_Play2, &position_2, NULL, NULL, NULL, NULL, NULL);
 
-		const GSvector2 position_arrow_left{ 1170.0f,500.0f };
-		const GSrect rect_arrow_left{ 0,0,126,100.0f };
-		GScolor color_arrow_left{ 1,1,1,1.0f};
-		gsDrawSprite2D(Texture_Arrow, &position_arrow_left, &rect_arrow_left, NULL, &color_arrow_left, NULL, NULL);
+		if (!is_move_) {
+			const GSvector2 position_arrow_left{ 1170.0f,500.0f };
+			const GSrect rect_arrow_left{ 0,0,126,100.0f };
+			GScolor color_arrow_left{ 1,1,1,alphas_[0] };
+			gsDrawSprite2D(Texture_Arrow, &position_arrow_left, &rect_arrow_left, NULL, &color_arrow_left, NULL, NULL);
 
-		const GSvector2 position_arrow_right{ -40.0f,500.0f };
-		const GSrect rect_arrow_right{ 126,0.0f,252.0f,100 };
-		GScolor color_arrow_right{ 1,1,1,1 };
-		gsDrawSprite2D(Texture_Arrow, &position_arrow_right, &rect_arrow_right, NULL, &color_arrow_right, NULL, NULL);
+			const GSvector2 position_arrow_right{ -40.0f,500.0f };
+			const GSrect rect_arrow_right{ 126,0.0f,252.0f,100 };
+			GScolor color_arrow_right{ 1,1,1,alphas_[0] };
+			gsDrawSprite2D(Texture_Arrow, &position_arrow_right, &rect_arrow_right, NULL, &color_arrow_right, NULL, NULL);
 
-		const GSvector2 position_back{ 500.0f,630.0f };
-		GSvector2 scale_back{ 0.5f,0.5f };
-		GScolor color_back{ 1,1,1,1 };
-		gsDrawSprite2D(Texture_Back, &position_back, NULL, NULL, &color_back, &scale_back, NULL);
+			const GSvector2 position_back{ 500.0f,630.0f };
+			GSvector2 scale_back{ 0.5f,0.5f };
+			GScolor color_back{ 1,1,1,alphas_[0] };
+			gsDrawSprite2D(Texture_Back, &position_back, NULL, NULL, &color_back, &scale_back, NULL);
+		}
+		
 	}
 	
 	fade_.draw();
@@ -209,7 +211,7 @@ void TitleScene::update_select(float delta_time) {
 }
 
 void TitleScene::update_tutorial(float delta_time) {
-	if (gsGetKeyTrigger(GKEY_F) || gsXBoxPadButtonTrigger(0, GS_XBOX_PAD_X)) {
+	if (!is_move_ &&gsGetKeyTrigger(GKEY_F) || gsXBoxPadButtonTrigger(0, GS_XBOX_PAD_X)) {
 		state_ = State::Select;
 	}
 	//左スティックのベクトル値
@@ -249,7 +251,8 @@ void TitleScene::update_tutorial(float delta_time) {
 			move_timer_ = 0;
 		}
 	}
-	update_alpha(0, delta_time);
+	else update_alpha(0, delta_time);
+	
 }
 
 //α値の更新
@@ -259,7 +262,6 @@ void TitleScene::update_alpha(int num, float delta_time) {
 		if (i == num) {
 			//α値の更新
 			alphas_[i] += (alpha_flg_) ? -Alpha_Value * delta_time : Alpha_Value * delta_time;
-			alpha_ += (alpha_flg_) ? -Alpha_Value * delta_time : Alpha_Value * delta_time;
 		}
 		else alphas_[i] = 1.0f;
 	}
