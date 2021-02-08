@@ -17,8 +17,8 @@ NormalGhost,224.92,5.8,0
 NormalGhost,237.6,2.58,0
 Paladin,260.8,-2.19,0
 RushGhost,316.05,10.62,0
-DeathSmoke,322.9,4,3.167041
-DeathSmoke,324.6,4,3.167041
+DeathSmoke,322.9,4,0
+DeathSmoke,324.6,4,0
 CarGhost,338.88,6.4,0
 RushGhost,355.51,10.69,0
 Poltergeist,398.48,11.73,0
@@ -26,8 +26,8 @@ NormalGhost,412.43,9.11,0
 Poltergeist,417.94,11.4,0
 Paladin,426.15,6.31,0
 NormalGhost,447.95,6.61,0
-DeathSmoke,450.86,4,3.167041
-DeathSmoke,452.56,4,3.167041
+DeathSmoke,450.86,4,0
+DeathSmoke,452.56,4,0
 CarGhost,470.28,6.52,0
 Poltergeist,474.05,10.3,0
 RushGhost,485.46,9.89,0
