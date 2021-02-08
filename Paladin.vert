@@ -59,5 +59,5 @@ void main(void) {
     // テクスチャ座標の出力
     v_TexCoord = in_TexCoord;
     // ワールド・ビュー・プロジェクション変換
-    gl_Position = u_WorldViewProjectionMatrix * localPosition;
+    gl_Position = u_WorldViewProjectionMatrix * in_Position;
 }
