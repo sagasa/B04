@@ -346,7 +346,7 @@ void player_paladin::update(float delta_time)
                     change_state(Idle, MotionIdle);
                 }
             }
-
+            sound_timer_ = -1;
         }
         else
         {
@@ -354,13 +354,19 @@ void player_paladin::update(float delta_time)
             if (inputVelocity.x != 0)
             {
                 change_state(Move, MotionWalk);
-                std::cout << "timer "<<state_timer_<<"\n";
-                if ((int)state_timer_%((int)mesh_.motion_end_time()/2)<mesh_.motion_end_time()/2)
+                const int soundtime = (int)state_timer_ / ((int)mesh_.motion_end_time() / 2);
+            	//アニメーションで２回鳴る
+                if ((int)state_timer_ % ((int)mesh_.motion_end_time() / 2) > mesh_.motion_end_time() / 4&&sound_timer_ < soundtime)
+                {
                     gsPlaySE(SE_ParadinMove);
+                    sound_timer_ = soundtime;
+                }
+                std::cout << "timer "<< (int)state_timer_ % ((int)mesh_.motion_end_time() / 2) <<" " <<"\n";               
             }
             else
             {
                 change_state(Move, MotionIdle);
+                sound_timer_ = -1;
             }
             //攻撃開始
             if (gsGetKeyState(GKEY_F) == GS_TRUE || gsXBoxPadButtonTrigger(0, GS_XBOX_PAD_X))

@@ -26,7 +26,7 @@ void GamePlayScene::start(int number) {
 
     gsLoadShader(Shader_Paladin, "Paladin.vert", "Paladin.frag");
 
-    //gsLoadShader(Shader_Book, "PoltergeistBullet.vert", "PoltergeistBullet.frag");
+    gsLoadShader(Shader_Book, "PoltergeistBullet.vert", "PoltergeistBullet.frag");
 
     // ÇœÇ¡ÇøÇ°ÉÅÉbÉVÉÖÇÃì«Ç›çûÇ›
     //gsLoadMeshEx(0, "Assets/Model/patti.msh");
@@ -94,7 +94,7 @@ void GamePlayScene::start(int number) {
     gsLoadSE(SE_Jump, "Assets/SE/Jump.wav",1,false);
     gsLoadSE(SE_GhostDamage, "Assets/SE/ghost_damage.wav", 1, false);
     gsLoadSE(SE_ParadinDamage, "Assets/SE/paradin_damage.wav", 1, false);
-    gsLoadSE(SE_ParadinMove, "Assets/SE/paradin_move.wav", 1, false);
+    gsLoadSE(SE_ParadinMove, "Assets/SE/paradin_move.wav", 2, false);
     //gsLoadSE(SE_GhostDamage, "Assets/SE/punch.wav", 1, false);
     //gsLoadSE(SE_ParadinDamage, "Assets/SE/Jump.wav", 1, false);
     gsLoadSE(SE_P_Ghost_Attack, "Assets/SE/p_ghost_Attack.wav", 1, false);

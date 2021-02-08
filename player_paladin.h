@@ -17,6 +17,8 @@ struct player_paladin : public Player, public interact_prop
 		Dead		// è¡ñ≈ë“Çø
 	};
 
+	int sound_timer_{0};
+	
 	int base_hp_;//ñ{ëÃHPï€ë∂
 
 	HPBar base_bar_{ 3,120,GScolor{1,0,0,1},GScolor{1,0,0,0.5f} };
