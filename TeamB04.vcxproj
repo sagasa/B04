@@ -120,7 +120,7 @@
       <WholeProgramOptimization>false</WholeProgramOptimization>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -240,12 +240,10 @@
     <ClInclude Include="World.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Ghost.frag" />
-    <None Include="Ghost.vert" />
-    <None Include="Paladin.frag" />
-    <None Include="Paladin.vert" />
-    <None Include="PoltergeistBullet.frag" />
-    <None Include="PoltergeistBullet.vert" />
+    <None Include="Assets\Shader\Paladin.frag" />
+    <None Include="Assets\Shader\Paladin.vert" />
+    <None Include="Assets\Shader\PoltergeistBullet.frag" />
+    <None Include="Assets\Shader\PoltergeistBullet.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

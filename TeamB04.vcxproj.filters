@@ -334,19 +334,17 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Paladin.vert">
+    <None Include="Assets\Shader\Paladin.frag">
       <Filter>ソース ファイル\Shade</Filter>
     </None>
-    <None Include="Ghost.frag">
+    <None Include="Assets\Shader\Paladin.vert">
       <Filter>ソース ファイル\Shade</Filter>
     </None>
-    <None Include="Ghost.vert">
+    <None Include="Assets\Shader\PoltergeistBullet.frag">
       <Filter>ソース ファイル\Shade</Filter>
     </None>
-    <None Include="Paladin.frag">
+    <None Include="Assets\Shader\PoltergeistBullet.vert">
       <Filter>ソース ファイル\Shade</Filter>
     </None>
-    <None Include="PoltergeistBullet.frag" />
-    <None Include="PoltergeistBullet.vert" />
   </ItemGroup>
 </Project>
