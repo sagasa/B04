@@ -83,28 +83,28 @@ void PoltergeistBullet::draw() const {
 	GScolor material_emission{ 0.0f,0.0f,0.0f,1.0f };
 	float material_shininess{ 10.0f };
 
-	gsBeginShader(0);
-	GSmatrix4 world = transform_.localToWorldMatrix();
+	//gsBeginShader(0);
+	//GSmatrix4 world = transform_.localToWorldMatrix();
 
-	gsSetShaderParamMatrix4("u_WorldViewProjectionMatrix", (GSmatrix4*)&world_view_projection);
-	gsSetShaderParamMatrix4("u_WorldMatrix", (GSmatrix4*)&world);
-	gsSetShaderParam3f("u_CameraPosition", (GSvector3*)&camera_pos);
-	//ライトの座標をシェーダーに渡す
-	gsSetShaderParam3f("u_LightPosition", (GSvector3*)&light_position);
-	gsSetShaderParam4f("u_LightAmbient", &light_ambient);
-	gsSetShaderParam4f("u_LightDiffuse", &light_diffuse);
-	gsSetShaderParam4f("u_LightSpecular", &light_specular);
+	//gsSetShaderParamMatrix4("u_WorldViewProjectionMatrix", (GSmatrix4*)&world_view_projection);
+	//gsSetShaderParamMatrix4("u_WorldMatrix", (GSmatrix4*)&world);
+	//gsSetShaderParam3f("u_CameraPosition", (GSvector3*)&camera_pos);
+	////ライトの座標をシェーダーに渡す
+	//gsSetShaderParam3f("u_LightPosition", (GSvector3*)&light_position);
+	//gsSetShaderParam4f("u_LightAmbient", &light_ambient);
+	//gsSetShaderParam4f("u_LightDiffuse", &light_diffuse);
+	//gsSetShaderParam4f("u_LightSpecular", &light_specular);
 
-	//
-	gsSetShaderParam4f("u_MaterialAmbient", &material_ambient);
-	gsSetShaderParam4f("u_MaterialDiffuse", &material_diffuse);
-	gsSetShaderParam4f("u_MaterialSpecular", &material_spacular);
-	gsSetShaderParam4f("u_MaterialEmission", &material_emission);
-	gsSetShaderParam1f("u_MaterialShininess", material_shininess);
+	////
+	//gsSetShaderParam4f("u_MaterialAmbient", &material_ambient);
+	//gsSetShaderParam4f("u_MaterialDiffuse", &material_diffuse);
+	//gsSetShaderParam4f("u_MaterialSpecular", &material_spacular);
+	//gsSetShaderParam4f("u_MaterialEmission", &material_emission);
+	//gsSetShaderParam1f("u_MaterialShininess", material_shininess);
 
-	//ベースカラーのテクスチャ
-	gsSetShaderParamTexture("u_BaseMap", 0);
-	gsSetShaderParamTexture("u_NormalMap", 1);
+	////ベースカラーのテクスチャ
+	//gsSetShaderParamTexture("u_BaseMap", 0);
+	//gsSetShaderParamTexture("u_NormalMap", 1);
 	
 	gsDrawMeshEx(Mesh_Book);
 	gsEndShader();
