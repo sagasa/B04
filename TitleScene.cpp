@@ -10,7 +10,7 @@ const float Time{ 60.0f };
 //配列の大きさ
 const int Alphas_Size{ 3 };
 
-const int Pos_Size{ 3 };
+const int Pos_Size{ 2 };
 
 const GSvector2 pos_x_in{ 0.0f,0.0f };
 const GSvector2 pos_x_out{ -1280.0f,0.0f };
@@ -88,12 +88,12 @@ void TitleScene::draw() const {
 		gsDrawSprite2D(Texture_PushButton, &position_push_to_button,NULL, NULL, &color, &scale_push_to_button,NULL);
 	}
 	else if (state_ == State::Select && button_timer_ >= 30.0f) {
-		GSvector2 position_game_start{ 400.0f,300.0f };
+		GSvector2 position_game_start{ 450.0f,350.0f };
 		GSvector2 scale_game_start{ 0.5f,0.5f };
 		GScolor color_game_start{ 1,1,1,alphas_[1] };
 		gsDrawSprite2D(Texture_Game_Start, &position_game_start, NULL, NULL, &color_game_start, &scale_game_start, NULL);
 
-		GSvector2 position_tutorial{ 400.0f,500.0f };
+		GSvector2 position_tutorial{ 410.0f,550.0f };
 		GSvector2 scale_tutorial{ 0.5f,0.5f };
 		GScolor color_tutorial{ 1,1,1,alphas_[2] };
 		gsDrawSprite2D(Texture_tutorial, &position_tutorial, NULL, NULL, &color_tutorial, &scale_tutorial, NULL);
@@ -189,7 +189,7 @@ void TitleScene::update_select(float delta_time) {
 			++select_;
 		}
 		//FキーまたはXボタンで決定
-		if (!is_end_ && gsGetKeyTrigger(GKEY_F) || gsXBoxPadButtonTrigger(0, GS_XBOX_PAD_X)) {
+		if (!is_end_ && !gsIsPlaySE(SE_Push)&&gsGetKeyTrigger(GKEY_F) || gsXBoxPadButtonTrigger(0, GS_XBOX_PAD_X)) {
 			gsPlaySE(SE_Push);
 			switch (select_)
 			{
@@ -211,8 +211,9 @@ void TitleScene::update_select(float delta_time) {
 }
 
 void TitleScene::update_tutorial(float delta_time) {
-	if (!is_move_ &&gsGetKeyTrigger(GKEY_F) || gsXBoxPadButtonTrigger(0, GS_XBOX_PAD_X)) {
+	if (!is_move_ && !gsIsPlaySE(SE_Push)&& gsGetKeyTrigger(GKEY_F) || gsXBoxPadButtonTrigger(0, GS_XBOX_PAD_X)) {
 		state_ = State::Select;
+		gsPlaySE(SE_Select);
 	}
 	//左スティックのベクトル値
 	GSvector2 vector_stick = GSvector2::zero();
