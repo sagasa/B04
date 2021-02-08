@@ -98,14 +98,7 @@ void player_paladin::draw() const
     // 法線マップのテクスチャ
     gsSetShaderParamTexture("u_NormalMap", 1);
     // メッシュの描画
-    //mesh_.draw();
-
-    gsDisable(GS_CALC_SKELETON);
-    gsBindSkeleton(Skeleton_Paladin);
-    gsSetMatrixSkeleton(&mesh_.bone_matrices(0));
-	gsDrawMesh(Mesh_Paladin);
-    gsEnable(GS_CALC_SKELETON);
-	
+    mesh_.draw();
    
     // シェーダーを無効にする
     gsEndShader();
