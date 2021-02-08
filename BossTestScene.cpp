@@ -23,7 +23,8 @@
 using BulletType = EPsycokinesisBullet::Type;
 
 void BossTestScene::start(int number) {
-    gsLoadShader(0, "Paladin.vert", "Paladin.frag");
+    gsLoadShader(Shader_Paladin, "Assets/Shader/Paladin.vert", "Assets/Shader/Paladin.frag");
+    gsLoadShader(Shader_Book, "Assets/Shader/PoltergeistBullet.vert", "Assets/Shader/PoltergeistBullet.frag");
     //gsLoadShader(0, "PhongAmbientDiffuseSpecular.vert", "PhongAmbientDiffuseSpecular.frag");
 	/*gsLoadMesh(Mesh_Paladin, "Assets/Model/Paladin_j_nordstrom - Base/paladin_j_nordstrom.msh");
     gsLoadSkeleton(Skeleton_Paladin, "Assets/Model/Paladin_j_nordstrom/paladin_j_nordstrom.skl");
@@ -46,7 +47,7 @@ void BossTestScene::start(int number) {
     
 
     gsLoadOctree(Octree_Stage, "Assets/Octree/stage1/stage1.oct");
-    gsLoadOctree(Octree_Collider, "Assets/Octree/stage1/stage1_collider.oct");
+    gsLoadOctree(Octree_Collider, "Assets/Octree/stage1/stage1_collide.oct");
     gsLoadMesh(Mesh_Skybox, "Assets/Skybox/skydome.msh");
 
     //バレット(本)のメッシュの追加
