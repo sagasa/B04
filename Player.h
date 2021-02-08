@@ -16,7 +16,7 @@ protected:
     AnimatedMesh mesh_;
   
 	//”»’è‚ªd‚¢‚©
-    bool is_soft_;
+    bool is_soft_ = true;
 
 	//ã‰º‚Ì‚‚³Šg’£
     float height_ext_ = 0;
