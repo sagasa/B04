@@ -20,7 +20,7 @@ enum {
 //U‚èŒü‚«”»’è‚Ì‹——£
 const float TurnDistance{ 10.0f };
 //ˆÚ“®”»’è‚Ì‹——£‚™
-const float MoveDistance{ 10.0f };
+const float MoveDistance{ 7.0f };
 //U‚èŒü‚­Šp“x
 const float TurnAngle{ 5.0f };
 //UŒ‚‚·‚éŠp“x
