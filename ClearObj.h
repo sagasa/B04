@@ -9,7 +9,7 @@ public:
         world_ = world;
         name_ = "ClearFlag";
         tag_ = "ClearTag";
-        collider_ = BoundingSphere{ 2 };
+        collider_ = BoundingSphere{ 7 };
         enable_collider_ = true;
     }
     // •`‰æ
