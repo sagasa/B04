@@ -20,9 +20,9 @@ void player_ghost::stop()
 void player_ghost::change_state(State state, GSuint motion, bool loop)
 {
     state_ = state;
+    if (!mesh_.change_motion(motion, loop))return;
     motion_loop_ = loop;
     state_timer_ = 0;
-    mesh_.change_motion(motion, loop);
 }
 
 void player_ghost::attack()

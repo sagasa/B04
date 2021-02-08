@@ -24,7 +24,7 @@ void GamePlayScene::start(int number) {
     fade_.start(true,1);
     stage_number_ = number;
 
-    gsLoadShader(0, "Paladin.vert", "Paladin.frag");
+    gsLoadShader(Shader_Paladin, "Paladin.vert", "Paladin.frag");
 
     gsLoadShader(0, "PoltergeistBullet.vert", "PoltergeistBullet.frag");
 
@@ -94,6 +94,7 @@ void GamePlayScene::start(int number) {
     gsLoadSE(SE_Jump, "Assets/SE/Jump.wav",1,false);
     gsLoadSE(SE_GhostDamage, "Assets/SE/ghost_damage.wav", 1, false);
     gsLoadSE(SE_ParadinDamage, "Assets/SE/paradin_damage.wav", 1, false);
+    gsLoadSE(SE_ParadinMove, "Assets/SE/paradin_move.wav", 1, false);
     //gsLoadSE(SE_GhostDamage, "Assets/SE/punch.wav", 1, false);
     //gsLoadSE(SE_ParadinDamage, "Assets/SE/Jump.wav", 1, false);
     gsLoadSE(SE_P_Ghost_Attack, "Assets/SE/p_ghost_Attack.wav", 1, false);
