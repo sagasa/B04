@@ -26,7 +26,7 @@ void GamePlayScene::start(int number) {
 
     gsLoadShader(0, "Paladin.vert", "Paladin.frag");
 
-    gsLoadShader(0, "PoltergeistBullet.vert", "PoltergeistBullet.frag");
+    //gsLoadShader(Shader_Book, "PoltergeistBullet.vert", "PoltergeistBullet.frag");
 
     // ぱっちぃメッシュの読み込み
     //gsLoadMeshEx(0, "Assets/Model/patti.msh");
@@ -55,7 +55,7 @@ void GamePlayScene::start(int number) {
     gsLoadSkeleton(Skeleton_Paladin, "Assets/Model/Paladin_j_nordstrom/paladin_j_nordstrom.skl");
     gsLoadAnimation(Animation_Paladin, "Assets/Model/Paladin_j_nordstrom/paladin_j_nordstrom.anm");
     //バレット(本)のメッシュの追加
-    gsLoadMesh(Mesh_Book, "Assets/Model/Bullet/books.msh");
+    gsLoadMeshEx(Mesh_Book, "Assets/Model/Bullet/books.msh");
 	
     //スカイボックスの読み込み
     gsLoadMesh(Mesh_Skybox, "Assets/Skybox/DarkStorm4K.msh");
