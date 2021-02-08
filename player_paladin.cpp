@@ -379,9 +379,11 @@ void player_paladin::update(float delta_time)
             if (gsGetKeyState(GKEY_SPACE) || gsXBoxPadButtonTrigger(0, GS_XBOX_PAD_A))
             {
                 if (jump_count_ <= 0)
+                {
                     gsPlaySE(SE_Jump);
-                jump(3, 0.08f);
-                change_state(Jump, 6, false);
+                    jump(3, 0.08f);
+                    change_state(Jump, 6, false);
+                }
             }
             inputVelocity.y = MAX(inputVelocity.y, 0);
         }

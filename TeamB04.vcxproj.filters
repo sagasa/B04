@@ -135,9 +135,6 @@
     <ClCompile Include="AttackCollider.cpp">
       <Filter>ソース ファイル\Actors</Filter>
     </ClCompile>
-    <ClCompile Include="ChangeItem.cpp">
-      <Filter>ソース ファイル\Actors</Filter>
-    </ClCompile>
     <ClCompile Include="UI.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -175,9 +172,6 @@
       <Filter>ソース ファイル\Actors</Filter>
     </ClCompile>
     <ClCompile Include="HPBar.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="ClearObj.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -290,9 +284,6 @@
     <ClInclude Include="resource_loader.h">
       <Filter>ヘッダー ファイル\SAGASA</Filter>
     </ClInclude>
-    <ClInclude Include="ChangeItem.h">
-      <Filter>ヘッダー ファイル\Actors</Filter>
-    </ClInclude>
     <ClInclude Include="UI.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -339,23 +330,21 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="ClearObj.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\Actors</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Paladin.vert">
+    <None Include="Assets\Shader\Paladin.frag">
       <Filter>ソース ファイル\Shade</Filter>
     </None>
-    <None Include="Ghost.frag">
+    <None Include="Assets\Shader\Paladin.vert">
       <Filter>ソース ファイル\Shade</Filter>
     </None>
-    <None Include="Ghost.vert">
+    <None Include="Assets\Shader\PoltergeistBullet.frag">
       <Filter>ソース ファイル\Shade</Filter>
     </None>
-    <None Include="Paladin.frag">
+    <None Include="Assets\Shader\PoltergeistBullet.vert">
       <Filter>ソース ファイル\Shade</Filter>
     </None>
-    <None Include="PoltergeistBullet.frag" />
-    <None Include="PoltergeistBullet.vert" />
   </ItemGroup>
 </Project>

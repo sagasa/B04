@@ -24,9 +24,9 @@ void GamePlayScene::start(int number) {
     fade_.start(true,1);
     stage_number_ = number;
 
-    gsLoadShader(Shader_Paladin, "Paladin.vert", "Paladin.frag");
+    gsLoadShader(Shader_Paladin, "Assets/Shader/Paladin.vert", "Assets/Shader/Paladin.frag");
 
-    gsLoadShader(Shader_Book, "PoltergeistBullet.vert", "PoltergeistBullet.frag");
+    gsLoadShader(Shader_Book, "Assets/Shader/PoltergeistBullet.vert", "Assets/Shader/PoltergeistBullet.frag");
 
     // ‚Ï‚Á‚¿‚¡ƒƒbƒVƒ…‚Ì“Ç‚İ‚İ
     //gsLoadMeshEx(0, "Assets/Model/patti.msh");
