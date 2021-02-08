@@ -71,7 +71,7 @@ void GamePlayScene::start(int number) {
     //番号によってロードするマップを変える
     std::string octree_pass;
     octree_pass = "Assets/Octree/stage"+ ss.str() +"/stage"+ ss.str()+".oct";
-    std::string collide_pass = "Assets/Octree/stage" + ss.str() + "/stage" + ss.str() + "_collide.oct";
+    std::string collide_pass = "Assets/Octree/stage" + ss.str() + "/stage" + ss.str() + "_collider.oct";
     //描画用オクツリーの読み込み
     gsLoadOctree(Octree_Stage, octree_pass.c_str());
     //衝突判定用オクツリーの読み込み
