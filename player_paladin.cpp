@@ -218,7 +218,7 @@ player_paladin::player_paladin(IWorld* world, const GSvector3& position) :Player
 
 bool player_paladin::on_hit(const Actor& attacker, float atk_power)
 {
-    if (state_ == Stop) return false;
+    if (!is_active()) return false;
 	//地形ダメージ
     if (attacker.tag() == "FieldDamage")
     {

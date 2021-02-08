@@ -9,7 +9,9 @@ public:
         world_ = world;
         name_ = "ClearFlag";
         tag_ = "ClearTag";
-        collider_ = BoundingSphere{ 7 };
+        float radius = 7;
+        GSvector3 center{position.x-radius/2,position.y-radius/2,0};
+        collider_ = BoundingSphere{ radius ,center};
         enable_collider_ = true;
     }
     // •`‰æ
@@ -18,7 +20,7 @@ public:
         collider().draw();
     }
 
-    void collide(Actor& other) override
+    void react(Actor& other) override
     {
         if (other.tag() == "PlayerTag")
         {

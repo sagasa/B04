@@ -44,7 +44,7 @@ const float Psyco1AttackFlame{ 20.0f };
 const float Psyco2AttackFlame{ 20.0f };
 
 //アタック時のクールタイム
-const float ScytheAttackCoolTime{ 30.0f };
+const float ScytheAttackCoolTime{ 0.0f };
 const float Psyco1AttackCoolTime{ 80.0f };
 const float Psyco2AttackCoolTime{ 120.0f };
 
