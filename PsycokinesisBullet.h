@@ -16,6 +16,7 @@ public:
 
 private:
 	GSvector3 acceleration_;
+	GSvector3 camera_pos_;
 	float period_;
 	float damage_;
 };
