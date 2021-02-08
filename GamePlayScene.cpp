@@ -26,7 +26,7 @@ void GamePlayScene::start(int number) {
 
     gsLoadShader(0, "Paladin.vert", "Paladin.frag");
 
-    //gsLoadShader(0, "PoltergeistBullet.vert", "PoltergeistBullet.frag");
+    //gsLoadShader(Shader_Book, "PoltergeistBullet.vert", "PoltergeistBullet.frag");
 
     // ‚Ï‚Á‚¿‚¡ƒƒbƒVƒ…‚Ì“Ç‚İ‚İ
     //gsLoadMeshEx(0, "Assets/Model/patti.msh");
