@@ -151,8 +151,6 @@
     <ClCompile Include="BoundingSphere.cpp" />
     <ClCompile Include="ByteBuf.cpp" />
     <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="ChangeItem.cpp" />
-    <ClCompile Include="ClearObj.cpp" />
     <ClCompile Include="CSVReader.cpp" />
     <ClCompile Include="DeathSmoke.cpp" />
     <ClCompile Include="EPsycokinesisBullet.cpp" />
@@ -199,7 +197,6 @@
     <ClInclude Include="BoundingSphere.h" />
     <ClInclude Include="ByteBuf.h" />
     <ClInclude Include="Camera.h" />
-    <ClInclude Include="ChangeItem.h" />
     <ClInclude Include="CSVReader.h" />
     <ClInclude Include="DeathSmoke.h" />
     <ClInclude Include="EPsycokinesisBullet.h" />
