@@ -9,6 +9,7 @@
 #include"DeathSmoke.h"
 #include"player_paladin.h"
 #include"ESurogSakones.h"
+#include "ClearObj.h"
 
 const float size_{ 1 };
 
@@ -92,5 +93,8 @@ void MapGenerator::generate(IWorld* world,const GSvector3& position) {
 	}
 	else if (name == "ESurogSakones") {
 		world->add_actor(new ESurogSakones{ world,position });
+	}
+	else if (name == "ClearObject") {
+		world->add_actor(new ClearObj{ world,position });
 	}
 }
