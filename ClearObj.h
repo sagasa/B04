@@ -22,8 +22,7 @@ public:
 
     void react(Actor& other) override
     {
-        std::string a=other.tag();
-        if (a == "PlayerTag")
+        if (other.tag() == "PlayerTag")
         {
             world_->game_clear();
         }
