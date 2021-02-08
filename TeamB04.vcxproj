@@ -152,6 +152,7 @@
     <ClCompile Include="ByteBuf.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ChangeItem.cpp" />
+    <ClCompile Include="ClearObj.cpp" />
     <ClCompile Include="CSVReader.cpp" />
     <ClCompile Include="DeathSmoke.cpp" />
     <ClCompile Include="EPsycokinesisBullet.cpp" />
@@ -189,6 +190,7 @@
   <ItemGroup>
     <ClInclude Include="Actor.h" />
     <ClInclude Include="ActorManager.h" />
+    <ClInclude Include="ClearObj.h" />
     <ClInclude Include="DamageProp.h" />
     <ClInclude Include="AnimatedMesh.h" />
     <ClInclude Include="Assets.h" />

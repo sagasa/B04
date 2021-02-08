@@ -72,7 +72,7 @@ void player_paladin::draw() const
     float   material_shininess{ 10.0f };                 // 鏡面反射指数 （ハイライト）
 
     // シェーダーを有効にする
-    gsBeginShader(0);
+    gsBeginShader(Shader_Paladin);
     // ワールド・ビュー・プロジェクション行列をシェーダーに渡す
     gsSetShaderParamMatrix4("u_WorldViewProjectionMatrix",
         (GSmatrix4*)&world_view_projection);
@@ -163,9 +163,9 @@ bool player_paladin::can_interact(const Actor& from)
 void player_paladin::change_state(State state, GSuint motion, bool loop)
 {
     state_ = state;
+    if (!mesh_.change_motion(motion, loop))return;
     motion_loop_ = loop;
     state_timer_ = 0;
-    mesh_.change_motion(motion, loop);
 }
 
 void player_paladin::attack()
@@ -346,7 +346,7 @@ void player_paladin::update(float delta_time)
                     change_state(Idle, MotionIdle);
                 }
             }
-
+            sound_timer_ = -1;
         }
         else
         {
@@ -354,10 +354,19 @@ void player_paladin::update(float delta_time)
             if (inputVelocity.x != 0)
             {
                 change_state(Move, MotionWalk);
+                const int soundtime = (int)state_timer_ / ((int)mesh_.motion_end_time() / 2);
+            	//アニメーションで２回鳴る
+                if ((int)state_timer_ % ((int)mesh_.motion_end_time() / 2) > mesh_.motion_end_time() / 4&&sound_timer_ < soundtime)
+                {
+                    gsPlaySE(SE_ParadinMove);
+                    sound_timer_ = soundtime;
+                }
+                std::cout << "timer "<< (int)state_timer_ % ((int)mesh_.motion_end_time() / 2) <<" " <<"\n";               
             }
             else
             {
                 change_state(Move, MotionIdle);
+                sound_timer_ = -1;
             }
             //攻撃開始
             if (gsGetKeyState(GKEY_F) == GS_TRUE || gsXBoxPadButtonTrigger(0, GS_XBOX_PAD_X))

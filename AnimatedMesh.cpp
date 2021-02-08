@@ -41,14 +41,15 @@ void AnimatedMesh::draw()const {
 	gsDrawMesh(mesh_);
 	gsEnable(GS_CALC_SKELETON);
 }
-void AnimatedMesh::change_motion(GSuint motion, bool loop) {
-	if (motion_ == motion)return;
+bool AnimatedMesh::change_motion(GSuint motion, bool loop) {
+	if (motion_ == motion)return false;
 	prev_motion_ = motion_;
 	prev_motion_timer_ = motion_timer_;
 	lerp_timer_ = 0.0f;
 	motion_ = motion;
 	motion_timer_ = 0.0f;
 	motion_loop_ = loop;
+	return true;
 }
 void AnimatedMesh::transform(const GSmatrix4& matrix) {
 	gsCalculateAnimationLerp(
