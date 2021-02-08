@@ -58,6 +58,21 @@ void player_ghost::attack()
 
 bool player_ghost::on_hit(const Actor& attacker, float atk_power)
 {
+    //地形ダメージ
+    if (attacker.tag() == "FieldDamage")
+    {
+        hp_ -= atk_power;
+        bar_.set_HP(hp_);
+        if (hp_ <= 0)
+        {
+            stop();
+            change_state(Damage, 4, false);
+            world_->game_over();
+        }
+        gsPlaySE(SE_GhostDamage);
+        return true;
+    }
+	
 	if((attacker.tag()=="EnemyAttack"|| attacker.tag() == "EnemyTag")&&state_!=Damage&&state_!=Attack)
 	{
         hp_-=atk_power;
