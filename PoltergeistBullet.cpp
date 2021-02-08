@@ -83,7 +83,7 @@ void PoltergeistBullet::draw() const {
 	GScolor material_emission{ 0.0f,0.0f,0.0f,1.0f };
 	float material_shininess{ 10.0f };
 
-	gsBeginShader(0);
+	gsBeginShader(Shader_Book);
 	GSmatrix4 world = transform_.localToWorldMatrix();
 
 	gsSetShaderParamMatrix4("u_WorldViewProjectionMatrix", (GSmatrix4*)&world_view_projection);

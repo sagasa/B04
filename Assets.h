@@ -40,7 +40,8 @@ enum  Animation {
 enum Shader {
     Shader_Ghost,
     Shader_Paladin,
-    Shader_Map
+    Shader_Map,
+    Shader_Book,
 };
 
 // テクスチャデータ
