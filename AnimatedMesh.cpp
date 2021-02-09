@@ -41,6 +41,13 @@ void AnimatedMesh::draw()const {
 	gsDrawMesh(mesh_);
 	gsEnable(GS_CALC_SKELETON);
 }
+void AnimatedMesh::draw_ex()const {
+	gsDisable(GS_CALC_SKELETON);
+	gsBindSkeleton(skeleton_);
+	gsSetMatrixSkeleton(world_bone_matrices_.data());
+	gsDrawMeshEx(mesh_);
+	gsEnable(GS_CALC_SKELETON);
+}
 bool AnimatedMesh::change_motion(GSuint motion, bool loop) {
 	if (motion_ == motion)return false;
 	prev_motion_ = motion_;

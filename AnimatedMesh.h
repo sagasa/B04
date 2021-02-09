@@ -11,6 +11,7 @@ public:
 	AnimatedMesh(Mesh mesh, Skeleton skeleton, Animation animation, GSuint motion = 0,bool loop = true);
 	void update(float delta_time);
 	void draw()const;
+	void draw_ex() const;
 	bool change_motion(GSuint motion,bool loop = true);
 	void transform(const GSmatrix4& matrix);
 	float motion_end_time()const;
