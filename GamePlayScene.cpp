@@ -51,7 +51,7 @@ void GamePlayScene::start(int number) {
     gsLoadSkeleton(Skeleton_Player, "Assets/Model/Enemy/Ghost.skl");
     gsLoadAnimation(Animation_Player, "Assets/Model/Enemy/Ghost.anm");
 
-    gsLoadMesh(Mesh_Paladin, "Assets/Model/Paladin_j_nordstrom/paladin_j_nordstrom.msh");
+    gsLoadMeshEx(Mesh_Paladin, "Assets/Model/Paladin_j_nordstrom/paladin_j_nordstrom.msh");
     gsLoadSkeleton(Skeleton_Paladin, "Assets/Model/Paladin_j_nordstrom/paladin_j_nordstrom.skl");
     gsLoadAnimation(Animation_Paladin, "Assets/Model/Paladin_j_nordstrom/paladin_j_nordstrom.anm");
     //バレット(本)のメッシュの追加

@@ -92,14 +92,14 @@ void player_paladin::draw() const
     gsSetShaderParam4f("u_MaterialSpecular", &material_spacular);
     gsSetShaderParam4f("u_MaterialEmission", &material_emission);
     gsSetShaderParam1f("u_MaterialShininess", material_shininess);
-    gsSetShaderParamArrayMatrix4("gs_BoneMatrices",128, &mesh_.bone_matrices(0));
+    //gsSetShaderParamArrayMatrix4("gs_BoneMatrices",128, &mesh_.bone_matrices(0));
     // ベースカラーのテクスチャ
     gsSetShaderParamTexture("u_BaseMap", 0);
     // 法線マップのテクスチャ
     gsSetShaderParamTexture("u_NormalMap", 1);
     // メッシュの描画
-    mesh_.draw();
-   
+    mesh_.draw_ex();
+    
     // シェーダーを無効にする
     gsEndShader();
 

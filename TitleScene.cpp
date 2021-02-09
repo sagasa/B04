@@ -189,7 +189,7 @@ void TitleScene::update_select(float delta_time) {
 			++select_;
 		}
 		//FキーまたはXボタンで決定
-		if (!is_end_ && !gsIsPlaySE(SE_Push)&&gsGetKeyTrigger(GKEY_F) || gsXBoxPadButtonTrigger(0, GS_XBOX_PAD_X)) {
+		if (!is_end_ && !gsIsPlaySE(SE_Push)&&(gsGetKeyTrigger(GKEY_F) || gsXBoxPadButtonTrigger(0, GS_XBOX_PAD_X))) {
 			gsPlaySE(SE_Push);
 			switch (select_)
 			{
