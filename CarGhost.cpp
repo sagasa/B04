@@ -103,7 +103,7 @@ void CarGhost::update(float delta_time) {
 	glGetFloatv(GL_MODELVIEW_MATRIX, (GLfloat*)&modelview_mat);
 	GSmatrix4 world_view_projection = modelview_mat * projection_mat;*/
 
-	//重さ軽減のためプレイヤーの座標から-40離れたら死亡
+	//重さ軽減のためプレイヤーの座標から-20離れたら死亡
 	if (transform_.position().x <= player_->transform().position().x - 20.0f) {
 		die();
 	}

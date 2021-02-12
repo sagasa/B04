@@ -8,7 +8,7 @@ class AttackCollider : public Actor {
 public:
 	//コンストラクタ
 	AttackCollider(IWorld* world, const BoundingSphere& collider,
-		const std::string& tag, const std::string& name,
+		const std::string& tag, const std::string& name, std::string& use_name,
 		float lifespan = 1.0f, float delay = 0.0f, float atk_power = 1.0f);
 	//更新
 	virtual void update(float delta_time) override;
@@ -24,6 +24,9 @@ private:
 	float delay_timer_;
 	//攻撃力
 	float atk_power_;
+
+	GSvector3 before_position_;
+	std::string user_;
 };
 
 
