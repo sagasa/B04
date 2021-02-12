@@ -20,6 +20,7 @@
 #include "ParticleManager.h"
 #include "Poltergeist.h"
 #include "RushGhost.h"
+#include "PaladinSpawn.h"
 using BulletType = EPsycokinesisBullet::Type;
 
 void BossTestScene::start(int number) {
@@ -40,18 +41,16 @@ void BossTestScene::start(int number) {
     gsLoadSkeleton(Skeleton_Player, "Assets/Model/Enemy/Ghost.skl");
     gsLoadAnimation(Animation_Player, "Assets/Model/Enemy/Ghost.anm");
 
-    gsLoadMesh(Mesh_Paladin, "Assets/Model/Paladin_j_nordstrom/paladin_j_nordstrom.msh");
+    gsLoadMeshEx(Mesh_Paladin, "Assets/Model/Paladin_j_nordstrom/paladin_j_nordstrom.msh");
     gsLoadSkeleton(Skeleton_Paladin, "Assets/Model/Paladin_j_nordstrom/paladin_j_nordstrom.skl");
     gsLoadAnimation(Animation_Paladin, "Assets/Model/Paladin_j_nordstrom/paladin_j_nordstrom.anm");
-    
-    
 
     gsLoadOctree(Octree_Stage, "Assets/Octree/stage1/stage1.oct");
-    gsLoadOctree(Octree_Collider, "Assets/Octree/stage1/stage1_collide.oct");
+    gsLoadOctree(Octree_Collider, "Assets/Octree/stage1/stage1_collider.oct");
     gsLoadMesh(Mesh_Skybox, "Assets/Skybox/skydome.msh");
 
     //バレット(本)のメッシュの追加
-    gsLoadMesh(Mesh_Book, "Assets/Model/Bullet/books.msh");
+    gsLoadMeshEx(Mesh_Book, "Assets/Model/Bullet/books.msh");
 	
     // フィールドの追加
     world_.add_field(new Field{ Octree_Stage,Octree_Collider,Mesh_Skybox });
@@ -60,12 +59,12 @@ void BossTestScene::start(int number) {
     // ライトの追加
     world_.add_light(new Light{ &world_ });
     // プレーヤの追加
-    world_.add_actor(new player_paladin{ &world_, GSvector3{ 0.0f, 0.0f, 0.0f } });
-    //ボス
+    world_.add_actor(new PaladinSpawn{ &world_,GSvector3{0.0f,-2.5f,0.0f} });
+    world_.add_actor(new PaladinSpawn{ &world_,GSvector3{2.0f,-4.0f,0.0f} });
     //ボス
     // プレーヤの追加
     world_.add_actor(new player_ghost{ &world_, GSvector3{ 0.0f, 0.0f, 0.0f } });
-    //world_.add_actor(new SurogSakones{ &world_,GSvector3{0.0f,0.0f,0.0f} });
+    world_.add_actor(new SurogSakones{ &world_,GSvector3{0.0f,0.0f,0.0f} });
     //world_.add_actor(new ESurogSakones{ &world_,GSvector3{0.0f,0.0f,0.0f} });
     world_.add_particle_manager(new ParticleManager{ &world_ });
     /*world_.add_actor(new Poltergeist{ &world_,GSvector3::right()*2.0f });	
@@ -101,7 +100,7 @@ void BossTestScene::update(float delta_time) {
         gsLoadTexture(Texture_EffectLazerCyan, "Assets/Effect/fx_lazer_cyan_dff.png");
         gsLoadTexture(Texture_Hp, "Assets/Image/outline_heart.png");
         gsLoadTexture(Texture_Shield, "Assets/Image/shield.png");
-        //gsLoadTexture(Texture_Distotion, "Assets/Effect/ShockWaveDistortion1.png");
+        gsLoadTexture(Texture_Distotion, "Assets/Effect/ShockWaveDistortion1.png");
         gsLoadTexture(Texture_Smoke, "Assets/Effect/particle_smoke.png");
         gsLoadTexture(Texture_Hit, "Assets/Effect/particle_glitter_3.png");
         gsLoadTexture(Texture_Circle, "Assets/Effect/particle_dot_1.png");

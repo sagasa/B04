@@ -3,6 +3,8 @@
 #include "interact_prop.h"
 #include "Player.h"
 
+class PaladinSpawn;
+
 struct player_paladin : public Player, public interact_prop
 {
 	// プレーヤーの状態
@@ -31,6 +33,8 @@ struct player_paladin : public Player, public interact_prop
 	bool can_interact(const Actor& from) override;
 
 	bool attack_se_{false};
+
+	PaladinSpawn* spawn_{ nullptr };
 	
 	// 状態タイマ
 	float state_timer_{ 0 };
@@ -44,11 +48,11 @@ struct player_paladin : public Player, public interact_prop
 
 	bool is_active()const;
 	
-	player_paladin(IWorld* world, const GSvector3& position);
+	player_paladin(IWorld* world, const GSvector3& position,PaladinSpawn* spawn=nullptr);
 	bool on_hit(const Actor& attacker, float atk_power) override;
 	void update(float delta) override;
 public:
 	virtual void draw() const override;
 	void wake_up(const int base_hp) override;
-	void stop() override;
+	void stop() override;	
 };
