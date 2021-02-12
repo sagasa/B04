@@ -89,7 +89,7 @@ void Poltergeist::update(float delta_time) {
 		shootiong_timer_ -= delta_time;
 	}
 
-	//重さ軽減のためプレイヤーの座標から-40離れたら死亡
+	//軽量化のためプレイヤーの座標から-20離れたら死亡
 	if (transform_.position().x <= player_->transform().position().x - 20.0f) {
 		die();
 	}
@@ -97,6 +97,7 @@ void Poltergeist::update(float delta_time) {
 
 //描画
 void Poltergeist::draw() const {
+	//カメラ外だと描画しない
 	if (is_inside()) {
 		glColor3f(1.0f, 0.3f, 0.7f);
 		mesh_.draw();

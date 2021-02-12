@@ -84,7 +84,7 @@ void RushGhost::update(float delta_time) {
 	//行列を設定
 	mesh_.transform(transform_.localToWorldMatrix());
 
-	//重さ軽減のためプレイヤーの座標から-40離れたら死亡
+	//軽量化のためプレイヤーの座標から-40離れたら死亡
 	if (transform_.position().x <= player_->transform().position().x - 20.0f) {
 		die();
 	}
@@ -92,6 +92,7 @@ void RushGhost::update(float delta_time) {
 
 //描画
 void RushGhost::draw() const {
+	//カメラ外だと描画しない
 	if (is_inside()) {
 		glColor3f(1.0f,0.3f,0.3f);
 		mesh_.draw();

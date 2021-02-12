@@ -1,11 +1,12 @@
 #include"AttackCollider.h"
 #include"DamageProp.h"
+#include"World.h"
 
 
 //コンストラクタ
 AttackCollider::AttackCollider(IWorld* world, const BoundingSphere& collider,
-	const std::string& tag, const std::string& name, float lifespan, float delay, float atk_power):
-	lifespan_timer_{lifespan},delay_timer_{delay}, atk_power_{atk_power}
+	const std::string& tag, const std::string& name, std::string& user_name, float lifespan, float delay, float atk_power):
+	lifespan_timer_{ lifespan }, delay_timer_{ delay }, atk_power_{ atk_power }, before_position_{GSvector3::zero()}
 {
 	//ワールドの設定
 	world_ = world;
@@ -19,6 +20,8 @@ AttackCollider::AttackCollider(IWorld* world, const BoundingSphere& collider,
 	transform_.position(collider.center);
 	//無敵状態にする
 	enable_collider_ = false;
+
+	user_ = user_name;
 }
 
 //更新
@@ -37,6 +40,11 @@ void AttackCollider::update(float delta_time)
 	}
 	//遅延時間の更新
 	delay_timer_ -= delta_time;
+	Actor* user = world_->find_actor(user_);
+	if (user == nullptr) return;
+	GSvector3 position = (user->transform().position() - before_position_);
+	before_position_ = user->transform().position();
+	transform_.position() += position;
 }
 
 //描画

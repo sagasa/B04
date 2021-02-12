@@ -7,7 +7,7 @@
 const float Alpha_Value{ 0.008f };
 //ボタンが出るまでの時間
 const float Time{ 60.0f };
-//配列の大きさ
+//α値のリストの大きさ
 const int Alphas_Size{ 3 };
 
 const int Pos_Size{ 2 };
@@ -22,6 +22,7 @@ void TitleScene::start(int number) {
 	fade_.start(true,3);
 	//終了フラグの初期化
 	is_end_ = false;
+	//次のシーン名を初期化
 	nextScene_ = "";
 	button_timer_ = 0;
 	stage_number_ = number;
