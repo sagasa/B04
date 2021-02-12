@@ -44,7 +44,8 @@ void AttackCollider::update(float delta_time)
 	if (user == nullptr) return;
 	GSvector3 position = (user->transform().position() - before_position_);
 	before_position_ = user->transform().position();
-	transform_.position() += position;
+	//position += transform_.position();
+	transform_.translate(position, GStransform::Space::World);
 }
 
 //•`‰æ

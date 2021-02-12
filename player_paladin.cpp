@@ -184,7 +184,7 @@ void player_paladin::attack()
     BoundingSphere collider{ AttackColliderRadius, position };
     // Õ“Ë”»’è‚ðoŒ»‚³‚¹‚é
     world_->add_actor(new AttackCollider{ world_, collider,
-        "PlayerAttack", "PlayerAttack", AttackCollideLifeSpan, AttackCollideDelay ,3});
+        "PlayerAttack", "PlayerAttack", name_,AttackCollideLifeSpan, AttackCollideDelay ,3});
 	//SE
     attack_se_ = true;
     change_state(Attack, MotionAttack, false);

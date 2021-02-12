@@ -516,7 +516,7 @@ void ESurogSakones::generate_attackcollider(bool is_turn) {
 		GSvector3 position = transform_.position() + transform_.forward() * AttackColliderDistance;
 		position.y += AttackColliderHeight;
 		BoundingSphere collider{ AttackColliderRadius,position };
-		world_->add_actor(new AttackCollider{ world_,collider,"EnemyAttack","BossAttack",AttackCollideLifeSpan,AttackCollideDelay });
+		world_->add_actor(new AttackCollider{ world_,collider,"EnemyAttack","BossAttack",name_,AttackCollideLifeSpan,AttackCollideDelay });
 	}
 	else
 	{
@@ -526,7 +526,7 @@ void ESurogSakones::generate_attackcollider(bool is_turn) {
 		GSvector3 position = transform_.position() + Direction * AttackColliderDistance;
 		position.y += AttackColliderHeight;
 		BoundingSphere collider{ AttackColliderRadius,position };
-		world_->add_actor(new AttackCollider{ world_,collider,"EnemyAttack","BossAttack",AttackCollideLifeSpan,AttackCollideDelay });
+		world_->add_actor(new AttackCollider{ world_,collider,"EnemyAttack","BossAttack",name_,AttackCollideLifeSpan,AttackCollideDelay });
 	}
 }
 
