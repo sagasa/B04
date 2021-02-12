@@ -6,6 +6,7 @@
 #include "AttackCollider.h"
 #include "HPBar.h"
 #include "player_ghost.h"
+#include "PaladinSpawn.h"
 
 GLubyte mask[128];
 
@@ -195,12 +196,13 @@ bool player_paladin::is_active()const
 }
 
 
-player_paladin::player_paladin(IWorld* world, const GSvector3& position) :Player(world, position, AnimatedMesh{ Mesh_Paladin, Skeleton_Paladin, Animation_Paladin })
+player_paladin::player_paladin(IWorld* world, const GSvector3& position,PaladinSpawn* spawn) :Player(world, position, AnimatedMesh{ Mesh_Paladin, Skeleton_Paladin, Animation_Paladin })
 {
     std::cout << " init " << position << "\n";
     is_soft_ = false;
     height_ext_ = 0.5;
     collider_ = BoundingSphere{ 0.8f,GSvector3{0.0f,1.2f,0.0f} };
+    spawn_ = spawn;
     stop();
 
     for (int i = 0; i < 128; i+=2)
@@ -263,7 +265,10 @@ void player_paladin::update(float delta_time)
     velocity_ -= gravity * delta_time;
 	//Ž€–SŒã‚ÌÁ–Åˆ—
     if (state_ == Dead && mesh_.motion_end_time() + 180 <= state_timer_)
-        dead_=true;
+    {
+        die();
+        spawn_->notice();
+    }        
     //‹N“®
     if (is_active()) {
 
