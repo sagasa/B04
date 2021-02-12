@@ -267,7 +267,7 @@ void player_paladin::update(float delta_time)
     if (state_ == Dead && mesh_.motion_end_time() + 180 <= state_timer_)
     {
         die();
-        spawn_->notice();
+        if(spawn_ != nullptr)spawn_->notice();
     }        
     //‹N“®
     if (is_active()) {
