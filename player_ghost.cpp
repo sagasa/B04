@@ -47,7 +47,7 @@ void player_ghost::attack()
     BoundingSphere collider{ AttackColliderRadius, position };
     // 衝突判定を出現させる
     world_->add_actor(new AttackCollider{ world_, collider,
-        "PlayerAttack", "PlayerAttack", AttackCollideLifeSpan, AttackCollideDelay });
+        "PlayerAttack", "PlayerAttack",name_, AttackCollideLifeSpan, AttackCollideDelay });
 
     change_state(Attack, 2, false);
 
