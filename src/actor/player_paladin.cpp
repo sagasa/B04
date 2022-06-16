@@ -236,7 +236,7 @@ bool player_paladin::on_hit(const Actor& attacker, float atk_power)
         {
             stop();
             change_state(Dead, MotionExit, false);
-            world_->add_actor(new player_ghost{ world_,transform_.position() });
+            world_->add_actor(new player_ghost{ world_,transform_.position()  ,base_hp_ });
             std::cout << "Stop " << hp_ << "\n";
         }else
         {
